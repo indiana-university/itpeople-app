@@ -1,5 +1,5 @@
 import { IApiState } from './common'
-import { IProps } from './profile';
+import { IUser } from './profile';
 
 //#region TYPES
 export const enum SearchActionTypes {
@@ -13,7 +13,7 @@ export interface ISimpleSearchRequest {
 }
 
 export interface ISimpleSearchResult extends ISimpleSearchRequest {
-    profiles: IProps[]
+    profiles: IUser[]
 }
 
 export interface IState extends IApiState<ISimpleSearchRequest, ISimpleSearchResult> { 

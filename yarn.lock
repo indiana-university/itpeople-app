@@ -6459,9 +6459,9 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rivet-react@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/rivet-react/-/rivet-react-0.5.0.tgz#5579c89b898a64e40c8639843761b75fe546e1a4"
+rivet-react@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/rivet-react/-/rivet-react-0.6.0.tgz#e8430c6dc0ccc1cad8d761ad88861e4a1fd7714f"
   dependencies:
     classnames "2.2.6"
     react "16.4.1"

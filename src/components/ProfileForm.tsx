@@ -12,33 +12,33 @@ const ix = (props:any) => (
     <Input {...props.input} {...props} />
 )
 
-const ProfileForm : React.SFC<IApiState2<profile.IProps> & IProfileFormProps & InjectedFormProps<{}, profile.IProps & IProfileFormProps>> = 
+const ProfileForm : React.SFC<IApiState2<profile.IUser> & IProfileFormProps & InjectedFormProps<{}, profile.IUser & IProfileFormProps>> = 
 ({ loading, error, data, onSubmit }) => {
 
     const handleSubmit = (e:any)=> {
         e.preventDefault();
-        const id = data && data.user ? data.user.id : 0
+        const id = data ? data.id : 0
         onSubmit({id});
     }
 
     return (
             <>
                 { !data && loading && <p>Loading...</p>}
-                { data && data.user && 
+                { data && 
                   <>
                     <h2>User</h2>
                     <List>
-                        <li><strong>NetId:</strong> {data.user.netId}</li>
-                        <li><strong>Name:</strong> {data.user.name}</li>
-                        <li><strong>Position:</strong> {data.user.position}</li>
-                        <li><strong>Campus:</strong> {data.user.locationCode}</li>
-                        <li><strong>Campus Location:</strong> {data.user.location || '(not provided)'}</li>
-                        <li><strong>Campus Email:</strong> {data.user.campusEmail}</li>
-                        <li><strong>Campus Phone:</strong> {data.user.campusPhone || '(not provided)'}</li>
+                        <li><strong>NetId:</strong> {data.netId}</li>
+                        <li><strong>Name:</strong> {data.name}</li>
+                        <li><strong>Position:</strong> {data.position}</li>
+                        <li><strong>Campus:</strong> {data.locationCode}</li>
+                        <li><strong>Campus Location:</strong> {data.location || '(not provided)'}</li>
+                        <li><strong>Campus Email:</strong> {data.campusEmail}</li>
+                        <li><strong>Campus Phone:</strong> {data.campusPhone || '(not provided)'}</li>
                     </List>
                     <h2>Roles</h2>
                     <List>
-                        {data.roles.map((r,i) => (<li key={i}><strong>{r.department}:</strong> {r.role}</li>))}
+                        {data.serviceOrgs.map((r,i) => (<li key={i}><strong>{r.name}:</strong></li>))}
                     </List>
                     <Form  label="Profile update" labelVisibility="screen-reader-only" method="GET" onSubmit={handleSubmit}>
                         <Field type="text" name="expertise" component={ix} label="Expertise" margin={{ bottom: 'md' }}/>        
