@@ -7,14 +7,8 @@ const headerCell = {
 }
 
 const Profile : React.SFC<IUser> = 
-(props) => {
-    const nameParts = props.name.split(',')
-    const firstName = nameParts[1]
-    const lastName = nameParts[0]
-
-    return (
+(props) => (
         <>
-            <div className="rvt-ts-36 rvt-m-top-lg">{firstName} {lastName}</div>
             <div className="rvt-ts-26">{props.position}</div>
 
             <h2 className="rvt-ts-20 rvt-m-top-lg">Organization</h2>
@@ -108,5 +102,5 @@ const Profile : React.SFC<IUser> =
                 </Col>
             </Row>
         </>
-)}
+)
 export default Profile

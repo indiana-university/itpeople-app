@@ -6,6 +6,7 @@ import * as Auth from './auth'
 import * as Profile from './profile'
 import * as SearchSimple from './searchSimple'
 import * as Unit from "./unit";
+import * as Units from "./units";
 
 // The top-level state object
 export interface IApplicationState {
@@ -13,6 +14,7 @@ export interface IApplicationState {
   profile: Profile.IState,
   searchSimple: SearchSimple.IState,
   unit: Unit.IState,
+  units: Units.IState,
   form: any
 }
 
@@ -21,7 +23,8 @@ export const initialState : IApplicationState = {
   form: {},
   profile: Profile.initialState,
   searchSimple: SearchSimple.initialState,
-  unit: Unit.initialState
+  unit: Unit.initialState,
+  units: Units.initialState
 }
 
 // Additional props for connected React components. This prop is passed by default with `connect()`
@@ -37,7 +40,8 @@ export const rootReducer = combineReducers<IApplicationState>({
   form: formReducer,
   profile: Profile.reducer,
   searchSimple: SearchSimple.reducer,
-  unit: Unit.reducer
+  unit: Unit.reducer,
+  units: Units.reducer
 })
 
 // Here we use `redux-saga` to trigger actions asynchronously. `redux-saga` uses something called a
@@ -48,6 +52,7 @@ export function* rootSaga() {
     fork(Auth.saga), 
     fork(Profile.saga), 
     fork(SearchSimple.saga), 
-    fork(Unit.saga)
+    fork(Unit.saga),
+    fork(Units.saga),
   ])
 }

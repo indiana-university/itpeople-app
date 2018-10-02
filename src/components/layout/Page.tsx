@@ -21,35 +21,15 @@ interface IPropsFromDispatch {
 const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest, signOutRequest, children }) => (
   <>
     <Header title="IT Pro Database">
-      { /* user &&
-          <HeaderNavigation>
-            <a href="#">Nav one</a>
-            <HeaderMenu label="Nav two">
-                <a href="#">Item one</a>
-                <a href="#">Item two</a>
-                <a href="#">Item three</a>
-                <a href="#">Item four</a>
-            </HeaderMenu>
-            <React.Fragment>
-              <label htmlFor="search" className="rvt-sr-only">Search</label>
-              <div className="rvt-input-group">
-                  <input className="rvt-input-group__input" type="text" id="search"/>
-                  <div className="rvt-input-group__append">
-                    <button type="submit" aria-label="Submit search" className="rvt-button rvtd-search__submit">
-                      <span className="rvt-sr-only">Submit search</span> 
-                      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                        <path fill="currentColor" d="M15.71,14.29,10.89,9.47a6,6,0,1,0-1.42,1.42l4.82,4.82a1,1,0,0,0,1.42,0A1,1,0,0,0,15.71,14.29ZM6,10a4,4,0,1,1,4-4A4,4,0,0,1,6,10Z"/>
-                      </svg>
-                    </button>
-                  </div>
-              </div>
-            </React.Fragment>
-          </HeaderNavigation>
-      */ }
       { user &&
-          <HeaderIdentity username={user.user_name} onLogout={signOutRequest}>
-            <a href="/me">Profile</a>
-          </HeaderIdentity>
+        <HeaderNavigation>
+          <a href="/units">Units</a>
+        </HeaderNavigation>
+      }
+      { user &&
+        <HeaderIdentity username={user.user_name} onLogout={signOutRequest}>
+          <a href="/me">Profile</a>
+        </HeaderIdentity>
       }
       { !user &&
         <HeaderNavigation>

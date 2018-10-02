@@ -17,6 +17,11 @@ interface IPropsFromDispatch {
     profileUpdateRequest: typeof profile.updateRequest
 }
 
+const prettyPrintName = (name: string) => {
+    const n = name.split(',')
+    return `${n[1]} ${n[0]}`
+}
+
 // tslint:disable-next-line:max-classes-per-file
 class ProfileContainer extends React.Component<profile.IState & IProfileProps & IPropsFromDispatch>{
 
@@ -34,11 +39,14 @@ class ProfileContainer extends React.Component<profile.IState & IProfileProps & 
     public render() {
         return (
             <>
-                <PageTitle>Profile</PageTitle>
                 { this.props.loading && 
                     <p>Loading profile...</p>}
                 { this.props.data && 
-                    <Profile  {...this.props.data} /> }
+                  <>
+                    <PageTitle>{prettyPrintName(this.props.data.name)}</PageTitle>
+                    <Profile  {...this.props.data} />
+                  </> 
+                }
                 { this.props.error && 
                     <p>{this.props.error}</p> }
             </>

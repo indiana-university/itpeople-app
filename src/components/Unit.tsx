@@ -5,8 +5,6 @@ import { IUnitFetchResult } from "../store/unit";
 const Unit: React.SFC<IUnitFetchResult> =
     (props) => (
         <>
-            <div className="rvt-ts-36 rvt-m-top-lg">{props.name}</div>
-
             <Row>
                 <Col lg={4}>
                     {props.admins &&

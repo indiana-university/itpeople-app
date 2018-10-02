@@ -2,36 +2,30 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IApplicationState } from '../store';
-import * as unit from '../store/unit';
+import * as units from '../store/units';
 import PageTitle from './layout/PageTitle';
-import Unit from './Unit';
-
-interface IUnitProps {
-    match: any
-}
+import Units from './Units';
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface IPropsFromDispatch {
-    fetchRequest: typeof unit.fetchRequest
+    fetchRequest: typeof units.fetchRequest
 }
 
 // tslint:disable-next-line:max-classes-per-file
-class UnitContainer extends React.Component<unit.IState & IUnitProps & IPropsFromDispatch>{
+class UnitsContainer extends React.Component<units.IState & IPropsFromDispatch>{
     public componentDidMount() {
-        console.log(this.props.match)
-        this.props.fetchRequest(this.props.match.params)
+        console.log("In UnitsContainer.componentDidMount")
+        this.props.fetchRequest()
     }
 
     public render() {
         return (
             <>
+                <PageTitle>Units</PageTitle>
                 { this.props.loading && 
-                    <p>Loading unit...</p>}
-                { this.props.data &&
-                    <>
-                        <PageTitle>{this.props.data.name}</PageTitle>
-                        <Unit {...this.props.data} />
-                    </> }
+                    <p>Loading...</p>}
+                { this.props.data &&  
+                    <Units {...this.props.data} /> }
                 { this.props.error && 
                     <p>{this.props.error}</p> }
             </>
@@ -42,13 +36,13 @@ class UnitContainer extends React.Component<unit.IState & IUnitProps & IPropsFro
 // Although if necessary, you can always include multiple contexts. Just make sure to
 // separate them from each other to prevent prop conflicts.
 const mapStateToProps = (state: IApplicationState) => ({
-  ...state.unit
+  ...state.units
 })
   
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
-  fetchRequest: (request: unit.IUnitFetchRequest) => dispatch(unit.fetchRequest(request))
+  fetchRequest: () => dispatch(units.fetchRequest())
 })
   
 // Now let's connect our component!
@@ -56,4 +50,4 @@ const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(UnitContainer)
+  )(UnitsContainer)

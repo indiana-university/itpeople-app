@@ -6,6 +6,7 @@ import ProfileContainer from './components/ProfileContainer';
 import Signin from './components/Signin';
 import SimpleSearchContainer from "./components/SimpleSearchContainer";
 import UnitContainer from "./components/UnitContainer";
+import UnitsContainer from "./components/UnitsContainer";
 
 const App : React.SFC = () => (
   <Page>
@@ -16,6 +17,7 @@ const App : React.SFC = () => (
       <Route path="/me" component={ProfileContainer} /> 
       <Route path="/search" component={SimpleSearchContainer} /> 
       <Route path="/units/:id" component={UnitContainer} /> 
+      <Route path="/units" component={UnitsContainer} /> 
     </Switch>
   </Page>
 )
