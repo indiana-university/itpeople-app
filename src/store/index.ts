@@ -5,12 +5,14 @@ import { all, fork } from 'redux-saga/effects'
 import * as Auth from './auth'
 import * as Profile from './profile'
 import * as SearchSimple from './searchSimple'
+import * as Unit from "./unit";
 
 // The top-level state object
 export interface IApplicationState {
   auth: Auth.IState,
   profile: Profile.IState,
-  searchSimple: SearchSimple.IState
+  searchSimple: SearchSimple.IState,
+  unit: Unit.IState,
   form: any
 }
 
@@ -18,7 +20,8 @@ export const initialState : IApplicationState = {
   auth: Auth.initialState,
   form: {},
   profile: Profile.initialState,
-  searchSimple: SearchSimple.initialState
+  searchSimple: SearchSimple.initialState,
+  unit: Unit.initialState
 }
 
 // Additional props for connected React components. This prop is passed by default with `connect()`
@@ -33,12 +36,18 @@ export const rootReducer = combineReducers<IApplicationState>({
   auth: Auth.reducer,
   form: formReducer,
   profile: Profile.reducer,
-  searchSimple: SearchSimple.reducer
+  searchSimple: SearchSimple.reducer,
+  unit: Unit.reducer
 })
 
 // Here we use `redux-saga` to trigger actions asynchronously. `redux-saga` uses something called a
 // "generator function", which you can read about here:
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
 export function* rootSaga() {
-  yield all([fork(Auth.saga), fork(Profile.saga), fork(SearchSimple.saga)])
+  yield all([
+    fork(Auth.saga), 
+    fork(Profile.saga), 
+    fork(SearchSimple.saga), 
+    fork(Unit.saga)
+  ])
 }

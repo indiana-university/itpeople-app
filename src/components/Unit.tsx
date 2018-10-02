@@ -1,43 +1,44 @@
 import * as React from 'react'
 import { Col, List, Panel, Row } from "rivet-react";
-import { ISimpleSearchResult } from "../store/searchSimple";
+import { IUnitFetchResult } from "../store/unit";
 
-const SimpleSearch: React.SFC<ISimpleSearchResult> =
+const Unit: React.SFC<IUnitFetchResult> =
     (props) => (
         <>
+            <div className="rvt-ts-36 rvt-m-top-lg">{props.name}</div>
+
             <Row>
                 <Col lg={4}>
-                    {props.users &&
+                    {props.admins &&
                         <>
-                            <h2 className="rvt-ts-20 rvt-m-top-lg">People</h2>
+                            <h2 className="rvt-ts-20 rvt-m-top-lg">Administrators</h2>
                             <Panel margin={{ top: "xs" }}>
                                 <List variant="plain">
-                                    {props.users.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
+                                    {props.admins.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
                                 </List>
                             </Panel>
                         </>
                     }
                 </Col>
                 <Col lg={4}>
-                    {props.units &&
+                    {props.itpros &&
                         <>
-                            <h2 className="rvt-ts-20 rvt-m-top-lg">Units</h2>
+                            <h2 className="rvt-ts-20 rvt-m-top-lg">IT Professionals</h2>
                             <Panel margin={{ top: "xs" }}>
                                 <List variant="plain">
-                                    {props.units.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
+                                    {props.itpros.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
                                 </List>
                             </Panel>
                         </>
                     }
                 </Col>
                 <Col lg={4}>
-
-                    {props.orgs &&
+                    {props.selfs && 
                         <>
-                            <h2 className="rvt-ts-20 rvt-m-top-lg">Departments</h2>
+                            <h2 className="rvt-ts-20 rvt-m-top-lg">Self-Supporting</h2>
                             <Panel margin={{ top: "xs" }}>
                                 <List variant="plain">
-                                    {props.orgs.map((r, i) => (<li key={i}><a href={`/orgs/${r.id}`}>{r.name}</a></li>))}
+                                    {props.selfs.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
                                 </List>
                             </Panel>
                         </>
@@ -47,4 +48,4 @@ const SimpleSearch: React.SFC<ISimpleSearchResult> =
             </Row>
         </>
     )
-export default SimpleSearch
+export default Unit

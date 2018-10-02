@@ -25,7 +25,7 @@ const Profile : React.SFC<IUser> =
                         { props.unit && 
                         <tr>
                             <td style={headerCell}><strong>Unit</strong></td>
-                            <td><a href={`/unit/${props.unit.id}`}>{props.unit.name}</a></td>
+                            <td><a href={`/units/${props.unit.id}`}>{props.unit.name}</a></td>
                         </tr> }
                         { props.role && 
                         <tr>
@@ -35,7 +35,7 @@ const Profile : React.SFC<IUser> =
                         { props.org && 
                         <tr>
                             <td style={headerCell}><strong>Department</strong></td>
-                            <td><a href={`/org/${props.org.id}`}>{props.org.name}</a></td>
+                            <td><a href={`/orgs/${props.org.id}`}>{props.org.name}</a></td>
                         </tr> }
                         { props.responsibilities && 
                         <tr>
