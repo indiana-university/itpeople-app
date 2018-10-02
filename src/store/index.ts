@@ -40,5 +40,5 @@ export const rootReducer = combineReducers<IApplicationState>({
 // "generator function", which you can read about here:
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
 export function* rootSaga() {
-  yield all([fork(Auth.saga), fork(Profile.saga)])
+  yield all([fork(Auth.saga), fork(Profile.saga), fork(SearchSimple.saga)])
 }

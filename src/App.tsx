@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Page from './components/layout/Page';
 import ProfileContainer from './components/ProfileContainer';
 import Signin from './components/Signin';
+import SimpleSearchContainer from "./components/SimpleSearchContainer";
 
 const App : React.SFC = () => (
   <Page>
@@ -12,6 +13,7 @@ const App : React.SFC = () => (
       <Route path="/signin" component={Signin} />
       <Route path="/profile/:id" component={ProfileContainer} /> 
       <Route path="/me" component={ProfileContainer} /> 
+      <Route path="/search" component={SimpleSearchContainer} /> 
     </Switch>
   </Page>
 )

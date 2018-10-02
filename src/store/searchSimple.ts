@@ -1,5 +1,5 @@
 import { IApiState } from './common'
-import { IUser } from './profile';
+import { IEntity } from './profile';
 
 //#region TYPES
 export const enum SearchActionTypes {
@@ -13,21 +13,21 @@ export interface ISimpleSearchRequest {
 }
 
 export interface ISimpleSearchResult extends ISimpleSearchRequest {
-    profiles: IUser[]
+    orgs: IEntity[], 
+    units: IEntity[],
+    users: IEntity[]
 }
 
 export interface IState extends IApiState<ISimpleSearchRequest, ISimpleSearchResult> { 
 }
 //#endregion
 
-
-
 //#region ACTIONS
 import { action } from 'typesafe-actions'
 
-const simpleSearchFetchRequest = (request: ISimpleSearchRequest) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_REQUEST, request)
-const simpleSearchFetchSuccess = (data: ISimpleSearchResult) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_SUCCESS, data)
-const simpleSearchFetchError = (error: string) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_ERROR, error)
+const fetchRequest = (request: ISimpleSearchRequest) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_REQUEST, request)
+const fetchSuccess = (data: ISimpleSearchResult) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_SUCCESS, data)
+const fetchError = (error: string) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_ERROR, error)
 //#endregion
 
 //#region REDUCER
@@ -56,24 +56,31 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 
 //#region SAGA
-import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
+import { all, fork, put, select, takeEvery } from 'redux-saga/effects'
 import { NotAuthorizedError } from '../components/errors';
 import { signInRequest } from './auth';
-import { callApiWithAuth } from './effects'
+// import { callApiWithAuth } from './effects'
 import { IApplicationState } from './index';
 
-const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
+// const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
+
+const mockResults: ISimpleSearchResult = {
+  orgs: [{id: 1, name: "BL-ARSD"}, {id: 2, name: "BL-DEMA"}],
+  term: "Foo",
+  units: [{id: 1, name: "College IT Office (CITO)"}, {id: 2, name: "UITS Client Services"}],
+  users: [{id: 1, name: "Knudsen, Ulrik"}, {id:2, name: "Hoerr, John"}, {id: 3, name: "Moberly, Brent"}]
+}
 
 function* handleFetch() {
   try {
-    const state = (yield select<IApplicationState>((s) => s.searchSimple.request)) as ISimpleSearchRequest
-    const path = `search?term=${state.term}`
-    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
+     const state = (yield select<IApplicationState>((s) => s.searchSimple.request)) as ISimpleSearchRequest
+    // const path = `search?term=${state.term}`
+    const response = {...mockResults, term: state.term, errors:""} //  yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
     console.log ("in try block", response)
     if (response.errors) {
-      yield put(simpleSearchFetchError(response.errors))
+      yield put(fetchError(response.errors))
     } else {
-      yield put(simpleSearchFetchSuccess(response))
+      yield put(fetchSuccess(response))
     }
   } catch (err) {
     console.log ("in catch block", err)
@@ -81,9 +88,9 @@ function* handleFetch() {
       yield put(signInRequest())
     }
     else if (err instanceof Error) {
-      yield put(simpleSearchFetchError(err.stack!))
+      yield put(fetchError(err.stack!))
     } else {
-      yield put(simpleSearchFetchError('An unknown error occured.'))
+      yield put(fetchError('An unknown error occured.'))
     }
   }
 }
@@ -104,9 +111,9 @@ function* saga() {
 // Instead of using default export, we use named exports. That way we can group these exports
 // inside the `index.js` folder.
 export { 
-  simpleSearchFetchRequest,
-  simpleSearchFetchError,
-  simpleSearchFetchSuccess,
+  fetchRequest,
+  fetchError,
+  fetchSuccess,
   reducer,
   initialState,
   saga

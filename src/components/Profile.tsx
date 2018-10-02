@@ -44,7 +44,7 @@ const Profile : React.SFC<IUser> =
                         </tr> }
                         { props.expertise && 
                         <tr>
-                            <td style={headerCell}><strong>Affinities</strong></td>
+                            <td style={headerCell}><strong>Affinities</strong></td>     
                             <td>{props.expertise}</td>
                         </tr> }
                     </tbody>
@@ -52,7 +52,7 @@ const Profile : React.SFC<IUser> =
             </Panel>
 
             <Row>
-            <Col lg={4}>
+                <Col lg={4}>
                     <h2 className="rvt-ts-20 rvt-m-top-lg">Location and Contact</h2>
                     <Panel margin={{top:"xs"}}>
                         <Table variant="plain" compact={true} >
