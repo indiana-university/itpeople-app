@@ -4,7 +4,8 @@ import { Dispatch } from 'redux'
 import { Container, Footer, Header, HeaderIdentity, HeaderNavigation } from 'rivet-react';
 import { IApplicationState  } from '../../store'
 import * as Auth from '../../store/auth'
-// import { simpleSearchFetchRequest } from '../../store/search';
+import * as Search from '../../store/searchSimple'
+import SearchForm from './SearchForm';
 
 export interface IPageProps {
     children?: React.ReactNode
@@ -15,16 +16,17 @@ export interface IPageProps {
 interface IPropsFromDispatch {
   signInRequest: typeof Auth.signInRequest
   signOutRequest: typeof Auth.signOutRequest
-  // search: typeof simpleSearchFetchRequest
+  submitSearch: typeof Search.submit
 }
 
-const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest, signOutRequest, children }) => (
+const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest, signOutRequest, submitSearch, children }) => (
   <>
     <Header title="IT Pro Database">
       { user &&
         <HeaderNavigation>
           <a href="/units">Units</a>
           <a href="/orgs">Departments</a>
+          <SearchForm onSubmit={submitSearch} />
         </HeaderNavigation>
       }
       { user &&
@@ -59,7 +61,7 @@ const mapStateToProps = ({ auth }: IApplicationState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
   signInRequest: () => dispatch(Auth.signInRequest()),
   signOutRequest: () => dispatch(Auth.signOutRequest()),
-  // simpleSearch: () => dispatch(simpleSearchFetchRequest())
+  submitSearch: () => dispatch(Search.submit())
 })
 
 // Now let's connect our component!

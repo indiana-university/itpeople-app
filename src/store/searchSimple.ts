@@ -3,6 +3,7 @@ import { IEntity } from './profile';
 
 //#region TYPES
 export const enum SearchActionTypes {
+    SEARCH_SIMPLE_SUBMIT = '@@search/SEARCH_SIMPLE_SUBMIT',
     SEARCH_SIMPLE_FETCH_REQUEST = '@@search/SEARCH_SIMPLE_FETCH_REQUEST',
     SEARCH_SIMPLE_FETCH_SUCCESS = '@@search/SEARCH_SIMPLE_FETCH_SUCCESS',
     SEARCH_SIMPLE_FETCH_ERROR = '@@search/SEARCH_SIMPLE_FETCH_ERROR',
@@ -25,6 +26,7 @@ export interface IState extends IApiState<ISimpleSearchRequest, ISimpleSearchRes
 //#region ACTIONS
 import { action } from 'typesafe-actions'
 
+const submit = () => action(SearchActionTypes.SEARCH_SIMPLE_SUBMIT)
 const fetchRequest = (request: ISimpleSearchRequest) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_REQUEST, request)
 const fetchSuccess = (data: ISimpleSearchResult) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_SUCCESS, data)
 const fetchError = (error: string) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_ERROR, error)
@@ -56,6 +58,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 
 //#region SAGA
+import { push } from 'react-router-redux';
 import { all, fork, put, select, takeEvery } from 'redux-saga/effects'
 import { NotAuthorizedError } from '../components/errors';
 import { signInRequest } from './auth';
@@ -95,15 +98,26 @@ function* handleFetch() {
   }
 }
 
+function* handleSubmit() {
+  const form = (yield select<any>((s) => s.form.search.values)) as ISimpleSearchRequest
+  if (form.term) {
+    yield put(push(`/search?term=${form.term}`))
+  }
+}
+
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchSimpleSearchFetch() {
   yield takeEvery(SearchActionTypes.SEARCH_SIMPLE_FETCH_REQUEST, handleFetch)
 }
 
+function* watchSimpleSearchSubmit() {
+  yield takeEvery(SearchActionTypes.SEARCH_SIMPLE_SUBMIT, handleSubmit)
+}
+
 // We can also use `fork()` here to split our saga into multiple watchers.
 function* saga() {
-  yield all([fork(watchSimpleSearchFetch)])
+  yield all([fork(watchSimpleSearchFetch), fork(watchSimpleSearchSubmit)])
 }
 //#endregion
 
@@ -111,6 +125,7 @@ function* saga() {
 // Instead of using default export, we use named exports. That way we can group these exports
 // inside the `index.js` folder.
 export { 
+  submit,
   fetchRequest,
   fetchError,
   fetchSuccess,
