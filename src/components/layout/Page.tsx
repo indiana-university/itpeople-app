@@ -24,6 +24,7 @@ const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest,
       { user &&
         <HeaderNavigation>
           <a href="/units">Units</a>
+          <a href="/orgs">Departments</a>
         </HeaderNavigation>
       }
       { user &&

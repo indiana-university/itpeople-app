@@ -3,32 +3,30 @@ import { IEntity } from './profile';
 
 //#region TYPES
 export const enum UnitActionTypes {
-    UNIT_FETCH_REQUEST = '@@unit/FETCH_REQUEST',
-    UNIT_FETCH_SUCCESS = '@@unit/FETCH_SUCCESS',
-    UNIT_FETCH_ERROR = '@@unit/FETCH_ERROR',
+    ORG_FETCH_REQUEST = '@@org/FETCH_REQUEST',
+    ORG_FETCH_SUCCESS = '@@org/FETCH_SUCCESS',
+    ORG_FETCH_ERROR = '@@org/FETCH_ERROR',
 }
 
-export interface IUnitFetchRequest {
+export interface IFetchRequest {
     id: string
 }
 
-export interface IUnitFetchResult extends IEntity {
-    admins: IEntity[], 
-    itpros: IEntity[],
-    selfs: IEntity[],
-    servicedOrgs: IOrgEntity[]
+export interface IFetchResult extends IOrgEntity {
+  units: IEntity[], 
+  servicers: IEntity[],
 }
 
-export interface IState extends IApiState<IUnitFetchRequest, IUnitFetchResult> { 
+export interface IState extends IApiState<IFetchRequest, IFetchResult> { 
 }
 //#endregion
 
 //#region ACTIONS
 import { action } from 'typesafe-actions'
 
-const fetchRequest = (request: IUnitFetchRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request)
-const fetchSuccess = (data: IUnitFetchResult) => action(UnitActionTypes.UNIT_FETCH_SUCCESS, data)
-const fetchError = (error: string) => action(UnitActionTypes.UNIT_FETCH_ERROR, error)
+const fetchRequest = (request: IFetchRequest) => action(UnitActionTypes.ORG_FETCH_REQUEST, request)
+const fetchSuccess = (data: IFetchResult) => action(UnitActionTypes.ORG_FETCH_SUCCESS, data)
+const fetchError = (error: string) => action(UnitActionTypes.ORG_FETCH_ERROR, error)
 //#endregion
 
 //#region REDUCER
@@ -47,9 +45,9 @@ const initialState: IState = {
 // everything will remain type-safe.
 const reducer: Reducer<IState> = (state = initialState, act) => {
   switch (act.type) {
-    case UnitActionTypes.UNIT_FETCH_REQUEST: return FetchRequestReducer(state, act)
-    case UnitActionTypes.UNIT_FETCH_SUCCESS: return FetchSuccessReducer(state, act)
-    case UnitActionTypes.UNIT_FETCH_ERROR: return FetchErrorReducer(state, act)
+    case UnitActionTypes.ORG_FETCH_REQUEST: return FetchRequestReducer(state, act)
+    case UnitActionTypes.ORG_FETCH_SUCCESS: return FetchSuccessReducer(state, act)
+    case UnitActionTypes.ORG_FETCH_ERROR: return FetchErrorReducer(state, act)
     default: return state
   }
 }
@@ -66,21 +64,17 @@ import { IOrgEntity } from './orgs';
 
 // const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
-const mockResults: IUnitFetchResult = {
-  admins: [{id: 1, name: "Knudsen, Ulrik"}],
+const mockResults: IFetchResult = {
   id: 1,
-  itpros: [{id:2, name: "Schmoe, Joe"}, {id: 3, name: "Boberts, Bob"}],
-  name: "College IT Office (CITO)",
-  selfs: [{id:3, name: "Emeritus, Faculty"}],
-  servicedOrgs:  [
-    {id: 1, name: "BL-ARSD", longName: "Arts and Sciences Deans Office"}, 
-    {id: 2, name: "BL-DEMA", longName: "Whatever DEMA stands for"},
-  ]
+  longName: "Vice President for IT",
+  name: "UA-VPIT",
+  servicers: [{id:7, name: "Executive IT Services (EITS)"}],
+  units: [{id: 1, name: "Client Services"}, {id: 2, name: "Client Support"}, {id: 3, name: "Teaching and Learning Technologies"}],
 }
 
 function* handleFetch() {
   try {
-     const state = (yield select<IApplicationState>((s) => s.unit.request)) as IUnitFetchRequest
+     const state = (yield select<IApplicationState>((s) => s.org.request)) as IFetchRequest
     // const path = `search?term=${state.term}`
     const response = {...mockResults, id: Number(state.id), errors:""} //  yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
     console.log ("in try block", response)
@@ -104,13 +98,13 @@ function* handleFetch() {
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
-function* watchUnitFetch() {
-  yield takeEvery(UnitActionTypes.UNIT_FETCH_REQUEST, handleFetch)
+function* watchOrgFetch() {
+  yield takeEvery(UnitActionTypes.ORG_FETCH_REQUEST, handleFetch)
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.
 function* saga() {
-  yield all([fork(watchUnitFetch)])
+  yield all([fork(watchOrgFetch)])
 }
 //#endregion
 

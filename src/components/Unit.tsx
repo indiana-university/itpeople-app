@@ -42,7 +42,20 @@ const Unit: React.SFC<IUnitFetchResult> =
                         </>
                     }
                 </Col>
-
+            </Row>
+            <Row>
+                <Col lg={4}>
+                    {props.servicedOrgs && 
+                        <>
+                            <h2 className="rvt-ts-20 rvt-m-top-lg">Supported Departments</h2>
+                            <Panel margin={{ top: "xs" }}>
+                                <List variant="plain">
+                                    {props.servicedOrgs.map((r, i) => (<li key={i}><a href={`/orgs/${r.id}`}>{r.name}</a></li>))}
+                                </List>
+                            </Panel>
+                        </>
+                    }
+                </Col>
             </Row>
         </>
     )

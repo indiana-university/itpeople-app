@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Home from './components/Home';
 import Page from './components/layout/Page';
+import OrgContainer from './components/OrgContainer';
+import OrgsContainer from './components/OrgsContainer';
 import ProfileContainer from './components/ProfileContainer';
 import Signin from './components/Signin';
 import SimpleSearchContainer from "./components/SimpleSearchContainer";
@@ -16,6 +18,8 @@ const App : React.SFC = () => (
       <Route path="/profiles/:id" component={ProfileContainer} /> 
       <Route path="/me" component={ProfileContainer} /> 
       <Route path="/search" component={SimpleSearchContainer} /> 
+      <Route path="/orgs/:id" component={OrgContainer} /> 
+      <Route path="/orgs" component={OrgsContainer} /> 
       <Route path="/units/:id" component={UnitContainer} /> 
       <Route path="/units" component={UnitsContainer} /> 
     </Switch>

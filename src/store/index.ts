@@ -3,6 +3,8 @@ import { reducer as formReducer } from 'redux-form'
 import { all, fork } from 'redux-saga/effects'
 
 import * as Auth from './auth'
+import * as Org from "./org";
+import * as Orgs from "./orgs";
 import * as Profile from './profile'
 import * as SearchSimple from './searchSimple'
 import * as Unit from "./unit";
@@ -15,16 +17,20 @@ export interface IApplicationState {
   searchSimple: SearchSimple.IState,
   unit: Unit.IState,
   units: Units.IState,
+  org: Org.IState,
+  orgs: Orgs.IState,
   form: any
 }
 
 export const initialState : IApplicationState = {
   auth: Auth.initialState,
   form: {},
+  org: Org.initialState,
+  orgs: Orgs.initialState,
   profile: Profile.initialState,
   searchSimple: SearchSimple.initialState,
   unit: Unit.initialState,
-  units: Units.initialState
+  units: Units.initialState,
 }
 
 // Additional props for connected React components. This prop is passed by default with `connect()`
@@ -38,6 +44,8 @@ export interface IConnectedReduxProps<A extends Action = AnyAction> {
 export const rootReducer = combineReducers<IApplicationState>({
   auth: Auth.reducer,
   form: formReducer,
+  org: Org.reducer,
+  orgs: Orgs.reducer,
   profile: Profile.reducer,
   searchSimple: SearchSimple.reducer,
   unit: Unit.reducer,
@@ -50,6 +58,8 @@ export const rootReducer = combineReducers<IApplicationState>({
 export function* rootSaga() {
   yield all([
     fork(Auth.saga), 
+    fork(Org.saga),
+    fork(Orgs.saga), 
     fork(Profile.saga), 
     fork(SearchSimple.saga), 
     fork(Unit.saga),
