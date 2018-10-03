@@ -12,6 +12,10 @@ export interface IPageProps {
     user?: Auth.IAuthUser
 }
 
+const fixNavLinkAlignment = {
+  paddingTop: 10
+}
+
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface IPropsFromDispatch {
   signInRequest: typeof Auth.signInRequest
@@ -24,8 +28,8 @@ const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest,
     <Header title="IT Pro Database">
       { user &&
         <HeaderNavigation>
-          <a href="/units">Units</a>
-          <a href="/orgs">Departments</a>
+          <a style={fixNavLinkAlignment} href="/units">Units</a>
+          <a style={fixNavLinkAlignment} href="/orgs">Departments</a>
           <SearchForm onSubmit={submitSearch} />
         </HeaderNavigation>
       }
