@@ -32,12 +32,12 @@ const SimpleSearch: React.SFC<ISimpleSearchResult> =
                 </Col>
                 <Col lg={4}>
 
-                    {props.orgs &&
+                    {props.departments &&
                         <>
                             <h2 className="rvt-ts-20 rvt-m-top-lg">Departments</h2>
                             <Panel margin={{ top: "xs" }}>
                                 <List variant="plain">
-                                    {props.orgs.map((r, i) => (<li key={i}><a href={`/orgs/${r.id}`}>{r.name}</a></li>))}
+                                    {props.departments.map((r, i) => (<li key={i}><a href={`/departments/${r.id}`}>{r.name}{r.description && ` (${r.description})`}</a></li>))}
                                 </List>
                             </Panel>
                         </>

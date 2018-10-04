@@ -8,12 +8,8 @@ export const enum UnitsActionTypes {
     ORGS_FETCH_ERROR = '@@orgs/FETCH_ERROR',
 }
 
-export interface IOrgEntity extends IEntity {
-  longName: string
-}
-
 export interface IFetchResult {
-    orgs: IOrgEntity[]
+    orgs: IEntity[]
 }
 
 export interface IState extends IApiState<{}, IFetchResult> { 
@@ -63,9 +59,9 @@ import { signInRequest } from './auth';
 
 const mockResults: IFetchResult = {
   orgs: [
-    {id: 1, name: "BL-ARSD", longName: "Arts and Sciences Deans Office"}, 
-    {id: 2, name: "BL-DEMA", longName: "Whatever DEMA stands for"},
-    {id: 3, name: "UA-VPIT", longName: "Vice President for IT Services"}
+    {id: 1, name: "BL-ARSD", description: "Arts and Sciences Deans Office"}, 
+    {id: 2, name: "BL-DEMA", description: "Whatever DEMA stands for"},
+    {id: 3, name: "UA-VPIT", description: "Vice President for IT Services"}
   ]
 }
 

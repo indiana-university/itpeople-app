@@ -29,7 +29,7 @@ class UnitContainer extends React.Component<org.IState & IProps & IPropsFromDisp
                     <p>Loading department...</p>}
                 { this.props.data &&
                     <>
-                        <PageTitle>{`${this.props.data.longName} (${this.props.data.name})`}</PageTitle>
+                        <PageTitle>{`${this.props.data.description} (${this.props.data.name})`}</PageTitle>
                         <Org {...this.props.data} />
                     </> 
                 }

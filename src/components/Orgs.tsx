@@ -12,7 +12,7 @@ const Orgs: React.SFC<IFetchResult> =
                         {props.orgs.map((r, i) => (
                             <tr key={i}>
                                 <td style={{width:100}}><a href={`/orgs/${r.id}`}>{r.name}</a></td>
-                                <td>{r.longName}</td>
+                                <td>{r.description}</td>
                             </tr>
                         ))}
                     </tbody>

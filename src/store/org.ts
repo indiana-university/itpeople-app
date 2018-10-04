@@ -12,7 +12,7 @@ export interface IFetchRequest {
     id: string
 }
 
-export interface IFetchResult extends IOrgEntity {
+export interface IFetchResult extends IEntity {
   units: IEntity[], 
   servicers: IEntity[],
 }
@@ -60,13 +60,12 @@ import { NotAuthorizedError } from '../components/errors';
 import { signInRequest } from './auth';
 // import { callApiWithAuth } from './effects'
 import { IApplicationState } from './index';
-import { IOrgEntity } from './orgs';
 
 // const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
 const mockResults: IFetchResult = {
   id: 1,
-  longName: "Vice President for IT",
+  description: "Vice President for IT",
   name: "UA-VPIT",
   servicers: [{id:7, name: "Executive IT Services (EITS)"}],
   units: [{id: 1, name: "Client Services"}, {id: 2, name: "Client Support"}, {id: 3, name: "Teaching and Learning Technologies"}],

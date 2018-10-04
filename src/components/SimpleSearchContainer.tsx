@@ -20,11 +20,26 @@ interface IPropsFromDispatch {
     searchRequest: typeof searchSimple.fetchRequest
 }
 
+interface ISimpleSearchContainerProps extends searchSimple.IState, ISearchProps, IPropsFromDispatch {
+
+}
+
+const executeSearch = (props: ISimpleSearchContainerProps) => {
+    const queryParam = queryString.parse(props.location.search)
+    props.searchRequest({ term: queryParam.term })   
+}
+
 // tslint:disable-next-line:max-classes-per-file
-class SimpleSearchContainer extends React.Component<searchSimple.IState & ISearchProps & IPropsFromDispatch>{
+class SimpleSearchContainer extends React.Component<ISimpleSearchContainerProps>{
+    
     public componentDidMount() {
-        const queryParam = queryString.parse(this.props.location.search)
-        this.props.searchRequest({ term: queryParam.term })
+        executeSearch(this.props)
+    }
+
+    public componentWillReceiveProps(nextProps: ISimpleSearchContainerProps) {
+        if (!this.props.location || this.props.location !== nextProps.location) {            
+            executeSearch(nextProps)
+        }
     }
 
     public render() {

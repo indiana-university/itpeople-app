@@ -14,43 +14,46 @@ export interface IFetchRequest {
     id: number,
 }
 
-export interface IUpdateRequest {
-    expertise: string,
-    responsibilities: string
-}
-
 export interface IEntity {
   id: number,
-  name: string
+  name: string,
+  description?: string
+}
+
+export interface IUpdateRequest {
+  expertise: string,
+  responsibilities: string
 }
 
 export interface IUser extends IEntity, IUpdateRequest {
-    netId: string,
-    position: string,
-    location: string,
-    locationCode: string,
-    campusPhone: string,
-    campusEmail: string,
+  netId: string,
+  position: string,
+  location: string,
+  campusPhone: string,
+  campusEmail: string,
+  campus: string,
+  role: string,
+}
+
+export interface IProfile {
+    user: IUser,
     unit: IEntity,
-    campus: string,
-    role: string,
-    org: IEntity,
-    serviceOrgs: IEntity [],
+    department: IEntity,
+    supportedDepartments: IEntity [],
     toolsAccess: IEntity []
 }
 
-
-export interface IState extends IApiState<IFetchRequest, IUser> { 
+export interface IState extends IApiState<IFetchRequest, IProfile> { 
 }
 //#endregion
 
 //#region ACTIONS
 import { action } from 'typesafe-actions'
 const fetchRequest = (request: IFetchRequest) => action(ProfileActionTypes.PROFILE_FETCH_REQUEST, request)
-const fetchSuccess = (data: IUser) => action(ProfileActionTypes.PROFILE_FETCH_SUCCESS, data)
+const fetchSuccess = (data: IProfile) => action(ProfileActionTypes.PROFILE_FETCH_SUCCESS, data)
 const fetchError = (error: string) => action(ProfileActionTypes.PROFILE_FETCH_ERROR, error)
 const updateRequest = (request: IFetchRequest) => action(ProfileActionTypes.PROFILE_UPDATE_REQUEST, request)
-const updateSuccess = (data: IUser) => action(ProfileActionTypes.PROFILE_UPDATE_SUCCESS, data)
+const updateSuccess = (data: IProfile) => action(ProfileActionTypes.PROFILE_UPDATE_SUCCESS, data)
 const updateError = (error: string) => action(ProfileActionTypes.PROFILE_UPDATE_ERROR, error)
 //#endregion
 
@@ -90,35 +93,34 @@ import { IApplicationState } from './index'
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
-const ulrikDetails: IUser = {
-  campus: "IUBLA",
-  campusEmail: "ulrik@iu.edu",
-  campusPhone: "812-111-11111",
-  expertise: "Lots of stuff, I swear",
-  id: 1,
-  location: "UITS CyberInfrastructure Building",
-  locationCode: "BL",
-  name: "Knudsen, Ulrik",
-  netId: 'ulrik',
-  org: {
-    id: 1,
-    name: "BL-ARSD"
-  },
-  position: "Chief Technology Officer",
-  responsibilities: "IT Director",
-  role: "ADM",
-  serviceOrgs: [{id: 1, name: "BL-ARSD"}, {id: 2, name: "BL-DEMA"}],
-  toolsAccess: [{id: 1, name: "IT PRO Website"}, {id: 2, name: "Account Management"}],
-  unit: {id: 1, name: "College IT Office (CITO)"}
-}
+// const ulrikDetails: IProfile = {
+//   user: {
+//     campus: "IUBLA",
+//     campusEmail: "ulrik@iu.edu",
+//     campusPhone: "812-111-11111",
+//     expertise: "Lots of stuff, I swear",
+//     id: 1,
+//     location: "UITS CyberInfrastructure Building",
+//     name: "Knudsen, Ulrik",
+//     netId: 'ulrik',
+//     position: "Chief Technology Officer",
+//     responsibilities: "IT Director",
+//     role: "ADM",
+//   },
+//   department: {id: 1, name: "BL-ARSD" },
+//   supportedDepartments: [{id: 1, name: "BL-ARSD"}, {id: 2, name: "BL-DEMA"}],
+//   toolsAccess: [{id: 1, name: "IT PRO Website"}, {id: 2, name: "Account Management"}],
+//   unit: {id: 1, name: "College IT Office (CITO)"}
+// }
 
 
 
 function* handleFetch() {
   try {
-    // const state = (yield select<IApplicationState>((s) => s.profile.request)) as IFetchRequest
-    // const path = state.id === 0 ? "/me" : `users/${state.id}`
-    const response = {...ulrikDetails, errors: ""} // yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
+    const state = (yield select<IApplicationState>((s) => s.profile.request)) as IFetchRequest
+    console.log("state", state)
+    const path = state.id === 0 ? "/me" : `/users/${state.id}`
+    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
     console.log ("in try block", response)
     if (response.errors) {
       yield put(fetchError(response.errors))

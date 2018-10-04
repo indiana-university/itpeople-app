@@ -43,7 +43,7 @@ class ProfileContainer extends React.Component<profile.IState & IProfileProps & 
                     <p>Loading profile...</p>}
                 { this.props.data && 
                   <>
-                    <PageTitle>{prettyPrintName(this.props.data.name)}</PageTitle>
+                    <PageTitle>{prettyPrintName(this.props.data.user.name)}</PageTitle>
                     <Profile  {...this.props.data} />
                   </> 
                 }

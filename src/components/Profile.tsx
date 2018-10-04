@@ -1,15 +1,15 @@
 import * as React from 'react'
 import { Col, List, Panel, Row, Table } from "rivet-react";
-import { IUser } from "../store/profile";
+import { IProfile } from "../store/profile";
 
 const headerCell = {
     "width": 175,
 }
 
-const Profile : React.SFC<IUser> = 
+const Profile : React.SFC<IProfile> = 
 (props) => (
         <>
-            <div className="rvt-ts-26">{props.position}</div>
+            <div className="rvt-ts-26">{props.user.position}</div>
 
             <h2 className="rvt-ts-20 rvt-m-top-lg">Organization</h2>
             <Panel margin={{top:"xs"}}>
@@ -21,25 +21,25 @@ const Profile : React.SFC<IUser> =
                             <td style={headerCell}><strong>Unit</strong></td>
                             <td><a href={`/units/${props.unit.id}`}>{props.unit.name}</a></td>
                         </tr> }
-                        { props.role && 
+                        { props.user.role && 
                         <tr>
                             <td style={headerCell}><strong>Role</strong></td>
-                            <td>{props.role}</td>
+                            <td>{props.user.role}</td>
                         </tr> }
-                        { props.org && 
+                        { props.department && 
                         <tr>
                             <td style={headerCell}><strong>Department</strong></td>
-                            <td><a href={`/orgs/${props.org.id}`}>{props.org.name}</a></td>
+                            <td><a href={`/orgs/${props.department.id}`}>{props.department.name}</a></td>
                         </tr> }
-                        { props.responsibilities && 
+                        { props.user.responsibilities && 
                         <tr>
                             <td style={headerCell}><strong>Key Responsibilities</strong></td>
-                            <td>{props.responsibilities}</td>
+                            <td>{props.user.responsibilities}</td>
                         </tr> }
-                        { props.expertise && 
+                        { props.user.expertise && 
                         <tr>
                             <td style={headerCell}><strong>Affinities</strong></td>     
-                            <td>{props.expertise}</td>
+                            <td>{props.user.expertise}</td>
                         </tr> }
                     </tbody>
                 </Table>
@@ -52,24 +52,24 @@ const Profile : React.SFC<IUser> =
                         <Table variant="plain" compact={true} >
                             <caption className="sr-only">Location and Contact Information</caption>
                             <tbody>
-                                { props.campus && 
+                                { props.user.campus && 
                                 <tr>
                                     <td style={headerCell}><strong>Campus</strong></td>
-                                    <td>{props.campus}</td>
+                                    <td>{props.user.campus}</td>
                                 </tr> }
                                 <tr>
                                     <td style={headerCell}><strong>Campus Email</strong></td>
-                                    <td><a href={`mailto:${props.campusEmail}`}>{props.campusEmail}</a></td>
+                                    <td><a href={`mailto:${props.user.campusEmail}`}>{props.user.campusEmail}</a></td>
                                 </tr>
-                                { props.campusPhone && 
+                                { props.user.campusPhone && 
                                 <tr>
                                     <td style={headerCell}><strong>Campus Phone</strong></td>
-                                    <td>{props.campusPhone}</td>
+                                    <td>{props.user.campusPhone}</td>
                                 </tr> }
-                                { props.location && 
+                                { props.user.location && 
                                 <tr>
                                     <td style={headerCell}><strong>Location</strong></td>
-                                    <td>{props.location}</td>
+                                    <td>{props.user.location}</td>
                                 </tr> }
                             </tbody>
                         </Table>
@@ -77,12 +77,12 @@ const Profile : React.SFC<IUser> =
                 </Col>
                 <Col lg={4}>
 
-                    { props.serviceOrgs && 
+                    { props.supportedDepartments && 
                         <>
                         <h2 className="rvt-ts-20 rvt-m-top-lg">Serviced Departments</h2>
                         <Panel margin={{top:"xs"}}>
                             <List variant="plain">
-                                {props.serviceOrgs.map((r,i) => (<li key={i}><a href={`/orgs/${r.id}`}>{r.name}</a></li>) )}
+                                {props.supportedDepartments.map((r,i) => (<li key={i}><a href={`/orgs/${r.id}`}>{r.name}</a></li>) )}
                             </List>
                         </Panel>
                         </> 

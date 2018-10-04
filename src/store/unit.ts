@@ -16,7 +16,7 @@ export interface IUnitFetchResult extends IEntity {
     admins: IEntity[], 
     itpros: IEntity[],
     selfs: IEntity[],
-    servicedOrgs: IOrgEntity[]
+    servicedOrgs: IEntity[]
 }
 
 export interface IState extends IApiState<IUnitFetchRequest, IUnitFetchResult> { 
@@ -62,7 +62,6 @@ import { NotAuthorizedError } from '../components/errors';
 import { signInRequest } from './auth';
 // import { callApiWithAuth } from './effects'
 import { IApplicationState } from './index';
-import { IOrgEntity } from './orgs';
 
 // const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
@@ -73,8 +72,8 @@ const mockResults: IUnitFetchResult = {
   name: "College IT Office (CITO)",
   selfs: [{id:3, name: "Emeritus, Faculty"}],
   servicedOrgs:  [
-    {id: 1, name: "BL-ARSD", longName: "Arts and Sciences Deans Office"}, 
-    {id: 2, name: "BL-DEMA", longName: "Whatever DEMA stands for"},
+    {id: 1, name: "BL-ARSD", description: "Arts and Sciences Deans Office"}, 
+    {id: 2, name: "BL-DEMA", description: "Whatever DEMA stands for"},
   ]
 }
 

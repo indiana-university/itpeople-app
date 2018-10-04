@@ -18,8 +18,8 @@ const App : React.SFC = () => (
       <Route path="/profiles/:id" component={ProfileContainer} /> 
       <Route path="/me" component={ProfileContainer} /> 
       <Route path="/search" component={SimpleSearchContainer} /> 
-      <Route path="/orgs/:id" component={OrgContainer} /> 
-      <Route path="/orgs" component={OrgsContainer} /> 
+      <Route path="/departments/:id" component={OrgContainer} /> 
+      <Route path="/departments" component={OrgsContainer} /> 
       <Route path="/units/:id" component={UnitContainer} /> 
       <Route path="/units" component={UnitsContainer} /> 
     </Switch>

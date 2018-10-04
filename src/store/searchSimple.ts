@@ -14,7 +14,7 @@ export interface ISimpleSearchRequest {
 }
 
 export interface ISimpleSearchResult extends ISimpleSearchRequest {
-    orgs: IEntity[], 
+    departments: IEntity[], 
     units: IEntity[],
     users: IEntity[]
 }
@@ -59,34 +59,24 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 import { push } from 'react-router-redux';
-import { all, fork, put, select, takeEvery } from 'redux-saga/effects'
+import { all, call, fork, put, select, takeEvery,  } from 'redux-saga/effects'
 import { NotAuthorizedError } from '../components/errors';
 import { signInRequest } from './auth';
-// import { callApiWithAuth } from './effects'
+import { callApiWithAuth } from './effects'
 import { IApplicationState } from './index';
 
-// const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
-
-const mockResults: ISimpleSearchResult = {
-  orgs: [{id: 1, name: "BL-ARSD"}, {id: 2, name: "BL-DEMA"}],
-  term: "Foo",
-  units: [{id: 1, name: "College IT Office (CITO)"}, {id: 2, name: "UITS Client Services"}],
-  users: [{id: 1, name: "Knudsen, Ulrik"}, {id:2, name: "Hoerr, John"}, {id: 3, name: "Moberly, Brent"}]
-}
+const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
 function* handleFetch() {
   try {
-     const state = (yield select<IApplicationState>((s) => s.searchSimple.request)) as ISimpleSearchRequest
-    // const path = `search?term=${state.term}`
-    const response = {...mockResults, term: state.term, errors:""} //  yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
-    console.log ("in try block", response)
+    const state = (yield select<IApplicationState>((s) => s.searchSimple.request)) as ISimpleSearchRequest
+    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, `/search?term=${state.term}`)
     if (response.errors) {
       yield put(fetchError(response.errors))
     } else {
       yield put(fetchSuccess(response))
     }
   } catch (err) {
-    console.log ("in catch block", err)
     if (err instanceof NotAuthorizedError){
       yield put(signInRequest())
     }
