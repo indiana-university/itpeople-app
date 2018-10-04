@@ -29,7 +29,7 @@ class UnitContainer extends React.Component<unit.IState & IUnitProps & IPropsFro
                     <p>Loading unit...</p>}
                 { this.props.data &&
                     <>
-                        <PageTitle>{this.props.data.name}</PageTitle>
+                        <PageTitle>{this.props.data.unit.name}</PageTitle>
                         <Unit {...this.props.data} />
                     </> }
                 { this.props.error && 
@@ -48,7 +48,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
-  fetchRequest: (request: unit.IUnitFetchRequest) => dispatch(unit.fetchRequest(request))
+  fetchRequest: (request: unit.IFetchRequest) => dispatch(unit.fetchRequest(request))
 })
   
 // Now let's connect our component!

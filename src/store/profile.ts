@@ -93,27 +93,6 @@ import { IApplicationState } from './index'
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
-// const ulrikDetails: IProfile = {
-//   user: {
-//     campus: "IUBLA",
-//     campusEmail: "ulrik@iu.edu",
-//     campusPhone: "812-111-11111",
-//     expertise: "Lots of stuff, I swear",
-//     id: 1,
-//     location: "UITS CyberInfrastructure Building",
-//     name: "Knudsen, Ulrik",
-//     netId: 'ulrik',
-//     position: "Chief Technology Officer",
-//     responsibilities: "IT Director",
-//     role: "ADM",
-//   },
-//   department: {id: 1, name: "BL-ARSD" },
-//   supportedDepartments: [{id: 1, name: "BL-ARSD"}, {id: 2, name: "BL-DEMA"}],
-//   toolsAccess: [{id: 1, name: "IT PRO Website"}, {id: 2, name: "Account Management"}],
-//   unit: {id: 1, name: "College IT Office (CITO)"}
-// }
-
-
 
 function* handleFetch() {
   try {

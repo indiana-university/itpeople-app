@@ -1,9 +1,11 @@
 import * as React from 'react'
 import { List, Panel } from "rivet-react";
-import { IFetchResult } from "../store/units";
+import { IFetchResult } from '../store/units';
 
 const Units: React.SFC<IFetchResult> =
-    (props) => (
+    (props) => {
+        console.log("props",props)
+        return (
         <>
             <Panel margin={{ top: "xs" }}>
                 <List variant="plain">
@@ -11,5 +13,5 @@ const Units: React.SFC<IFetchResult> =
                 </List>
             </Panel>
         </>
-    )
+    )}
 export default Units

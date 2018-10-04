@@ -8,25 +8,26 @@ export const enum UnitActionTypes {
     UNIT_FETCH_ERROR = '@@unit/FETCH_ERROR',
 }
 
-export interface IUnitFetchRequest {
+export interface IFetchRequest {
     id: string
 }
 
-export interface IUnitFetchResult extends IEntity {
+export interface IUnitFetchResult {
+    unit: IEntity
     admins: IEntity[], 
-    itpros: IEntity[],
+    itPros: IEntity[],
     selfs: IEntity[],
-    servicedOrgs: IEntity[]
+    supportedDepartments: IEntity[]
 }
 
-export interface IState extends IApiState<IUnitFetchRequest, IUnitFetchResult> { 
+export interface IState extends IApiState<IFetchRequest, IUnitFetchResult> { 
 }
 //#endregion
 
 //#region ACTIONS
 import { action } from 'typesafe-actions'
 
-const fetchRequest = (request: IUnitFetchRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request)
+const fetchRequest = (request: IFetchRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request)
 const fetchSuccess = (data: IUnitFetchResult) => action(UnitActionTypes.UNIT_FETCH_SUCCESS, data)
 const fetchError = (error: string) => action(UnitActionTypes.UNIT_FETCH_ERROR, error)
 //#endregion
@@ -57,39 +58,24 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 
 //#region SAGA
-import { all, fork, put, select, takeEvery } from 'redux-saga/effects'
+import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
 import { NotAuthorizedError } from '../components/errors';
 import { signInRequest } from './auth';
-// import { callApiWithAuth } from './effects'
+import { callApiWithAuth } from './effects'
 import { IApplicationState } from './index';
 
-// const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
-
-const mockResults: IUnitFetchResult = {
-  admins: [{id: 1, name: "Knudsen, Ulrik"}],
-  id: 1,
-  itpros: [{id:2, name: "Schmoe, Joe"}, {id: 3, name: "Boberts, Bob"}],
-  name: "College IT Office (CITO)",
-  selfs: [{id:3, name: "Emeritus, Faculty"}],
-  servicedOrgs:  [
-    {id: 1, name: "BL-ARSD", description: "Arts and Sciences Deans Office"}, 
-    {id: 2, name: "BL-DEMA", description: "Whatever DEMA stands for"},
-  ]
-}
+const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
 function* handleFetch() {
   try {
-     const state = (yield select<IApplicationState>((s) => s.unit.request)) as IUnitFetchRequest
-    // const path = `search?term=${state.term}`
-    const response = {...mockResults, id: Number(state.id), errors:""} //  yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
-    console.log ("in try block", response)
+    const state = (yield select<IApplicationState>((s) => s.unit.request)) as IFetchRequest
+    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, `/units/${state.id}`)
     if (response.errors) {
       yield put(fetchError(response.errors))
     } else {
       yield put(fetchSuccess(response))
     }
   } catch (err) {
-    console.log ("in catch block", err)
     if (err instanceof NotAuthorizedError){
       yield put(signInRequest())
     }

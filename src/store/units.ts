@@ -50,29 +50,22 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 
 //#region SAGA
-import { all, fork, put, takeEvery } from 'redux-saga/effects'
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects'
 import { NotAuthorizedError } from '../components/errors';
 import { signInRequest } from './auth';
-// import { callApiWithAuth } from './effects'
+import { callApiWithAuth } from './effects'
 
-// const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
-
-const mockResults: IFetchResult = {
-  units: [{id: 1, name: "College IT Office (CITO)"}, {id: 2, name: "UITS Client Services"}]
-}
+const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
 function* handleFetch() {
   try {
-    // const path = `search?term=${state.term}`
-    const response = {...mockResults, errors:""} //  yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
-    console.log ("in try block", response)
+    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, `/units`)
     if (response.errors) {
       yield put(fetchError(response.errors))
     } else {
       yield put(fetchSuccess(response))
     }
   } catch (err) {
-    console.log ("in catch block", err)
     if (err instanceof NotAuthorizedError){
       yield put(signInRequest())
     }

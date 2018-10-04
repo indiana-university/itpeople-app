@@ -19,12 +19,12 @@ const Unit: React.SFC<IUnitFetchResult> =
                     }
                 </Col>
                 <Col lg={4}>
-                    {props.itpros &&
+                    {props.itPros &&
                         <>
                             <h2 className="rvt-ts-20 rvt-m-top-lg">IT Professionals</h2>
                             <Panel margin={{ top: "xs" }}>
                                 <List variant="plain">
-                                    {props.itpros.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
+                                    {props.itPros.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
                                 </List>
                             </Panel>
                         </>
@@ -45,12 +45,12 @@ const Unit: React.SFC<IUnitFetchResult> =
             </Row>
             <Row>
                 <Col lg={4}>
-                    {props.servicedOrgs && 
+                    {props.supportedDepartments && 
                         <>
                             <h2 className="rvt-ts-20 rvt-m-top-lg">Supported Departments</h2>
                             <Panel margin={{ top: "xs" }}>
                                 <List variant="plain">
-                                    {props.servicedOrgs.map((r, i) => (<li key={i}><a href={`/orgs/${r.id}`}>{r.name}</a></li>))}
+                                    {props.supportedDepartments.map((r, i) => (<li key={i}><a href={`/orgs/${r.id}`}>{r.name}</a></li>))}
                                 </List>
                             </Panel>
                         </>

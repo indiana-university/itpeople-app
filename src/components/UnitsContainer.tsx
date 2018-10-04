@@ -14,7 +14,6 @@ interface IPropsFromDispatch {
 // tslint:disable-next-line:max-classes-per-file
 class UnitsContainer extends React.Component<units.IState & IPropsFromDispatch>{
     public componentDidMount() {
-        console.log("In UnitsContainer.componentDidMount")
         this.props.fetchRequest()
     }
 
