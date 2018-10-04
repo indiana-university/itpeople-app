@@ -12,7 +12,8 @@ export interface IFetchRequest {
     id: string
 }
 
-export interface IFetchResult extends IEntity {
+export interface IFetchResult {
+  department: IEntity,
   units: IEntity[], 
   servicers: IEntity[],
 }
@@ -55,27 +56,18 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 
 //#region SAGA
-import { all, fork, put, select, takeEvery } from 'redux-saga/effects'
+import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
 import { NotAuthorizedError } from '../components/errors';
 import { signInRequest } from './auth';
-// import { callApiWithAuth } from './effects'
+import { callApiWithAuth } from './effects'
 import { IApplicationState } from './index';
 
-// const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
-
-const mockResults: IFetchResult = {
-  id: 1,
-  description: "Vice President for IT",
-  name: "UA-VPIT",
-  servicers: [{id:7, name: "Executive IT Services (EITS)"}],
-  units: [{id: 1, name: "Client Services"}, {id: 2, name: "Client Support"}, {id: 3, name: "Teaching and Learning Technologies"}],
-}
+const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
 function* handleFetch() {
   try {
-     const state = (yield select<IApplicationState>((s) => s.org.request)) as IFetchRequest
-    // const path = `search?term=${state.term}`
-    const response = {...mockResults, id: Number(state.id), errors:""} //  yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
+    const state = (yield select<IApplicationState>((s) => s.org.request)) as IFetchRequest
+    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, `/departments/${state.id}`)
     console.log ("in try block", response)
     if (response.errors) {
       yield put(fetchError(response.errors))

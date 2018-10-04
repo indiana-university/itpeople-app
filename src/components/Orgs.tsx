@@ -3,15 +3,18 @@ import { Panel, Table } from "rivet-react";
 import { IFetchResult } from "../store/orgs";
 
 const Orgs: React.SFC<IFetchResult> =
-    (props) => (
+    (props) =>{ 
+        
+        console.log("departments", props)
+        return (
         <>
             <Panel margin={{ top: "xs" }}>
                 <Table variant="plain" compact={true} >
                     <caption className="sr-only">List of Departments</caption>
                     <tbody>
-                        {props.orgs.map((r, i) => (
+                        {props.departments.map((r, i) => (
                             <tr key={i}>
-                                <td style={{width:100}}><a href={`/orgs/${r.id}`}>{r.name}</a></td>
+                                <td style={{width:100}}><a href={`/departments/${r.id}`}>{r.name}</a></td>
                                 <td>{r.description}</td>
                             </tr>
                         ))}
@@ -19,5 +22,5 @@ const Orgs: React.SFC<IFetchResult> =
                 </Table>
             </Panel>
         </>
-    )
+    )}
 export default Orgs

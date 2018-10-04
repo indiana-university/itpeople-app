@@ -29,7 +29,7 @@ const Profile : React.SFC<IProfile> =
                         { props.department && 
                         <tr>
                             <td style={headerCell}><strong>Department</strong></td>
-                            <td><a href={`/orgs/${props.department.id}`}>{props.department.name}</a></td>
+                            <td><a href={`/departments/${props.department.id}`}>{props.department.name}</a></td>
                         </tr> }
                         { props.user.responsibilities && 
                         <tr>
@@ -82,7 +82,7 @@ const Profile : React.SFC<IProfile> =
                         <h2 className="rvt-ts-20 rvt-m-top-lg">Serviced Departments</h2>
                         <Panel margin={{top:"xs"}}>
                             <List variant="plain">
-                                {props.supportedDepartments.map((r,i) => (<li key={i}><a href={`/orgs/${r.id}`}>{r.name}</a></li>) )}
+                                {props.supportedDepartments.map((r,i) => (<li key={i}><a href={`/departments/${r.id}`}>{r.name}</a></li>) )}
                             </List>
                         </Panel>
                         </> 
