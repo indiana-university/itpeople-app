@@ -2,25 +2,32 @@ import { IApiState } from './common'
 import { IEntity } from './profile';
 
 //#region TYPES
-export const enum DepartmentsActionTypes {
-    ORGS_FETCH_REQUEST = '@@orgs/FETCH_REQUEST',
-    ORGS_FETCH_SUCCESS = '@@orgs/FETCH_SUCCESS',
-    ORGS_FETCH_ERROR = '@@orgs/FETCH_ERROR',
+export const enum DepartmentActionTypes {
+    DEPARTMENT_FETCH_REQUEST = '@@department/FETCH_REQUEST',
+    DEPARTMENT_FETCH_SUCCESS = '@@department/FETCH_SUCCESS',
+    DEPARTMENT_FETCH_ERROR = '@@department/FETCH_ERROR',
+}
+
+export interface IFetchRequest {
+    id: string
 }
 
 export interface IFetchResult {
-    departments: IEntity[]
+  department: IEntity,
+  units: IEntity[], 
+  servicers: IEntity[],
 }
 
-export interface IState extends IApiState<{}, IFetchResult> {}
+export interface IState extends IApiState<IFetchRequest, IFetchResult> { 
+}
 //#endregion
 
 //#region ACTIONS
 import { action } from 'typesafe-actions'
 
-const fetchRequest = () => action(DepartmentsActionTypes.ORGS_FETCH_REQUEST)
-const fetchSuccess = (data: IFetchResult) => action(DepartmentsActionTypes.ORGS_FETCH_SUCCESS, data)
-const fetchError = (error: string) => action(DepartmentsActionTypes.ORGS_FETCH_ERROR, error)
+const fetchRequest = (request: IFetchRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST, request)
+const fetchSuccess = (data: IFetchResult) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUCCESS, data)
+const fetchError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_ERROR, error)
 //#endregion
 
 //#region REDUCER
@@ -39,9 +46,9 @@ const initialState: IState = {
 // everything will remain type-safe.
 const reducer: Reducer<IState> = (state = initialState, act) => {
   switch (act.type) {
-    case DepartmentsActionTypes.ORGS_FETCH_REQUEST: return FetchRequestReducer(state, act)
-    case DepartmentsActionTypes.ORGS_FETCH_SUCCESS: return FetchSuccessReducer(state, act)
-    case DepartmentsActionTypes.ORGS_FETCH_ERROR: return FetchErrorReducer(state, act)
+    case DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST: return FetchRequestReducer(state, act)
+    case DepartmentActionTypes.DEPARTMENT_FETCH_SUCCESS: return FetchSuccessReducer(state, act)
+    case DepartmentActionTypes.DEPARTMENT_FETCH_ERROR: return FetchErrorReducer(state, act)
     default: return state
   }
 }
@@ -49,17 +56,18 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 
 //#region SAGA
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects'
+import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
 import { NotAuthorizedError } from '../components/errors';
 import { signInRequest } from './auth';
 import { callApiWithAuth } from './effects'
+import { IApplicationState } from './index';
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
 function* handleFetch() {
   try {
-    
-    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, "/departments")
+    const state = (yield select<IApplicationState>((s) => s.org.request)) as IFetchRequest
+    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, `/departments/${state.id}`)
     console.log ("in try block", response)
     if (response.errors) {
       yield put(fetchError(response.errors))
@@ -81,13 +89,13 @@ function* handleFetch() {
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
-function* watchOrgsFetch() {
-  yield takeEvery(DepartmentsActionTypes.ORGS_FETCH_REQUEST, handleFetch)
+function* watchDepartmentFetch() {
+  yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST, handleFetch)
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.
 function* saga() {
-  yield all([fork(watchOrgsFetch)])
+  yield all([fork(watchDepartmentFetch)])
 }
 //#endregion
 

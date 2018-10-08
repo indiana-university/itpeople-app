@@ -2,37 +2,29 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IApplicationState } from '../store';
-import * as org from '../store/org';
+import * as orgs from '../store/departments';
+import Departments from './Departments';
 import PageTitle from './layout/PageTitle';
-import Org from './Org';
-
-interface IProps {
-    match: any
-}
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface IPropsFromDispatch {
-    fetchRequest: typeof org.fetchRequest
+    fetchRequest: typeof orgs.fetchRequest
 }
 
 // tslint:disable-next-line:max-classes-per-file
-class UnitContainer extends React.Component<org.IState & IProps & IPropsFromDispatch>{
+class DepartmentsContainer extends React.Component<orgs.IState & IPropsFromDispatch>{
     public componentDidMount() {
-        console.log(this.props.match)
-        this.props.fetchRequest(this.props.match.params)
+        this.props.fetchRequest()
     }
 
     public render() {
         return (
             <>
+                <PageTitle>Departments</PageTitle>
                 { this.props.loading && 
-                    <p>Loading department...</p>}
-                { this.props.data &&
-                    <>
-                        <PageTitle>{`${this.props.data.department.description} (${this.props.data.department.name})`}</PageTitle>
-                        <Org {...this.props.data} />
-                    </> 
-                }
+                    <p>Loading...</p>}
+                { this.props.data &&  
+                    <Departments {...this.props.data} /> }
                 { this.props.error && 
                     <p>{this.props.error}</p> }
             </>
@@ -43,13 +35,13 @@ class UnitContainer extends React.Component<org.IState & IProps & IPropsFromDisp
 // Although if necessary, you can always include multiple contexts. Just make sure to
 // separate them from each other to prevent prop conflicts.
 const mapStateToProps = (state: IApplicationState) => ({
-  ...state.org
+  ...state.orgs
 })
   
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
-  fetchRequest: (request: org.IFetchRequest) => dispatch(org.fetchRequest(request))
+  fetchRequest: () => dispatch(orgs.fetchRequest())
 })
   
 // Now let's connect our component!
@@ -57,4 +49,4 @@ const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(UnitContainer)
+  )(DepartmentsContainer)

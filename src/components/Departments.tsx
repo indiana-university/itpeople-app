@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Panel, Table } from "rivet-react";
-import { IFetchResult } from "../store/orgs";
+import { IFetchResult } from "../store/departments";
 
-const Orgs: React.SFC<IFetchResult> =
+const Departments: React.SFC<IFetchResult> =
     (props) =>{ 
         
         console.log("departments", props)
@@ -23,4 +23,4 @@ const Orgs: React.SFC<IFetchResult> =
             </Panel>
         </>
     )}
-export default Orgs
+export default Departments

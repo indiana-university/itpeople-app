@@ -3,8 +3,8 @@ import { reducer as formReducer } from 'redux-form'
 import { all, fork } from 'redux-saga/effects'
 
 import * as Auth from './auth'
-import * as Org from "./org";
-import * as Orgs from "./orgs";
+import * as Department from "./department";
+import * as Departments from "./departments";
 import * as Profile from './profile'
 import * as SearchSimple from './searchSimple'
 import * as Unit from "./unit";
@@ -17,16 +17,16 @@ export interface IApplicationState {
   searchSimple: SearchSimple.IState,
   unit: Unit.IState,
   units: Units.IState,
-  org: Org.IState,
-  orgs: Orgs.IState,
+  org: Department.IState,
+  orgs: Departments.IState,
   form: any
 }
 
 export const initialState : IApplicationState = {
   auth: Auth.initialState,
   form: {},
-  org: Org.initialState,
-  orgs: Orgs.initialState,
+  org: Department.initialState,
+  orgs: Departments.initialState,
   profile: Profile.initialState,
   searchSimple: SearchSimple.initialState,
   unit: Unit.initialState,
@@ -44,8 +44,8 @@ export interface IConnectedReduxProps<A extends Action = AnyAction> {
 export const rootReducer = combineReducers<IApplicationState>({
   auth: Auth.reducer,
   form: formReducer,
-  org: Org.reducer,
-  orgs: Orgs.reducer,
+  org: Department.reducer,
+  orgs: Departments.reducer,
   profile: Profile.reducer,
   searchSimple: SearchSimple.reducer,
   unit: Unit.reducer,
@@ -58,8 +58,8 @@ export const rootReducer = combineReducers<IApplicationState>({
 export function* rootSaga() {
   yield all([
     fork(Auth.saga), 
-    fork(Org.saga),
-    fork(Orgs.saga), 
+    fork(Department.saga),
+    fork(Departments.saga), 
     fork(Profile.saga), 
     fork(SearchSimple.saga), 
     fork(Unit.saga),
