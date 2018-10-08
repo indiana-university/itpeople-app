@@ -14,8 +14,8 @@ export interface IFetchRequest {
 
 export interface IFetchResult {
   department: IEntity,
-  units: IEntity[], 
-  servicers: IEntity[],
+  organizationUnits: IEntity[], 
+  supportingUnits: IEntity[],
 }
 
 export interface IState extends IApiState<IFetchRequest, IFetchResult> { 
