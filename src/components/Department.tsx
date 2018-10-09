@@ -7,24 +7,24 @@ const Department: React.SFC<IFetchResult> =
         <>
             <Row>
                 <Col lg={6}>
-                    {props.units &&
+                    {props.organizationUnits &&
                         <>
                             <h2 className="rvt-ts-20 rvt-m-top-lg">Organizational Units</h2>
                             <Panel margin={{ top: "xs" }}>
                                 <List variant="plain">
-                                    {props.units.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
+                                    {props.organizationUnits.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
                                 </List>
                             </Panel>
                         </>
                     }
                 </Col>
                 <Col lg={6}>
-                    {props.servicers && 
+                    {props.supportingUnits && 
                         <>
                             <h2 className="rvt-ts-20 rvt-m-top-lg">Supporting Units</h2>
                             <Panel margin={{ top: "xs" }}>
                                 <List variant="plain">
-                                    {props.servicers.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
+                                    {props.supportingUnits.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
                                 </List>
                             </Panel>
                         </>

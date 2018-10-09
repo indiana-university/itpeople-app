@@ -32,7 +32,8 @@ export interface IUser extends IEntity, IUpdateRequest {
   campusPhone: string,
   campusEmail: string,
   campus: string,
-  role: string,
+  role: number,
+  tools: number
 }
 
 export interface IProfile {

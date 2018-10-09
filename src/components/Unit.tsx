@@ -6,51 +6,43 @@ const Unit: React.SFC<IUnitFetchResult> =
     (props) => (
         <>
             <Row>
-                <Col lg={4}>
-                    {props.admins &&
-                        <>
-                            <h2 className="rvt-ts-20 rvt-m-top-lg">Administrators</h2>
-                            <Panel margin={{ top: "xs" }}>
+                <Col lg={6}>
+                    <h2 className="rvt-ts-20 rvt-m-top-lg">People</h2>
+                    <Panel margin={{ top: "xs" }}>
+                        {props.admins.length > 0 &&
+                            <>
+                                <h3 className="rvt-ts-20">IT Leadership</h3>
                                 <List variant="plain">
-                                    {props.admins.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
+                                    {props.admins.filter(r => r.role === 4).map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a> (Admin)</li>))}
+                                    {props.admins.filter(r => r.role === 3).map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a> (Co-Admin)</li>))}
                                 </List>
-                            </Panel>
-                        </>
-                    }
-                </Col>
-                <Col lg={4}>
-                    {props.itPros &&
-                        <>
-                            <h2 className="rvt-ts-20 rvt-m-top-lg">IT Professionals</h2>
-                            <Panel margin={{ top: "xs" }}>
+                            </>
+                        }
+                        {props.itPros.length > 0 &&
+                            <>
+                                <h3 className="rvt-ts-20 rvt-m-top-lg">IT Professionals</h3>
                                 <List variant="plain">
                                     {props.itPros.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
                                 </List>
-                            </Panel>
-                        </>
-                    }
-                </Col>
-                <Col lg={4}>
-                    {props.selfs && 
-                        <>
-                            <h2 className="rvt-ts-20 rvt-m-top-lg">Self-Supporting</h2>
-                            <Panel margin={{ top: "xs" }}>
+                            </>
+                        }
+                        {props.selfs.length > 0 && 
+                            <>
+                                <h3 className="rvt-ts-20 rvt-m-top-lg">Self-Supporting</h3>
                                 <List variant="plain">
                                     {props.selfs.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
                                 </List>
-                            </Panel>
-                        </>
-                    }
+                            </>
+                        }
+                    </Panel>
                 </Col>
-            </Row>
-            <Row>
-                <Col lg={4}>
+                <Col lg={6}>
                     {props.supportedDepartments && 
                         <>
                             <h2 className="rvt-ts-20 rvt-m-top-lg">Supported Departments</h2>
                             <Panel margin={{ top: "xs" }}>
                                 <List variant="plain">
-                                    {props.supportedDepartments.map((r, i) => (<li key={i}><a href={`/departments/${r.id}`}>{r.name}</a></li>))}
+                                    {props.supportedDepartments.map((r, i) => (<li key={i}><a href={`/departments/${r.id}`}>{r.name}</a> ({r.description})</li>))}
                                 </List>
                             </Panel>
                         </>
