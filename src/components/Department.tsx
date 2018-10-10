@@ -4,33 +4,37 @@ import { IFetchResult } from "../store/department";
 
 const Department: React.SFC<IFetchResult> =
     (props) => (
-        <>
-            <Row>
-                <Col lg={6}>
-                    {props.organizationUnits &&
-                        <>
-                            <h2 className="rvt-ts-20 rvt-m-top-lg">Organizational Units</h2>
-                            <Panel margin={{ top: "xs" }}>
-                                <List variant="plain">
-                                    {props.organizationUnits.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
-                                </List>
-                            </Panel>
-                        </>
-                    }
+        <Row>
+            {props.members.length > 0 &&
+                <Col lg={4}>
+                    <h2 className="rvt-ts-26 rvt-m-top-lg">IT Professional Staff</h2>
+                    <Panel margin={{ top: "xs" }}>
+                        <List variant="plain">
+                            {props.members.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
+                        </List>
+                    </Panel>
                 </Col>
-                <Col lg={6}>
-                    {props.supportingUnits && 
-                        <>
-                            <h2 className="rvt-ts-20 rvt-m-top-lg">Supporting Units</h2>
-                            <Panel margin={{ top: "xs" }}>
-                                <List variant="plain">
-                                    {props.supportingUnits.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
-                                </List>
-                            </Panel>
-                        </>
-                    }
+            }
+            {props.units.length > 0 &&
+                <Col lg={4}>
+                    <h2 className="rvt-ts-26 rvt-m-top-lg">Constituent Units</h2>
+                    <Panel margin={{ top: "xs" }}>
+                        <List variant="plain">
+                            {props.units.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
+                        </List>
+                    </Panel>
                 </Col>
-            </Row>
-        </>
+            }
+            {props.supportingUnits.length > 0 && 
+                <Col lg={4}>
+                    <h2 className="rvt-ts-26 rvt-m-top-lg">Supporting Units</h2>
+                    <Panel margin={{ top: "xs" }}>
+                        <List variant="plain">
+                            {props.supportingUnits.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
+                        </List>
+                    </Panel>
+                </Col>
+            }
+        </Row>
     )
 export default Department

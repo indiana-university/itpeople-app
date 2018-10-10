@@ -3,43 +3,51 @@ import { Col, List, Panel, Row } from "rivet-react";
 import { IUnitFetchResult } from "../store/unit";
 
 const Unit: React.SFC<IUnitFetchResult> =
-    (props) => (
+    (props) => {
+        
+        const admins = props.members.filter(m => m.role === "Admin")
+        const coAdmins = props.members.filter(m => m.role === "CoAdmin")
+        const pros = props.members.filter(m => m.role === "ItPro")
+        const selfs = props.members.filter(m => m.role === "SelfSupport")
+
+        return (
         <>
             <Row>
                 <Col lg={6}>
-                    <h2 className="rvt-ts-20 rvt-m-top-lg">People</h2>
+                    <h2 className="rvt-ts-26 rvt-m-top-lg">Unit Members</h2>
                     <Panel margin={{ top: "xs" }}>
-                        {props.admins.length > 0 &&
+                        {(admins.length > 0 || coAdmins.length > 0) &&
                             <>
                                 <h3 className="rvt-ts-20">IT Leadership</h3>
-                                <List variant="plain">
-                                    {props.admins.filter(r => r.role === 4).map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a> (Admin)</li>))}
-                                    {props.admins.filter(r => r.role === 3).map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a> (Co-Admin)</li>))}
+                                <List className="rvt-m-bottom-lg" variant="plain">
+                                    {admins.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a> (Admin)</li>))}
+                                    {coAdmins.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a> (Co-Admin)</li>))}
+                                </List>
+                                
+                            </>
+                        }
+                        {pros.length > 0 &&
+                            <>
+                                <h3 className="rvt-ts-20">IT Professionals</h3>
+                                <List className="rvt-m-bot-lg" variant="plain">
+                                    {pros.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
                                 </List>
                             </>
                         }
-                        {props.itPros.length > 0 &&
+                        {selfs.length > 0 && 
                             <>
-                                <h3 className="rvt-ts-20 rvt-m-top-lg">IT Professionals</h3>
+                                <h3 className="rvt-ts-20 ">Self-Supporting</h3>
                                 <List variant="plain">
-                                    {props.itPros.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
-                                </List>
-                            </>
-                        }
-                        {props.selfs.length > 0 && 
-                            <>
-                                <h3 className="rvt-ts-20 rvt-m-top-lg">Self-Supporting</h3>
-                                <List variant="plain">
-                                    {props.selfs.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
+                                    {selfs.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
                                 </List>
                             </>
                         }
                     </Panel>
                 </Col>
                 <Col lg={6}>
-                    {props.supportedDepartments && 
+                    {props.supportedDepartments.length > 0 && 
                         <>
-                            <h2 className="rvt-ts-20 rvt-m-top-lg">Supported Departments</h2>
+                            <h2 className="rvt-ts-26 rvt-m-top-lg">Supported Departments</h2>
                             <Panel margin={{ top: "xs" }}>
                                 <List variant="plain">
                                     {props.supportedDepartments.map((r, i) => (<li key={i}><a href={`/departments/${r.id}`}>{r.name}</a> ({r.description})</li>))}
@@ -50,5 +58,5 @@ const Unit: React.SFC<IUnitFetchResult> =
                 </Col>
             </Row>
         </>
-    )
+    )}
 export default Unit

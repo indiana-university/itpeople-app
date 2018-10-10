@@ -1,5 +1,5 @@
 import { IApiState } from './common'
-import { IEntity, IUser } from './profile';
+import { IEntity, IMembership } from './profile';
 
 //#region TYPES
 export const enum UnitActionTypes {
@@ -13,10 +13,8 @@ export interface IFetchRequest {
 }
 
 export interface IUnitFetchResult {
-    unit: IEntity
-    admins: IUser[], 
-    itPros: IUser[],
-    selfs: IUser[],
+    unit: IEntity,
+    members: IMembership[],
     supportedDepartments: IEntity[]
 }
 

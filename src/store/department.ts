@@ -14,7 +14,8 @@ export interface IFetchRequest {
 
 export interface IFetchResult {
   department: IEntity,
-  organizationUnits: IEntity[], 
+  members: IEntity[],
+  units: IEntity[],
   supportingUnits: IEntity[],
 }
 
