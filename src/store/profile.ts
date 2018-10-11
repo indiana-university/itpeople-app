@@ -36,7 +36,7 @@ export interface IUser extends IEntity, IUpdateRequest {
   campusPhone: string,
   campusEmail: string,
   campus: string,
-  role: number,
+  role: string,
   tools: string
 }
 

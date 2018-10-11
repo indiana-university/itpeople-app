@@ -11,6 +11,17 @@ const hasTool = (tools: string, tool: string) =>
         ? <span style={{marginRight:3}}>✔</span>
         : <span style={{marginLeft:13}}>&nbsp;</span>
 
+const formatRole = (role: string) => {
+    switch (role) {
+        case "Admin": return "Admin"; break;
+        case "CoAdmin": return "Co-Admin";
+        case "ItPro": return "IT Pro";
+        case "SelfSupport": return "Self-Supported";
+        default: return "Unknown"
+    }
+}
+
+
 const Profile : React.SFC<IProfile> = 
 (props) => (
         <>
@@ -20,6 +31,11 @@ const Profile : React.SFC<IProfile> =
                 <Table variant="plain" compact={true} >
                     <caption className="sr-only">Personnel Information</caption>
                     <tbody>
+                        { props.user.role && 
+                        <tr>
+                            <td style={headerCell}><strong>Role</strong></td>
+                            <td>{formatRole(props.user.role)}</td>
+                        </tr> }
                         { props.department && 
                         <tr>
                             <td style={headerCell}><strong>Department</strong></td>
@@ -63,7 +79,7 @@ const Profile : React.SFC<IProfile> =
                     <h2 className="rvt-ts-26 rvt-m-top-lg">Units</h2>
                     <Panel margin={{top:"xs"}}>
                         <List variant="plain">
-                            {props.unitMemberships.map((u,i) => (<li key={i}><a href={`/units/${u.id}`}>{u.name}</a> ({u.role})</li>) )}
+                            {props.unitMemberships.map((u,i) => (<li key={i}><a href={`/units/${u.id}`}>{u.name}</a></li>) )}
                         </List>
                     </Panel>
                 </Col>
