@@ -21,8 +21,8 @@ class DepartmentsContainer extends React.Component<orgs.IState & IPropsFromDispa
         return (
             <>
                 <PageTitle>Departments</PageTitle>
-                { this.props.loading && 
-                    <p>Loading...</p>}
+                {/* { this.props.loading && 
+                    <p>Loading...</p>} */}
                 { this.props.data &&  
                     <Departments {...this.props.data} /> }
                 { this.props.error && 

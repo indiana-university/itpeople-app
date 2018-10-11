@@ -25,8 +25,8 @@ class UnitContainer extends React.Component<org.IState & IProps & IPropsFromDisp
     public render() {
         return (
             <>
-                { this.props.loading && 
-                    <p>Loading department...</p>}
+                {/* { this.props.loading && 
+                    <p>Loading department...</p>} */}
                 { this.props.data &&
                     <>
                         <PageTitle>{`${this.props.data.department.description} (${this.props.data.department.name})`}</PageTitle>

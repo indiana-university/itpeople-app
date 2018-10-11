@@ -21,8 +21,8 @@ class UnitsContainer extends React.Component<units.IState & IPropsFromDispatch>{
         return (
             <>
                 <PageTitle>Units</PageTitle>
-                { this.props.loading && 
-                    <p>Loading...</p>}
+                {/* { this.props.loading && 
+                    <p>Loading...</p>} */}
                 { this.props.data &&  
                     <Units {...this.props.data} /> }
                 { this.props.error && 
