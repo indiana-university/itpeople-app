@@ -25,6 +25,7 @@ interface IPropsFromDispatch {
 
 const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest, signOutRequest, submitSearch, children }) => (
   <>
+    <div style={{ minHeight: "100%", marginBottom: -59 }}>
     <Header title="IT Pro Database">
       { user &&
         <HeaderNavigation>
@@ -44,12 +45,16 @@ const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest,
         </HeaderNavigation>
       }
     </Header>
-    <main id="main-content" className="rvt-m-top-xl rvt-m-bottom-xxl" style={{ flex: 1 }}>
+    <main id="main-content" className="rvt-m-top-xl rvt-m-bottom-xxl" >
       <Container>
         { children }
       </Container>
     </main>
-    <Footer />
+    <div style={{height:59}}>&nbsp;</div>
+    </div>
+    <div style={{height:59}}>
+      <Footer />
+    </div>
   </>
 );
 
