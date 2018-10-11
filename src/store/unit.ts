@@ -1,5 +1,5 @@
 import { IApiState } from './common'
-import { IEntity, IMembership } from './profile';
+import { IEntity, IRole } from './profile';
 
 //#region TYPES
 export const enum UnitActionTypes {
@@ -12,9 +12,16 @@ export interface IFetchRequest {
     id: string
 }
 
+export interface IUrl {
+  url: string
+}
+
+export interface IMember extends IEntity, IRole {}
+export interface IWebEntity extends IEntity, IUrl {}
+
 export interface IUnitFetchResult {
-    unit: IEntity,
-    members: IMembership[],
+    unit: IWebEntity,
+    members: IMember[],
     supportedDepartments: IEntity[]
 }
 

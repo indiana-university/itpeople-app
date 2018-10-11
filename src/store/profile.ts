@@ -20,7 +20,7 @@ export interface IEntity {
   description?: string
 }
 
-export interface IMembership extends IEntity {
+export interface IRole {
   role: string
 }
 
@@ -29,23 +29,20 @@ export interface IUpdateRequest {
   responsibilities: string
 }
 
-export interface IUser extends IEntity, IUpdateRequest {
+export interface IUser extends IEntity, IRole, IUpdateRequest {
   netId: string,
   position: string,
   location: string,
   campusPhone: string,
   campusEmail: string,
   campus: string,
-  role: string,
   tools: string
 }
 
 export interface IProfile {
     user: IUser,
-    unitMemberships: IMembership[],
+    unitMemberships: IEntity[],
     department: IEntity,
-    supportedDepartments: IEntity[],
-    toolsAccess: IEntity[]
 }
 
 export interface IState extends IApiState<IFetchRequest, IProfile> { 

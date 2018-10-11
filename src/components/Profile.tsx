@@ -1,15 +1,10 @@
 import * as React from 'react'
-import { Col, List, Panel, Row, Table } from "rivet-react";
+import { Checkbox, Col, List, Panel, Row, Table } from "rivet-react";
 import { IProfile } from "../store/profile";
 
 const headerCell = {
     "width": 175,
 }
-
-const hasTool = (tools: string, tool: string) =>
-    tools.includes(tool)
-        ? <span style={{marginRight:3}}>✔</span>
-        : <span style={{marginLeft:13}}>&nbsp;</span>
 
 const formatRole = (role: string) => {
     switch (role) {
@@ -20,6 +15,9 @@ const formatRole = (role: string) => {
         default: return "Unknown"
     }
 }
+
+const has = (vals: string, val: string) : boolean =>
+    vals.toString().includes(val)
 
 
 const Profile : React.SFC<IProfile> = 
@@ -76,45 +74,50 @@ const Profile : React.SFC<IProfile> =
 
             <Row>
                 <Col lg={4}>
+                    <h2 className="rvt-ts-26 rvt-m-top-lg">Responsibilities</h2>
+                    <Panel margin={{top:"xs"}}>
+                        <List variant="plain">
+                            <li key={0}><Checkbox disabled={true} checked={has(props.user.responsibilities, "ItLeadership")} label="IT Leadership" /></li>
+                            <li key={1}><Checkbox disabled={true} checked={has(props.user.responsibilities, "BizSysAnalysis")} label="Business/Systems Analysis" /></li>
+                            <li key={2}><Checkbox disabled={true} checked={has(props.user.responsibilities, "DataAdminAnalysis")} label="Data Administration and Analysis" /></li>
+                            <li key={3}><Checkbox disabled={true} checked={has(props.user.responsibilities, "DatabaseArchDesign")} label="Database Architecture and Design" /></li>
+                            <li key={4}><Checkbox disabled={true} checked={has(props.user.responsibilities, "InstructionalTech")} label="Instructional Technology" /></li>
+                            <li key={5}><Checkbox disabled={true} checked={has(props.user.responsibilities, "ItProjectMgt")} label="Project Management" /></li>
+                            <li key={6}><Checkbox disabled={true} checked={has(props.user.responsibilities, "ItSecurityPrivacy")} label="Security and Privacy" /></li>
+                            <li key={7}><Checkbox disabled={true} checked={has(props.user.responsibilities, "ItUserSupport")} label="User Support" /></li>
+                            <li key={8}><Checkbox disabled={true} checked={has(props.user.responsibilities, "ItMultiDiscipline")} label="Multi-disciplinary IT Services" /></li>
+                            <li key={9}><Checkbox disabled={true} checked={has(props.user.responsibilities, "Networks")} label="Network Administration, Analysis, and Engineering" /></li>
+                            <li key={10}><Checkbox disabled={true} checked={has(props.user.responsibilities, "SoftwareAdminAnalysis")} label="Software/Application Administration and Analysis" /></li>
+                            <li key={11}><Checkbox disabled={true} checked={has(props.user.responsibilities, "SoftwareDevEng")} label="Software/Application Development and Engineering" /></li>
+                            <li key={12}><Checkbox disabled={true} checked={has(props.user.responsibilities, "SystemDevEng")} label="Systems Design, Development, and Engineering" /></li>
+                            <li key={13}><Checkbox disabled={true} checked={has(props.user.responsibilities, "UserExperience")} label="User Experience" /></li>
+                            <li key={14}><Checkbox disabled={true} checked={has(props.user.responsibilities, "WebAdminDevEng")} label="Web Administration, Design, and Development" /></li>
+                        </List>
+                    </Panel>
+                </Col>
+                <Col lg={4}>
+                    <h2 className="rvt-ts-26 rvt-m-top-lg">Tools</h2>
+                    <Panel margin={{top:"xs"}}>
+                        <List variant="plain">
+                            <li key={1}><Checkbox disabled={true} checked={has (props.user.tools, "ItProWeb")} label="IT Pro Website" /></li>
+                            <li key={2}><Checkbox disabled={true} checked={has (props.user.tools, "ItProMail")} label="IT Pro Mailings" /></li>
+                            <li key={3}><Checkbox disabled={true} checked={has (props.user.tools, "IUware")} label="IUware" /></li>
+                            <li key={4}><Checkbox disabled={true} checked={has (props.user.tools, "MAS")} label="MAS" /></li>
+                            <li key={5}><Checkbox disabled={true} checked={has (props.user.tools, "ProductKeys")} label="Product Keys" /></li>
+                            <li key={6}><Checkbox disabled={true} checked={has (props.user.tools, "AccountMgt")} label="Account Management" /></li>
+                            <li key={7}><Checkbox disabled={true} checked={has (props.user.tools, "AMSAdmin")} label="AMS Admin" /></li>
+                            <li key={8}><Checkbox disabled={true} checked={has (props.user.tools, "UIPOUnblocker")} label="UIPO Unblocker" /></li>
+                            <li key={9}><Checkbox disabled={true} checked={has (props.user.tools, "SuperPass")} label="SuperPass" /></li>
+                        </List>
+                    </Panel>
+                </Col>
+                <Col lg={4}>
                     <h2 className="rvt-ts-26 rvt-m-top-lg">Units</h2>
                     <Panel margin={{top:"xs"}}>
                         <List variant="plain">
                             {props.unitMemberships.map((u,i) => (<li key={i}><a href={`/units/${u.id}`}>{u.name}</a></li>) )}
                         </List>
                     </Panel>
-                </Col>
-                <Col lg={4}>
-                    { props.supportedDepartments.length > 0 && 
-                        <>
-                        <h2 className="rvt-ts-26 rvt-m-top-lg">Supported Departments</h2>
-                        <Panel margin={{top:"xs"}}>
-                            <List variant="plain">
-                                {props.supportedDepartments.map((r,i) => (<li key={i}><a href={`/departments/${r.id}`}>{r.name}</a> ({r.description})</li>) )}
-                            </List>
-                        </Panel>
-                        </> 
-                    }
-                </Col>
-                <Col lg={4}>
-                    { props.user.tools && 
-                        <>
-                        <h2 className="rvt-ts-26 rvt-m-top-lg">Tools Access</h2>
-                        <Panel margin={{top:"xs"}}>
-                            <List variant="plain">
-                                <li key={1}>{hasTool(props.user.tools, "ItProWeb")} IT Pro Website</li>
-                                <li key={2}>{hasTool(props.user.tools, "ItProMail")} IT Pro Mailings</li>
-                                <li key={3}>{hasTool(props.user.tools, "IUware")} IUware</li>
-                                <li key={4}>{hasTool(props.user.tools, "MAS")} MAS</li>
-                                <li key={5}>{hasTool(props.user.tools, "ProductKeys")} Product Keys</li>
-                                <li key={6}>{hasTool(props.user.tools, "AccountMgt")} Account Management</li>
-                                <li key={7}>{hasTool(props.user.tools, "AMSAdmin")} AMS Admin</li>
-                                <li key={8}>{hasTool(props.user.tools, "UIPOUnblocker")} UIPO Unblocker</li>
-                                <li key={9}>{hasTool(props.user.tools, "SuperPass")} SuperPass</li>
-                                {props.toolsAccess.map((t,i) => (<li key={i}>{t.name}</li>) )}
-                            </List>
-                        </Panel>
-                        </> 
-                    }
                 </Col>
             </Row>
         </>
