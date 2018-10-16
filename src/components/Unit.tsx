@@ -11,6 +11,8 @@ const Unit: React.SFC<IUnitFetchResult> =
         const selfs = props.members.filter(m => m.role === "SelfSupport")
 
         return (
+            <>
+            <p><a href="{props.unit.url}">Unit Website</a></p>
             <Row>
                 <Col lg={6}>
                     <h2 className="rvt-ts-26 rvt-m-top-lg">Unit Members</h2>
@@ -56,5 +58,6 @@ const Unit: React.SFC<IUnitFetchResult> =
                     }
                 </Col>
             </Row>
+            </>
         )}
 export default Unit
