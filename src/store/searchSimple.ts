@@ -1,8 +1,9 @@
 import { IApiState } from './common'
-import { IProps } from './profile';
+import { IEntity } from './profile';
 
 //#region TYPES
 export const enum SearchActionTypes {
+    SEARCH_SIMPLE_SUBMIT = '@@search/SEARCH_SIMPLE_SUBMIT',
     SEARCH_SIMPLE_FETCH_REQUEST = '@@search/SEARCH_SIMPLE_FETCH_REQUEST',
     SEARCH_SIMPLE_FETCH_SUCCESS = '@@search/SEARCH_SIMPLE_FETCH_SUCCESS',
     SEARCH_SIMPLE_FETCH_ERROR = '@@search/SEARCH_SIMPLE_FETCH_ERROR',
@@ -13,21 +14,22 @@ export interface ISimpleSearchRequest {
 }
 
 export interface ISimpleSearchResult extends ISimpleSearchRequest {
-    profiles: IProps[]
+    departments: IEntity[], 
+    units: IEntity[],
+    users: IEntity[]
 }
 
 export interface IState extends IApiState<ISimpleSearchRequest, ISimpleSearchResult> { 
 }
 //#endregion
 
-
-
 //#region ACTIONS
 import { action } from 'typesafe-actions'
 
-const simpleSearchFetchRequest = (request: ISimpleSearchRequest) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_REQUEST, request)
-const simpleSearchFetchSuccess = (data: ISimpleSearchResult) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_SUCCESS, data)
-const simpleSearchFetchError = (error: string) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_ERROR, error)
+const submit = () => action(SearchActionTypes.SEARCH_SIMPLE_SUBMIT)
+const fetchRequest = (request: ISimpleSearchRequest) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_REQUEST, request)
+const fetchSuccess = (data: ISimpleSearchResult) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_SUCCESS, data)
+const fetchError = (error: string) => action(SearchActionTypes.SEARCH_SIMPLE_FETCH_ERROR, error)
 //#endregion
 
 //#region REDUCER
@@ -56,7 +58,8 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 
 //#region SAGA
-import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
+import { push } from 'react-router-redux';
+import { all, call, fork, put, select, takeEvery,  } from 'redux-saga/effects'
 import { NotAuthorizedError } from '../components/errors';
 import { signInRequest } from './auth';
 import { callApiWithAuth } from './effects'
@@ -67,24 +70,28 @@ const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 function* handleFetch() {
   try {
     const state = (yield select<IApplicationState>((s) => s.searchSimple.request)) as ISimpleSearchRequest
-    const path = `search?term=${state.term}`
-    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
-    console.log ("in try block", response)
+    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, `/search?term=${state.term}`)
     if (response.errors) {
-      yield put(simpleSearchFetchError(response.errors))
+      yield put(fetchError(response.errors))
     } else {
-      yield put(simpleSearchFetchSuccess(response))
+      yield put(fetchSuccess(response))
     }
   } catch (err) {
-    console.log ("in catch block", err)
     if (err instanceof NotAuthorizedError){
       yield put(signInRequest())
     }
     else if (err instanceof Error) {
-      yield put(simpleSearchFetchError(err.stack!))
+      yield put(fetchError(err.stack!))
     } else {
-      yield put(simpleSearchFetchError('An unknown error occured.'))
+      yield put(fetchError('An unknown error occured.'))
     }
+  }
+}
+
+function* handleSubmit() {
+  const form = (yield select<any>((s) => s.form.search.values)) as ISimpleSearchRequest
+  if (form.term) {
+    yield put(push(`/search?term=${form.term}`))
   }
 }
 
@@ -94,9 +101,13 @@ function* watchSimpleSearchFetch() {
   yield takeEvery(SearchActionTypes.SEARCH_SIMPLE_FETCH_REQUEST, handleFetch)
 }
 
+function* watchSimpleSearchSubmit() {
+  yield takeEvery(SearchActionTypes.SEARCH_SIMPLE_SUBMIT, handleSubmit)
+}
+
 // We can also use `fork()` here to split our saga into multiple watchers.
 function* saga() {
-  yield all([fork(watchSimpleSearchFetch)])
+  yield all([fork(watchSimpleSearchFetch), fork(watchSimpleSearchSubmit)])
 }
 //#endregion
 
@@ -104,9 +115,10 @@ function* saga() {
 // Instead of using default export, we use named exports. That way we can group these exports
 // inside the `index.js` folder.
 export { 
-  simpleSearchFetchRequest,
-  simpleSearchFetchError,
-  simpleSearchFetchSuccess,
+  submit,
+  fetchRequest,
+  fetchError,
+  fetchSuccess,
   reducer,
   initialState,
   saga

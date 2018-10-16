@@ -14,42 +14,48 @@ export interface IFetchRequest {
     id: number,
 }
 
-export interface IUpdateRequest {
-    expertise: string
+export interface IEntity {
+  id: number,
+  name: string,
+  description?: string
 }
 
 export interface IRole {
-    department: string,
-    role: string
+  role: string
 }
 
-export interface IUser extends IUpdateRequest {
-    id: number,
-    netId: string,
-    name: string,
-    position: string,
-    location: string,
-    locationCode: string,
-    campusPhone: string,
-    campusEmail: string,
+export interface IUpdateRequest {
+  expertise: string,
+  responsibilities: string
 }
 
-export interface IProps {
+export interface IUser extends IEntity, IRole, IUpdateRequest {
+  netId: string,
+  position: string,
+  location: string,
+  campusPhone: string,
+  campusEmail: string,
+  campus: string,
+  tools: string
+}
+
+export interface IProfile {
     user: IUser,
-    roles: IRole[]
+    unitMemberships: IEntity[],
+    department: IEntity,
 }
 
-export interface IState extends IApiState<IFetchRequest, IProps> { 
+export interface IState extends IApiState<IFetchRequest, IProfile> { 
 }
 //#endregion
 
 //#region ACTIONS
 import { action } from 'typesafe-actions'
 const fetchRequest = (request: IFetchRequest) => action(ProfileActionTypes.PROFILE_FETCH_REQUEST, request)
-const fetchSuccess = (data: IProps) => action(ProfileActionTypes.PROFILE_FETCH_SUCCESS, data)
+const fetchSuccess = (data: IProfile) => action(ProfileActionTypes.PROFILE_FETCH_SUCCESS, data)
 const fetchError = (error: string) => action(ProfileActionTypes.PROFILE_FETCH_ERROR, error)
 const updateRequest = (request: IFetchRequest) => action(ProfileActionTypes.PROFILE_UPDATE_REQUEST, request)
-const updateSuccess = (data: IProps) => action(ProfileActionTypes.PROFILE_UPDATE_SUCCESS, data)
+const updateSuccess = (data: IProfile) => action(ProfileActionTypes.PROFILE_UPDATE_SUCCESS, data)
 const updateError = (error: string) => action(ProfileActionTypes.PROFILE_UPDATE_ERROR, error)
 //#endregion
 
@@ -89,10 +95,12 @@ import { IApplicationState } from './index'
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
+
 function* handleFetch() {
   try {
     const state = (yield select<IApplicationState>((s) => s.profile.request)) as IFetchRequest
-    const path = state.id === 0 ? "/me" : `users/${state.id}`
+    console.log("state", state)
+    const path = state.id === 0 ? "/me" : `/users/${state.id}`
     const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
     console.log ("in try block", response)
     if (response.errors) {
@@ -115,7 +123,6 @@ function* handleFetch() {
 
 function* handleUpdate() {
   try {
-    const profile = (yield select<IApplicationState>((s) => s.profile.data)) as IProps
     const form = (yield select<any>((s) => s.form.profile.values)) as IUpdateRequest
     const req = (yield select<IApplicationState>((s) => s.profile.request)) as IFetchRequest
     const response = yield call(callApiWithAuth, 'put', API_ENDPOINT, `/users/${req.id}`, form)
@@ -123,8 +130,7 @@ function* handleUpdate() {
     if (response.errors) {
       yield put(fetchError(response.errors))
     } else {
-      profile.user = response
-      yield put(fetchSuccess(profile))
+      yield put(fetchSuccess(response))
     }
   } catch (err) {
     console.log ("in catch block", err)
@@ -137,6 +143,7 @@ function* handleUpdate() {
       yield put(fetchError('An unknown error occured.'))
     }
   }
+
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action

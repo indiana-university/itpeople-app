@@ -1,55 +1,43 @@
 import * as React from 'react';
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Footer, Header, HeaderIdentity, HeaderNavigation } from 'rivet-react';
+import { Container, Footer, Header, HeaderIdentity, HeaderNavigation } from 'rivet-react';
 import { IApplicationState  } from '../../store'
 import * as Auth from '../../store/auth'
-// import { simpleSearchFetchRequest } from '../../store/search';
+import * as Search from '../../store/searchSimple'
+import SearchForm from './SearchForm';
 
 export interface IPageProps {
     children?: React.ReactNode
     user?: Auth.IAuthUser
 }
 
+const fixNavLinkAlignment = {
+  paddingTop: 10
+}
+
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface IPropsFromDispatch {
   signInRequest: typeof Auth.signInRequest
   signOutRequest: typeof Auth.signOutRequest
-  // search: typeof simpleSearchFetchRequest
+  submitSearch: typeof Search.submit
 }
 
-const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest, signOutRequest, children }) => (
+const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest, signOutRequest, submitSearch, children }) => (
   <>
+    <div style={{ minHeight: "100%", marginBottom: -59 }}>
     <Header title="IT Pro Database">
-      { /* user &&
-          <HeaderNavigation>
-            <a href="#">Nav one</a>
-            <HeaderMenu label="Nav two">
-                <a href="#">Item one</a>
-                <a href="#">Item two</a>
-                <a href="#">Item three</a>
-                <a href="#">Item four</a>
-            </HeaderMenu>
-            <React.Fragment>
-              <label htmlFor="search" className="rvt-sr-only">Search</label>
-              <div className="rvt-input-group">
-                  <input className="rvt-input-group__input" type="text" id="search"/>
-                  <div className="rvt-input-group__append">
-                    <button type="submit" aria-label="Submit search" className="rvt-button rvtd-search__submit">
-                      <span className="rvt-sr-only">Submit search</span> 
-                      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                        <path fill="currentColor" d="M15.71,14.29,10.89,9.47a6,6,0,1,0-1.42,1.42l4.82,4.82a1,1,0,0,0,1.42,0A1,1,0,0,0,15.71,14.29ZM6,10a4,4,0,1,1,4-4A4,4,0,0,1,6,10Z"/>
-                      </svg>
-                    </button>
-                  </div>
-              </div>
-            </React.Fragment>
-          </HeaderNavigation>
-      */ }
       { user &&
-          <HeaderIdentity username={user.user_name} onLogout={signOutRequest}>
-            <a href="/me">Profile</a>
-          </HeaderIdentity>
+        <HeaderNavigation>
+          <a style={fixNavLinkAlignment} href="/units">Units</a>
+          <a style={fixNavLinkAlignment} href="/departments">Departments</a>
+          <SearchForm onSubmit={submitSearch} />
+        </HeaderNavigation>
+      }
+      { user &&
+        <HeaderIdentity username={user.user_name} onLogout={signOutRequest}>
+          <a href="/me">Profile</a>
+        </HeaderIdentity>
       }
       { !user &&
         <HeaderNavigation>
@@ -57,10 +45,16 @@ const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest,
         </HeaderNavigation>
       }
     </Header>
-    <main id="main-content" className="rvt-m-top-xl rvt-m-left-xxl-md-up rvt-m-right-xxl-md-up rvt-m-bottom-xxl" style={{ flex: 1 }}>
-      { children }
+    <main id="main-content" className="rvt-m-top-xl rvt-m-bottom-xxl" >
+      <Container>
+        { children }
+      </Container>
     </main>
-    <Footer />
+    <div style={{height:59}}>&nbsp;</div>
+    </div>
+    <div style={{height:59}}>
+      <Footer />
+    </div>
   </>
 );
 
@@ -76,7 +70,7 @@ const mapStateToProps = ({ auth }: IApplicationState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
   signInRequest: () => dispatch(Auth.signInRequest()),
   signOutRequest: () => dispatch(Auth.signOutRequest()),
-  // simpleSearch: () => dispatch(simpleSearchFetchRequest())
+  submitSearch: () => dispatch(Search.submit())
 })
 
 // Now let's connect our component!

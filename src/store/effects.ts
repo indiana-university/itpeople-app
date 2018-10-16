@@ -1,13 +1,13 @@
 import { NotAuthorizedError } from "../components/errors";
 
 const clearAuthToken = () =>
-    sessionStorage.removeItem('authToken')
+    localStorage.removeItem('authToken')
 
 const getAuthToken = () => 
-    sessionStorage.getItem("authToken")
+    localStorage.getItem("authToken")
 
 const setAuthToken = (token: string) => 
-    sessionStorage.setItem('authToken', token)
+    localStorage.setItem('authToken', token)
 
 const redirectToLogin = () =>
     window.location.assign(`${process.env.REACT_APP_OAUTH2_AUTH_URL}?response_type=code&client_id=${process.env.REACT_APP_OAUTH2_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_WEB_URL}/signin`)

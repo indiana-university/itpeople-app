@@ -14,7 +14,7 @@ import { IApplicationState, initialState, rootReducer, rootSaga } from './store'
 // Otherwise, return the default initial state.
 const loadState = () : IApplicationState  => {
   try {
-    const serializedState = sessionStorage.getItem('state')
+    const serializedState = localStorage.getItem('state')
     if (serializedState) {
       console.log("Initializing state from session storage");
       return JSON.parse(serializedState)
@@ -32,7 +32,7 @@ const loadState = () : IApplicationState  => {
 const saveState = (state: IApplicationState) => {
   try {
     const serializedState = JSON.stringify(state)
-    sessionStorage.setItem('state', serializedState)
+    localStorage.setItem('state', serializedState)
   } catch (err) {
     // Ignore write errors
   }
