@@ -12,7 +12,7 @@ const Unit: React.SFC<IUnitFetchResult> =
 
         return (
             <>
-            <p><a href="{props.unit.url}">Unit Website</a></p>
+            <p><a href={props.unit.url}>Unit Website</a></p>
             <Row>
                 <Col lg={6}>
                     <h2 className="rvt-ts-26 rvt-m-top-lg">Unit Members</h2>
