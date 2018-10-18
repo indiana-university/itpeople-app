@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { List, Panel } from "rivet-react";
-import { IFetchResult } from '../store/units';
+import { IUnitList } from '../store/units';
 
-const Units: React.SFC<IFetchResult> =
+const Units: React.SFC<IUnitList> =
     (props) => {
         console.log("props",props)
         return (

@@ -8,7 +8,7 @@ export const enum UnitActionTypes {
     UNIT_FETCH_ERROR = '@@unit/FETCH_ERROR',
 }
 
-export interface IFetchRequest {
+export interface IUnitRequest {
     id: string
 }
 
@@ -19,21 +19,21 @@ export interface IUrl {
 export interface IMember extends IEntity, IRole {}
 export interface IWebEntity extends IEntity, IUrl {}
 
-export interface IUnitFetchResult {
+export interface IUnitProfile {
     unit: IWebEntity,
     members: IMember[],
     supportedDepartments: IEntity[]
 }
 
-export interface IState extends IApiState<IFetchRequest, IUnitFetchResult> { 
+export interface IState extends IApiState<IUnitRequest, IUnitProfile> { 
 }
 //#endregion
 
 //#region ACTIONS
 import { action } from 'typesafe-actions'
 
-const fetchRequest = (request: IFetchRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request)
-const fetchSuccess = (data: IUnitFetchResult) => action(UnitActionTypes.UNIT_FETCH_SUCCESS, data)
+const fetchRequest = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request)
+const fetchSuccess = (data: IUnitProfile) => action(UnitActionTypes.UNIT_FETCH_SUCCESS, data)
 const fetchError = (error: string) => action(UnitActionTypes.UNIT_FETCH_ERROR, error)
 //#endregion
 
@@ -63,33 +63,14 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 
 //#region SAGA
-import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
-import { NotAuthorizedError } from '../components/errors';
-import { signInRequest } from './auth';
-import { callApiWithAuth } from './effects'
+import { all, fork, select, takeEvery } from 'redux-saga/effects'
+import { httpGet } from './effects'
 import { IApplicationState } from './index';
 
-const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
-
 function* handleFetch() {
-  try {
-    const state = (yield select<IApplicationState>((s) => s.unit.request)) as IFetchRequest
-    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, `/units/${state.id}`)
-    if (response.errors) {
-      yield put(fetchError(response.errors))
-    } else {
-      yield put(fetchSuccess(response))
-    }
-  } catch (err) {
-    if (err instanceof NotAuthorizedError){
-      yield put(signInRequest())
-    }
-    else if (err instanceof Error) {
-      yield put(fetchError(err.stack!))
-    } else {
-      yield put(fetchError('An unknown error occured.'))
-    }
-  }
+    const state = (yield select<IApplicationState>((s) => s.unit.request)) as IUnitRequest
+    const path = `/units/${state.id}`
+    yield httpGet<IUnitProfile>(path, fetchSuccess, fetchError)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action

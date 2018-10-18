@@ -59,33 +59,15 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 import { push } from 'react-router-redux';
-import { all, call, fork, put, select, takeEvery,  } from 'redux-saga/effects'
-import { NotAuthorizedError } from '../components/errors';
-import { signInRequest } from './auth';
-import { callApiWithAuth } from './effects'
+import { all, fork, put, select, takeEvery,  } from 'redux-saga/effects'
+import { httpGet } from './effects'
 import { IApplicationState } from './index';
-
-const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
+import { IUnitList } from './units';
 
 function* handleFetch() {
-  try {
     const state = (yield select<IApplicationState>((s) => s.searchSimple.request)) as ISimpleSearchRequest
-    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, `/search?term=${state.term}`)
-    if (response.errors) {
-      yield put(fetchError(response.errors))
-    } else {
-      yield put(fetchSuccess(response))
-    }
-  } catch (err) {
-    if (err instanceof NotAuthorizedError){
-      yield put(signInRequest())
-    }
-    else if (err instanceof Error) {
-      yield put(fetchError(err.stack!))
-    } else {
-      yield put(fetchError('An unknown error occured.'))
-    }
-  }
+    const path = `/search?term=${state.term}`
+    yield httpGet<IUnitList>(path, fetchSuccess, fetchError)
 }
 
 function* handleSubmit() {

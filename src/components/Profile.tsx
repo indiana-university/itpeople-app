@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Checkbox, Col, List, Panel, Row, Table } from "rivet-react";
-import { IProfile } from "../store/profile";
+import { IUserProfile } from "../store/profile";
 
 const headerCell = {
     "width": 175,
@@ -20,7 +20,7 @@ const has = (vals: string, val: string) : boolean =>
     vals.toString().includes(val)
 
 
-const Profile : React.SFC<IProfile> = 
+const Profile : React.SFC<IUserProfile> = 
 (props) => (
         <>
             <div className="rvt-ts-26">{props.user.position}</div>

@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Col, List, Panel, Row } from "rivet-react";
-import { IUnitFetchResult } from "../store/unit";
+import { IUnitProfile } from "../store/unit";
 
-const Unit: React.SFC<IUnitFetchResult> =
+const Unit: React.SFC<IUnitProfile> =
     (props) => {
         
         const admins = props.members.filter(m => m.role === "Admin")

@@ -49,7 +49,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
-  fetchRequest: (request: org.IFetchRequest) => dispatch(org.fetchRequest(request))
+  fetchRequest: (request: org.IDepartmentRequest) => dispatch(org.fetchRequest(request))
 })
   
 // Now let's connect our component!
