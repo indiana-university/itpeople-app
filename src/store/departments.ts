@@ -8,18 +8,18 @@ export const enum DepartmentsActionTypes {
     DEPARTMENTS_FETCH_ERROR = '@@departments/FETCH_ERROR',
 }
 
-export interface IFetchResult {
+export interface IDepartmentList {
     departments: IEntity[]
 }
 
-export interface IState extends IApiState<{}, IFetchResult> {}
+export interface IState extends IApiState<{}, IDepartmentList> {}
 //#endregion
 
 //#region ACTIONS
 import { action } from 'typesafe-actions'
 
 const fetchRequest = () => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_REQUEST)
-const fetchSuccess = (data: IFetchResult) => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_SUCCESS, data)
+const fetchSuccess = (data: IDepartmentList) => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_SUCCESS, data)
 const fetchError = (error: string) => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_ERROR, error)
 //#endregion
 

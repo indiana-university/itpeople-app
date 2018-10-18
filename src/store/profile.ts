@@ -10,7 +10,7 @@ export const enum ProfileActionTypes {
     PROFILE_UPDATE_ERROR = '@@profile/PROFILE_UPDATE_ERROR',
 }
 
-export interface IFetchRequest {
+export interface IUserRequest {
     id: number,
 }
 
@@ -39,23 +39,23 @@ export interface IUser extends IEntity, IRole, IUpdateRequest {
   tools: string
 }
 
-export interface IProfile {
+export interface IUserProfile {
     user: IUser,
     unitMemberships: IEntity[],
     department: IEntity,
 }
 
-export interface IState extends IApiState<IFetchRequest, IProfile> { 
+export interface IState extends IApiState<IUserRequest, IUserProfile> { 
 }
 //#endregion
 
 //#region ACTIONS
 import { action } from 'typesafe-actions'
-const fetchRequest = (request: IFetchRequest) => action(ProfileActionTypes.PROFILE_FETCH_REQUEST, request)
-const fetchSuccess = (data: IProfile) => action(ProfileActionTypes.PROFILE_FETCH_SUCCESS, data)
+const fetchRequest = (request: IUserRequest) => action(ProfileActionTypes.PROFILE_FETCH_REQUEST, request)
+const fetchSuccess = (data: IUserProfile) => action(ProfileActionTypes.PROFILE_FETCH_SUCCESS, data)
 const fetchError = (error: string) => action(ProfileActionTypes.PROFILE_FETCH_ERROR, error)
-const updateRequest = (request: IFetchRequest) => action(ProfileActionTypes.PROFILE_UPDATE_REQUEST, request)
-const updateSuccess = (data: IProfile) => action(ProfileActionTypes.PROFILE_UPDATE_SUCCESS, data)
+const updateRequest = (request: IUserRequest) => action(ProfileActionTypes.PROFILE_UPDATE_REQUEST, request)
+const updateSuccess = (data: IUserProfile) => action(ProfileActionTypes.PROFILE_UPDATE_SUCCESS, data)
 const updateError = (error: string) => action(ProfileActionTypes.PROFILE_UPDATE_ERROR, error)
 //#endregion
 

@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Col, List, Panel, Row } from "rivet-react";
-import { IFetchResult } from "../store/department";
+import { IDepartmentProfile } from "../store/department";
 
-const Department: React.SFC<IFetchResult> =
+const Department: React.SFC<IDepartmentProfile> =
     (props) => (
         <Row>
             {props.members.length > 0 &&

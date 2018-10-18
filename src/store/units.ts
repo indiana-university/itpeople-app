@@ -8,11 +8,11 @@ export const enum UnitsActionTypes {
     UNITS_FETCH_ERROR = '@@units/FETCH_ERROR',
 }
 
-export interface IFetchResult {
+export interface IUnitList {
     units: IEntity[]
 }
 
-export interface IState extends IApiState<{}, IFetchResult> { 
+export interface IState extends IApiState<{}, IUnitList> { 
 }
 //#endregion
 
@@ -20,7 +20,7 @@ export interface IState extends IApiState<{}, IFetchResult> {
 import { action } from 'typesafe-actions'
 
 const fetchRequest = () => action(UnitsActionTypes.UNITS_FETCH_REQUEST)
-const fetchSuccess = (data: IFetchResult) => action(UnitsActionTypes.UNITS_FETCH_SUCCESS, data)
+const fetchSuccess = (data: IUnitList) => action(UnitsActionTypes.UNITS_FETCH_SUCCESS, data)
 const fetchError = (error: string) => action(UnitsActionTypes.UNITS_FETCH_ERROR, error)
 //#endregion
 

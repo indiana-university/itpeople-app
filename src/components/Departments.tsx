@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Panel, Table } from "rivet-react";
-import { IFetchResult } from "../store/departments";
+import { IDepartmentList } from "../store/departments";
 
-const Departments: React.SFC<IFetchResult> =
+const Departments: React.SFC<IDepartmentList> =
     (props) =>{ 
         
         console.log("departments", props)
