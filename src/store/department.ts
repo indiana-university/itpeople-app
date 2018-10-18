@@ -57,35 +57,14 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 
 //#region SAGA
-import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
-import { NotAuthorizedError } from '../components/errors';
-import { signInRequest } from './auth';
-import { callApiWithAuth } from './effects'
+import { all, fork, select, takeEvery } from 'redux-saga/effects'
+import { httpGet } from './effects'
 import { IApplicationState } from './index';
 
-const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
-
 function* handleFetch() {
-  try {
-    const state = (yield select<IApplicationState>((s) => s.org.request)) as IFetchRequest
-    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, `/departments/${state.id}`)
-    console.log ("in try block", response)
-    if (response.errors) {
-      yield put(fetchError(response.errors))
-    } else {
-      yield put(fetchSuccess(response))
-    }
-  } catch (err) {
-    console.log ("in catch block", err)
-    if (err instanceof NotAuthorizedError){
-      yield put(signInRequest())
-    }
-    else if (err instanceof Error) {
-      yield put(fetchError(err.stack!))
-    } else {
-      yield put(fetchError('An unknown error occured.'))
-    }
-  }
+    const state = (yield select<IApplicationState>((s) => s.org.request)) as IDepartmentRequest
+    const path = `/departments/${state.id}`
+    yield httpGet<IDepartmentProfile>(path, fetchSuccess, fetchError)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action

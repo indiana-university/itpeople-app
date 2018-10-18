@@ -87,63 +87,21 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 //#endregion
 
 //#region SAGAS
-import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
-import { NotAuthorizedError } from '../components/errors';
-import { signInRequest  } from './auth'
-import { callApiWithAuth } from './effects'
+import { all, fork, select, takeEvery } from 'redux-saga/effects'
+import { httpGet, httpPut } from './effects'
 import { IApplicationState } from './index'
 
-const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
-
-
 function* handleFetch() {
-  try {
-    const state = (yield select<IApplicationState>((s) => s.profile.request)) as IFetchRequest
-    console.log("state", state)
-    const path = state.id === 0 ? "/me" : `/users/${state.id}`
-    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
-    console.log ("in try block", response)
-    if (response.errors) {
-      yield put(fetchError(response.errors))
-    } else {
-      yield put(fetchSuccess(response))
-    }
-  } catch (err) {
-    console.log ("in catch block", err)
-    if (err instanceof NotAuthorizedError){
-      yield put(signInRequest())
-    }
-    else if (err instanceof Error) {
-      yield put(fetchError(err.stack!))
-    } else {
-      yield put(fetchError('An unknown error occured.'))
-    }
-  }
+  const state = (yield select<IApplicationState>((s) => s.profile.request)) as IUserRequest
+  const path = state.id === 0 ? "/me" : `/users/${state.id}`
+  yield httpGet<IUserProfile>(path, fetchSuccess, fetchError)
 }
 
 function* handleUpdate() {
-  try {
-    const form = (yield select<any>((s) => s.form.profile.values)) as IUpdateRequest
-    const req = (yield select<IApplicationState>((s) => s.profile.request)) as IFetchRequest
-    const response = yield call(callApiWithAuth, 'put', API_ENDPOINT, `/users/${req.id}`, form)
-    console.log ("in try block", response)
-    if (response.errors) {
-      yield put(fetchError(response.errors))
-    } else {
-      yield put(fetchSuccess(response))
-    }
-  } catch (err) {
-    console.log ("in catch block", err)
-    if (err instanceof NotAuthorizedError){
-      yield put(signInRequest())
-    }
-    else if (err instanceof Error) {
-      yield put(fetchError(err.stack!))
-    } else {
-      yield put(fetchError('An unknown error occured.'))
-    }
-  }
-
+  const form = (yield select<any>((s) => s.form.profile.values)) as IUpdateRequest
+  const req = (yield select<IApplicationState>((s) => s.profile.request)) as IUserRequest
+  const path = `/users/${req.id}`
+  yield httpPut<IUpdateRequest, IUserProfile>(path, form, fetchSuccess, fetchError)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action

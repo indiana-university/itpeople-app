@@ -78,7 +78,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 import * as JWT from 'jwt-decode'
 import { push } from 'react-router-redux';
 import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
-import { callApi, clearAuthToken, redirectToLogin, setAuthToken } from './effects'
+import { callApi, clearAuthToken, handleError, redirectToLogin, setAuthToken,  } from './effects'
 import { IApplicationState } from './index';
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
@@ -104,11 +104,7 @@ function* handlePostSignIn() {
     }
   } catch (err) {
     yield call(clearAuthToken)
-    if (err instanceof Error) {
-      yield put(postSignInError(err.stack!))
-    } else {
-      yield put(postSignInError('An unknown error occured.'))
-    }
+    yield handleError(err, postSignInError)
   }
 }
 
