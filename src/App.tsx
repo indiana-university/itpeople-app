@@ -5,8 +5,8 @@ import DepartmentsContainer from './components/Departments/Container';
 import Home from './components/Home';
 import Page from './components/layout/Page';
 import ProfileContainer from './components/Profile/Container';
+import SearchContainer from "./components/Search/Container";
 import Signin from './components/Signin';
-import SimpleSearchContainer from "./components/SimpleSearchContainer";
 import UnitContainer from "./components/UnitContainer";
 import UnitsContainer from "./components/UnitsContainer";
 
@@ -17,7 +17,7 @@ const App : React.SFC = () => (
       <Route path="/signin" component={Signin} />
       <Route path="/profiles/:id" component={ProfileContainer} /> 
       <Route path="/me" component={ProfileContainer} /> 
-      <Route path="/search" component={SimpleSearchContainer} /> 
+      <Route path="/search" component={SearchContainer} /> 
       <Route path="/departments/:id" component={DepartmentContainer} /> 
       <Route path="/departments" component={DepartmentsContainer} /> 
       <Route path="/units/:id" component={UnitContainer} /> 

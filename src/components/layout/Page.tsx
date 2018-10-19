@@ -4,7 +4,7 @@ import { Dispatch } from 'redux'
 import { Container, Footer, Header, HeaderIdentity, HeaderNavigation } from 'rivet-react';
 import { IApplicationState  } from '../../store'
 import * as Auth from '../../store/auth'
-import * as Search from '../../store/searchSimple'
+import * as Search from '../Search/store'
 import SearchForm from './SearchForm';
 
 export interface IPageProps {

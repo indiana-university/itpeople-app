@@ -5,8 +5,8 @@ import { all, fork } from 'redux-saga/effects'
 import * as Department from "../components/Department/store";
 import * as Departments from "../components/Departments/store";
 import * as Profile from '../components/Profile/store'
+import * as SearchSimple from '../components/Search/store'
 import * as Auth from './auth'
-import * as SearchSimple from './searchSimple'
 import * as Unit from "./unit";
 import * as Units from "./units";
 

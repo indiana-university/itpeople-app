@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Col, List, Panel, Row } from "rivet-react";
-import { ISimpleSearchResult } from "../store/searchSimple";
+import { ISimpleSearchResult } from "./store";
 
-const SimpleSearch: React.SFC<ISimpleSearchResult> =
+const Presentation: React.SFC<ISimpleSearchResult> =
     (props) => (
         <Row>
             {props.users.length > 0 &&
@@ -37,4 +37,4 @@ const SimpleSearch: React.SFC<ISimpleSearchResult> =
             }
         </Row>
     )
-export default SimpleSearch
+export default Presentation

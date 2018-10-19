@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Field,InjectedFormProps, reduxForm } from 'redux-form'
 import { Form } from "rivet-react";
-import * as Search from "../../store/searchSimple"
+import * as Search from "../Search/store"
 
 interface IProfileFormProps {
     onSubmit: typeof Search.submit
