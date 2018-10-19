@@ -36,9 +36,8 @@ class Container extends React.Component<IState & IContainerProps & IDispatchProp
     }
 }
 
-export const mapStateToProps = (state: IApplicationState) => ({
-    ...state.department
-})
+export const mapStateToProps = (state: IApplicationState) => 
+    state.department
     
 export const mapDispatchToProps = (dispatch: Dispatch) : IDispatchProps => ({
     fetchRequest: (request: IDepartmentRequest) => dispatch(fetchRequest(request))

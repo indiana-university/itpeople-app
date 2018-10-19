@@ -30,9 +30,8 @@ class Container extends React.Component<IState & IDispatchProps>{
     }
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
-  ...state.departments
-})
+const mapStateToProps = (state: IApplicationState) => 
+    state.departments
   
 const mapDispatchToProps = (dispatch: Dispatch) : IDispatchProps => ({
   fetchRequest: () => dispatch(fetchRequest())

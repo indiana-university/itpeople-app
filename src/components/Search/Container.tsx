@@ -54,9 +54,8 @@ class Container extends React.Component<ISimpleSearchContainerProps>{
     }
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
-  ...state.searchSimple
-})
+const mapStateToProps = (state: IApplicationState) => 
+    state.searchSimple
   
 const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
   searchRequest: (request: ISimpleSearchRequest) => dispatch(fetchRequest(request))

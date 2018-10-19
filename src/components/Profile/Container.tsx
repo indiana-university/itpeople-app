@@ -51,9 +51,8 @@ class Container extends React.Component<IState & IProfileProps & IPropsFromDispa
     }
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
-    ...state.profile
-})
+const mapStateToProps = (state: IApplicationState) => 
+    state.profile
   
 const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
     profileFetchRequest: (request: IUserRequest) => dispatch(fetchRequest(request)),
