@@ -35,7 +35,7 @@ class DepartmentsContainer extends React.Component<orgs.IState & IPropsFromDispa
 // Although if necessary, you can always include multiple contexts. Just make sure to
 // separate them from each other to prevent prop conflicts.
 const mapStateToProps = (state: IApplicationState) => ({
-  ...state.orgs
+  ...state.departments
 })
   
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.

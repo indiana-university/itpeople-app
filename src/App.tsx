@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import DepartmentContainer from './components/DepartmentContainer';
+import DepartmentContainer from './components/Department/Container';
 import DepartmentsContainer from './components/DepartmentsContainer';
 import Home from './components/Home';
 import Page from './components/layout/Page';

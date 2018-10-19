@@ -2,8 +2,8 @@ import { Action, AnyAction, combineReducers, Dispatch } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 import { all, fork } from 'redux-saga/effects'
 
+import * as Department from "../components/Department/store";
 import * as Auth from './auth'
-import * as Department from "./department";
 import * as Departments from "./departments";
 import * as Profile from './profile'
 import * as SearchSimple from './searchSimple'
@@ -17,16 +17,16 @@ export interface IApplicationState {
   searchSimple: SearchSimple.IState,
   unit: Unit.IState,
   units: Units.IState,
-  org: Department.IState,
-  orgs: Departments.IState,
+  department: Department.IState,
+  departments: Departments.IState,
   form: any
 }
 
 export const initialState : IApplicationState = {
   auth: Auth.initialState,
   form: {},
-  org: Department.initialState,
-  orgs: Departments.initialState,
+  department: Department.initialState,
+  departments: Departments.initialState,
   profile: Profile.initialState,
   searchSimple: SearchSimple.initialState,
   unit: Unit.initialState,
@@ -44,8 +44,8 @@ export interface IConnectedReduxProps<A extends Action = AnyAction> {
 export const rootReducer = combineReducers<IApplicationState>({
   auth: Auth.reducer,
   form: formReducer,
-  org: Department.reducer,
-  orgs: Departments.reducer,
+  department: Department.reducer,
+  departments: Departments.reducer,
   profile: Profile.reducer,
   searchSimple: SearchSimple.reducer,
   unit: Unit.reducer,
