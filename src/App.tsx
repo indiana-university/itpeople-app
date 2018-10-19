@@ -4,7 +4,7 @@ import DepartmentContainer from './components/Department/Container';
 import DepartmentsContainer from './components/Departments/Container';
 import Home from './components/Home';
 import Page from './components/layout/Page';
-import ProfileContainer from './components/ProfileContainer';
+import ProfileContainer from './components/Profile/Container';
 import Signin from './components/Signin';
 import SimpleSearchContainer from "./components/SimpleSearchContainer";
 import UnitContainer from "./components/UnitContainer";

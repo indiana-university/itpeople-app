@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IApplicationState } from '../store';
-import * as profile from '../store/profile';
-import PageTitle from './layout/PageTitle';
+import { IApplicationState } from '../../store';
+import PageTitle from '../layout/PageTitle';
 // import ProfileForm from './ProfileForm';
-import Profile from './Profile';
+import Profile from './Presentation';
+import { fetchRequest, IState, IUserRequest, updateRequest } from './store';
 
 interface IProfileProps {
     match: any,
@@ -13,8 +13,8 @@ interface IProfileProps {
 }
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface IPropsFromDispatch {
-    profileFetchRequest: typeof profile.fetchRequest,
-    profileUpdateRequest: typeof profile.updateRequest
+    profileFetchRequest: typeof fetchRequest,
+    profileUpdateRequest: typeof updateRequest
 }
 
 const prettyPrintName = (name: string) => {
@@ -23,7 +23,7 @@ const prettyPrintName = (name: string) => {
 }
 
 // tslint:disable-next-line:max-classes-per-file
-class ProfileContainer extends React.Component<profile.IState & IProfileProps & IPropsFromDispatch>{
+class Container extends React.Component<IState & IProfileProps & IPropsFromDispatch>{
 
     public isMyProfile() {
         return this.props.match.params.id === undefined
@@ -63,8 +63,8 @@ const mapStateToProps = (state: IApplicationState) => ({
   // mapDispatchToProps is especially useful for constraining our actions to the connected component.
   // You can access these via `this.props`.
   const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
-    profileFetchRequest: (request: profile.IUserRequest) => dispatch(profile.fetchRequest(request)),
-    profileUpdateRequest: (request: profile.IUserRequest) => dispatch(profile.updateRequest(request))
+    profileFetchRequest: (request: IUserRequest) => dispatch(fetchRequest(request)),
+    profileUpdateRequest: (request: IUserRequest) => dispatch(updateRequest(request))
   })
   
 // Now let's connect our component!
@@ -72,4 +72,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(ProfileContainer)
+  )(Container)
