@@ -1,11 +1,9 @@
 import * as React from 'react'
 import { Panel, Table } from "rivet-react";
-import { IDepartmentList } from "../store/departments";
+import { IDepartmentList } from "./store";
 
 const Departments: React.SFC<IDepartmentList> =
     (props) =>{ 
-        
-        console.log("departments", props)
         return (
         <>
             <Panel margin={{ top: "xs" }}>

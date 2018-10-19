@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IApplicationState } from '../store';
-import * as orgs from '../store/departments';
-import Departments from './Departments';
-import PageTitle from './layout/PageTitle';
+import { IApplicationState } from '../../store';
+import PageTitle from '../layout/PageTitle';
+import Presentation from './Presentation';
+import { fetchRequest, IState } from './store';
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
-interface IPropsFromDispatch {
-    fetchRequest: typeof orgs.fetchRequest
+interface IDispatchProps {
+    fetchRequest: typeof fetchRequest
 }
 
 // tslint:disable-next-line:max-classes-per-file
-class DepartmentsContainer extends React.Component<orgs.IState & IPropsFromDispatch>{
+class Container extends React.Component<IState & IDispatchProps>{
     public componentDidMount() {
         this.props.fetchRequest()
     }
@@ -24,7 +24,7 @@ class DepartmentsContainer extends React.Component<orgs.IState & IPropsFromDispa
                 {/* { this.props.loading && 
                     <p>Loading...</p>} */}
                 { this.props.data &&  
-                    <Departments {...this.props.data} /> }
+                    <Presentation {...this.props.data} /> }
                 { this.props.error && 
                     <p>{this.props.error}</p> }
             </>
@@ -40,8 +40,8 @@ const mapStateToProps = (state: IApplicationState) => ({
   
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
-const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
-  fetchRequest: () => dispatch(orgs.fetchRequest())
+const mapDispatchToProps = (dispatch: Dispatch) : IDispatchProps => ({
+  fetchRequest: () => dispatch(fetchRequest())
 })
   
 // Now let's connect our component!
@@ -49,4 +49,4 @@ const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(DepartmentsContainer)
+  )(Container)

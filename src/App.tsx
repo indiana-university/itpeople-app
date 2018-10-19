@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import DepartmentContainer from './components/Department/Container';
-import DepartmentsContainer from './components/DepartmentsContainer';
+import DepartmentsContainer from './components/Departments/Container';
 import Home from './components/Home';
 import Page from './components/layout/Page';
 import ProfileContainer from './components/ProfileContainer';

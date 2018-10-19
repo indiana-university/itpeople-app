@@ -26,14 +26,6 @@ export interface IDepartmentProfile {
 
 export interface IState extends IApiState<IDepartmentRequest, IDepartmentProfile> { 
 }
-
-export interface IContainerProps {
-  match: any
-}
-
-export interface IDispatchProps {
-  fetchRequest: typeof fetchRequest
-}
 //#endregion
 
 

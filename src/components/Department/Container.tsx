@@ -4,7 +4,15 @@ import { Dispatch } from 'redux';
 import { IApplicationState } from '../../store/index';
 import PageTitle from '../layout/PageTitle';
 import Department from './Presentation';
-import { fetchRequest, IContainerProps, IDepartmentRequest, IDispatchProps, IState} from './store';
+import { fetchRequest, IDepartmentRequest, IState} from './store';
+
+interface IContainerProps {
+    match: any
+}
+  
+interface IDispatchProps {
+    fetchRequest: typeof fetchRequest
+}
 
 class Container extends React.Component<IState & IContainerProps & IDispatchProps>{
     public componentDidMount() {

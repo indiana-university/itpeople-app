@@ -3,8 +3,8 @@ import { reducer as formReducer } from 'redux-form'
 import { all, fork } from 'redux-saga/effects'
 
 import * as Department from "../components/Department/store";
+import * as Departments from "../components/Departments/store";
 import * as Auth from './auth'
-import * as Departments from "./departments";
 import * as Profile from './profile'
 import * as SearchSimple from './searchSimple'
 import * as Unit from "./unit";
