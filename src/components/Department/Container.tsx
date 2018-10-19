@@ -36,17 +36,13 @@ class Container extends React.Component<IState & IContainerProps & IDispatchProp
     }
 }
 
-// Although if necessary, you can always include multiple contexts. Just make sure to
-// separate them from each other to prevent prop conflicts.
 export const mapStateToProps = (state: IApplicationState) => ({
     ...state.department
-  })
+})
     
-  // mapDispatchToProps is especially useful for constraining our actions to the connected component.
-  // You can access these via `this.props`.
-  export const mapDispatchToProps = (dispatch: Dispatch) : IDispatchProps => ({
+export const mapDispatchToProps = (dispatch: Dispatch) : IDispatchProps => ({
     fetchRequest: (request: IDepartmentRequest) => dispatch(fetchRequest(request))
-  })
+})
   
 export default connect(
     mapStateToProps,

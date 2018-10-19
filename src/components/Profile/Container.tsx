@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IApplicationState } from '../../store';
 import PageTitle from '../layout/PageTitle';
-// import ProfileForm from './ProfileForm';
 import Profile from './Presentation';
 import { fetchRequest, IState, IUserRequest, updateRequest } from './store';
 
@@ -11,7 +10,6 @@ interface IProfileProps {
     match: any,
     path: string
 }
-// We can use `typeof` here to map our dispatch types to the props, like so.
 interface IPropsFromDispatch {
     profileFetchRequest: typeof fetchRequest,
     profileUpdateRequest: typeof updateRequest
@@ -22,7 +20,6 @@ const prettyPrintName = (name: string) => {
     return `${n[1]} ${n[0]}`
 }
 
-// tslint:disable-next-line:max-classes-per-file
 class Container extends React.Component<IState & IProfileProps & IPropsFromDispatch>{
 
     public isMyProfile() {
@@ -54,21 +51,15 @@ class Container extends React.Component<IState & IProfileProps & IPropsFromDispa
     }
 }
 
-// Although if necessary, you can always include multiple contexts. Just make sure to
-// separate them from each other to prevent prop conflicts.
 const mapStateToProps = (state: IApplicationState) => ({
     ...state.profile
-  })
+})
   
-  // mapDispatchToProps is especially useful for constraining our actions to the connected component.
-  // You can access these via `this.props`.
-  const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
     profileFetchRequest: (request: IUserRequest) => dispatch(fetchRequest(request)),
     profileUpdateRequest: (request: IUserRequest) => dispatch(updateRequest(request))
-  })
+})
   
-// Now let's connect our component!
-// With redux v4's improved typings, we can finally omit generics here.
 export default connect(
     mapStateToProps,
     mapDispatchToProps
