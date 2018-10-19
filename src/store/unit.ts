@@ -1,5 +1,4 @@
-import { IApiState } from './common'
-import { IEntity, IRole } from './profile';
+import { IApiState, IEntity, IRole } from './common'
 
 //#region TYPES
 export const enum UnitActionTypes {

@@ -1,5 +1,4 @@
-import { IApiState } from '../../store/common'
-import { IEntity } from '../../store/profile';
+import { IApiState, IEntity } from '../../store/common'
 
 //#region TYPES
 export const enum DepartmentsActionTypes {

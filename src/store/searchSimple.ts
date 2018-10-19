@@ -1,5 +1,4 @@
-import { IApiState } from './common'
-import { IEntity } from './profile';
+import { IApiState, IEntity } from './common'
 
 //#region TYPES
 export const enum SearchActionTypes {

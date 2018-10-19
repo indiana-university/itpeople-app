@@ -8,6 +8,17 @@ export interface IApiState2<TResponse> {
     readonly loading: boolean
 }
 
+export interface IEntity {
+    id: number,
+    name: string,
+    description?: string
+}
+
+export interface IRole {
+    role: string
+}
+  
+
 // Declare state types with `readonly` modifier to get compile time immutability.
 // https://github.com/piotrwitek/react-redux-typescript-guide#state-with-type-level-immutability
 export interface IApiState<TRequest, TResponse> extends IApiState2<TResponse> {
