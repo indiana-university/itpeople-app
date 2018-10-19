@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IApplicationState } from '../../store';
 import PageTitle from '../layout/PageTitle';
-import Presentation from './Presentation';
+import Departments from './Presentation';
 import { fetchRequest, IState } from './store';
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
@@ -24,7 +24,7 @@ class Container extends React.Component<IState & IDispatchProps>{
                 {/* { this.props.loading && 
                     <p>Loading...</p>} */}
                 { this.props.data &&  
-                    <Presentation {...this.props.data} /> }
+                    <Departments {...this.props.data} /> }
                 { this.props.error && 
                     <p>{this.props.error}</p> }
             </>
