@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Col, List, Panel, Row } from "rivet-react";
-import { IUnitProfile } from "../store/unit";
+import { IUnitProfile } from "./store";
 
-const Unit: React.SFC<IUnitProfile> =
+const Presentation: React.SFC<IUnitProfile> =
     (props) => {
         
         const admins = props.members.filter(m => m.role === "Admin")
@@ -60,4 +60,4 @@ const Unit: React.SFC<IUnitProfile> =
             </Row>
             </>
         )}
-export default Unit
+export default Presentation
