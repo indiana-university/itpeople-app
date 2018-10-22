@@ -6,7 +6,7 @@ import Home from './components/Home';
 import Page from './components/layout/Page';
 import ProfileContainer from './components/Profile/Container';
 import SearchContainer from "./components/Search/Container";
-import Signin from './components/Signin';
+import Signin from './components/SignIn/Component';
 import UnitContainer from "./components/Unit/Container";
 import UnitsContainer from "./components/Units/Container";
 

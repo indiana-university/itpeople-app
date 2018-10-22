@@ -4,20 +4,20 @@ import * as React from 'react';
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
-import { IApplicationState  } from '../store'
-import * as Auth from '../store/auth'
+import { IApplicationState  } from '../../store'
+import * as Auth from './store'
 
 interface ILocationProps {
     search: string;
 }
-interface ISigninProps {
+interface IComponentProps {
     location: ILocationProps
 }
-interface IPropsFromDispatch {
+interface IDispatchProps {
     postSignInRequest: typeof Auth.postSignInRequest
 }
 
-class Signin extends React.Component<Auth.IState & ISigninProps & IPropsFromDispatch> {
+class Component extends React.Component<Auth.IState & IComponentProps & IDispatchProps> {
 
     public componentDidMount() {
         const queryParam = queryString.parse(this.props.location.search)
@@ -45,7 +45,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     postSignInRequest: (request:Auth.IAuthRequest) => dispatch(Auth.postSignInRequest(request))
 })
   
-export default connect<Auth.IState, IPropsFromDispatch>(
+export default connect<Auth.IState, IDispatchProps>(
     mapStateToProps,
     mapDispatchToProps
-  )(Signin)
+  )(Component)

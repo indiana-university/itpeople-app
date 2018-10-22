@@ -6,9 +6,9 @@ import * as Department from "../components/Department/store";
 import * as Departments from "../components/Departments/store";
 import * as Profile from '../components/Profile/store'
 import * as SearchSimple from '../components/Search/store'
+import * as Auth from '../components/SignIn/store'
 import * as Unit from "../components/Unit/store";
 import * as Units from "../components/Units/store";
-import * as Auth from './auth'
 
 // The top-level state object
 export interface IApplicationState {

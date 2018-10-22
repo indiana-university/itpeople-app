@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { Container, Footer, Header, HeaderIdentity, HeaderNavigation } from 'rivet-react';
 import { IApplicationState  } from '../../store'
-import * as Auth from '../../store/auth'
 import * as Search from '../Search/store'
+import * as Auth from '../SignIn/store'
 import SearchForm from './SearchForm';
 
 export interface IPageProps {
