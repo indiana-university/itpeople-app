@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IApplicationState } from '../store';
-import * as units from '../store/units';
-import PageTitle from './layout/PageTitle';
-import Units from './Units';
+import PageTitle from '../layout/PageTitle';
+import { IApplicationState } from '../types';
+import Units from './Presentation';
+import * as units from './store';
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
-interface IPropsFromDispatch {
+interface IDispatchProps {
     fetchRequest: typeof units.fetchRequest
 }
 
 // tslint:disable-next-line:max-classes-per-file
-class UnitsContainer extends React.Component<units.IState & IPropsFromDispatch>{
+class Container extends React.Component<units.IState & IDispatchProps>{
     public componentDidMount() {
         this.props.fetchRequest()
     }
@@ -40,7 +40,7 @@ const mapStateToProps = (state: IApplicationState) => ({
   
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
-const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch) : IDispatchProps => ({
   fetchRequest: () => dispatch(units.fetchRequest())
 })
   
@@ -49,4 +49,4 @@ const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(UnitsContainer)
+  )(Container)

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IApiState2 } from "../store/common";
+import { IApiState2 } from "./types";
 
 export const withLoading = <PData, PProps>(Component: React.SFC<PData & PProps>) =>
     class WithLoading extends React.Component<IApiState2<PData> & PProps> {

@@ -1,5 +1,5 @@
 //#region TYPES
-import { IApiState } from './common'
+import { IApiState, IApplicationState, IEntity, IRole } from '../types'
 
 export const enum ProfileActionTypes {
     PROFILE_FETCH_REQUEST = '@@profile/PROFILE_FETCH_REQUEST',
@@ -12,16 +12,6 @@ export const enum ProfileActionTypes {
 
 export interface IUserRequest {
     id: number,
-}
-
-export interface IEntity {
-  id: number,
-  name: string,
-  description?: string
-}
-
-export interface IRole {
-  role: string
 }
 
 export interface IUpdateRequest {
@@ -51,20 +41,20 @@ export interface IState extends IApiState<IUserRequest, IUserProfile> {
 
 //#region ACTIONS
 import { action } from 'typesafe-actions'
-const fetchRequest = (request: IUserRequest) => action(ProfileActionTypes.PROFILE_FETCH_REQUEST, request)
-const fetchSuccess = (data: IUserProfile) => action(ProfileActionTypes.PROFILE_FETCH_SUCCESS, data)
-const fetchError = (error: string) => action(ProfileActionTypes.PROFILE_FETCH_ERROR, error)
-const updateRequest = (request: IUserRequest) => action(ProfileActionTypes.PROFILE_UPDATE_REQUEST, request)
-const updateSuccess = (data: IUserProfile) => action(ProfileActionTypes.PROFILE_UPDATE_SUCCESS, data)
-const updateError = (error: string) => action(ProfileActionTypes.PROFILE_UPDATE_ERROR, error)
+export const fetchRequest = (request: IUserRequest) => action(ProfileActionTypes.PROFILE_FETCH_REQUEST, request)
+export const fetchSuccess = (data: IUserProfile) => action(ProfileActionTypes.PROFILE_FETCH_SUCCESS, data)
+export const fetchError = (error: string) => action(ProfileActionTypes.PROFILE_FETCH_ERROR, error)
+export const updateRequest = (request: IUserRequest) => action(ProfileActionTypes.PROFILE_UPDATE_REQUEST, request)
+export const updateSuccess = (data: IUserProfile) => action(ProfileActionTypes.PROFILE_UPDATE_SUCCESS, data)
+export const updateError = (error: string) => action(ProfileActionTypes.PROFILE_UPDATE_ERROR, error)
 //#endregion
 
 //#region REDUCER
 import { Reducer } from 'redux'
-import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer, PutErrorReducer, PutRequestReducer, PutSuccessReducer } from './common'
+import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer, PutErrorReducer, PutRequestReducer, PutSuccessReducer } from '../types'
 
 // Type-safe initialState!
-const initialState: IState = {
+export const initialState: IState = {
     data: undefined,
     error: undefined,
     loading: false,
@@ -73,7 +63,7 @@ const initialState: IState = {
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
 // everything will remain type-safe.
-const reducer: Reducer<IState> = (state = initialState, act) => {
+export const reducer: Reducer<IState> = (state = initialState, act) => {
   switch (act.type) {
     case ProfileActionTypes.PROFILE_FETCH_REQUEST: return FetchRequestReducer(state, act)
     case ProfileActionTypes.PROFILE_FETCH_SUCCESS: return FetchSuccessReducer(state, act)
@@ -88,8 +78,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGAS
 import { all, fork, select, takeEvery } from 'redux-saga/effects'
-import { httpGet, httpPut } from './effects'
-import { IApplicationState } from './index'
+import { httpGet, httpPut } from '../effects'
 
 function* handleFetch() {
   const state = (yield select<IApplicationState>((s) => s.profile.request)) as IUserRequest
@@ -115,19 +104,7 @@ function* watchProfileUpdate() {
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.
-function* saga() {
+export function* saga() {
   yield all([fork(watchProfileFetch), fork(watchProfileUpdate)])
 }
 //#endregion
-
-export { 
-    fetchRequest,
-    fetchError,
-    fetchSuccess,
-    updateRequest,
-    updateSuccess,
-    updateError,
-    reducer,
-    saga,
-    initialState
-  }

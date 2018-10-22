@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Col, List, Panel, Row } from "rivet-react";
-import { IDepartmentProfile } from "../store/department";
+import { IDepartmentProfile } from "./store";
 
-const Department: React.SFC<IDepartmentProfile> =
+const Presentation: React.SFC<IDepartmentProfile> =
     (props) => (
         <Row>
             {props.members.length > 0 &&
@@ -37,4 +37,4 @@ const Department: React.SFC<IDepartmentProfile> =
             }
         </Row>
     )
-export default Department
+export default Presentation
