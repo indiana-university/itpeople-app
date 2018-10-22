@@ -1,9 +1,9 @@
 import { Reducer  } from 'redux'
 import { all, fork, select, takeEvery } from 'redux-saga/effects'
 import { action } from 'typesafe-actions'
-import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer, IApiState, IEntity } from '../../store/common'
-import { httpGet } from '../../store/effects'
-import { IApplicationState } from '../../store/index';
+import { httpGet } from '../effects'
+import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../types'
+import { IApiState, IApplicationState, IEntity } from '../types'
 
 //#region TYPES
 export const enum DepartmentActionTypes {

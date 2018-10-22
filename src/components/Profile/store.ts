@@ -1,5 +1,5 @@
 //#region TYPES
-import { IApiState, IEntity, IRole } from '../../store/common'
+import { IApiState, IApplicationState, IEntity, IRole } from '../types'
 
 export const enum ProfileActionTypes {
     PROFILE_FETCH_REQUEST = '@@profile/PROFILE_FETCH_REQUEST',
@@ -51,7 +51,7 @@ export const updateError = (error: string) => action(ProfileActionTypes.PROFILE_
 
 //#region REDUCER
 import { Reducer } from 'redux'
-import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer, PutErrorReducer, PutRequestReducer, PutSuccessReducer } from '../../store/common'
+import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer, PutErrorReducer, PutRequestReducer, PutSuccessReducer } from '../types'
 
 // Type-safe initialState!
 export const initialState: IState = {
@@ -78,8 +78,7 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGAS
 import { all, fork, select, takeEvery } from 'redux-saga/effects'
-import { httpGet, httpPut } from '../../store/effects'
-import { IApplicationState } from '../../store/index'
+import { httpGet, httpPut } from '../effects'
 
 function* handleFetch() {
   const state = (yield select<IApplicationState>((s) => s.profile.request)) as IUserRequest

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IApplicationState } from '../../store';
 import PageTitle from '../layout/PageTitle';
+import { IApplicationState } from '../types';
 import Departments from './Presentation';
 import { fetchRequest, IState } from './store';
 

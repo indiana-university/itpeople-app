@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects'
 import { PayloadMetaAction } from "typesafe-actions/dist/types";
-import { NotAuthorizedError } from "../components/errors";
-import { signInRequest } from '../components/SignIn/store';
+import { NotAuthorizedError } from "./errors";
+import { signInRequest } from './SignIn/store';
 
 const clearAuthToken = () =>
     localStorage.removeItem('authToken')

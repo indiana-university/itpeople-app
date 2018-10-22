@@ -1,4 +1,4 @@
-import { IApiState, IEntity } from '../../store/common'
+import { IApiState, IEntity } from '../types'
 
 //#region TYPES
 export const enum DepartmentsActionTypes {
@@ -24,7 +24,7 @@ export const fetchError = (error: string) => action(DepartmentsActionTypes.DEPAR
 
 //#region REDUCER
 import { Reducer } from 'redux'
-import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../../store/common'
+import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../types'
 
 // Type-safe initialState!
 export const initialState: IState = {
@@ -49,7 +49,7 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 import { all, fork, takeEvery } from 'redux-saga/effects'
-import { httpGet } from '../../store/effects'
+import { httpGet } from '../effects'
 
 function* handleFetch() {
   yield httpGet<IDepartmentList>("/departments", fetchSuccess, fetchError)

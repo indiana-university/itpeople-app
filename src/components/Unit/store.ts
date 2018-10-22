@@ -1,4 +1,4 @@
-import { IApiState, IEntity, IRole } from '../../store/common'
+import { IApiState, IApplicationState, IEntity, IRole } from '../types'
 
 //#region TYPES
 export const enum UnitActionTypes {
@@ -38,7 +38,7 @@ const fetchError = (error: string) => action(UnitActionTypes.UNIT_FETCH_ERROR, e
 
 //#region REDUCER
 import { Reducer } from 'redux'
-import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../../store/common'
+import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../types'
 
 // Type-safe initialState!
 const initialState: IState = {
@@ -63,8 +63,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 import { all, fork, select, takeEvery } from 'redux-saga/effects'
-import { httpGet } from '../../store/effects'
-import { IApplicationState } from '../../store/index';
+import { httpGet } from '../effects'
 
 function* handleFetch() {
     const state = (yield select<IApplicationState>((s) => s.unit.request)) as IUnitRequest

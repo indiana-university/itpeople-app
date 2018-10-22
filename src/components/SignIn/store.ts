@@ -1,5 +1,5 @@
 //#region TYPES
-import { IApiState } from '../../store/common'
+import { IApiState, IApplicationState } from '../types'
 
 export const enum AuthActionTypes {
     SIGN_IN_REQUEST = '@@auth/SIGN_IN',
@@ -34,7 +34,7 @@ const signOutRequest = () => action(AuthActionTypes.SIGN_OUT)
 
 //#region REDUCERS
 import { Reducer } from 'redux'
-import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../../store/common'
+import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../types'
 
 // Type-safe initialState!
 const initialState: IState = {
@@ -76,8 +76,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 import * as JWT from 'jwt-decode'
 import { push } from 'react-router-redux';
 import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
-import { callApi, clearAuthToken, handleError, redirectToLogin, setAuthToken,  } from '../../store/effects'
-import { IApplicationState } from '../../store/index';
+import { callApi, clearAuthToken, handleError, redirectToLogin, setAuthToken,  } from '../effects'
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 

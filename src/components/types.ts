@@ -1,6 +1,22 @@
-import { AnyAction } from "redux";
+import * as Department from "../components/Department/store";
+import * as Departments from "../components/Departments/store";
+import * as Profile from '../components/Profile/store'
+import * as SearchSimple from '../components/Search/store'
+import * as Auth from '../components/SignIn/store'
+import * as Unit from "../components/Unit/store";
+import * as Units from "../components/Units/store";
 
-// TYPES
+// The top-level state object
+export interface IApplicationState {
+  auth: Auth.IState,
+  profile: Profile.IState,
+  searchSimple: SearchSimple.IState,
+  unit: Unit.IState,
+  units: Units.IState,
+  department: Department.IState,
+  departments: Departments.IState,
+  form: any
+}
 
 export interface IApiState2<TResponse> {
     readonly data?: TResponse
@@ -17,7 +33,6 @@ export interface IEntity {
 export interface IRole {
     role: string
 }
-  
 
 // Declare state types with `readonly` modifier to get compile time immutability.
 // https://github.com/piotrwitek/react-redux-typescript-guide#state-with-type-level-immutability
@@ -25,8 +40,8 @@ export interface IApiState<TRequest, TResponse> extends IApiState2<TResponse> {
     readonly request?: TRequest,
 }
 
-// REDUCERS
 
+import { AnyAction } from "redux";
 export const FetchRequestReducer = <TReq,TRes>(state:IApiState<TReq, TRes>, action:AnyAction) : IApiState<TReq, TRes> => {
     return { ...state, 
         data: undefined,

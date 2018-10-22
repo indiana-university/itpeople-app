@@ -1,4 +1,4 @@
-import { IApiState, IEntity } from '../../store/common'
+import { IApiState, IApplicationState, IEntity } from '../types'
 
 //#region TYPES
 export const enum SearchActionTypes {
@@ -33,7 +33,7 @@ export const fetchError = (error: string) => action(SearchActionTypes.SEARCH_SIM
 
 //#region REDUCER
 import { Reducer } from 'redux'
-import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../../store/common'
+import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../types'
 
 export const initialState: IState = {
     data: undefined,
@@ -56,8 +56,7 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
 //#region SAGA
 import { push } from 'react-router-redux';
 import { all, fork, put, select, takeEvery,  } from 'redux-saga/effects'
-import { httpGet } from '../../store/effects'
-import { IApplicationState } from '../../store/index';
+import { httpGet } from '../effects'
 import { IUnitList } from '../Units/store';
 
 function* handleFetch() {
