@@ -58,7 +58,7 @@ import { push } from 'react-router-redux';
 import { all, fork, put, select, takeEvery,  } from 'redux-saga/effects'
 import { httpGet } from '../../store/effects'
 import { IApplicationState } from '../../store/index';
-import { IUnitList } from '../../store/units';
+import { IUnitList } from '../Units/store';
 
 function* handleFetch() {
     const state = (yield select<IApplicationState>((s) => s.searchSimple.request)) as ISimpleSearchRequest

@@ -8,7 +8,7 @@ import ProfileContainer from './components/Profile/Container';
 import SearchContainer from "./components/Search/Container";
 import Signin from './components/Signin';
 import UnitContainer from "./components/Unit/Container";
-import UnitsContainer from "./components/UnitsContainer";
+import UnitsContainer from "./components/Units/Container";
 
 const App : React.SFC = () => (
   <Page>

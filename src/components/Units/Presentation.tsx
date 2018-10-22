@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { List, Panel } from "rivet-react";
-import { IUnitList } from '../store/units';
+import { IUnitList } from './store';
 
-const Units: React.SFC<IUnitList> =
+const Presentation: React.SFC<IUnitList> =
     (props) => {
         console.log("props",props)
         return (
@@ -14,4 +14,4 @@ const Units: React.SFC<IUnitList> =
             </Panel>
         </>
     )}
-export default Units
+export default Presentation

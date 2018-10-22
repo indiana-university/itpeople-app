@@ -7,8 +7,8 @@ import * as Departments from "../components/Departments/store";
 import * as Profile from '../components/Profile/store'
 import * as SearchSimple from '../components/Search/store'
 import * as Unit from "../components/Unit/store";
+import * as Units from "../components/Units/store";
 import * as Auth from './auth'
-import * as Units from "./units";
 
 // The top-level state object
 export interface IApplicationState {
