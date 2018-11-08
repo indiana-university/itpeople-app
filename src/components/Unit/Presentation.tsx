@@ -1,18 +1,18 @@
 import * as React from 'react'
 import { Col, List, Panel, Row } from "rivet-react";
-import { IUnitProfile } from "./store";
+import { ItProRole, IUnitProfile,  UitsRole } from "./store";
 
 const Presentation: React.SFC<IUnitProfile> =
     (props) => {
         
-        const admins = props.members.filter(m => m.role === "Admin")
-        const coAdmins = props.members.filter(m => m.role === "CoAdmin")
-        const pros = props.members.filter(m => m.role === "ItPro")
-        const selfs = props.members.filter(m => m.role === "SelfSupport")
+        const admins = props.members.filter(m => m.role === ItProRole.Admin || m.role === UitsRole.Leader)  
+        const coAdmins = props.members.filter(m => m.role === ItProRole.CoAdmin || m.role === UitsRole.Sublead )
+        const pros = props.members.filter(m => m.role === ItProRole.Pro || m.role === UitsRole.Member)
+        const selfs = props.members.filter(m => m.role === ItProRole.Aux || m.role === UitsRole.Related)
 
         return (
             <>
-            <p><a href={props.unit.url}>Unit Website</a></p>
+            <p><a href={props.url}>Unit Website</a></p>
             <Row>
                 <Col lg={6}>
                     <h2 className="rvt-ts-26 rvt-m-top-lg">Unit Members</h2>
@@ -24,7 +24,6 @@ const Presentation: React.SFC<IUnitProfile> =
                                     {admins.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a> (Admin)</li>))}
                                     {coAdmins.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a> (Co-Admin)</li>))}
                                 </List>
-                                
                             </>
                         }
                         {pros.length > 0 &&

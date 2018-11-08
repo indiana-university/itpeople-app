@@ -27,9 +27,7 @@ class Container extends React.Component<IState & IProfileProps & IPropsFromDispa
     }
 
     public componentDidMount() {
-        console.log(this.props.match.params)
         const id = this.isMyProfile() ? 0 : Number(this.props.match.params.id)
-        console.log(id)
         this.props.profileFetchRequest({ id })
     }
 

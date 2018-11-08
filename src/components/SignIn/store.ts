@@ -76,7 +76,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 import * as JWT from 'jwt-decode'
 import { push } from 'react-router-redux';
 import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
-import { callApi, clearAuthToken, handleError, redirectToLogin, setAuthToken,  } from '../effects'
+import { callApi, clearAuthToken, handleError, redirectToLogin, setAuthToken } from '../effects'
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 

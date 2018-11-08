@@ -1,0 +1,21 @@
+{
+    "auth": {
+        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+    },
+    "units": [
+        {
+            "id": 1, 
+            "name":"Test Unit", 
+            "url":"http://example.com",
+            "members": [
+                { "id": 1, "name":"Kenneth Jones", "percentage":100, "role": "Member", "title":"Developer" },
+                { "id": 2, "name":"Chuck Aikman", "percentage":100, "role": "Leader", "title":"Manager" }
+            ],
+            "supportedDepartments": []
+          }
+    ],
+    "comments": [
+      { "id": 1, "body": "some comment", "postId": 1 }
+    ],
+    "profile": { "name": "typicode" }
+}

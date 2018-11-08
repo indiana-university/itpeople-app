@@ -18,7 +18,6 @@ interface IDispatchProps {
 // tslint:disable-next-line:max-classes-per-file
 class Container extends React.Component<unit.IState & IContainerProps & IDispatchProps>{
     public componentDidMount() {
-        console.log(this.props.match)
         this.props.fetchRequest(this.props.match.params)
     }
 
@@ -29,7 +28,7 @@ class Container extends React.Component<unit.IState & IContainerProps & IDispatc
                     <p>Loading unit...</p>} */}
                 { this.props.data &&
                     <>
-                        <PageTitle>{this.props.data.unit.name}</PageTitle>
+                        <PageTitle>{this.props.data.name}</PageTitle>
                         <Unit {...this.props.data} />
                     </> }
                 { this.props.error && 

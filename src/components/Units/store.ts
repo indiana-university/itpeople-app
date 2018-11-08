@@ -7,11 +7,7 @@ export const enum UnitsActionTypes {
     UNITS_FETCH_ERROR = '@@units/FETCH_ERROR',
 }
 
-export interface IUnitList {
-    units: IEntity[]
-}
-
-export interface IState extends IApiState<{}, IUnitList> { 
+export interface IState extends IApiState<{}, IEntity[]> { 
 }
 //#endregion
 
@@ -19,7 +15,7 @@ export interface IState extends IApiState<{}, IUnitList> {
 import { action } from 'typesafe-actions'
 
 const fetchRequest = () => action(UnitsActionTypes.UNITS_FETCH_REQUEST)
-const fetchSuccess = (data: IUnitList) => action(UnitsActionTypes.UNITS_FETCH_SUCCESS, data)
+const fetchSuccess = (data: IEntity[]) => action(UnitsActionTypes.UNITS_FETCH_SUCCESS, data)
 const fetchError = (error: string) => action(UnitsActionTypes.UNITS_FETCH_ERROR, error)
 //#endregion
 
@@ -53,7 +49,7 @@ import { all, fork, takeEvery } from 'redux-saga/effects'
 import { httpGet } from '../effects'
 
 function* handleFetch() {
-    yield httpGet<IUnitList>('/units', fetchSuccess, fetchError)
+    yield httpGet<IEntity[]>('/units', fetchSuccess, fetchError)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action

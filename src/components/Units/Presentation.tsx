@@ -1,8 +1,12 @@
 import * as React from 'react'
 import { List, Panel } from "rivet-react";
-import { IUnitList } from './store';
+import { IEntity } from '../types';
 
-const Presentation: React.SFC<IUnitList> =
+interface IProps {
+    units: IEntity[]
+}
+
+const Presentation: React.SFC<IProps> =
     (props) => {
         console.log("props",props)
         return (
