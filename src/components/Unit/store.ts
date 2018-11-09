@@ -40,7 +40,9 @@ export interface IWebEntity extends IEntity, IUrl { }
 
 export interface IUnitProfile extends IWebEntity {
   members: IUnitMember[],
-  supportedDepartments: IEntity[]
+  supportedDepartments: IEntity[],
+  parent?: IEntity,
+  children?: IEntity[]
 }
 
 export interface IState extends IApiState<IUnitRequest, IUnitProfile> {
