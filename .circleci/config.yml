@@ -69,13 +69,13 @@ commands:
 jobs:
   build_for_test:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:10-alpine-postgis-ram
     steps:
       - build:
           environment: "test"
   build_for_production:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:10-alpine-postgis-ram
     steps:
       - build:
           environment: "production"
