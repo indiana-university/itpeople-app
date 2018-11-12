@@ -3,7 +3,7 @@
 # ************
 
 # Node is our build image. It comes with node, npm, and yarn.
-FROM node:10.13.0 as build-deps
+FROM node:10-alpine as build-deps
 WORKDIR /usr/src/app
 
 # Install dependencies
