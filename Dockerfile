@@ -28,6 +28,9 @@ FROM nginx:1.15.6-alpine
 # Copy the compiled app file from the build stage to the nginx web root.
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
 
+# Define the nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Allow HTTP requests on port 80.
 EXPOSE 80
 
