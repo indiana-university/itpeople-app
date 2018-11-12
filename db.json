@@ -2,6 +2,32 @@
     "auth": {
         "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
     },
+    "me": {
+        "user":{
+            "name": "Swanson,Ron",
+            "netId":"rswanso",
+            "position":"Parks and Rec Director",
+            "location":"",
+            "campusPhone":"812-856-1234",
+            "campusEmail":"rswanso@iu.edu",
+            "campus":"IUBLA",
+            "tools":"",
+            "expertise":"Wood-working, fishing",
+            "responsibilities":["ItLeadership"]
+        },
+        "unitMemberships":[
+            {
+                "id": 1,
+                "name": "Test Unit",
+                "description": "This is a description for a test unit."
+            }
+        ],
+        "department": {
+            "id": 1,
+            "name": "Test Department",
+            "description": "This is a description for a test unit."
+        }
+    },
     "units": [
         {
             "id": 1,
