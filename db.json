@@ -22,6 +22,20 @@
                     "percentage": 100,
                     "role": "Leader",
                     "title": "Manager"
+                },
+                {
+                    "id": 3,
+                    "name": "Andy Orahood",
+                    "percentage": 100,
+                    "role": "Member",
+                    "title": "Developer"
+                },
+                {
+                    "id": 4,
+                    "name": "John Hoerr",
+                    "percentage": 100,
+                    "role": "Related",
+                    "title": "Outside developer"
                 }
             ],
             "supportedDepartments": [],

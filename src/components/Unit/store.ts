@@ -15,7 +15,7 @@ export interface IUrl {
   url: string
 }
 
-interface IUnitMember extends IEntity {
+export interface IUnitMember extends IEntity {
   title: string,
   role: ItProRole | UitsRole,
   percentage: number
