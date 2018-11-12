@@ -28,9 +28,9 @@ commands:
           paths:
             - node_modules
           key: v2-node-modules-{{ checksum "package.json" }}
-#      - run: 
-#          name: Test SPA app
-#          command: yarn test -w 1 --coverage
+      - run: 
+         name: Test SPA app
+         command: yarn test -w 1 --coverage
       - run: 
           name: Configure build parameters
           command: cp .env.<<parameters.environment>> .env.production.local
@@ -79,18 +79,18 @@ jobs:
     steps:
       - build:
           environment: "production"
-  deploy_to_test:
-    docker:
-      - image: microsoft/azure-cli
-    steps:
-      - deploy:
-          environment: "test"
-  deploy_to_production:
-    docker:
-      - image: microsoft/azure-cli
-    steps:
-      - deploy:
-          environment: "production"
+#  deploy_to_test:
+#    docker:
+#      - image: microsoft/azure-cli
+#    steps:
+#      - deploy:
+#          environment: "test"
+#  deploy_to_production:
+#    docker:
+#      - image: microsoft/azure-cli
+#    steps:
+#      - deploy:
+#          environment: "production"
 
 # Job orchestration
 workflows:
