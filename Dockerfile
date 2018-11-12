@@ -25,7 +25,7 @@ RUN yarn build
 # Nginx is our server image. It will host the html and compiled assets.
 FROM nginx:1.15.6-alpine
 
-# Compile the compiled app to the nginx web root.
+# Copy the compiled app file from the build stage to the nginx web root.
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
 
 # Allow HTTP requests on port 80.
