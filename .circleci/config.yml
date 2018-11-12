@@ -79,18 +79,18 @@ jobs:
     steps:
       - build:
           environment: "production"
-#  deploy_to_test:
-#    docker:
-#      - image: microsoft/azure-cli
-#    steps:
-#      - deploy:
-#          environment: "test"
-#  deploy_to_production:
-#    docker:
-#      - image: microsoft/azure-cli
-#    steps:
-#      - deploy:
-#          environment: "production"
+  deploy_to_test:
+    docker:
+      - image: microsoft/azure-cli
+    steps:
+      - deploy:
+          environment: "test"
+  deploy_to_production:
+    docker:
+      - image: microsoft/azure-cli
+    steps:
+      - deploy:
+          environment: "production"
 
 # Job orchestration
 workflows:
@@ -103,16 +103,16 @@ workflows:
           filters:
             branches:
               ignore: gh-pages
-      - deploy_to_test:
-          requires: 
-            - build_for_test
-          context: itpro
+#      - deploy_to_test:
+#          requires: 
+#            - build_for_test
+#          context: itpro
       - build_for_production:
           filters: 
             branches:
               only:
               - master
-      - deploy_to_production:
-          requires: 
-            - build_for_production
-          context: itpro
+#      - deploy_to_production:
+#          requires: 
+#            - build_for_production
+#          context: itpro
