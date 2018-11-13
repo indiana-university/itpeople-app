@@ -1,9 +1,10 @@
 import * as React from "react";
 import { IApiState2 } from "./types";
 
-export const Loader = (props: IApiState2<any> & IProps) => (
-    <>
-        {props.loading &&
+export const Loader = (props: IApiState2<any> & IProps) => {
+    const loading = props.loading;
+    return <>
+        {loading &&
             <>
             {props.loadingMessage ?
                 <p> { props.loadingMessage}</p>
@@ -20,7 +21,7 @@ export const Loader = (props: IApiState2<any> & IProps) => (
             <p>{props.error}</p>
         }
     </>
-)
+}
 
 interface IProps {
     children?: React.ReactNode,
