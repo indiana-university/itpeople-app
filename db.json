@@ -53,14 +53,40 @@
                 "department": {
                     "id": 1,
                     "name": "Parks and Recreation department"
-                },
-                "responsibilities": [
+                },               
+                 "responsibilities": [
                     "ItLeadership"
                 ],
                 "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
+            },
+            "unitMemberships": [
+                {
+                    "id": 1,
+                    "name": "Test Unit",
+                    "description": "This is a description for a test unit."
+                }
+            ],
+            "department": {
+                "id": 1,
+                "name": "Test Department",
+                "description": "This is a description for a test unit."
             }
         }
     ],
+    "people": {
+        "users": [
+            {
+                "id": 1,
+                "name": "Ron Swanson",
+                "netId": "rswanso",
+                "position": "Parks and Rec Director",
+                "location": "",
+                "campusPhone": "812-856-1234",
+                "campusEmail": "rswanso@iu.edu",
+                "campus": "IUBLA"
+            }
+        ]
+    },
     "units": [
         {
             "id": 1,

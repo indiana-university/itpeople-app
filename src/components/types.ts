@@ -1,6 +1,7 @@
 import * as Department from "../components/Department/store";
 import * as Departments from "../components/Departments/store";
 import * as Profile from '../components/Profile/store'
+import * as People from '../components/People/store'
 import * as SearchSimple from '../components/Search/store'
 import * as Auth from '../components/SignIn/store'
 import * as Unit from "../components/Unit/store";
@@ -10,6 +11,7 @@ import * as Units from "../components/Units/store";
 export interface IApplicationState {
     auth: Auth.IState,
     profile: Profile.IState,
+    people: People.IState,
     searchSimple: SearchSimple.IState,
     unit: Unit.IState,
     units: Units.IState,
