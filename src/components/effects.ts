@@ -21,7 +21,7 @@ const callApi = (method: string, url: string, path: string, data?: any, headers?
         'Content-Type': 'application/json',
         ...headers
     }
-    return fetch(url + '/api' + path, {
+    return fetch(url + path, {
         body: JSON.stringify(data),
         headers: combinedHeaders,
         method,
