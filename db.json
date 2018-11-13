@@ -3,20 +3,22 @@
         "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
     },
     "me": {
-        "user":{
-            "name": "Swanson,Ron",
-            "netId":"rswanso",
-            "position":"Parks and Rec Director",
-            "location":"",
-            "campusPhone":"812-856-1234",
-            "campusEmail":"rswanso@iu.edu",
-            "campus":"IUBLA",
-            "tools":"",
-            "expertise":"Wood-working, fishing",
-            "responsibilities":["ItLeadership"],
-            "photoUrl":"https://itnews.iu.edu/media/wheeler1.jpg"
+        "user": {
+            "name": "Ron Swanson",
+            "netId": "rswanso",
+            "position": "Parks and Rec Director",
+            "location": "",
+            "campusPhone": "812-856-1234",
+            "campusEmail": "rswanso@iu.edu",
+            "campus": "IUBLA",
+            "tools": "",
+            "expertise": "Wood-working, fishing",
+            "responsibilities": [
+                "ItLeadership"
+            ],
+            "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
         },
-        "unitMemberships":[
+        "unitMemberships": [
             {
                 "id": 1,
                 "name": "Test Unit",
@@ -29,6 +31,24 @@
             "description": "This is a description for a test unit."
         }
     },
+    "profiles": [
+        {
+            "id": 1,
+            "name": "Swanson,Ron",
+            "netId": "rswanso",
+            "position": "Parks and Rec Director",
+            "location": "",
+            "campusPhone": "812-856-1234",
+            "campusEmail": "rswanso@iu.edu",
+            "campus": "IUBLA",
+            "tools": "",
+            "expertise": "Wood-working, fishing",
+            "responsibilities": [
+                "ItLeadership"
+            ],
+            "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
+        }
+    ],
     "units": [
         {
             "id": 1,
@@ -76,7 +96,8 @@
                     "id": 2,
                     "name": "Other Child Unit",
                     "description": "This is a child unit description"
-                }],
+                }
+            ],
             "parent": {
                 "id": 1,
                 "name": "Parent Unit",
