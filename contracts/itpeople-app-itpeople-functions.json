@@ -1,0 +1,85 @@
+{
+  "consumer": {
+    "name": "itpeople-app"
+  },
+  "provider": {
+    "name": "itpeople-functions"
+  },
+  "interactions": [
+    {
+      "description": "a GET request for unit 1",
+      "providerState": "unit 1 exists",
+      "request": {
+        "method": "GET",
+        "path": "/unit/1"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": 1,
+          "name": "Test Unit",
+          "description": "This is a description for a test unit.",
+          "url": "http://example.com",
+          "members": [
+            {
+              "id": 1,
+              "name": "Kenneth Jones",
+              "percentage": 100,
+              "role": "Member",
+              "title": "Developer"
+            },
+            {
+              "id": 2,
+              "name": "Chuck Aikman",
+              "percentage": 100,
+              "role": "Leader",
+              "title": "Manager"
+            },
+            {
+              "id": 3,
+              "name": "Andy Orahood",
+              "percentage": 100,
+              "role": "Member",
+              "title": "Developer"
+            },
+            {
+              "id": 4,
+              "name": "John Hoerr",
+              "percentage": 100,
+              "role": "Related",
+              "title": "Outside developer"
+            }
+          ],
+          "supportedDepartments": [
+
+          ],
+          "children": [
+            {
+              "id": 2,
+              "name": "Child Unit",
+              "description": "This is a child unit description"
+            },
+            {
+              "id": 2,
+              "name": "Other Child Unit",
+              "description": "This is a child unit description"
+            }
+          ],
+          "parent": {
+            "id": 1,
+            "name": "Parent Unit",
+            "description": "This is a parent unit description"
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
