@@ -4,7 +4,14 @@ import { IApiState2 } from "./types";
 export const Loader = (props: IApiState2<any> & IProps) => (
     <>
         {props.loading &&
-            <p>Loading profile...</p>
+            <>
+            {props.loadingMessage ?
+                <p> { props.loadingMessage}</p>
+                :
+                <p>Loading... </p>
+            }
+            </>
+
         }
         {props.data && props.children &&
             <>{props.children}</>
@@ -16,5 +23,6 @@ export const Loader = (props: IApiState2<any> & IProps) => (
 )
 
 interface IProps {
-    children?: React.ReactNode
+    children?: React.ReactNode,
+    loadingMessage?: string | React.ReactNode
 }
