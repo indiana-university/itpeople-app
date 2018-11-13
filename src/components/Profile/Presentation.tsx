@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Checkbox, Col, List, Panel, Row, Table } from "rivet-react";
 import { IUserProfile } from "./store";
+import PageTitle from '../layout/PageTitle';
 
 const headerCell = {
     "width": 175,
@@ -20,9 +21,10 @@ const has = (vals: string, val: string) : boolean =>
     vals.toString().includes(val)
 
 
-const Presentation : React.SFC<IUserProfile> = 
-(props) => (
+const Presentation : React.SFC<IUserProfile> = (props) => (
         <>
+
+            <PageTitle>{props.user.name}</PageTitle>
             <div className="rvt-ts-26">{props.user.position}</div>
 
             <Panel margin={{top:"xs"}}>
