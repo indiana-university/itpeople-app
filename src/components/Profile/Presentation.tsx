@@ -23,7 +23,6 @@ const has = (vals: string, val: string) : boolean =>
 
 const Presentation : React.SFC<IUserProfile> = (props) => (
         <>
-
             <PageTitle>{props.user.name}</PageTitle>
             <div className="rvt-ts-26">{props.user.position}</div>
 
@@ -117,7 +116,7 @@ const Presentation : React.SFC<IUserProfile> = (props) => (
                     <h2 className="rvt-ts-26 rvt-m-top-lg">Units</h2>
                     <Panel margin={{top:"xs"}}>
                         <List variant="plain">
-                            {props.unitMemberships.map((u,i) => (<li key={i}><a href={`/units/${u.id}`}>{u.name}</a></li>) )}
+                        {props.unitMemberships && props.unitMemberships.map((u,i) => (<li key={i}><a href={`/units/${u.id}`}>{u.name}</a></li>) )}
                         </List>
                     </Panel>
                 </Col>

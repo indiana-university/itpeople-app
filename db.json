@@ -31,22 +31,25 @@
             "description": "This is a description for a test unit."
         }
     },
-    "profiles": [
+    "users": [
         {
             "id": 1,
-            "name": "Swanson,Ron",
-            "netId": "rswanso",
-            "position": "Parks and Rec Director",
-            "location": "",
-            "campusPhone": "812-856-1234",
-            "campusEmail": "rswanso@iu.edu",
-            "campus": "IUBLA",
-            "tools": "",
-            "expertise": "Wood-working, fishing",
-            "responsibilities": [
-                "ItLeadership"
-            ],
-            "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
+            "user": {
+                "id": 1,
+                "name": "Swanson,Ron",
+                "netId": "rswanso",
+                "position": "Parks and Rec Director",
+                "location": "",
+                "campusPhone": "812-856-1234",
+                "campusEmail": "rswanso@iu.edu",
+                "campus": "IUBLA",
+                "tools": "",
+                "expertise": "Wood-working, fishing",
+                "responsibilities": [
+                    "ItLeadership"
+                ],
+                "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
+            }
         }
     ],
     "units": [
