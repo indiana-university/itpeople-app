@@ -16,8 +16,7 @@ export interface IDepartmentRequest {
     id: string
 }
 
-export interface IDepartmentProfile {
-  department: IEntity,
+export interface IDepartmentProfile extends IEntity {
   members: IEntity[],
   units: IEntity[],
   supportingUnits: IEntity[],

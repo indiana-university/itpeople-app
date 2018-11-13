@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import PageTitle from '../layout/PageTitle';
 import { IApplicationState } from '../types';
 import Departments from './Presentation';
 import { fetchRequest, IState } from './store';
+import { Loader } from '../Loader';
 
 interface IDispatchProps {
     fetchRequest: typeof fetchRequest
@@ -17,15 +17,11 @@ class Container extends React.Component<IState & IDispatchProps>{
 
     public render() {
         return (
-            <>
-                <PageTitle>Departments</PageTitle>
-                {/* { this.props.loading && 
-                    <p>Loading...</p>} */}
+            <Loader {...this.props}>
+              
                 { this.props.data &&  
                     <Departments {...this.props.data} /> }
-                { this.props.error && 
-                    <p>{this.props.error}</p> }
-            </>
+            </Loader>
         )
     }
 }

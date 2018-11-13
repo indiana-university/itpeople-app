@@ -53,8 +53,8 @@
                 "department": {
                     "id": 1,
                     "name": "Parks and Recreation department"
-                },               
-                 "responsibilities": [
+                },
+                "responsibilities": [
                     "ItLeadership"
                 ],
                 "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
@@ -139,8 +139,40 @@
             "parent": {
                 "id": 1,
                 "name": "Parent Unit",
-                "description": "This is a parent unit description"
+                "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
             }
+        }
+    ],
+    "allDepartments": {
+        "departments": [
+            {
+                "id": 1,
+                "name": "Parks and Recreation Department",
+                "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+            }
+        ]
+    },
+    "departments": [
+        {
+            "id": 1,
+            "name": "Parks and Recreation Department",
+            "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities.",
+            "members": [
+                {
+                    "id": 1,
+                    "name": "Ron Swanson"
+                }
+            ],
+            "units": [{
+                    "id": 1,
+                    "name": "Parks and Recreation IT"
+                }],
+            "supportingUnits": [
+                {
+                    "id": 1,
+                    "name": "Sanitization"
+                }
+            ]
         }
     ],
     "comments": [
