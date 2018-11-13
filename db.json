@@ -36,15 +36,24 @@
             "id": 1,
             "user": {
                 "id": 1,
-                "name": "Swanson,Ron",
+                "name": "Ron Swanson",
                 "netId": "rswanso",
                 "position": "Parks and Rec Director",
                 "location": "",
                 "campusPhone": "812-856-1234",
                 "campusEmail": "rswanso@iu.edu",
                 "campus": "IUBLA",
-                "tools": "",
+                "role": "Manager",
+                "tools": [
+                    "Claw hammer",
+                    "Chisel",
+                    "Bureaucracy"
+                ],
                 "expertise": "Wood-working, fishing",
+                "department": {
+                    "id": 1,
+                    "name": "Parks and Recreation department"
+                },
                 "responsibilities": [
                     "ItLeadership"
                 ],

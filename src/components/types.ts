@@ -8,14 +8,14 @@ import * as Units from "../components/Units/store";
 
 // The top-level state object
 export interface IApplicationState {
-  auth: Auth.IState,
-  profile: Profile.IState,
-  searchSimple: SearchSimple.IState,
-  unit: Unit.IState,
-  units: Units.IState,
-  department: Department.IState,
-  departments: Departments.IState,
-  form: any
+    auth: Auth.IState,
+    profile: Profile.IState,
+    searchSimple: SearchSimple.IState,
+    unit: Unit.IState,
+    units: Units.IState,
+    department: Department.IState,
+    departments: Departments.IState,
+    form: any
 }
 
 export interface IApiState2<TResponse> {
@@ -42,8 +42,9 @@ export interface IApiState<TRequest, TResponse> extends IApiState2<TResponse> {
 
 
 import { AnyAction } from "redux";
-export const FetchRequestReducer = <TReq,TRes>(state:IApiState<TReq, TRes>, action:AnyAction) : IApiState<TReq, TRes> => {
-    return { ...state, 
+export const FetchRequestReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => {
+    return {
+        ...state,
         data: undefined,
         error: undefined,
         loading: true,
@@ -51,8 +52,9 @@ export const FetchRequestReducer = <TReq,TRes>(state:IApiState<TReq, TRes>, acti
     }
 }
 
-export const FetchSuccessReducer = <TReq,TRes>(state:IApiState<TReq, TRes>, action:AnyAction) : IApiState<TReq, TRes> => (
-    { ...state, 
+export const FetchSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => (
+    {
+        ...state,
         data: action.payload,
         error: undefined,
         loading: false,
@@ -60,8 +62,9 @@ export const FetchSuccessReducer = <TReq,TRes>(state:IApiState<TReq, TRes>, acti
     }
 )
 
-export const FetchErrorReducer = <TReq,TRes>(state:IApiState<TReq, TRes>, action:AnyAction) : IApiState<TReq, TRes> => (
-    { ...state, 
+export const FetchErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => (
+    {
+        ...state,
         data: undefined,
         error: action.payload,
         loading: false,
@@ -69,8 +72,9 @@ export const FetchErrorReducer = <TReq,TRes>(state:IApiState<TReq, TRes>, action
     }
 )
 
-export const PutRequestReducer = <TReq,TRes>(state:IApiState<TReq, TRes>, action:AnyAction) : IApiState<TReq, TRes> => {
-    return { ...state, 
+export const PutRequestReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => {
+    return {
+        ...state,
         // data: undefined,
         error: undefined,
         loading: true,
@@ -78,8 +82,9 @@ export const PutRequestReducer = <TReq,TRes>(state:IApiState<TReq, TRes>, action
     }
 }
 
-export const PutSuccessReducer = <TReq,TRes>(state:IApiState<TReq, TRes>, action:AnyAction) : IApiState<TReq, TRes> => (
-    { ...state, 
+export const PutSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => (
+    {
+        ...state,
         data: action.payload,
         error: undefined,
         loading: false,
@@ -87,8 +92,9 @@ export const PutSuccessReducer = <TReq,TRes>(state:IApiState<TReq, TRes>, action
     }
 )
 
-export const PutErrorReducer = <TReq,TRes>(state:IApiState<TReq, TRes>, action:AnyAction) : IApiState<TReq, TRes> => (
-    { ...state, 
+export const PutErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => (
+    {
+        ...state,
         data: undefined,
         error: action.payload,
         loading: false,

@@ -14,19 +14,18 @@ export interface IUserRequest {
     id: number,
 }
 
-export interface IUpdateRequest {
-  expertise: string,
-  responsibilities: string
-}
 
-export interface IUser extends IEntity, IRole, IUpdateRequest {
+export interface IUser extends IEntity, IRole {
   netId: string,
   position: string,
   location: string,
   campusPhone: string,
   campusEmail: string,
   campus: string,
-  tools: string
+  tools: string[],
+  expertise: string,
+  responsibilities: string[],
+  photoUrl?: string
 }
 
 export interface IUserProfile {
@@ -87,10 +86,10 @@ function* handleFetch() {
 }
 
 function* handleUpdate() {
-  const form = (yield select<any>((s) => s.form.profile.values)) as IUpdateRequest
+  const form = (yield select<any>((s) => s.form.profile.values)) as IUser
   const req = (yield select<IApplicationState>((s) => s.profile.request)) as IUserRequest
   const path = `/users/${req.id}`
-  yield httpPut<IUpdateRequest, IUserProfile>(path, form, fetchSuccess, fetchError)
+  yield httpPut<IUser, IUserProfile>(path, form, fetchSuccess, fetchError)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
