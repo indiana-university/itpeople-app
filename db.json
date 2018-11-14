@@ -68,7 +68,7 @@
             ],
             "department": {
                 "id": 1,
-                "name": "Test Department",
+                "name": "Parks and Recreation Department",
                 "description": "This is a description for a test unit."
             }
         },
@@ -107,7 +107,7 @@
             ],
             "department": {
                 "id": 1,
-                "name": "Test Department",
+                "name": "Parks and Recreation department",
                 "description": "This is a description for a test unit."
             }
         }
