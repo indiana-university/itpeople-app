@@ -28,9 +28,9 @@ commands:
           paths:
             - node_modules
           key: v2-node-modules-{{ checksum "package.json" }}
-#      - run: 
-#          name: Test SPA app
-#          command: yarn test -w 1 --coverage
+      - run: 
+         name: Test SPA app
+         command: yarn test -w 1 --coverage
       - run: 
           name: Configure build parameters
           command: cp .env.<<parameters.environment>> .env.production.local
@@ -69,13 +69,13 @@ commands:
 jobs:
   build_for_test:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:10
     steps:
       - build:
           environment: "test"
   build_for_production:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:10
     steps:
       - build:
           environment: "production"
@@ -103,16 +103,16 @@ workflows:
           filters:
             branches:
               ignore: gh-pages
-      - deploy_to_test:
-          requires: 
-            - build_for_test
-          context: itpro
+#      - deploy_to_test:
+#          requires: 
+#            - build_for_test
+#          context: itpro
       - build_for_production:
           filters: 
             branches:
               only:
               - master
-      - deploy_to_production:
-          requires: 
-            - build_for_production
-          context: itpro
+#      - deploy_to_production:
+#          requires: 
+#            - build_for_production
+#          context: itpro

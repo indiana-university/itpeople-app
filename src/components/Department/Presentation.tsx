@@ -1,40 +1,47 @@
 import * as React from 'react'
-import { Col, List, Panel, Row } from "rivet-react";
+import { Row, Col } from "rivet-react";
 import { IDepartmentProfile } from "./store";
+import PageTitle from '../layout/PageTitle';
 
-const Presentation: React.SFC<IDepartmentProfile> =
-    (props) => (
+const Presentation: React.SFC<IDepartmentProfile> = (props) => {
+    const name = props.name;
+    const description = props.description;
+    const members = props.members || [];
+    const units = props.units || [];
+    const supportingUnits = props.supportingUnits || [];
+    return <>
+        <PageTitle>{name}</PageTitle>
+        {description && <p>{description}</p>}
         <Row>
-            {props.members.length > 0 &&
-                <Col lg={4}>
-                    <h2 className="rvt-ts-26 rvt-m-top-lg">IT Professional Staff</h2>
-                    <Panel margin={{ top: "xs" }}>
-                        <List variant="plain">
-                            {props.members.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
-                        </List>
-                    </Panel>
-                </Col>
-            }
-            {props.units.length > 0 &&
-                <Col lg={4}>
-                    <h2 className="rvt-ts-26 rvt-m-top-lg">Constituent Units</h2>
-                    <Panel margin={{ top: "xs" }}>
-                        <List variant="plain">
-                            {props.units.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
-                        </List>
-                    </Panel>
-                </Col>
-            }
-            {props.supportingUnits.length > 0 && 
-                <Col lg={4}>
-                    <h2 className="rvt-ts-26 rvt-m-top-lg">Supporting Units</h2>
-                    <Panel margin={{ top: "xs" }}>
-                        <List variant="plain">
-                            {props.supportingUnits.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
-                        </List>
-                    </Panel>
-                </Col>
-            }
+            <Col>
+                {members && members.length > 0 &&
+                    <div>
+                        <h2 className="rvt-ts-26 rvt-m-top-lg">IT Professional Staff</h2>
+                        <ul>
+                            {members.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
+                        </ul>
+                    </div>
+                }
+
+                {units.length > 0 &&
+                    <div>
+                        <h2 className="rvt-ts-26 rvt-m-top-lg">Constituent Units</h2>
+                        <ul>
+                            {units.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
+                        </ul>
+                    </div>
+                }
+
+                {supportingUnits.length > 0 &&
+                    <div>
+                        <h2 className="rvt-ts-26 rvt-m-top-lg">Supporting Units</h2>
+                        <ul>
+                            {supportingUnits.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
+                        </ul>
+                    </div>
+                }
+            </Col>
         </Row>
-    )
+    </>
+}
 export default Presentation

@@ -31,6 +31,7 @@ const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest,
         <HeaderNavigation>
           <a style={fixNavLinkAlignment} href="/units">Units</a>
           <a style={fixNavLinkAlignment} href="/departments">Departments</a>
+          <a style={fixNavLinkAlignment} href="/profiles">People</a>
           <SearchForm onSubmit={submitSearch} />
         </HeaderNavigation>
       }

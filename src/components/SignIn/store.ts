@@ -88,7 +88,7 @@ function* handleSignIn(){
 function* handlePostSignIn() {
   try {
     const request = (yield select<IApplicationState>((s) => s.auth.request)) as IAuthRequest
-    const response = yield call(callApi, 'get', API_ENDPOINT, `/auth?code=${request.code}`)
+    const response = yield call(callApi, 'get', API_ENDPOINT, `/auth?oauth_code=${request.code}`)
 
     if (response.errors) {
       yield call(clearAuthToken)
