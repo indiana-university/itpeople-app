@@ -71,6 +71,45 @@
                 "name": "Test Department",
                 "description": "This is a description for a test unit."
             }
+        },
+        {
+            "id": 2,
+            "user": {
+                "id": 2,
+                "name": "Leslie Knope",
+                "netId": "lknope",
+                "position": "Parks and Rec project manager",
+                "location": "",
+                "campusPhone": "812-856-1234",
+                "campusEmail": "lknope@iu.edu",
+                "campus": "IUBLA",
+                "role": "Manager",
+                "tools": [
+                    "Clip board",
+                    "Tenacity"
+                ],
+                "expertise": "Canvasing",
+                "department": {
+                    "id": 1,
+                    "name": "Parks and Recreation department"
+                },
+                "responsibilities": [
+                    "ItLeadership"
+                ],
+                "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg"
+            },
+            "unitMemberships": [
+                {
+                    "id": 1,
+                    "name": "Test Unit",
+                    "description": "This is a description for a test unit."
+                }
+            ],
+            "department": {
+                "id": 1,
+                "name": "Test Department",
+                "description": "This is a description for a test unit."
+            }
         }
     ],
     "people": {
@@ -83,6 +122,16 @@
                 "location": "",
                 "campusPhone": "812-856-1234",
                 "campusEmail": "rswanso@iu.edu",
+                "campus": "IUBLA"
+            },
+            {
+                "id": 2,
+                "name": "Leslie Knope",
+                "netId": "lknope",
+                "position": "Parks and Rec project manager",
+                "location": "",
+                "campusPhone": "812-856-1234",
+                "campusEmail": "lknope@iu.edu",
                 "campus": "IUBLA"
             }
         ]
