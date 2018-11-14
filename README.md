@@ -4,7 +4,7 @@
 
 Install dependencies
 ```sh
-npm i
+yarn
 ```
 
 ## Run
@@ -12,5 +12,5 @@ npm i
 Run locally using mock [json-server](https://github.com/typicode/json-server) API endpoints.
 
 ```sh
-npm run dev
+yarn dev
 ```
