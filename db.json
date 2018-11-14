@@ -90,44 +90,44 @@
     "units": [
         {
             "id": 1,
-            "name": "Test Unit",
-            "description": "This is a description for a test unit.",
-            "url": "http://example.com",
+            "name": "Parks and Recreation IT",
+            "description": "This page is under construction",
+            "url": "http://pawneeindiana.com/information-technology/",
             "members": [
                 {
-                    "id": 1,
-                    "name": "Kenneth Jones",
+                    "id": 2,
+                    "name": "Leslie Knope",
                     "percentage": 100,
                     "role": "Member",
                     "title": "Developer"
                 },
                 {
-                    "id": 2,
-                    "name": "Chuck Aikman",
+                    "id": 1,
+                    "name": "Ron Swanson",
                     "percentage": 100,
                     "role": "Leader",
                     "title": "Manager"
                 },
                 {
                     "id": 3,
-                    "name": "Andy Orahood",
+                    "name": "Andy Dwyer",
                     "percentage": 100,
                     "role": "Member",
                     "title": "Developer"
                 },
                 {
                     "id": 4,
-                    "name": "John Hoerr",
+                    "name": "Li’l Sebastian",
                     "percentage": 100,
                     "role": "Related",
-                    "title": "Outside developer"
+                    "title": "Outside consultant"
                 }
             ],
             "supportedDepartments": [],
             "children": [
                 {
                     "id": 2,
-                    "name": "Child Unit",
+                    "name": "Fourth floor",
                     "description": "This is a child unit description"
                 },
                 {
@@ -138,7 +138,7 @@
             ],
             "parent": {
                 "id": 1,
-                "name": "Parent Unit",
+                "name": "CITY COUNCIL",
                 "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
             }
         }
@@ -163,10 +163,12 @@
                     "name": "Ron Swanson"
                 }
             ],
-            "units": [{
+            "units": [
+                {
                     "id": 1,
                     "name": "Parks and Recreation IT"
-                }],
+                }
+            ],
             "supportingUnits": [
                 {
                     "id": 1,
@@ -175,14 +177,36 @@
             ]
         }
     ],
-    "comments": [
-        {
-            "id": 1,
-            "body": "some comment",
-            "postId": 1
-        }
-    ],
-    "profile": {
-        "name": "typicode"
+    "search": {
+        "departments": [
+            {
+                "id": 1,
+                "name": "Parks and Recreation Department"
+            }
+        ],
+        "units": [
+            {
+                "id": 1,
+                "name": "Parks and Recreation IT"
+            }
+        ],
+        "users": [
+            {
+                "id": 2,
+                "name": "Leslie Knope"
+            },
+            {
+                "id": 1,
+                "name": "Ron Swanson"
+            },
+            {
+                "id": 3,
+                "name": "Andy Dwyer"
+            },
+            {
+                "id": 4,
+                "name": "Li’l Sebastian"
+            }
+        ]
     }
 }
