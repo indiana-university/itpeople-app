@@ -34,6 +34,23 @@
         "reveal": "always"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "test",
+      "type": "shell",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "command": "yarn test",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": []
     }
 
   ]
