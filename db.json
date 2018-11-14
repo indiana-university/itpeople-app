@@ -21,13 +21,13 @@
         "unitMemberships": [
             {
                 "id": 1,
-                "name": "Test Unit",
+                "name": "Parks and Recreation IT",
                 "description": "This is a description for a test unit."
             }
         ],
         "department": {
             "id": 1,
-            "name": "Test Department",
+            "name": "Parks and Recreation Department",
             "description": "This is a description for a test unit."
         }
     },

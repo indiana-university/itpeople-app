@@ -4,7 +4,7 @@ import { IUnitMember } from "./store";
 export const MemberListItem: React.SFC<IUnitMember> = ({ id, name, title }) => {
     return (
         <div className="person-list-item-new">
-            <a href={"#" + id} data-modal-trigger="modal-edit-person" className="rvt-m-bottom-remove person-list-item-new-name rvt-text-bold rvt-m-bottom-sm">
+            <a href={"/profiles/" + id} data-modal-trigger="modal-edit-person" className="rvt-m-bottom-remove person-list-item-new-name rvt-text-bold rvt-m-bottom-sm">
                 <span className="viewIcons delFaceName _delete fl">{name}</span>
             </a>
             {title &&

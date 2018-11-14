@@ -30,7 +30,7 @@ export const ChildrenCard: React.SFC<IProps> = (props) => {
                         </svg> Children</h2>
                     {children.map(child => (
                         <div className="related-group rvt-m-bottom-md" id="user-research">
-                            <a href="#" className="rvt-m-bottom-remove related-group-item-name rvt-text-bold">{child.name}</a>
+                            <a href={`/units/${child.id}`} className="rvt-m-bottom-remove related-group-item-name rvt-text-bold">{child.name}</a>
                             <p className="rvt-ts-14 rvt-m-top-remove rvt-m-bottom-remove">{child.description}</p>
                         </div>))}
                 </div>
