@@ -1,30 +1,51 @@
-import { IApiState, IApplicationState, IEntity, IRole } from '../types'
+import { IApiState, IApplicationState, IEntity } from '../types'
 
 //#region TYPES
 export const enum UnitActionTypes {
-    UNIT_FETCH_REQUEST = '@@unit/FETCH_REQUEST',
-    UNIT_FETCH_SUCCESS = '@@unit/FETCH_SUCCESS',
-    UNIT_FETCH_ERROR = '@@unit/FETCH_ERROR',
+  UNIT_FETCH_REQUEST = '@@unit/FETCH_REQUEST',
+  UNIT_FETCH_SUCCESS = '@@unit/FETCH_SUCCESS',
+  UNIT_FETCH_ERROR = '@@unit/FETCH_ERROR',
 }
 
 export interface IUnitRequest {
-    id: string
+  id: string
 }
 
 export interface IUrl {
   url: string
 }
 
-export interface IMember extends IEntity, IRole {}
-export interface IWebEntity extends IEntity, IUrl {}
-
-export interface IUnitProfile {
-    unit: IWebEntity,
-    members: IMember[],
-    supportedDepartments: IEntity[]
+export interface IUnitMember extends IEntity {
+  title: string,
+  role: ItProRole | UitsRole,
+  percentage: number
+  photoUrl?: string
 }
 
-export interface IState extends IApiState<IUnitRequest, IUnitProfile> { 
+export enum ItProRole {
+  Admin = "Admin",
+  CoAdmin = "CoAdmin",
+  Pro = "Pro",
+  Aux = "Aux"
+}
+
+export enum UitsRole {
+  Leader = "Leader",
+  Sublead = "Sublead",
+  Member = "Member",
+  Related = "Related"
+}
+
+export interface IWebEntity extends IEntity, IUrl { }
+
+export interface IUnitProfile extends IWebEntity {
+  members: IUnitMember[],
+  supportedDepartments: IEntity[],
+  parent?: IEntity,
+  children?: IEntity[]
+}
+
+export interface IState extends IApiState<IUnitRequest, IUnitProfile> {
 }
 //#endregion
 
@@ -42,10 +63,10 @@ import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../
 
 // Type-safe initialState!
 const initialState: IState = {
-    data: undefined,
-    error: undefined,
-    loading: false,
-    request: undefined,
+  data: undefined,
+  error: undefined,
+  loading: false,
+  request: undefined,
 }
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
@@ -66,9 +87,9 @@ import { all, fork, select, takeEvery } from 'redux-saga/effects'
 import { httpGet } from '../effects'
 
 function* handleFetch() {
-    const state = (yield select<IApplicationState>((s) => s.unit.request)) as IUnitRequest
-    const path = `/units/${state.id}`
-    yield httpGet<IUnitProfile>(path, fetchSuccess, fetchError)
+  const state = (yield select<IApplicationState>((s) => s.unit.request)) as IUnitRequest
+  const path = `/units/${state.id}`
+  yield httpGet<IUnitProfile>(path, fetchSuccess, fetchError)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
@@ -86,7 +107,7 @@ function* saga() {
 
 // Instead of using default export, we use named exports. That way we can group these exports
 // inside the `index.js` folder.
-export { 
+export {
   fetchRequest,
   fetchError,
   fetchSuccess,

@@ -57,12 +57,11 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
 import { push } from 'react-router-redux';
 import { all, fork, put, select, takeEvery,  } from 'redux-saga/effects'
 import { httpGet } from '../effects'
-import { IUnitList } from '../Units/store';
 
 function* handleFetch() {
     const state = (yield select<IApplicationState>((s) => s.searchSimple.request)) as ISimpleSearchRequest
     const path = `/search?term=${state.term}`
-    yield httpGet<IUnitList>(path, fetchSuccess, fetchError)
+    yield httpGet<ISimpleSearchResult>(path, fetchSuccess, fetchError)
 }
 
 function* handleSubmit() {

@@ -38,7 +38,7 @@ class Container extends React.Component<ISimpleSearchContainerProps>{
             executeSearch(nextProps)
         }
     }
-
+    
     public render() {
         return (
             <>

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import PageTitle from '../layout/PageTitle';
 import { IApplicationState } from '../types';
 import Profile from './Presentation';
 import { fetchRequest, IState, IUserRequest, updateRequest } from './store';
+import { Loader } from '../Loader';
 
 interface IProfileProps {
     match: any,
@@ -15,11 +15,6 @@ interface IPropsFromDispatch {
     profileUpdateRequest: typeof updateRequest
 }
 
-const prettyPrintName = (name: string) => {
-    const n = name.split(',')
-    return `${n[1]} ${n[0]}`
-}
-
 class Container extends React.Component<IState & IProfileProps & IPropsFromDispatch>{
 
     public isMyProfile() {
@@ -27,26 +22,17 @@ class Container extends React.Component<IState & IProfileProps & IPropsFromDispa
     }
 
     public componentDidMount() {
-        console.log(this.props.match.params)
         const id = this.isMyProfile() ? 0 : Number(this.props.match.params.id)
-        console.log(id)
         this.props.profileFetchRequest({ id })
     }
 
     public render() {
         return (
-            <>
-                {/* { this.props.loading && 
-                    <p>Loading profile...</p>} */}
+            <Loader {...this.props}>
                 { this.props.data && 
-                  <>
-                    <PageTitle>{prettyPrintName(this.props.data.user.name)}</PageTitle>
                     <Profile  {...this.props.data} />
-                  </> 
                 }
-                { this.props.error && 
-                    <p>{this.props.error}</p> }
-            </>
+            </Loader>
         )
     }
 }

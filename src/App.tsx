@@ -4,6 +4,7 @@ import DepartmentContainer from './components/Department/Container';
 import DepartmentsContainer from './components/Departments/Container';
 import Home from './components/Home/Home';
 import Page from './components/layout/Page';
+import PeopleContainer from './components/People/Container';
 import ProfileContainer from './components/Profile/Container';
 import SearchContainer from "./components/Search/Container";
 import Signin from './components/SignIn/Component';
@@ -16,6 +17,7 @@ const App : React.SFC = () => (
       <Route path="/" exact={true} component={Home} />
       <Route path="/signin" component={Signin} />
       <Route path="/profiles/:id" component={ProfileContainer} /> 
+      <Route path="/profiles" exact={true} component={PeopleContainer} /> 
       <Route path="/me" component={ProfileContainer} /> 
       <Route path="/search" component={SearchContainer} /> 
       <Route path="/departments/:id" component={DepartmentContainer} /> 

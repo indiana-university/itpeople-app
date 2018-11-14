@@ -28,7 +28,7 @@
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "command": "yarn start",
+      "command": "yarn dev",
       "isBackground": true,
       "presentation": {
         "reveal": "always"

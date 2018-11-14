@@ -24,7 +24,7 @@ class Container extends React.Component<units.IState & IDispatchProps>{
                 {/* { this.props.loading && 
                     <p>Loading...</p>} */}
                 { this.props.data &&  
-                    <Units {...this.props.data} /> }
+                    <Units units={this.props.data} /> }
                 { this.props.error && 
                     <p>{this.props.error}</p> }
             </>
