@@ -239,6 +239,81 @@
           ]
         }
       }
+    },
+    {
+      "description": "a GET request for department 1",
+      "providerState": "department 1 exists",
+      "request": {
+        "method": "GET",
+        "path": "/departments/1"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": 1,
+          "name": "Parks and Recreation Department",
+          "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities.",
+          "members": [
+            {
+              "id": 1,
+              "name": "Ron Swanson"
+            }
+          ],
+          "units": [
+            {
+              "id": 1,
+              "name": "Parks and Recreation IT"
+            }
+          ],
+          "supportingUnits": [
+            {
+              "id": 1,
+              "name": "Sanitization"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "description": "a GET request to list departments",
+      "providerState": "at least one department exists",
+      "request": {
+        "method": "GET",
+        "path": "/departments"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "users": [
+            {
+              "id": 1,
+              "name": "Ron Swanson",
+              "netId": "rswanso",
+              "position": "Parks and Rec Director",
+              "location": "",
+              "campusPhone": "812-856-1234",
+              "campusEmail": "rswanso@iu.edu",
+              "campus": "IUBLA"
+            },
+            {
+              "id": 2,
+              "name": "Leslie Knope",
+              "netId": "lknope",
+              "position": "Parks and Rec project manager",
+              "location": "",
+              "campusPhone": "812-856-1234",
+              "campusEmail": "lknope@iu.edu",
+              "campus": "IUBLA"
+            }
+          ]
+        }
+      }
     }
   ],
   "metadata": {

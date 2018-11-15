@@ -31,7 +31,7 @@ describe('Contracts', () => {
   let path = ''
 
   describe('for units', () => {
-    
+
     it('retrieves unit 1', async () => {
       resource = jsondb.get('units')
         .find({ id: 1 })
@@ -80,6 +80,7 @@ describe('Contracts', () => {
       const response = await axios.get(`${SERVER}${path}`)
       expect(response.data).toEqual(resource)
     })
+    
     describe('for profiles', () => {
 
       it('retrieves profile 1', async () => {
@@ -115,6 +116,58 @@ describe('Contracts', () => {
         await mockServer.addInteraction({
           state: 'at least one profile exists',
           uponReceiving: 'a GET request to list profiles',
+          withRequest: {
+            method: 'GET',
+            path: path
+          },
+          willRespondWith: {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: resource
+          }
+        })
+        const response = await axios.get(`${SERVER}${path}`)
+        expect(response.data).toEqual(resource)
+      })
+    })
+
+    describe('for departments', () => {
+
+      it('retrieves department 1', async () => {
+        resource = jsondb.get('departments')
+          .find({ id: 1 })
+          .value() || {}
+        expect(resource).not.toEqual({})
+        path = '/departments/1'
+        await mockServer.addInteraction({
+          state: 'department 1 exists',
+          uponReceiving: 'a GET request for department 1',
+          withRequest: {
+            method: 'GET',
+            path: path
+          },
+          willRespondWith: {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: resource
+          }
+        })
+        const response = await axios.get(`${SERVER}${path}`)
+        expect(response.data).toEqual(resource)
+      })
+
+      it('retrieves all departments', async () => {
+        resource = jsondb.get('people')
+          .value() || {}
+        expect(resource).not.toEqual({})
+        path = '/departments'
+        await mockServer.addInteraction({
+          state: 'at least one department exists',
+          uponReceiving: 'a GET request to list departments',
           withRequest: {
             method: 'GET',
             path: path
