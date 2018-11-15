@@ -26,16 +26,17 @@ beforeAll(() => mockServer.setup())
 afterAll(() => mockServer.finalize())
 
 describe('Contracts', () => {
+  
+  let resource = {}
+  let path = ''
+
   describe('for units', () => {
-
-    const resource = jsondb.get('units')
-      .find({ id: 1 })
-      .value()
-
-    const path = '/units/1'
-    
-    beforeAll(() => {
-      return mockServer.addInteraction({
+    it('retrieves unit 1', async () => {
+      resource = jsondb.get('units')
+        .find({ id: 1 })
+        .value() || {}
+      path = '/units/1'
+      await mockServer.addInteraction({
         state: 'unit 1 exists',
         uponReceiving: 'a GET request for unit 1',
         withRequest: {
@@ -50,8 +51,6 @@ describe('Contracts', () => {
           body: resource
         }
       })
-    })
-    it('retrieves unit 1', async () => {
       const response = await axios.get(`${SERVER}${path}`)
       expect(response.data).toEqual(resource)
       mockServer.verify()
