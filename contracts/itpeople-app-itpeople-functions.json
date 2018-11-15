@@ -75,6 +75,78 @@
           }
         }
       }
+    },
+    {
+      "description": "a GET request to list units",
+      "providerState": "at least one unit exists",
+      "request": {
+        "method": "GET",
+        "path": "/units"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+          {
+            "id": 1,
+            "name": "Parks and Recreation IT",
+            "description": "This page is under construction",
+            "url": "http://pawneeindiana.com/information-technology/",
+            "members": [
+              {
+                "id": 2,
+                "name": "Leslie Knope",
+                "percentage": 100,
+                "role": "Member",
+                "title": "Developer"
+              },
+              {
+                "id": 1,
+                "name": "Ron Swanson",
+                "percentage": 100,
+                "role": "Leader",
+                "title": "Manager"
+              },
+              {
+                "id": 3,
+                "name": "Andy Dwyer",
+                "percentage": 100,
+                "role": "Member",
+                "title": "Developer"
+              },
+              {
+                "id": 4,
+                "name": "Li’l Sebastian",
+                "percentage": 100,
+                "role": "Related",
+                "title": "Outside consultant"
+              }
+            ],
+            "supportedDepartments": [
+
+            ],
+            "children": [
+              {
+                "id": 2,
+                "name": "Fourth floor",
+                "description": "This is a child unit description"
+              },
+              {
+                "id": 2,
+                "name": "Other Child Unit",
+                "description": "This is a child unit description"
+              }
+            ],
+            "parent": {
+              "id": 1,
+              "name": "CITY COUNCIL",
+              "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+            }
+          }
+        ]
+      }
     }
   ],
   "metadata": {

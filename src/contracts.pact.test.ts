@@ -53,7 +53,29 @@ describe('Contracts', () => {
       })
       const response = await axios.get(`${SERVER}${path}`)
       expect(response.data).toEqual(resource)
-      mockServer.verify()
+    })
+
+    it('retrieves all units', async () => {
+      resource = jsondb.get('units')
+        .value() || {}
+      path = '/units'
+      await mockServer.addInteraction({
+        state: 'at least one unit exists',
+        uponReceiving: 'a GET request to list units',
+        withRequest: {
+          method: 'GET',
+          path: path
+        },
+        willRespondWith: {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: resource
+        }
+      })
+      const response = await axios.get(`${SERVER}${path}`)
+      expect(response.data).toEqual(resource)
     })
   })
 })
