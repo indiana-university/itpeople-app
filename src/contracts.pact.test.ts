@@ -10,10 +10,6 @@ import axios from 'axios'
 const lowdbAdapter = new FileSync('db.json')
 const jsondb = lowdb(lowdbAdapter)
 
-const unit1 = jsondb.get('units')
-  .find({ id: 1 })
-  .value()
-
 const PORT = 6123
 const SERVER = `http://localhost:${PORT}`
 
@@ -31,26 +27,33 @@ afterAll(() => mockServer.finalize())
 
 describe('Contracts', () => {
   describe('for units', () => {
+
+    const resource = jsondb.get('units')
+      .find({ id: 1 })
+      .value()
+
+    const path = '/units/1'
+    
     beforeAll(() => {
       return mockServer.addInteraction({
         state: 'unit 1 exists',
         uponReceiving: 'a GET request for unit 1',
         withRequest: {
           method: 'GET',
-          path: '/unit/1'
+          path: path
         },
         willRespondWith: {
           status: 200,
           headers: {
             'Content-Type': 'application/json'
           },
-          body: unit1
+          body: resource
         }
       })
     })
     it('retrieves unit 1', async () => {
-      const response = await axios.get(`${SERVER}/unit/1`)
-      expect(response.data).toEqual(unit1)
+      const response = await axios.get(`${SERVER}${path}`)
+      expect(response.data).toEqual(resource)
       mockServer.verify()
     })
   })

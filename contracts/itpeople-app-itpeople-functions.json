@@ -11,7 +11,7 @@
       "providerState": "unit 1 exists",
       "request": {
         "method": "GET",
-        "path": "/unit/1"
+        "path": "/units/1"
       },
       "response": {
         "status": 200,
