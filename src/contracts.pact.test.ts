@@ -15,6 +15,7 @@ const unit1 = jsondb.get('units')
   .value()
 
 const PORT = 6123
+const SERVER = `http://localhost:${PORT}`
 
 const mockServer = new Pact({
   port: PORT,
@@ -48,7 +49,7 @@ describe('Contracts', () => {
       })
     })
     it('retrieves unit 1', async () => {
-      const response = await axios.get(`http://localhost:${PORT}/unit/1`)
+      const response = await axios.get(`${SERVER}/unit/1`)
       expect(response.data).toEqual(unit1)
       mockServer.verify()
     })
