@@ -147,6 +147,98 @@
           }
         ]
       }
+    },
+    {
+      "description": "a GET request for profile 1",
+      "providerState": "profile 1 exists",
+      "request": {
+        "method": "GET",
+        "path": "/profiles/1"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": 1,
+          "user": {
+            "id": 1,
+            "name": "Ron Swanson",
+            "netId": "rswanso",
+            "position": "Parks and Rec Director",
+            "location": "",
+            "campusPhone": "812-856-1234",
+            "campusEmail": "rswanso@iu.edu",
+            "campus": "IUBLA",
+            "role": "Manager",
+            "tools": [
+              "Claw hammer",
+              "Chisel",
+              "Bureaucracy"
+            ],
+            "expertise": "Wood-working, fishing",
+            "department": {
+              "id": 1,
+              "name": "Parks and Recreation department"
+            },
+            "responsibilities": [
+              "ItLeadership"
+            ],
+            "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
+          },
+          "unitMemberships": [
+            {
+              "id": 1,
+              "name": "Test Unit",
+              "description": "This is a description for a test unit."
+            }
+          ],
+          "department": {
+            "id": 1,
+            "name": "Parks and Recreation Department",
+            "description": "This is a description for a test unit."
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request to list profiles",
+      "providerState": "at least one profile exists",
+      "request": {
+        "method": "GET",
+        "path": "/profiles"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "users": [
+            {
+              "id": 1,
+              "name": "Ron Swanson",
+              "netId": "rswanso",
+              "position": "Parks and Rec Director",
+              "location": "",
+              "campusPhone": "812-856-1234",
+              "campusEmail": "rswanso@iu.edu",
+              "campus": "IUBLA"
+            },
+            {
+              "id": 2,
+              "name": "Leslie Knope",
+              "netId": "lknope",
+              "position": "Parks and Rec project manager",
+              "location": "",
+              "campusPhone": "812-856-1234",
+              "campusEmail": "lknope@iu.edu",
+              "campus": "IUBLA"
+            }
+          ]
+        }
+      }
     }
   ],
   "metadata": {
