@@ -7,14 +7,19 @@
             "name": "Ron Swanson",
             "netId": "rswanso",
             "position": "Parks and Rec Director",
-            "location": "",
+            "location": "Municipal Building, Office 123",
             "campusPhone": "812-856-1234",
             "campusEmail": "rswanso@iu.edu",
-            "campus": "IUBLA",
-            "tools": "",
+            "campus": "Bloomington",
+            "tools": [
+                "Claw hammer",
+                "Chisel",
+                "Bureaucracy"
+            ],
             "expertise": "Wood-working, fishing",
             "responsibilities": [
-                "ItLeadership"
+                "IT Leadership",
+                "Other stuff"
             ],
             "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
         },
@@ -62,7 +67,7 @@
             "unitMemberships": [
                 {
                     "id": 1,
-                    "name": "Test Unit",
+                    "name": "Parks and Recreation IT",
                     "description": "This is a description for a test unit."
                 }
             ],
@@ -101,7 +106,45 @@
             "unitMemberships": [
                 {
                     "id": 1,
-                    "name": "Test Unit",
+                    "name": "Parks and Recreation IT",
+                    "description": "This is a description for a test unit."
+                }
+            ],
+            "department": {
+                "id": 1,
+                "name": "Parks and Recreation department",
+                "description": "This is a description for a test unit."
+            }
+        },
+        {
+            "id": 4,
+            "user": {
+                "id": 2,
+                "name": "Li’l Sebastian",
+                "netId": "lsebastian",
+                "position": "Pageant winner",
+                "location": "Stable #4",
+                "campusPhone": "812-856-1234",
+                "campusEmail": "lsebastian@iu.edu",
+                "campus": "IUBLA",
+                "role": "Manager",
+                "tools": [
+                    "Hay",
+                    "Shoes"
+                ],
+                "expertise": "Horsin' around",
+                "department": {
+                    "id": 1,
+                    "name": "Parks and Recreation department"
+                },
+                "responsibilities": [
+                    "Being a horse"
+                ]
+            },
+            "unitMemberships": [
+                {
+                    "id": 1,
+                    "name": "Parks and Recreation IT",
                     "description": "This is a description for a test unit."
                 }
             ],
