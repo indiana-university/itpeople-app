@@ -33,7 +33,7 @@ const Presentation: React.SFC<IUserProfile> = (props) => {
                                 </div>
                             </Col>
                         }
-                        <Col md={8}>
+                        <Col>
                             <PageTitle>{user.name}</PageTitle>
                             <div className="rvt-ts-26">{user.position}</div>
 
