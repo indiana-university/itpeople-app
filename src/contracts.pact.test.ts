@@ -205,7 +205,34 @@ describe('Contracts', () => {
         const responseBody = (await getPact(path)).data
         expect(responseBody).toEqual(resource)
       })
+    })
 
+    describe('for the user', () => {
+
+      it('retrieves your profile', async () => {
+
+        const path = '/me'
+
+        const resource = (await getFixture(path)).data
+        expect(resource).not.toEqual({})
+        await pactServer.addInteraction({
+          state: 'there is a user logged in for whom a profile exists',
+          uponReceiving: 'a GET request to retrieve my profile',
+          withRequest: {
+            method: 'GET',
+            path: path
+          },
+          willRespondWith: {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: resource
+          }
+        })
+        const responseBody = (await getPact(path)).data
+        expect(responseBody).toEqual(resource)
+      })
     })
   })
 })
