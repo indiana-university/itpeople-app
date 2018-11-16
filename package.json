@@ -23,7 +23,7 @@
     "dev": "json-server --watch db.json --routes db.routes.json --port 3001 & react-scripts-ts start && kill 0",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
-    "test": "json-server --watch db.json --routes db.routes.json --port 3002 & jest --env=jsdom && kill 0",
+    "test": "json-server --watch db.json --routes db.routes.json --port 3002 & jest --env=jsdom",
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
