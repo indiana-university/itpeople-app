@@ -1,24 +1,21 @@
 import * as React from "react";
 import { MemberListItem } from "./MemberListItem";
 import { IUnitMember } from "./store";
-import { List, Section } from "rivet-react";
+import { Section } from "rivet-react";
 
-export const MemberList: React.SFC<IProps> = ({ members, title }) => {
+export const MemberList: React.SFC<IProps> = ({ members, title, showImages }) => {
   return (
     <Section className="rvt-m-bottom-lg">
       {title &&
         <h3 className="rvt-ts-20 rvt-ts-26-lg-up rvt-m-bottom-xs">{title}</h3>
       }
       {members &&
-        <List variant="plain"> 
-          {members.map((m, i) => {
-              return (<li key={m.id}><MemberListItem {...m} /></li>)
-            })}
-        </List>
+          members.map((m, i) =>  (<MemberListItem key="i" {...m} showImage={showImages} dark={!!((i+1) % 2)} /> ))
       }
     </Section>)
 }
 interface IProps {
   members: IUnitMember[],
-  title?: string
+  title?: string,
+  showImages?: boolean
 }

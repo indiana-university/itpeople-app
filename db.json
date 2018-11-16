@@ -217,6 +217,7 @@
                 {
                     "id": 1,
                     "name": "Ron Swanson",
+                    "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
                     "percentage": 100,
                     "role": "Leader",
                     "title": "Manager"

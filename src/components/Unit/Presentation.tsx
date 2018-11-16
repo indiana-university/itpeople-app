@@ -19,7 +19,7 @@ const Presentation: React.SFC<IUnitProfile> =
               }
             </Section>
             <Section>
-              <MemberLists {...props} title="Unit Members" />
+              <MemberLists {...props} />
             </Section>
           </Col>
           <Col lg={5}>
