@@ -214,9 +214,10 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": {
-          "users": [
-            {
+        "body": [
+          {
+            "id": 1,
+            "user": {
               "id": 1,
               "name": "Ron Swanson",
               "netId": "rswanso",
@@ -224,9 +225,39 @@
               "location": "",
               "campusPhone": "812-856-1234",
               "campusEmail": "rswanso@iu.edu",
-              "campus": "IUBLA"
+              "campus": "IUBLA",
+              "role": "Manager",
+              "tools": [
+                "Claw hammer",
+                "Chisel",
+                "Bureaucracy"
+              ],
+              "expertise": "Wood-working, fishing",
+              "department": {
+                "id": 1,
+                "name": "Parks and Recreation department"
+              },
+              "responsibilities": [
+                "ItLeadership"
+              ],
+              "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
             },
-            {
+            "unitMemberships": [
+              {
+                "id": 1,
+                "name": "Test Unit",
+                "description": "This is a description for a test unit."
+              }
+            ],
+            "department": {
+              "id": 1,
+              "name": "Parks and Recreation Department",
+              "description": "This is a description for a test unit."
+            }
+          },
+          {
+            "id": 2,
+            "user": {
               "id": 2,
               "name": "Leslie Knope",
               "netId": "lknope",
@@ -234,10 +265,36 @@
               "location": "",
               "campusPhone": "812-856-1234",
               "campusEmail": "lknope@iu.edu",
-              "campus": "IUBLA"
+              "campus": "IUBLA",
+              "role": "Manager",
+              "tools": [
+                "Clip board",
+                "Tenacity"
+              ],
+              "expertise": "Canvasing",
+              "department": {
+                "id": 1,
+                "name": "Parks and Recreation department"
+              },
+              "responsibilities": [
+                "ItLeadership"
+              ],
+              "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg"
+            },
+            "unitMemberships": [
+              {
+                "id": 1,
+                "name": "Test Unit",
+                "description": "This is a description for a test unit."
+              }
+            ],
+            "department": {
+              "id": 1,
+              "name": "Parks and Recreation department",
+              "description": "This is a description for a test unit."
             }
-          ]
-        }
+          }
+        ]
       }
     },
     {
@@ -290,26 +347,11 @@
           "Content-Type": "application/json"
         },
         "body": {
-          "users": [
+          "departments": [
             {
               "id": 1,
-              "name": "Ron Swanson",
-              "netId": "rswanso",
-              "position": "Parks and Rec Director",
-              "location": "",
-              "campusPhone": "812-856-1234",
-              "campusEmail": "rswanso@iu.edu",
-              "campus": "IUBLA"
-            },
-            {
-              "id": 2,
-              "name": "Leslie Knope",
-              "netId": "lknope",
-              "position": "Parks and Rec project manager",
-              "location": "",
-              "campusPhone": "812-856-1234",
-              "campusEmail": "lknope@iu.edu",
-              "campus": "IUBLA"
+              "name": "Parks and Recreation Department",
+              "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
             }
           ]
         }

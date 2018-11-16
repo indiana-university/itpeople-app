@@ -10,11 +10,12 @@ import axios from 'axios'
 const lowdbAdapter = new FileSync('db.json')
 const jsondb = lowdb(lowdbAdapter)
 
-const PORT = 6123
-const SERVER = `http://localhost:${PORT}`
+const PACT_PORT = 6123
+const PACT_URL = `http://localhost:${PACT_PORT}`
+const JSONDB_URL = 'http://localhost:3002'
 
-const mockServer = new Pact({
-  port: PORT,
+const pactServer = new Pact({
+  port: PACT_PORT,
   log: path.resolve(__dirname, '../contracts/pact-server.log'),
   dir: path.resolve(__dirname, '../contracts'),
   spec: 2,
@@ -22,23 +23,20 @@ const mockServer = new Pact({
   provider: 'itpeople-functions'
 })
 
-beforeAll(() => mockServer.setup())
-afterAll(() => mockServer.finalize())
+const jsonGet = (path: String) => (axios.get(`${JSONDB_URL}${path}`))
+
+beforeAll(() => pactServer.setup())
+afterAll(() => pactServer.finalize())
 
 describe('Contracts', () => {
-
-  let resource = {}
-  let path = ''
 
   describe('for units', () => {
 
     it('retrieves unit 1', async () => {
-      resource = jsondb.get('units')
-        .find({ id: 1 })
-        .value() || {}
+      const path = '/units/1'
+      const resource = (await jsonGet(path)).data
       expect(resource).not.toEqual({})
-      path = '/units/1'
-      await mockServer.addInteraction({
+      await pactServer.addInteraction({
         state: 'unit 1 exists',
         uponReceiving: 'a GET request for unit 1',
         withRequest: {
@@ -53,16 +51,15 @@ describe('Contracts', () => {
           body: resource
         }
       })
-      const response = await axios.get(`${SERVER}${path}`)
-      expect(response.data).toEqual(resource)
+      const pactResponse = await axios.get(`${PACT_URL}${path}`)
+      expect(pactResponse.data).toEqual(resource)
     })
 
     it('retrieves all units', async () => {
-      resource = jsondb.get('units')
-        .value() || {}
+      const path = '/units'
+      const resource = (await jsonGet(path)).data
       expect(resource).not.toEqual({})
-      path = '/units'
-      await mockServer.addInteraction({
+      await pactServer.addInteraction({
         state: 'at least one unit exists',
         uponReceiving: 'a GET request to list units',
         withRequest: {
@@ -77,19 +74,18 @@ describe('Contracts', () => {
           body: resource
         }
       })
-      const response = await axios.get(`${SERVER}${path}`)
+      const response = await axios.get(`${PACT_URL}${path}`)
       expect(response.data).toEqual(resource)
     })
-    
+
     describe('for profiles', () => {
 
       it('retrieves profile 1', async () => {
-        resource = jsondb.get('users')
-          .find({ id: 1 })
-          .value() || {}
+        const path = '/profiles/1'
+        // the 'profiles' resource lives at /users
+        const resource = (await jsonGet('/users/1')).data
         expect(resource).not.toEqual({})
-        path = '/profiles/1'
-        await mockServer.addInteraction({
+        await pactServer.addInteraction({
           state: 'profile 1 exists',
           uponReceiving: 'a GET request for profile 1',
           withRequest: {
@@ -104,16 +100,16 @@ describe('Contracts', () => {
             body: resource
           }
         })
-        const response = await axios.get(`${SERVER}${path}`)
+        const response = await axios.get(`${PACT_URL}${path}`)
         expect(response.data).toEqual(resource)
       })
-
+      
       it('retrieves all profiles', async () => {
-        resource = jsondb.get('people')
-          .value() || {}
+        const path = '/profiles'
+        // the 'profiles' resource lives at /users
+        const resource = (await jsonGet('/users')).data
         expect(resource).not.toEqual({})
-        path = '/profiles'
-        await mockServer.addInteraction({
+        await pactServer.addInteraction({
           state: 'at least one profile exists',
           uponReceiving: 'a GET request to list profiles',
           withRequest: {
@@ -128,7 +124,7 @@ describe('Contracts', () => {
             body: resource
           }
         })
-        const response = await axios.get(`${SERVER}${path}`)
+        const response = await axios.get(`${PACT_URL}${path}`)
         expect(response.data).toEqual(resource)
       })
     })
@@ -136,12 +132,10 @@ describe('Contracts', () => {
     describe('for departments', () => {
 
       it('retrieves department 1', async () => {
-        resource = jsondb.get('departments')
-          .find({ id: 1 })
-          .value() || {}
+        const path = '/departments/1'
+        const resource = (await jsonGet(path)).data
         expect(resource).not.toEqual({})
-        path = '/departments/1'
-        await mockServer.addInteraction({
+        await pactServer.addInteraction({
           state: 'department 1 exists',
           uponReceiving: 'a GET request for department 1',
           withRequest: {
@@ -156,16 +150,15 @@ describe('Contracts', () => {
             body: resource
           }
         })
-        const response = await axios.get(`${SERVER}${path}`)
+        const response = await axios.get(`${PACT_URL}${path}`)
         expect(response.data).toEqual(resource)
       })
 
       it('retrieves all departments', async () => {
-        resource = jsondb.get('people')
-          .value() || {}
+        const path = '/departments'
+        const resource = (await jsonGet(path)).data
         expect(resource).not.toEqual({})
-        path = '/departments'
-        await mockServer.addInteraction({
+        await pactServer.addInteraction({
           state: 'at least one department exists',
           uponReceiving: 'a GET request to list departments',
           withRequest: {
@@ -180,7 +173,7 @@ describe('Contracts', () => {
             body: resource
           }
         })
-        const response = await axios.get(`${SERVER}${path}`)
+        const response = await axios.get(`${PACT_URL}${path}`)
         expect(response.data).toEqual(resource)
       })
     })

@@ -21,6 +21,7 @@
   },
   "scripts": {
     "dev": "json-server --watch db.json --routes db.routes.json --port 3001 & react-scripts-ts start",
+    "pact": "json-server --watch db.json --routes db.routes.json --port 3002 & jest --env=node --watch",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "jest --env=jsdom",
