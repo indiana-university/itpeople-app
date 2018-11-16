@@ -1,42 +1,63 @@
 import * as React from 'react'
-import { Col, List, Row } from "rivet-react";
+import { Breadcrumbs, Col, List, Row } from "rivet-react";
 import { IUserProfile } from "./store";
 import PageTitle from '../layout/PageTitle';
 
 const Presentation: React.SFC<IUserProfile> = (props) => {
     const user = props.user || {};
-    const department = props.department || null;
+    // const department = props.department || null;
     const responsibilities = user.responsibilities || [];
     const tools = user.tools || [];
     const memberships = props.unitMemberships || [];
     return (<>
+        <Row className="rvt-m-bottom-md">
+            <Col>
+                <Breadcrumbs>
+                    <List variant="plain" orientation="inline">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/profiles">Profiles</a></li>
+                        <li>{user.name}</li>
+                    </List>
+                </Breadcrumbs>
+            </Col>
+        </Row>
         <Row>
             <Col>
-                <PageTitle>{user.name}</PageTitle>
-                <div className="rvt-ts-26">{user.position}</div>
+                <Row>
+                    {user.photoUrl &&
+                        <Col md={4}>
+                            <div style={{ borderRadius: "100%", overflow: "hidden" }}>
+                                <img src={user.photoUrl} alt={`${name}`} width={"100%"} />
+                            </div>
+                        </Col>
+                    }
+                    <Col>
+                        <PageTitle>{user.name}</PageTitle>
+                        <div className="rvt-ts-26">{user.position}</div>
 
-                {user.role &&
-                    <div>{user.role}</div>
-                }
-                {department &&
-                    <div><a href={`/departments/${department.id}`}>{department.name}</a> ({department.description})</div>
-                }
-                {user.campus &&
-                    <div>{user.campus}</div>
-                }
-                {user.campusEmail &&
-                    <div><a href={`mailto:${user.campusEmail}`}>{user.campusEmail}</a></div>
-                }
-                {user.campusPhone &&
-                    <div>{user.campusPhone}</div>
-                }
-                {user.location &&
-                    <div>{user.location}</div>
-                }
-                {user.expertise &&
-                    <div>{user.expertise}</div>
-                }
-
+                        {user.role &&
+                            <div>{user.role}</div>
+                        }
+                        {/* {department &&
+                            <div>
+                                <a href={`/departments/${department.id}`}>{department.name}</a>
+                                {department.description && <div>{department.description}</div>}
+                            </div>
+                        } */}
+                        {user.location &&
+                            <div>{user.location}</div>
+                        }
+                        {user.campus &&
+                            <div>{user.campus}</div>
+                        }
+                        {user.campusEmail &&
+                            <div><a href={`mailto:${user.campusEmail}`}>{user.campusEmail}</a></div>
+                        }
+                        {user.campusPhone &&
+                            <div>{user.campusPhone}</div>
+                        }
+                    </Col>
+                </Row>
                 {responsibilities.length &&
                     <Row>
                         <Col>
@@ -53,7 +74,17 @@ const Presentation: React.SFC<IUserProfile> = (props) => {
                         </Col>
                     </Row>
                 }
+                {user.expertise &&
+                    <Row>
+                        <Col>
+                            <h2 className="rvt-ts-26 rvt-m-top-lg">Interests</h2>
+                            {user.expertise}
+                        </Col>
+                    </Row>
+                }
 
+            </Col>
+            <Col md={5}>
                 {!!memberships.length &&
                     <Row>
                         <Col>
@@ -64,9 +95,6 @@ const Presentation: React.SFC<IUserProfile> = (props) => {
                         </Col>
                     </Row>
                 }
-            </Col>
-            <Col md={5}>
-                <img src={user.photoUrl} width="100%" style={{maxWidth:500}}/>
             </Col>
         </Row>
     </>)
