@@ -356,6 +356,52 @@
           ]
         }
       }
+    },
+    {
+      "description": "a GET request to search",
+      "providerState": "some data exists",
+      "request": {
+        "method": "GET",
+        "path": "/search"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "departments": [
+            {
+              "id": 1,
+              "name": "Parks and Recreation Department"
+            }
+          ],
+          "units": [
+            {
+              "id": 1,
+              "name": "Parks and Recreation IT"
+            }
+          ],
+          "users": [
+            {
+              "id": 2,
+              "name": "Leslie Knope"
+            },
+            {
+              "id": 1,
+              "name": "Ron Swanson"
+            },
+            {
+              "id": 3,
+              "name": "Andy Dwyer"
+            },
+            {
+              "id": 4,
+              "name": "Li’l Sebastian"
+            }
+          ]
+        }
+      }
     }
   ],
   "metadata": {

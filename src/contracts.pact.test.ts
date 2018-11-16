@@ -180,5 +180,32 @@ describe('Contracts', () => {
         expect(responseBody).toEqual(resource)
       })
     })
+
+    describe('for searches', () => {
+
+      it('searches without parameters', async () => {
+        const path = '/search'
+        const resource = (await getFixture(path)).data
+        expect(resource).not.toEqual({})
+        await pactServer.addInteraction({
+          state: 'some data exists',
+          uponReceiving: 'a GET request to search',
+          withRequest: {
+            method: 'GET',
+            path: path
+          },
+          willRespondWith: {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: resource
+          }
+        })
+        const responseBody = (await getPact(path)).data
+        expect(responseBody).toEqual(resource)
+      })
+
+    })
   })
 })
