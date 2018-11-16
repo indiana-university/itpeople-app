@@ -46,7 +46,7 @@ const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest,
         </HeaderNavigation>
       }
     </Header>
-    <main id="main-content" className="rvt-m-top-xl rvt-m-bottom-xxl" >
+    <main id="main-content" className="rvt-m-top-xl rvt-m-bottom-xxl" style={{maxWidth:1440, margin:"auto"}} >
       <Container>
         { children }
       </Container>
