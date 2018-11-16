@@ -2,9 +2,9 @@ import * as React from 'react'
 import { Breadcrumbs, Col, List, Row } from "rivet-react";
 import { IUserProfile } from "./store";
 import PageTitle from '../layout/PageTitle';
+import { Panel } from '../Panel';
 
 const Presentation: React.SFC<IUserProfile> = (props) => {
-    const boxClassName = "rvt-border-radius rvt-border-all rvt-p-all-md rvt-m-all-md";
     const user = props.user || {};
     // const department = props.department || null;
     const responsibilities = user.responsibilities || [];
@@ -23,45 +23,47 @@ const Presentation: React.SFC<IUserProfile> = (props) => {
             </Col>
         </Row>
         <Row>
-            <Col>
-                <Row className={boxClassName}>
-                    {user.photoUrl &&
-                        <Col md={4}>
-                            <div style={{ borderRadius: "100%", overflow: "hidden", objectFit: 'cover' }}>
-                                <img src={user.photoUrl} alt={`${name}`} width={"100%"} style={{ borderRadius: "100%", overflow: "hidden", objectFit: 'cover' }} />
-                            </div>
-                        </Col>
-                    }
-                    <Col>
-                        <PageTitle>{user.name}</PageTitle>
-                        <div className="rvt-ts-26">{user.position}</div>
-
-                        {user.role &&
-                            <div>{user.role}</div>
+            <Col md={7} className="rvt-p-all-lg">
+                <Panel title="Contact Information">
+                    <>
+                        {user.photoUrl &&
+                            <Col md={4}>
+                                <div style={{ borderRadius: "100%", overflow: "hidden", objectFit: 'cover' }}>
+                                    <img src={user.photoUrl} alt={`${name}`} width={"100%"} style={{ borderRadius: "100%", overflow: "hidden", objectFit: 'cover' }} />
+                                </div>
+                            </Col>
                         }
-                        {/* {department &&
+                        <Col>
+                            <PageTitle>{user.name}</PageTitle>
+                            <div className="rvt-ts-26">{user.position}</div>
+
+                            {user.role &&
+                                <div>{user.role}</div>
+                            }
+                            {/* {department &&
                             <div>
                                 <a href={`/departments/${department.id}`}>{department.name}</a>
                                 {department.description && <div>{department.description}</div>}
                             </div>
                         } */}
-                        {user.location &&
-                            <div>{user.location}</div>
-                        }
-                        {user.campus &&
-                            <div>{user.campus}</div>
-                        }
-                        {user.campusEmail &&
-                            <div><a href={`mailto:${user.campusEmail}`}>{user.campusEmail}</a></div>
-                        }
-                        {user.campusPhone &&
-                            <div>{user.campusPhone}</div>
-                        }
-                    </Col>
-                </Row>
+                            {user.location &&
+                                <div>{user.location}</div>
+                            }
+                            {user.campus &&
+                                <div>{user.campus}</div>
+                            }
+                            {user.campusEmail &&
+                                <div><a href={`mailto:${user.campusEmail}`}>{user.campusEmail}</a></div>
+                            }
+                            {user.campusPhone &&
+                                <div>{user.campusPhone}</div>
+                            }
+                        </Col>
+                    </>
+                </Panel>
 
-                <Row className={boxClassName}>
-                    <Col>
+                <div className="rvt-m-top-lg">
+                    <Panel title="Personal Inforamtion">
                         {responsibilities.length &&
                             <Row>
                                 <Col>
@@ -83,7 +85,7 @@ const Presentation: React.SFC<IUserProfile> = (props) => {
                                 <Col>
                                     <h2 className="rvt-ts-26 rvt-m-top-md rvt-border-top rvt-p-top-md">Interests</h2>
                                     <List variant="plain">
-                                        {user.expertise.map((e,i)=>(
+                                        {user.expertise.map((e, i) => (
                                             <li key={i}>{e}</li>
                                         ))}
                                     </List>
@@ -91,13 +93,13 @@ const Presentation: React.SFC<IUserProfile> = (props) => {
                                 </Col>
                             </Row>
                         }
-                    </Col>
-                </Row>
+                    </Panel>
+                </div>
             </Col>
-            <Col md={5}>
+            <Col md={5} className="rvt-p-all-lg">
                 {!!memberships.length &&
-                    <Row className={boxClassName}>
-                        <Col>
+                    <>
+                        <Panel title="IT Units">
                             <h2 className="rvt-ts-26 rvt-m-bottom-md">IT Units</h2>
                             {memberships.map((m, i) => {
                                 return (
@@ -134,8 +136,8 @@ const Presentation: React.SFC<IUserProfile> = (props) => {
                                     </div>);
                             })
                             }
-                        </Col>
-                    </Row>
+                        </Panel>
+                    </>
                 }
             </Col>
         </Row>
