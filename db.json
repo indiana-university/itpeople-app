@@ -16,7 +16,7 @@
                 "Chisel",
                 "Bureaucracy"
             ],
-            "expertise": "Wood-working, fishing",
+            "expertise": ["Wood-working", "fishing"],
             "responsibilities": [
                 "IT Leadership",
                 "Other stuff"
@@ -27,7 +27,14 @@
             {
                 "id": 1,
                 "name": "Parks and Recreation IT",
-                "description": "This is a description for a test unit."
+                "description": "This is a description for a test unit.",
+                "title": "Developer",
+                "role": "Admin",
+                "tools":[
+                    "Bureaucracy",
+                    "Chisel",
+                    "Claw hammer"
+                ]
             }
         ],
         "department": {
@@ -54,13 +61,14 @@
                     "Chisel",
                     "Bureaucracy"
                 ],
-                "expertise": "Wood-working, fishing",
+                "expertise": ["Wood-working", "fishing"],
                 "department": {
                     "id": 1,
                     "name": "Parks and Recreation department"
                 },
                 "responsibilities": [
-                    "ItLeadership"
+                    "IT Leadership",
+                    "Other things"
                 ],
                 "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
             },
@@ -68,7 +76,14 @@
                 {
                     "id": 1,
                     "name": "Parks and Recreation IT",
-                    "description": "This is a description for a test unit."
+                    "description": "This is a description for a test unit.",
+                    "title": "Developer",
+                    "role": "Admin",
+                    "tools": [
+                        "Bureaucracy",
+                        "Chisel",
+                        "Claw hammer"
+                    ]
                 }
             ],
             "department": {
@@ -93,13 +108,13 @@
                     "Clip board",
                     "Tenacity"
                 ],
-                "expertise": "Canvasing",
+                "expertise": ["Canvasing"],
                 "department": {
                     "id": 1,
                     "name": "Parks and Recreation department"
                 },
                 "responsibilities": [
-                    "ItLeadership"
+                    "IT Leadership"
                 ],
                 "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg"
             },
@@ -107,7 +122,13 @@
                 {
                     "id": 1,
                     "name": "Parks and Recreation IT",
-                    "description": "This is a description for a test unit."
+                    "description": "This is a description for a test unit.",
+                    "title": "Developer",
+                    "role": "Admin",
+                    "tools": [
+                        "Clip board",
+                        "Tenacity"
+                    ]
                 }
             ],
             "department": {
@@ -132,7 +153,7 @@
                     "Hay",
                     "Shoes"
                 ],
-                "expertise": "Horsin' around",
+                "expertise": ["Horsin' around"],
                 "department": {
                     "id": 1,
                     "name": "Parks and Recreation department"

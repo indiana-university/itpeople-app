@@ -2,16 +2,16 @@
 import { IApiState, IApplicationState, IEntity, IRole } from '../types'
 
 export const enum ProfileActionTypes {
-    PROFILE_FETCH_REQUEST = '@@profile/PROFILE_FETCH_REQUEST',
-    PROFILE_FETCH_SUCCESS = '@@profile/PROFILE_FETCH_SUCCESS',
-    PROFILE_FETCH_ERROR = '@@profile/PROFILE_FETCH_ERROR',
-    PROFILE_UPDATE_REQUEST = '@@profile/PROFILE_UPDATE_REQUEST',
-    PROFILE_UPDATE_SUCCESS = '@@profile/PROFILE_UPDATE_SUCCESS',
-    PROFILE_UPDATE_ERROR = '@@profile/PROFILE_UPDATE_ERROR',
+  PROFILE_FETCH_REQUEST = '@@profile/PROFILE_FETCH_REQUEST',
+  PROFILE_FETCH_SUCCESS = '@@profile/PROFILE_FETCH_SUCCESS',
+  PROFILE_FETCH_ERROR = '@@profile/PROFILE_FETCH_ERROR',
+  PROFILE_UPDATE_REQUEST = '@@profile/PROFILE_UPDATE_REQUEST',
+  PROFILE_UPDATE_SUCCESS = '@@profile/PROFILE_UPDATE_SUCCESS',
+  PROFILE_UPDATE_ERROR = '@@profile/PROFILE_UPDATE_ERROR',
 }
 
 export interface IUserRequest {
-    id: number,
+  id: number,
 }
 
 
@@ -23,18 +23,24 @@ export interface IUser extends IEntity, IRole {
   campusEmail: string,
   campus: string,
   tools: string[],
-  expertise: string,
+  expertise: string[],
   responsibilities: string[],
   photoUrl?: string
 }
 
-export interface IUserProfile {
-    user: IUser,
-    unitMemberships: IEntity[],
-    department: IEntity,
+interface IUnitMemberships extends IEntity {
+  tools?: string[],
+  title?: string,
+  role?: string
 }
 
-export interface IState extends IApiState<IUserRequest, IUserProfile> { 
+export interface IUserProfile {
+  user: IUser,
+  unitMemberships: IUnitMemberships[],
+  department: IEntity,
+}
+
+export interface IState extends IApiState<IUserRequest, IUserProfile> {
 }
 //#endregion
 
@@ -54,10 +60,10 @@ import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer, PutErrorRe
 
 // Type-safe initialState!
 export const initialState: IState = {
-    data: undefined,
-    error: undefined,
-    loading: false,
-    request: undefined,
+  data: undefined,
+  error: undefined,
+  loading: false,
+  request: undefined,
 }
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
