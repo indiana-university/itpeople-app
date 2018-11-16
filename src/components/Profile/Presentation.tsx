@@ -25,7 +25,7 @@ const Presentation: React.SFC<IUserProfile> = (props) => {
         <Row>
             <Col md={7} className="rvt-p-all-lg">
                 <Panel title="Contact Information">
-                    <>
+                    <Row>
                         {user.photoUrl &&
                             <Col md={4}>
                                 <div style={{ borderRadius: "100%", overflow: "hidden", objectFit: 'cover' }}>
@@ -33,7 +33,7 @@ const Presentation: React.SFC<IUserProfile> = (props) => {
                                 </div>
                             </Col>
                         }
-                        <Col>
+                        <Col md={8}>
                             <PageTitle>{user.name}</PageTitle>
                             <div className="rvt-ts-26">{user.position}</div>
 
@@ -59,7 +59,7 @@ const Presentation: React.SFC<IUserProfile> = (props) => {
                                 <div>{user.campusPhone}</div>
                             }
                         </Col>
-                    </>
+                    </Row>
                 </Panel>
 
                 <div className="rvt-m-top-lg">

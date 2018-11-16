@@ -1,19 +1,24 @@
 import * as React from 'react'
 import { Col, List, Panel, Row, Section } from "rivet-react";
 import { ChildrenCard, IUnitProfile, MemberLists, ParentCard } from "./index";
+import PageTitle from '../layout/PageTitle';
 
 const Presentation: React.SFC<IUnitProfile> =
   (props) => {
     return (
       <>
-        <p><a href={props.url}>Unit Website</a></p>
+        <PageTitle>{props.name}</PageTitle>
         <Row>
           <Col lg={7}>
-            <Section>
-              {props.description && 
-                <div className="group-describer rvt-m-bottom-lg"><span>{props.description}</span></div>
+            <Section className="rvt-m-bottom-md">
+              {props.description &&
+                <div className="group-describer rvt-m-bottom-md"><span>{props.description}</span></div>
               }
-            
+              {props.url &&
+                <a href={props.url} className="rvt-button rvt-button--secondary">Unit Website</a>
+              }
+            </Section>
+            <Section>
               <MemberLists {...props} title="Unit Members" />
             </Section>
           </Col>
