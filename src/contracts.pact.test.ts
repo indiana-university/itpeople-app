@@ -3,12 +3,7 @@
  */
 import * as path from 'path'
 import { Pact } from '@pact-foundation/pact'
-import * as lowdb from 'lowdb'
-import * as FileSync from 'lowdb/adapters/FileSync'
 import axios from 'axios'
-
-const lowdbAdapter = new FileSync('db.json')
-const jsondb = lowdb(lowdbAdapter)
 
 const PACT_PORT = 6123
 const PACT_SERVER = `http://localhost:${PACT_PORT}`
