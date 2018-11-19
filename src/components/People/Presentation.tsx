@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { IEntity } from '../types';
+import { ProfileList } from './ProfileList';
 
 interface IProps {
     users?: IEntity[]
@@ -9,11 +10,9 @@ const Presentation: React.SFC<IProps> = (props) => {
 
     return (<div>
         {users && users.length &&
-            users.map((user) => (
-                <div>
-                    <a href={"/profiles/" + user.id}>{user.name}</a>
-                </div>
-            ))}
+           
+            <ProfileList users={users} />
+           }
     </div>)
 }
 
