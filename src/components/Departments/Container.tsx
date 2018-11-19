@@ -5,6 +5,7 @@ import { IApplicationState } from '../types';
 import Departments from './Presentation';
 import { fetchRequest, IState } from './store';
 import { Loader } from '../Loader';
+import { Content } from '../layout/Content';
 
 interface IDispatchProps {
     fetchRequest: typeof fetchRequest
@@ -17,23 +18,25 @@ class Container extends React.Component<IState & IDispatchProps>{
 
     public render() {
         return (
-            <Loader {...this.props}>
-              
-                { this.props.data &&  
-                    <Departments {...this.props.data} /> }
-            </Loader>
+            <Content>
+                <Loader {...this.props}>
+
+                    {this.props.data &&
+                        <Departments {...this.props.data} />}
+                </Loader>
+            </Content>
         )
     }
 }
 
-const mapStateToProps = (state: IApplicationState) => 
+const mapStateToProps = (state: IApplicationState) =>
     state.departments
-  
-const mapDispatchToProps = (dispatch: Dispatch) : IDispatchProps => ({
-  fetchRequest: () => dispatch(fetchRequest())
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
+    fetchRequest: () => dispatch(fetchRequest())
 })
-  
+
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Container)
+)(Container)

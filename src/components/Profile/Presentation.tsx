@@ -80,12 +80,12 @@ const Presentation: React.SFC<IUserProfile> = (props) => {
                                 </Col>
                             </Row>
                         }
-                        {user.expertise &&
+                        {user.expertise && user.expertise.length > 0 &&
                             <Row>
                                 <Col>
                                     <h2 className="rvt-ts-26 rvt-m-top-md rvt-border-top rvt-p-top-md">Interests</h2>
                                     <List variant="plain">
-                                        {user.expertise.map((e, i) => (
+                                        {user.expertise.map && user.expertise.map((e, i) => (
                                             <li key={i}>{e}</li>
                                         ))}
                                     </List>

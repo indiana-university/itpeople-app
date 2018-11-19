@@ -5,6 +5,7 @@ import { IApplicationState } from '../types';
 import Department from './Presentation';
 import { fetchRequest, IDepartmentRequest, IState } from './store';
 import { Loader } from '../Loader';
+import { Content } from '../layout/Content';
 
 interface IContainerProps {
     match: any
@@ -20,11 +21,13 @@ class Container extends React.Component<IState & IContainerProps & IDispatchProp
     }
     public render() {
         return (
-            <Loader {...this.props}>
-                {this.props.data &&
-                    <Department {...this.props.data} />
-                }
-            </Loader>
+            <Content>
+                <Loader {...this.props}>
+                    {this.props.data &&
+                        <Department {...this.props.data} />
+                    }
+                </Loader>
+            </Content>
         )
     }
 }

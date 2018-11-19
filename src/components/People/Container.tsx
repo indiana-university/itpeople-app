@@ -5,6 +5,7 @@ import { IApplicationState } from '../types';
 import PeopleList from './Presentation';
 import { fetchRequest, IState } from './store';
 import { Loader } from '../Loader';
+import { Content } from '../layout/Content';
 
 
 interface IPropsFromDispatch {
@@ -20,9 +21,11 @@ class Container extends React.Component<IState & IPropsFromDispatch>{
     public render() {
         const data = this.props.data || {};
         return (
-            <Loader {...this.props}>
-                <PeopleList {...data} />
-            </Loader>
+            <Content>
+                <Loader {...this.props}>
+                    <PeopleList {...data} />
+                </Loader>
+            </Content>
         )
     }
 }

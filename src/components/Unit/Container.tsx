@@ -5,6 +5,7 @@ import { IApplicationState } from '../types';
 import Unit from './Presentation';
 import * as unit from './store';
 import { Loader } from '../Loader';
+import { Content } from '../layout/Content';
 
 interface IContainerProps {
     match: any
@@ -23,11 +24,13 @@ class Container extends React.Component<unit.IState & IContainerProps & IDispatc
 
     public render() {
         return (
-            <Loader {...this.props}>
-                {this.props.data && 
-                    <Unit {...this.props.data} />
-                }
-            </Loader>
+            <Content>
+                <Loader {...this.props}>
+                    {this.props.data &&
+                        <Unit {...this.props.data} />
+                    }
+                </Loader>
+            </Content>
         )
     }
 }
