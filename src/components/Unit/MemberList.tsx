@@ -7,10 +7,10 @@ export const MemberList: React.SFC<IProps> = ({ members, title, showImages }) =>
   return (
     <Section className="rvt-m-bottom-lg">
       {title &&
-        <h3 className="rvt-ts-20 rvt-ts-26-lg-up rvt-m-bottom-xs">{title}</h3>
+        <h3 className="rvt-ts-20 rvt-ts-26-lg-up rvt-m-bottom-xs rvt-text-bold" >{title}</h3>
       }
       {members &&
-          members.map((m, i) =>  (<MemberListItem key="i" {...m} showImage={showImages} dark={!!((i+1) % 2)} /> ))
+          members.map((m, i) =>  (<MemberListItem key={i} {...m} showImage={showImages} dark={!!((i+1) % 2)} /> ))
       }
     </Section>)
 }
