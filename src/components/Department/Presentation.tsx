@@ -2,6 +2,9 @@ import * as React from 'react'
 import { Row, Col } from "rivet-react";
 import { IDepartmentProfile } from "./store";
 import PageTitle from '../layout/PageTitle';
+import { Panel } from '../Panel'
+import { MemberList } from './MemberList';
+import { List } from 'rivet-react/build/dist/components/List/List';
 
 const Presentation: React.SFC<IDepartmentProfile> = (props) => {
     const name = props.name;
@@ -10,35 +13,43 @@ const Presentation: React.SFC<IDepartmentProfile> = (props) => {
     const units = props.units || [];
     const supportingUnits = props.supportingUnits || [];
     return <>
-        <PageTitle>{name}</PageTitle>
-        {description && <p>{description}</p>}
+
         <Row>
-            <Col>
+            <Col md={6}>
+                <div className="rvt-m-bottom-xxl">
+                    <PageTitle>{name}</PageTitle>
+                    {description && <p>{description}</p>}
+                </div>
                 {members && members.length > 0 &&
                     <div>
-                        <h2 className="rvt-ts-26 rvt-m-top-lg">IT Professional Staff</h2>
-                        <ul>
-                            {members.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
-                        </ul>
+                        <MemberList members={members} title="IT Professional Staff" />
                     </div>
                 }
-
+            </Col>
+            <Col md={5} last={true}>
                 {units.length > 0 &&
-                    <div>
-                        <h2 className="rvt-ts-26 rvt-m-top-lg">Constituent Units</h2>
-                        <ul>
-                            {units.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
-                        </ul>
+                    <div className="rvt-m-bottom-xl">
+                        <Panel title="Constituent Units">
+                            <List variant="plain">
+                                {units.map((r, i) => (
+                                    <li key={i}>
+                                        <a href={`/units/${r.id}`}>{r.name}</a>
+                                        {r.description && <p>{r.description}</p>}
+                                    </li>))}
+                            </List>
+                        </Panel>
                     </div>
                 }
 
                 {supportingUnits.length > 0 &&
-                    <div>
-                        <h2 className="rvt-ts-26 rvt-m-top-lg">Supporting Units</h2>
-                        <ul>
-                            {supportingUnits.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
-                        </ul>
-                    </div>
+                    <Panel title="Supporting Units">
+                        <List variant="plain">
+                            {supportingUnits.map((r, i) => (<li key={i}>
+                                <a href={`/units/${r.id}`}>{r.name}</a>
+                                {r.description && <p>{r.description}</p>}
+                            </li>))}
+                        </List>
+                    </Panel>
                 }
             </Col>
         </Row>
