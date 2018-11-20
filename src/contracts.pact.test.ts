@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import * as path from 'path'
-import { Pact } from '@pact-foundation/pact'
+import { Pact, Matchers } from '@pact-foundation/pact'
 import axios from 'axios'
 
 const PACT_PORT = 6123
@@ -46,7 +46,7 @@ describe('Contracts', () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: resource
+          body: Matchers.like(resource)
         }
       })
       const responseBody = (await getPact(path)).data
@@ -69,7 +69,7 @@ describe('Contracts', () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: resource
+          body: Matchers.like(resource)
         }
       })
       const responseBody = (await getPact(path)).data
@@ -95,7 +95,7 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: resource
+            body: Matchers.like(resource)
           }
         })
         const responseBody = (await getPact(path)).data
@@ -119,7 +119,7 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: resource
+            body: Matchers.like(resource)
           }
         })
         const responseBody = (await getPact(path)).data
@@ -145,7 +145,7 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: resource
+            body: Matchers.like(resource)
           }
         })
         const responseBody = (await getPact(path)).data
@@ -168,7 +168,7 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: resource
+            body: Matchers.like(resource)
           }
         })
         const responseBody = (await getPact(path)).data
@@ -194,7 +194,7 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: resource
+            body: Matchers.like(resource)
           }
         })
         const responseBody = (await getPact(path)).data
@@ -222,7 +222,7 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: resource
+            body: Matchers.like(resource)
           }
         })
         const responseBody = (await getPact(path)).data
