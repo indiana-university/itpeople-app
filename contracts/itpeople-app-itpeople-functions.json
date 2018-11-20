@@ -11,7 +11,7 @@
       "providerState": "unit 1 exists",
       "request": {
         "method": "GET",
-        "path": "/unit/1"
+        "path": "/units/1"
       },
       "response": {
         "status": 200,
@@ -72,6 +72,376 @@
             "id": 1,
             "name": "CITY COUNCIL",
             "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request to list units",
+      "providerState": "at least one unit exists",
+      "request": {
+        "method": "GET",
+        "path": "/units"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+          {
+            "id": 1,
+            "name": "Parks and Recreation IT",
+            "description": "This page is under construction",
+            "url": "http://pawneeindiana.com/information-technology/",
+            "members": [
+              {
+                "id": 2,
+                "name": "Leslie Knope",
+                "percentage": 100,
+                "role": "Member",
+                "title": "Developer"
+              },
+              {
+                "id": 1,
+                "name": "Ron Swanson",
+                "percentage": 100,
+                "role": "Leader",
+                "title": "Manager"
+              },
+              {
+                "id": 3,
+                "name": "Andy Dwyer",
+                "percentage": 100,
+                "role": "Member",
+                "title": "Developer"
+              },
+              {
+                "id": 4,
+                "name": "Li’l Sebastian",
+                "percentage": 100,
+                "role": "Related",
+                "title": "Outside consultant"
+              }
+            ],
+            "supportedDepartments": [
+
+            ],
+            "children": [
+              {
+                "id": 2,
+                "name": "Fourth floor",
+                "description": "This is a child unit description"
+              },
+              {
+                "id": 2,
+                "name": "Other Child Unit",
+                "description": "This is a child unit description"
+              }
+            ],
+            "parent": {
+              "id": 1,
+              "name": "CITY COUNCIL",
+              "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "description": "a GET request for profile 1",
+      "providerState": "profile 1 exists",
+      "request": {
+        "method": "GET",
+        "path": "/profiles/1"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": 1,
+          "user": {
+            "id": 1,
+            "name": "Ron Swanson",
+            "netId": "rswanso",
+            "position": "Parks and Rec Director",
+            "location": "",
+            "campusPhone": "812-856-1234",
+            "campusEmail": "rswanso@iu.edu",
+            "campus": "IUBLA",
+            "role": "Manager",
+            "tools": [
+              "Claw hammer",
+              "Chisel",
+              "Bureaucracy"
+            ],
+            "expertise": "Wood-working, fishing",
+            "department": {
+              "id": 1,
+              "name": "Parks and Recreation department"
+            },
+            "responsibilities": [
+              "ItLeadership"
+            ],
+            "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
+          },
+          "unitMemberships": [
+            {
+              "id": 1,
+              "name": "Test Unit",
+              "description": "This is a description for a test unit."
+            }
+          ],
+          "department": {
+            "id": 1,
+            "name": "Parks and Recreation Department",
+            "description": "This is a description for a test unit."
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request to list profiles",
+      "providerState": "at least one profile exists",
+      "request": {
+        "method": "GET",
+        "path": "/profiles"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+          {
+            "id": 1,
+            "user": {
+              "id": 1,
+              "name": "Ron Swanson",
+              "netId": "rswanso",
+              "position": "Parks and Rec Director",
+              "location": "",
+              "campusPhone": "812-856-1234",
+              "campusEmail": "rswanso@iu.edu",
+              "campus": "IUBLA",
+              "role": "Manager",
+              "tools": [
+                "Claw hammer",
+                "Chisel",
+                "Bureaucracy"
+              ],
+              "expertise": "Wood-working, fishing",
+              "department": {
+                "id": 1,
+                "name": "Parks and Recreation department"
+              },
+              "responsibilities": [
+                "ItLeadership"
+              ],
+              "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
+            },
+            "unitMemberships": [
+              {
+                "id": 1,
+                "name": "Test Unit",
+                "description": "This is a description for a test unit."
+              }
+            ],
+            "department": {
+              "id": 1,
+              "name": "Parks and Recreation Department",
+              "description": "This is a description for a test unit."
+            }
+          },
+          {
+            "id": 2,
+            "user": {
+              "id": 2,
+              "name": "Leslie Knope",
+              "netId": "lknope",
+              "position": "Parks and Rec project manager",
+              "location": "",
+              "campusPhone": "812-856-1234",
+              "campusEmail": "lknope@iu.edu",
+              "campus": "IUBLA",
+              "role": "Manager",
+              "tools": [
+                "Clip board",
+                "Tenacity"
+              ],
+              "expertise": "Canvasing",
+              "department": {
+                "id": 1,
+                "name": "Parks and Recreation department"
+              },
+              "responsibilities": [
+                "ItLeadership"
+              ],
+              "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg"
+            },
+            "unitMemberships": [
+              {
+                "id": 1,
+                "name": "Test Unit",
+                "description": "This is a description for a test unit."
+              }
+            ],
+            "department": {
+              "id": 1,
+              "name": "Parks and Recreation department",
+              "description": "This is a description for a test unit."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "description": "a GET request for department 1",
+      "providerState": "department 1 exists",
+      "request": {
+        "method": "GET",
+        "path": "/departments/1"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": 1,
+          "name": "Parks and Recreation Department",
+          "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities.",
+          "members": [
+            {
+              "id": 1,
+              "name": "Ron Swanson"
+            }
+          ],
+          "units": [
+            {
+              "id": 1,
+              "name": "Parks and Recreation IT"
+            }
+          ],
+          "supportingUnits": [
+            {
+              "id": 1,
+              "name": "Sanitization"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "description": "a GET request to list departments",
+      "providerState": "at least one department exists",
+      "request": {
+        "method": "GET",
+        "path": "/departments"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "departments": [
+            {
+              "id": 1,
+              "name": "Parks and Recreation Department",
+              "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "description": "a GET request to search",
+      "providerState": "some data exists",
+      "request": {
+        "method": "GET",
+        "path": "/search"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "departments": [
+            {
+              "id": 1,
+              "name": "Parks and Recreation Department"
+            }
+          ],
+          "units": [
+            {
+              "id": 1,
+              "name": "Parks and Recreation IT"
+            }
+          ],
+          "users": [
+            {
+              "id": 2,
+              "name": "Leslie Knope"
+            },
+            {
+              "id": 1,
+              "name": "Ron Swanson"
+            },
+            {
+              "id": 3,
+              "name": "Andy Dwyer"
+            },
+            {
+              "id": 4,
+              "name": "Li’l Sebastian"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "description": "a GET request to retrieve my profile",
+      "providerState": "there is a user logged in for whom a profile exists",
+      "request": {
+        "method": "GET",
+        "path": "/me"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "user": {
+            "name": "Ron Swanson",
+            "netId": "rswanso",
+            "position": "Parks and Rec Director",
+            "location": "",
+            "campusPhone": "812-856-1234",
+            "campusEmail": "rswanso@iu.edu",
+            "campus": "IUBLA",
+            "tools": "",
+            "expertise": "Wood-working, fishing",
+            "responsibilities": [
+              "ItLeadership"
+            ],
+            "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
+          },
+          "unitMemberships": [
+            {
+              "id": 1,
+              "name": "Parks and Recreation IT",
+              "description": "This is a description for a test unit."
+            }
+          ],
+          "department": {
+            "id": 1,
+            "name": "Parks and Recreation Department",
+            "description": "This is a description for a test unit."
           }
         }
       }
