@@ -4,6 +4,9 @@
 import * as path from 'path'
 import { Pact, Matchers } from '@pact-foundation/pact'
 import axios from 'axios'
+import deepMap from 'deep-map'
+
+const matchify = (value: any) => Matchers.like(value)
 
 const PACT_PORT = 6123
 const PACT_SERVER = `http://localhost:${PACT_PORT}`
@@ -67,7 +70,7 @@ describe('Contracts', () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: Matchers.like(resource)
+          body: deepMap(resource, matchify)
         }
       })
       const responseBody = (await getPact(path)).data
@@ -91,7 +94,7 @@ describe('Contracts', () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: Matchers.like(resource)
+          body: deepMap(resource, matchify)
         }
       })
       const responseBody = (await getPact(path)).data
@@ -118,7 +121,7 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: Matchers.like(resource)
+            body: deepMap(resource, matchify)
           }
         })
         const responseBody = (await getPact(path)).data
@@ -143,7 +146,7 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: Matchers.like(resource)
+            body: deepMap(resource, matchify)
           }
         })
         const responseBody = (await getPact(path)).data
@@ -170,7 +173,7 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: Matchers.like(resource)
+            body: deepMap(resource, matchify)
           }
         })
         const responseBody = (await getPact(path)).data
@@ -194,7 +197,7 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: Matchers.like(resource)
+            body: deepMap(resource, matchify)
           }
         })
         const responseBody = (await getPact(path)).data
@@ -221,7 +224,7 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: Matchers.like(resource)
+            body: deepMap(resource, matchify)
           }
         })
         const responseBody = (await getPact(path)).data
@@ -250,7 +253,7 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: Matchers.like(resource)
+            body: deepMap(resource, matchify)
           }
         })
         const responseBody = (await getPact(path)).data

@@ -91,7 +91,103 @@
           }
         },
         "matchingRules": {
-          "$.body": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.name": {
+            "match": "type"
+          },
+          "$.body.description": {
+            "match": "type"
+          },
+          "$.body.url": {
+            "match": "type"
+          },
+          "$.body.members[0].id": {
+            "match": "type"
+          },
+          "$.body.members[0].name": {
+            "match": "type"
+          },
+          "$.body.members[0].percentage": {
+            "match": "type"
+          },
+          "$.body.members[0].role": {
+            "match": "type"
+          },
+          "$.body.members[0].title": {
+            "match": "type"
+          },
+          "$.body.members[1].id": {
+            "match": "type"
+          },
+          "$.body.members[1].name": {
+            "match": "type"
+          },
+          "$.body.members[1].percentage": {
+            "match": "type"
+          },
+          "$.body.members[1].role": {
+            "match": "type"
+          },
+          "$.body.members[1].title": {
+            "match": "type"
+          },
+          "$.body.members[2].id": {
+            "match": "type"
+          },
+          "$.body.members[2].name": {
+            "match": "type"
+          },
+          "$.body.members[2].percentage": {
+            "match": "type"
+          },
+          "$.body.members[2].role": {
+            "match": "type"
+          },
+          "$.body.members[2].title": {
+            "match": "type"
+          },
+          "$.body.members[3].id": {
+            "match": "type"
+          },
+          "$.body.members[3].name": {
+            "match": "type"
+          },
+          "$.body.members[3].percentage": {
+            "match": "type"
+          },
+          "$.body.members[3].role": {
+            "match": "type"
+          },
+          "$.body.members[3].title": {
+            "match": "type"
+          },
+          "$.body.children[0].id": {
+            "match": "type"
+          },
+          "$.body.children[0].name": {
+            "match": "type"
+          },
+          "$.body.children[0].description": {
+            "match": "type"
+          },
+          "$.body.children[1].id": {
+            "match": "type"
+          },
+          "$.body.children[1].name": {
+            "match": "type"
+          },
+          "$.body.children[1].description": {
+            "match": "type"
+          },
+          "$.body.parent.id": {
+            "match": "type"
+          },
+          "$.body.parent.name": {
+            "match": "type"
+          },
+          "$.body.parent.description": {
             "match": "type"
           }
         }
@@ -121,7 +217,16 @@
           }
         ],
         "matchingRules": {
-          "$.body": {
+          "$.body[0].id": {
+            "match": "type"
+          },
+          "$.body[0].name": {
+            "match": "type"
+          },
+          "$.body[0].description": {
+            "match": "type"
+          },
+          "$.body[0].url": {
             "match": "type"
           }
         }
@@ -183,7 +288,76 @@
           }
         },
         "matchingRules": {
-          "$.body": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.user.id": {
+            "match": "type"
+          },
+          "$.body.user.name": {
+            "match": "type"
+          },
+          "$.body.user.netId": {
+            "match": "type"
+          },
+          "$.body.user.position": {
+            "match": "type"
+          },
+          "$.body.user.location": {
+            "match": "type"
+          },
+          "$.body.user.campusPhone": {
+            "match": "type"
+          },
+          "$.body.user.campusEmail": {
+            "match": "type"
+          },
+          "$.body.user.campus": {
+            "match": "type"
+          },
+          "$.body.user.role": {
+            "match": "type"
+          },
+          "$.body.user.tools[0]": {
+            "match": "type"
+          },
+          "$.body.user.tools[1]": {
+            "match": "type"
+          },
+          "$.body.user.tools[2]": {
+            "match": "type"
+          },
+          "$.body.user.expertise": {
+            "match": "type"
+          },
+          "$.body.user.department.id": {
+            "match": "type"
+          },
+          "$.body.user.department.name": {
+            "match": "type"
+          },
+          "$.body.user.responsibilities[0]": {
+            "match": "type"
+          },
+          "$.body.user.photoUrl": {
+            "match": "type"
+          },
+          "$.body.unitMemberships[0].id": {
+            "match": "type"
+          },
+          "$.body.unitMemberships[0].name": {
+            "match": "type"
+          },
+          "$.body.unitMemberships[0].description": {
+            "match": "type"
+          },
+          "$.body.department.id": {
+            "match": "type"
+          },
+          "$.body.department.name": {
+            "match": "type"
+          },
+          "$.body.department.description": {
             "match": "type"
           }
         }
@@ -286,7 +460,145 @@
           }
         ],
         "matchingRules": {
-          "$.body": {
+          "$.body[0].id": {
+            "match": "type"
+          },
+          "$.body[0].user.id": {
+            "match": "type"
+          },
+          "$.body[0].user.name": {
+            "match": "type"
+          },
+          "$.body[0].user.netId": {
+            "match": "type"
+          },
+          "$.body[0].user.position": {
+            "match": "type"
+          },
+          "$.body[0].user.location": {
+            "match": "type"
+          },
+          "$.body[0].user.campusPhone": {
+            "match": "type"
+          },
+          "$.body[0].user.campusEmail": {
+            "match": "type"
+          },
+          "$.body[0].user.campus": {
+            "match": "type"
+          },
+          "$.body[0].user.role": {
+            "match": "type"
+          },
+          "$.body[0].user.tools[0]": {
+            "match": "type"
+          },
+          "$.body[0].user.tools[1]": {
+            "match": "type"
+          },
+          "$.body[0].user.tools[2]": {
+            "match": "type"
+          },
+          "$.body[0].user.expertise": {
+            "match": "type"
+          },
+          "$.body[0].user.department.id": {
+            "match": "type"
+          },
+          "$.body[0].user.department.name": {
+            "match": "type"
+          },
+          "$.body[0].user.responsibilities[0]": {
+            "match": "type"
+          },
+          "$.body[0].user.photoUrl": {
+            "match": "type"
+          },
+          "$.body[0].unitMemberships[0].id": {
+            "match": "type"
+          },
+          "$.body[0].unitMemberships[0].name": {
+            "match": "type"
+          },
+          "$.body[0].unitMemberships[0].description": {
+            "match": "type"
+          },
+          "$.body[0].department.id": {
+            "match": "type"
+          },
+          "$.body[0].department.name": {
+            "match": "type"
+          },
+          "$.body[0].department.description": {
+            "match": "type"
+          },
+          "$.body[1].id": {
+            "match": "type"
+          },
+          "$.body[1].user.id": {
+            "match": "type"
+          },
+          "$.body[1].user.name": {
+            "match": "type"
+          },
+          "$.body[1].user.netId": {
+            "match": "type"
+          },
+          "$.body[1].user.position": {
+            "match": "type"
+          },
+          "$.body[1].user.location": {
+            "match": "type"
+          },
+          "$.body[1].user.campusPhone": {
+            "match": "type"
+          },
+          "$.body[1].user.campusEmail": {
+            "match": "type"
+          },
+          "$.body[1].user.campus": {
+            "match": "type"
+          },
+          "$.body[1].user.role": {
+            "match": "type"
+          },
+          "$.body[1].user.tools[0]": {
+            "match": "type"
+          },
+          "$.body[1].user.tools[1]": {
+            "match": "type"
+          },
+          "$.body[1].user.expertise": {
+            "match": "type"
+          },
+          "$.body[1].user.department.id": {
+            "match": "type"
+          },
+          "$.body[1].user.department.name": {
+            "match": "type"
+          },
+          "$.body[1].user.responsibilities[0]": {
+            "match": "type"
+          },
+          "$.body[1].user.photoUrl": {
+            "match": "type"
+          },
+          "$.body[1].unitMemberships[0].id": {
+            "match": "type"
+          },
+          "$.body[1].unitMemberships[0].name": {
+            "match": "type"
+          },
+          "$.body[1].unitMemberships[0].description": {
+            "match": "type"
+          },
+          "$.body[1].department.id": {
+            "match": "type"
+          },
+          "$.body[1].department.name": {
+            "match": "type"
+          },
+          "$.body[1].department.description": {
             "match": "type"
           }
         }
@@ -331,7 +643,31 @@
           ]
         },
         "matchingRules": {
-          "$.body": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.name": {
+            "match": "type"
+          },
+          "$.body.description": {
+            "match": "type"
+          },
+          "$.body.members[0].id": {
+            "match": "type"
+          },
+          "$.body.members[0].name": {
+            "match": "type"
+          },
+          "$.body.units[0].id": {
+            "match": "type"
+          },
+          "$.body.units[0].name": {
+            "match": "type"
+          },
+          "$.body.supportingUnits[0].id": {
+            "match": "type"
+          },
+          "$.body.supportingUnits[0].name": {
             "match": "type"
           }
         }
@@ -362,7 +698,13 @@
           ]
         },
         "matchingRules": {
-          "$.body": {
+          "$.body.departments[0].id": {
+            "match": "type"
+          },
+          "$.body.departments[0].name": {
+            "match": "type"
+          },
+          "$.body.departments[0].description": {
             "match": "type"
           }
         }
@@ -416,7 +758,40 @@
           ]
         },
         "matchingRules": {
-          "$.body": {
+          "$.body.departments[0].id": {
+            "match": "type"
+          },
+          "$.body.departments[0].name": {
+            "match": "type"
+          },
+          "$.body.units[0].id": {
+            "match": "type"
+          },
+          "$.body.units[0].name": {
+            "match": "type"
+          },
+          "$.body.users[0].id": {
+            "match": "type"
+          },
+          "$.body.users[0].name": {
+            "match": "type"
+          },
+          "$.body.users[1].id": {
+            "match": "type"
+          },
+          "$.body.users[1].name": {
+            "match": "type"
+          },
+          "$.body.users[2].id": {
+            "match": "type"
+          },
+          "$.body.users[2].name": {
+            "match": "type"
+          },
+          "$.body.users[3].id": {
+            "match": "type"
+          },
+          "$.body.users[3].name": {
             "match": "type"
           }
         }
@@ -478,7 +853,76 @@
           }
         },
         "matchingRules": {
-          "$.body": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.user.id": {
+            "match": "type"
+          },
+          "$.body.user.name": {
+            "match": "type"
+          },
+          "$.body.user.netId": {
+            "match": "type"
+          },
+          "$.body.user.position": {
+            "match": "type"
+          },
+          "$.body.user.location": {
+            "match": "type"
+          },
+          "$.body.user.campusPhone": {
+            "match": "type"
+          },
+          "$.body.user.campusEmail": {
+            "match": "type"
+          },
+          "$.body.user.campus": {
+            "match": "type"
+          },
+          "$.body.user.role": {
+            "match": "type"
+          },
+          "$.body.user.tools[0]": {
+            "match": "type"
+          },
+          "$.body.user.tools[1]": {
+            "match": "type"
+          },
+          "$.body.user.tools[2]": {
+            "match": "type"
+          },
+          "$.body.user.expertise": {
+            "match": "type"
+          },
+          "$.body.user.department.id": {
+            "match": "type"
+          },
+          "$.body.user.department.name": {
+            "match": "type"
+          },
+          "$.body.user.responsibilities[0]": {
+            "match": "type"
+          },
+          "$.body.user.photoUrl": {
+            "match": "type"
+          },
+          "$.body.unitMemberships[0].id": {
+            "match": "type"
+          },
+          "$.body.unitMemberships[0].name": {
+            "match": "type"
+          },
+          "$.body.unitMemberships[0].description": {
+            "match": "type"
+          },
+          "$.body.department.id": {
+            "match": "type"
+          },
+          "$.body.department.name": {
+            "match": "type"
+          },
+          "$.body.department.description": {
             "match": "type"
           }
         }
