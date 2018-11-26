@@ -127,31 +127,6 @@ describe('Contracts', () => {
         const responseBody = (await getPact(path)).data
         expect(responseBody).toEqual(resource)
       })
-
-      it('retrieves all profiles', async () => {
-        const path = '/profiles'
-        // the 'profiles' resource lives at /users
-        const resource = (await getFixture('/users')).data
-        expect(resource).not.toEqual({})
-        await pactServer.addInteraction({
-          state: 'at least one profile exists',
-          uponReceiving: 'a GET request to list profiles',
-          withRequest: {
-            method: 'GET',
-            headers: authHeader,
-            path: path
-          },
-          willRespondWith: {
-            status: 200,
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: deepMap(resource, matchify)
-          }
-        })
-        const responseBody = (await getPact(path)).data
-        expect(responseBody).toEqual(resource)
-      })
     })
 
     describe('for departments', () => {
