@@ -18,7 +18,6 @@ import { IApplicationState } from 'src/components/types';
 import * as Department from "./components/Department/store";
 import * as Departments from "./components/Departments/store";
 import * as Profile from './components/Profile/store'
-import * as People from './components/People/store'
 import * as SearchSimple from './components/Search/store'
 import * as Auth from './components/SignIn/store'
 import * as Unit from "./components/Unit/store";
@@ -29,7 +28,6 @@ export const initialState : IApplicationState = {
   form: {},
   department: Department.initialState,
   departments: Departments.initialState,
-  people: People.initialState,
   profile: Profile.initialState,
   searchSimple: SearchSimple.initialState,
   unit: Unit.initialState,
@@ -49,7 +47,6 @@ export const rootReducer = combineReducers<IApplicationState>({
   form: formReducer,
   department: Department.reducer,
   departments: Departments.reducer,
-  people: People.reducer,
   profile: Profile.reducer,
   searchSimple: SearchSimple.reducer,
   unit: Unit.reducer,
@@ -65,7 +62,6 @@ export function* rootSaga() {
     fork(Department.saga),
     fork(Departments.saga), 
     fork(Profile.saga), 
-    fork(People.saga), 
     fork(SearchSimple.saga), 
     fork(Unit.saga),
     fork(Units.saga),
