@@ -21,7 +21,10 @@
       "providerState": "unit 1 exists",
       "request": {
         "method": "GET",
-        "path": "/units/1"
+        "path": "/units/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
       },
       "response": {
         "status": 200,
@@ -96,7 +99,10 @@
       "providerState": "at least one unit exists",
       "request": {
         "method": "GET",
-        "path": "/units"
+        "path": "/units",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
       },
       "response": {
         "status": 200,
@@ -173,7 +179,10 @@
       "providerState": "profile 1 exists",
       "request": {
         "method": "GET",
-        "path": "/profiles/1"
+        "path": "/profiles/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
       },
       "response": {
         "status": 200,
@@ -232,7 +241,10 @@
       "providerState": "at least one profile exists",
       "request": {
         "method": "GET",
-        "path": "/profiles"
+        "path": "/profiles",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
       },
       "response": {
         "status": 200,
@@ -332,7 +344,10 @@
       "providerState": "department 1 exists",
       "request": {
         "method": "GET",
-        "path": "/departments/1"
+        "path": "/departments/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
       },
       "response": {
         "status": 200,
@@ -374,7 +389,10 @@
       "providerState": "at least one department exists",
       "request": {
         "method": "GET",
-        "path": "/departments"
+        "path": "/departments",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
       },
       "response": {
         "status": 200,
@@ -402,7 +420,10 @@
       "providerState": "some data exists",
       "request": {
         "method": "GET",
-        "path": "/search"
+        "path": "/search",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
       },
       "response": {
         "status": 200,
@@ -453,7 +474,10 @@
       "providerState": "there is a user logged in for whom a profile exists",
       "request": {
         "method": "GET",
-        "path": "/me"
+        "path": "/me",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
       },
       "response": {
         "status": 200,
