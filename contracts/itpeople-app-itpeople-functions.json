@@ -7,6 +7,16 @@
   },
   "interactions": [
     {
+      "description": "A GET request for a resource requires authentication",
+      "request": {
+        "method": "GET",
+        "path": "/units"
+      },
+      "response": {
+        "status": 401
+      }
+    },
+    {
       "description": "a GET request for unit 1",
       "providerState": "unit 1 exists",
       "request": {
