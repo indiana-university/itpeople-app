@@ -18,7 +18,10 @@ const pactServer = new Pact({
   provider: 'itpeople-functions'
 })
 
-const GET = (server: String, path: String) => (axios.get(`${server}${path}`))
+const authHeader = {
+  Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+}
+const GET = (server: String, path: String) => (axios.get(`${server}${path}`, { headers: authHeader }))
 
 const getFixture = (path: String) => (GET(JSON_SERVER, path))
 const getPact = (path: String) => (GET(PACT_SERVER, path))
@@ -30,6 +33,23 @@ describe('Contracts', () => {
 
   describe('for units', () => {
 
+    it('requires authentication to view a unit', async () => {
+      const path = '/units/401'
+      await pactServer.addInteraction({
+        state: 'the server requires authorization',
+        uponReceiving: 'an unauthorized GET request for unit 401',
+        withRequest: {
+          method: 'GET',
+          path: path
+        },
+        willRespondWith: {
+          status: 401
+        }
+      })
+      expect.assertions(1)
+      return expect(axios.get(`${PACT_SERVER}${path}`)).rejects.toEqual(new Error('Request failed with status code 401'))
+    })
+
     it('retrieves unit 1', async () => {
       const path = '/units/1'
       const resource = (await getFixture(path)).data
@@ -39,6 +59,7 @@ describe('Contracts', () => {
         uponReceiving: 'a GET request for unit 1',
         withRequest: {
           method: 'GET',
+          headers: authHeader,
           path: path
         },
         willRespondWith: {
@@ -62,6 +83,7 @@ describe('Contracts', () => {
         uponReceiving: 'a GET request to list units',
         withRequest: {
           method: 'GET',
+          headers: authHeader,
           path: path
         },
         willRespondWith: {
@@ -88,6 +110,7 @@ describe('Contracts', () => {
           uponReceiving: 'a GET request for profile 1',
           withRequest: {
             method: 'GET',
+            headers: authHeader,
             path: path
           },
           willRespondWith: {
@@ -112,6 +135,7 @@ describe('Contracts', () => {
           uponReceiving: 'a GET request to list profiles',
           withRequest: {
             method: 'GET',
+            headers: authHeader,
             path: path
           },
           willRespondWith: {
@@ -138,6 +162,7 @@ describe('Contracts', () => {
           uponReceiving: 'a GET request for department 1',
           withRequest: {
             method: 'GET',
+            headers: authHeader,
             path: path
           },
           willRespondWith: {
@@ -161,6 +186,7 @@ describe('Contracts', () => {
           uponReceiving: 'a GET request to list departments',
           withRequest: {
             method: 'GET',
+            headers: authHeader,
             path: path
           },
           willRespondWith: {
@@ -187,6 +213,7 @@ describe('Contracts', () => {
           uponReceiving: 'a GET request to search',
           withRequest: {
             method: 'GET',
+            headers: authHeader,
             path: path
           },
           willRespondWith: {
@@ -214,6 +241,7 @@ describe('Contracts', () => {
           state: 'there is a user logged in for whom a profile exists',
           uponReceiving: 'a GET request to retrieve my profile',
           withRequest: {
+            headers: authHeader,
             method: 'GET',
             path: path
           },
