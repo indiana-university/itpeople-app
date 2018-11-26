@@ -17,7 +17,6 @@ const App : React.SFC = () => (
       <Route path="/" exact={true} component={Home} />
       <Route path="/signin" component={Signin} />
       <Route path="/profiles/:id" component={ProfileContainer} /> 
-      <Route path="/profiles" exact={true} component={PeopleContainer} /> 
       <Route path="/me" component={ProfileContainer} /> 
       <Route path="/search" component={SearchContainer} /> 
       <Route path="/departments/:id" component={DepartmentContainer} /> 
