@@ -191,7 +191,10 @@ describe('Contracts', () => {
           withRequest: {
             method: 'GET',
             headers: authHeader,
-            path: path
+            path: path,
+            query: {
+              term: "foo"
+            }
           },
           willRespondWith: {
             status: 200,
@@ -201,7 +204,7 @@ describe('Contracts', () => {
             body: deepMap(resource, matchify)
           }
         })
-        const responseBody = (await getPact(path)).data
+        const responseBody = (await getPact(path+"?term=foo")).data
         expect(responseBody).toEqual(resource)
       })
     })
