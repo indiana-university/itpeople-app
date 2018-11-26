@@ -1,5 +1,5 @@
 {
-    "/me": "/users/1",
+    "/me": "/people/1",
     "/units": "/allUnits",
     "/departments": "/allDepartments"
 }
