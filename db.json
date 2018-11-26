@@ -112,30 +112,6 @@
             }
         }
     ],
-    "people": {
-        "users": [
-            {
-                "id": 1,
-                "name": "Ron Swanson",
-                "netId": "rswanso",
-                "position": "Parks and Rec Director",
-                "location": "",
-                "campusPhone": "812-856-1234",
-                "campusEmail": "rswanso@iu.edu",
-                "campus": "IUBLA"
-            },
-            {
-                "id": 2,
-                "name": "Leslie Knope",
-                "netId": "lknope",
-                "position": "Parks and Rec project manager",
-                "location": "",
-                "campusPhone": "812-856-1234",
-                "campusEmail": "lknope@iu.edu",
-                "campus": "IUBLA"
-            }
-        ]
-    },
     "allUnits": [
         {
             "id": 1,
