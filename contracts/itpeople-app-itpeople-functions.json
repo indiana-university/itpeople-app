@@ -367,8 +367,8 @@
       }
     },
     {
-      "description": "a GET request to search",
-      "providerState": "some data exists",
+      "description": "a GET request to search with a term",
+      "providerState": "data exists to be returned by term",
       "request": {
         "method": "GET",
         "path": "/search",

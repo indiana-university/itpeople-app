@@ -187,13 +187,13 @@ describe('Contracts', () => {
 
     describe('for searches', () => {
 
-      it('searches without parameters', async () => {
+      it('searches for foo', async () => {
         const path = '/search'
         const resource = (await getFixture(path)).data
         expect(resource).not.toEqual({})
         await pactServer.addInteraction({
-          state: 'some data exists',
-          uponReceiving: 'a GET request to search',
+          state: 'data exists to be returned by term',
+          uponReceiving: 'a GET request to search with a term',
           withRequest: {
             method: 'GET',
             headers: authHeader,
