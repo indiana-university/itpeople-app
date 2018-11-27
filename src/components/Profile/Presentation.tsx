@@ -5,7 +5,7 @@ import PageTitle from '../layout/PageTitle';
 import { Panel } from '../Panel';
 
 const Presentation: React.SFC<IUserProfile> = (props) => {
-    const user = props.user || {};
+    const user = props || {};
     // const department = props.department || null;
     const responsibilities = user.responsibilities || [];
     const tools = user.tools || [];
