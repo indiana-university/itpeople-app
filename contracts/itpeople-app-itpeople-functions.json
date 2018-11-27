@@ -186,9 +186,7 @@
               "title": "Developer",
               "role": "Admin",
               "tools": [
-                "Bureaucracy",
-                "Chisel",
-                "Claw hammer"
+                "AccountMgt"
               ]
             }
           ],
@@ -463,9 +461,7 @@
               "title": "Developer",
               "role": "Admin",
               "tools": [
-                "Bureaucracy",
-                "Chisel",
-                "Claw hammer"
+                "AccountMgt"
               ]
             }
           ],

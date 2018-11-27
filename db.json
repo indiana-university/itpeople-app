@@ -31,9 +31,7 @@
                     "title": "Developer",
                     "role": "Admin",
                     "tools": [
-                        "Bureaucracy",
-                        "Chisel",
-                        "Claw hammer"
+                        "AccountMgt"
                     ]
                 }
             ],
@@ -67,11 +65,8 @@
                     "name": "Parks and Recreation IT",
                     "description": "This is a description for a test unit.",
                     "title": "Developer",
-                    "role": "Admin",
-                    "tools": [
-                        "Clip board",
-                        "Tenacity"
-                    ]
+                    "role": "Member",
+                    "tools": []
                 }
             ],
             "department": {
@@ -102,7 +97,10 @@
                 {
                     "id": 1,
                     "name": "Parks and Recreation IT",
-                    "description": "This is a description for a test unit."
+                    "description": "This is a description for a test unit.",
+                    "title": "Small Horse",
+                    "role": "Member",
+                    "tools": []
                 }
             ],
             "department": {
