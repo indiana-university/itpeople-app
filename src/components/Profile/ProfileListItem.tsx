@@ -8,7 +8,7 @@ export const ProfileListItem: React.SFC<IEntity & IProps> = ({ id, name, descrip
             <Row>
                 <Col>
                     {dark}
-                    <a href={"/profiles/" + id} data-modal-trigger="modal-edit-person" className="rvt-m-bottom-remove person-list-item-new-name rvt-text-bold rvt-m-bottom-sm">
+                    <a href={"/people/" + id} data-modal-trigger="modal-edit-person" className="rvt-m-bottom-remove person-list-item-new-name rvt-text-bold rvt-m-bottom-sm">
                         <span className="viewIcons delFaceName _delete fl">{name}</span>
                     </a>
                     {description &&

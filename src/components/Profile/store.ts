@@ -85,14 +85,14 @@ import { httpGet, httpPut } from '../effects'
 
 function* handleFetch() {
   const state = (yield select<IApplicationState>((s) => s.profile.request)) as IUserRequest
-  const path = state.id === 0 ? "/me" : `/users/${state.id}`
+  const path = state.id === 0 ? "/me" : `/people/${state.id}`
   yield httpGet<IUserProfile>(path, fetchSuccess, fetchError)
 }
 
 function* handleUpdate() {
   const form = (yield select<any>((s) => s.form.profile.values)) as IUser
   const req = (yield select<IApplicationState>((s) => s.profile.request)) as IUserRequest
-  const path = `/users/${req.id}`
+  const path = `/people/${req.id}`;
   yield httpPut<IUser, IUserProfile>(path, form, fetchSuccess, fetchError)
 }
 

@@ -23,7 +23,7 @@ export const MemberListItem: React.SFC<IUnitMember & IProps> = ({ id, name, titl
                 }
                 <Col style={{ alignSelf: "center" }}>
                     {dark}
-                    <a href={"/profiles/" + id} data-modal-trigger="modal-edit-person" className="rvt-m-bottom-remove person-list-item-new-name rvt-text-bold rvt-m-bottom-sm rvt-ts-18">
+                    <a href={"/people/" + id} data-modal-trigger="modal-edit-person" className="rvt-m-bottom-remove person-list-item-new-name rvt-text-bold rvt-m-bottom-sm rvt-ts-18">
                         <span className="viewIcons delFaceName _delete fl">{name}</span>
                     </a>
                     {title &&
