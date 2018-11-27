@@ -7,7 +7,7 @@ export const MemberListItem: React.SFC<IEntity & IProps> = ({ id, name, descript
         <div className={"rvt-p-all-lg" + ((dark) ? " light-grey-bg" : "")}>
             <Row>
                 <Col style={{ alignSelf: "center" }}>
-                    <a href={"/profiles/" + id}>{name}</a>
+                    <a href={"/people/" + id}>{name}</a>
                     {description && <p className="rvt-ts-14 rvt-m-top-remove rvt-m-bottom-remove">{description}</p>}
                 </Col>
             </Row>
