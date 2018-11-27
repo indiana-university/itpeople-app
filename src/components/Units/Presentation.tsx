@@ -8,14 +8,13 @@ interface IProps {
 
 const Presentation: React.SFC<IProps> =
     (props) => {
-        console.log("props",props)
+        console.log("props", props)
         return (
-        <>
             <Panel margin={{ top: "xs" }}>
                 <List variant="plain">
                     {props.units.map((r, i) => (<li key={i}><a href={`/units/${r.id}`}>{r.name}</a></li>))}
                 </List>
             </Panel>
-        </>
-    )}
+        )
+    }
 export default Presentation

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Container, Footer, Header, HeaderIdentity, HeaderNavigation } from 'rivet-react';
+import { Footer, Header, HeaderIdentity, HeaderNavigation } from 'rivet-react';
 import * as Search from '../Search/store'
 import * as Auth from '../SignIn/store'
 import { IApplicationState  } from '../types'
@@ -47,9 +47,7 @@ const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest,
       }
     </Header>
     <main id="main-content" className="rvt-m-top-xl rvt-m-bottom-xxl" >
-      <Container>
         { children }
-      </Container>
     </main>
     <div style={{height:59}}>&nbsp;</div>
     </div>

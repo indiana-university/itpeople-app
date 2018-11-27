@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Row, Col, Section } from "rivet-react";
+import { Row, Col } from "rivet-react";
 import { MemberList } from "./MemberList";
 import { IUnitMember, UitsRole } from "./";
 
@@ -23,13 +23,11 @@ export const MemberLists: React.SFC<IProps> = ({ members, title }) => {
 
 
   return (<>
-    {title && <Section><h2 className="rvt-ts-26 rvt-m-top-lg">{title}</h2></Section>}
+    {title && <h2 className="rvt-ts-32">{title}</h2>}
     <Row>
-      <Col lg={6}>
-        {!!leaders.length && <MemberList title={"Leadership (" + leaders.length + ")"} members={leaders} />}
+      <Col>
+        {!!leaders.length && <MemberList title={"Leadership (" + leaders.length + ")"} members={leaders} showImages={true} />}
         {!!related.length && <MemberList title={"Related (" + related.length + ")"} members={related} />}
-      </Col>
-      <Col lg={6}>
         {!!members.length && <MemberList title={"Members (" + team.length + ")"} members={team} />}
       </Col>
     </Row>
