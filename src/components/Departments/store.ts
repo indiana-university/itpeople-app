@@ -7,18 +7,15 @@ export const enum DepartmentsActionTypes {
     DEPARTMENTS_FETCH_ERROR = '@@departments/FETCH_ERROR',
 }
 
-export interface IDepartmentList {
-    departments: IEntity[]
+export interface IState extends IApiState<{}, IEntity[]> { 
 }
-
-export interface IState extends IApiState<{}, IDepartmentList> {}
 //#endregion
 
 //#region ACTIONS
 import { action } from 'typesafe-actions'
 
 export const fetchRequest = () => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_REQUEST)
-export const fetchSuccess = (data: IDepartmentList) => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_SUCCESS, data)
+export const fetchSuccess = (data: IEntity[]) => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_SUCCESS, data)
 export const fetchError = (error: string) => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_ERROR, error)
 //#endregion
 
@@ -52,7 +49,7 @@ import { all, fork, takeEvery } from 'redux-saga/effects'
 import { httpGet } from '../effects'
 
 function* handleFetch() {
-  yield httpGet<IDepartmentList>("/departments", fetchSuccess, fetchError)
+  yield httpGet<IEntity[]>("/departments", fetchSuccess, fetchError)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action

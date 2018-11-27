@@ -161,26 +161,23 @@
         },
         "body": {
           "id": 1,
-          "user": {
-            "id": 1,
-            "name": "Ron Swanson",
-            "netId": "rswanso",
-            "position": "Parks and Rec Director",
-            "location": "Municipal Building, Office 123",
-            "campusPhone": "812-856-1234",
-            "campusEmail": "rswanso@iu.edu",
-            "campus": "Bloomington",
-            "tools": [
-              "Claw hammer"
-            ],
-            "expertise": [
-              "Wood-working"
-            ],
-            "responsibilities": [
-              "IT Leadership"
-            ],
-            "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
-          },
+          "name": "Ron Swanson",
+          "netId": "rswanso",
+          "position": "Parks and Rec Director",
+          "location": "Municipal Building, Office 123",
+          "campusPhone": "812-856-1234",
+          "campusEmail": "rswanso@iu.edu",
+          "campus": "Bloomington",
+          "tools": [
+            "Claw hammer"
+          ],
+          "expertise": [
+            "Wood-working"
+          ],
+          "responsibilities": [
+            "IT Leadership"
+          ],
+          "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
           "unitMemberships": [
             {
               "id": 1,
@@ -189,9 +186,7 @@
               "title": "Developer",
               "role": "Admin",
               "tools": [
-                "Bureaucracy",
-                "Chisel",
-                "Claw hammer"
+                "AccountMgt"
               ]
             }
           ],
@@ -205,49 +200,46 @@
           "$.body.id": {
             "match": "type"
           },
-          "$.body.user.id": {
+          "$.body.name": {
             "match": "type"
           },
-          "$.body.user.name": {
+          "$.body.netId": {
             "match": "type"
           },
-          "$.body.user.netId": {
+          "$.body.position": {
             "match": "type"
           },
-          "$.body.user.position": {
+          "$.body.location": {
             "match": "type"
           },
-          "$.body.user.location": {
+          "$.body.campusPhone": {
             "match": "type"
           },
-          "$.body.user.campusPhone": {
+          "$.body.campusEmail": {
             "match": "type"
           },
-          "$.body.user.campusEmail": {
+          "$.body.campus": {
             "match": "type"
           },
-          "$.body.user.campus": {
-            "match": "type"
-          },
-          "$.body.user.tools": {
+          "$.body.tools": {
             "min": 1
           },
-          "$.body.user.tools[*].*": {
+          "$.body.tools[*].*": {
             "match": "type"
           },
-          "$.body.user.expertise": {
+          "$.body.expertise": {
             "min": 1
           },
-          "$.body.user.expertise[*].*": {
+          "$.body.expertise[*].*": {
             "match": "type"
           },
-          "$.body.user.responsibilities": {
+          "$.body.responsibilities": {
             "min": 1
           },
-          "$.body.user.responsibilities[*].*": {
+          "$.body.responsibilities[*].*": {
             "match": "type"
           },
-          "$.body.user.photoUrl": {
+          "$.body.photoUrl": {
             "match": "type"
           },
           "$.body.unitMemberships": {
@@ -352,20 +344,18 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": {
-          "departments": [
-            {
-              "id": 1,
-              "name": "Parks and Recreation Department",
-              "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
-            }
-          ]
-        },
+        "body": [
+          {
+            "id": 1,
+            "name": "Parks and Recreation Department",
+            "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+          }
+        ],
         "matchingRules": {
-          "$.body.departments": {
+          "$.body": {
             "min": 1
           },
-          "$.body.departments[*].*": {
+          "$.body[*].*": {
             "match": "type"
           }
         }
@@ -446,26 +436,23 @@
         },
         "body": {
           "id": 1,
-          "user": {
-            "id": 1,
-            "name": "Ron Swanson",
-            "netId": "rswanso",
-            "position": "Parks and Rec Director",
-            "location": "Municipal Building, Office 123",
-            "campusPhone": "812-856-1234",
-            "campusEmail": "rswanso@iu.edu",
-            "campus": "Bloomington",
-            "tools": [
-              "Claw hammer"
-            ],
-            "expertise": [
-              "Wood-working"
-            ],
-            "responsibilities": [
-              "IT Leadership"
-            ],
-            "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
-          },
+          "name": "Ron Swanson",
+          "netId": "rswanso",
+          "position": "Parks and Rec Director",
+          "location": "Municipal Building, Office 123",
+          "campusPhone": "812-856-1234",
+          "campusEmail": "rswanso@iu.edu",
+          "campus": "Bloomington",
+          "tools": [
+            "Claw hammer"
+          ],
+          "expertise": [
+            "Wood-working"
+          ],
+          "responsibilities": [
+            "IT Leadership"
+          ],
+          "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
           "unitMemberships": [
             {
               "id": 1,
@@ -474,9 +461,7 @@
               "title": "Developer",
               "role": "Admin",
               "tools": [
-                "Bureaucracy",
-                "Chisel",
-                "Claw hammer"
+                "AccountMgt"
               ]
             }
           ],
@@ -490,49 +475,46 @@
           "$.body.id": {
             "match": "type"
           },
-          "$.body.user.id": {
+          "$.body.name": {
             "match": "type"
           },
-          "$.body.user.name": {
+          "$.body.netId": {
             "match": "type"
           },
-          "$.body.user.netId": {
+          "$.body.position": {
             "match": "type"
           },
-          "$.body.user.position": {
+          "$.body.location": {
             "match": "type"
           },
-          "$.body.user.location": {
+          "$.body.campusPhone": {
             "match": "type"
           },
-          "$.body.user.campusPhone": {
+          "$.body.campusEmail": {
             "match": "type"
           },
-          "$.body.user.campusEmail": {
+          "$.body.campus": {
             "match": "type"
           },
-          "$.body.user.campus": {
-            "match": "type"
-          },
-          "$.body.user.tools": {
+          "$.body.tools": {
             "min": 1
           },
-          "$.body.user.tools[*].*": {
+          "$.body.tools[*].*": {
             "match": "type"
           },
-          "$.body.user.expertise": {
+          "$.body.expertise": {
             "min": 1
           },
-          "$.body.user.expertise[*].*": {
+          "$.body.expertise[*].*": {
             "match": "type"
           },
-          "$.body.user.responsibilities": {
+          "$.body.responsibilities": {
             "min": 1
           },
-          "$.body.user.responsibilities[*].*": {
+          "$.body.responsibilities[*].*": {
             "match": "type"
           },
-          "$.body.user.photoUrl": {
+          "$.body.photoUrl": {
             "match": "type"
           },
           "$.body.unitMemberships": {

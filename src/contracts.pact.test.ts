@@ -9,9 +9,10 @@ import * as traverse from 'traverse'
 const deepMatchify = (obj: Object) => traverse(obj).map(function (this: traverse.TraverseContext, x: any) {
   if (Array.isArray(x) && x.length > 0) {
     this.update(Matchers.eachLike(x[0]), true)
-    return
   }
-  if (this.isLeaf) this.update(Matchers.like(x), true)
+  else if (this.isLeaf) {
+    this.update(Matchers.like(x), true)
+  }
 })
 
 const PACT_PORT = 6123

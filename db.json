@@ -5,27 +5,24 @@
     "people": [
         {
             "id": 1,
-            "user": {
-                "id": 1,
-                "name": "Ron Swanson",
-                "netId": "rswanso",
-                "position": "Parks and Rec Director",
-                "location": "Municipal Building, Office 123",
-                "campusPhone": "812-856-1234",
-                "campusEmail": "rswanso@iu.edu",
-                "campus": "Bloomington",
-                "tools": [
-                    "Claw hammer",
-                    "Chisel",
-                    "Bureaucracy"
-                ],
-                "expertise": ["Wood-working", "fishing"],
-                "responsibilities": [
-                    "IT Leadership",
-                    "Other things"
-                ],
-                "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
-            },
+            "name": "Ron Swanson",
+            "netId": "rswanso",
+            "position": "Parks and Rec Director",
+            "location": "Municipal Building, Office 123",
+            "campusPhone": "812-856-1234",
+            "campusEmail": "rswanso@iu.edu",
+            "campus": "Bloomington",
+            "tools": [
+                "Claw hammer",
+                "Chisel",
+                "Bureaucracy"
+            ],
+            "expertise": ["Wood-working", "fishing"],
+            "responsibilities": [
+                "IT Leadership",
+                "Other things"
+            ],
+            "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
             "unitMemberships": [
                 {
                     "id": 1,
@@ -34,9 +31,7 @@
                     "title": "Developer",
                     "role": "Admin",
                     "tools": [
-                        "Bureaucracy",
-                        "Chisel",
-                        "Claw hammer"
+                        "AccountMgt"
                     ]
                 }
             ],
@@ -48,40 +43,30 @@
         },
         {
             "id": 2,
-            "user": {
-                "id": 2,
-                "name": "Leslie Knope",
-                "netId": "lknope",
-                "position": "Parks and Rec project manager",
-                "location": "",
-                "campusPhone": "812-856-1234",
-                "campusEmail": "lknope@iu.edu",
-                "campus": "IUBLA",
-                "tools": [
-                    "Clip board",
-                    "Tenacity"
-                ],
-                "expertise": ["Canvasing"],
-                "department": {
-                    "id": 1,
-                    "name": "Parks and Recreation department"
-                },
-                "responsibilities": [
-                    "IT Leadership"
-                ],
-                "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg"
-            },
+            "name": "Leslie Knope",
+            "netId": "lknope",
+            "position": "Parks and Rec project manager",
+            "location": "",
+            "campusPhone": "812-856-1234",
+            "campusEmail": "lknope@iu.edu",
+            "campus": "IUBLA",
+            "tools": [
+                "Clip board",
+                "Tenacity"
+            ],
+            "expertise": ["Canvasing"],
+            "responsibilities": [
+                "IT Leadership"
+            ],
+            "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg",
             "unitMemberships": [
                 {
                     "id": 1,
                     "name": "Parks and Recreation IT",
                     "description": "This is a description for a test unit.",
                     "title": "Developer",
-                    "role": "Admin",
-                    "tools": [
-                        "Clip board",
-                        "Tenacity"
-                    ]
+                    "role": "Member",
+                    "tools": []
                 }
             ],
             "department": {
@@ -92,34 +77,30 @@
         },
         {
             "id": 4,
-            "user": {
-                "id": 2,
-                "name": "Li’l Sebastian",
-                "netId": "lsebastian",
-                "position": "Pageant winner",
-                "location": "Stable #4",
-                "campusPhone": "812-856-1234",
-                "campusEmail": "lsebastian@iu.edu",
-                "campus": "IUBLA",
-                "role": "Manager",
-                "tools": [
-                    "Hay",
-                    "Shoes"
-                ],
-                "expertise": ["Horsin' around"],
-                "department": {
-                    "id": 1,
-                    "name": "Parks and Recreation department"
-                },
-                "responsibilities": [
-                    "Being a horse"
-                ]
-            },
+            "name": "Li’l Sebastian",
+            "netId": "lsebastian",
+            "position": "Pageant winner",
+            "location": "Stable #4",
+            "campusPhone": "812-856-1234",
+            "campusEmail": "lsebastian@iu.edu",
+            "campus": "IUBLA",
+            "role": "Manager",
+            "tools": [
+                "Hay",
+                "Shoes"
+            ],
+            "expertise": ["Horsin' around"],
+            "responsibilities": [
+                "Being a horse"
+            ],
             "unitMemberships": [
                 {
                     "id": 1,
                     "name": "Parks and Recreation IT",
-                    "description": "This is a description for a test unit."
+                    "description": "This is a description for a test unit.",
+                    "title": "Small Horse",
+                    "role": "Member",
+                    "tools": []
                 }
             ],
             "department": {
@@ -198,15 +179,13 @@
             }
         }
     ],
-    "allDepartments": {
-        "departments": [
-            {
-                "id": 1,
-                "name": "Parks and Recreation Department",
-                "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
-            }
-        ]
-    },
+    "allDepartments": [
+        {
+            "id": 1,
+            "name": "Parks and Recreation Department",
+            "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+        }
+    ],
     "departments": [
         {
             "id": 1,

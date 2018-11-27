@@ -33,8 +33,7 @@ interface IUnitMemberships extends IEntity {
   role?: string
 }
 
-export interface IUserProfile {
-  user: IUser,
+export interface IUserProfile extends IUser {
   unitMemberships: IUnitMemberships[],
   department: IEntity,
 }
