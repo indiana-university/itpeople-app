@@ -6,7 +6,7 @@ import { Pact, Matchers } from '@pact-foundation/pact'
 import axios from 'axios'
 import * as traverse from 'traverse'
 
-const deepMatchify = (obj: Object) => traverse(obj).map(function (this: any, x: any) {
+const deepMatchify = (obj: Object) => traverse(obj).map(function (this: traverse.TraverseContext, x: any) {
   if (Array.isArray(x) && x.length > 0) {
     this.update(Matchers.eachLike(x[0]), true)
     return
@@ -210,7 +210,7 @@ describe('Contracts', () => {
             body: deepMatchify(resource)
           }
         })
-        const responseBody = (await getPact(path+"?term=foo")).data
+        const responseBody = (await getPact(path + "?term=foo")).data
         expect(responseBody).not.toEqual({})
       })
     })
