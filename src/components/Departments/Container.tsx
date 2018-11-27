@@ -22,7 +22,7 @@ class Container extends React.Component<IState & IDispatchProps>{
                 <Loader {...this.props}>
 
                     {this.props.data &&
-                        <Departments {...this.props.data} />}
+                        <Departments departments={this.props.data} />}
                 </Loader>
             </Content>
         )

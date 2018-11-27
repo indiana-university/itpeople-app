@@ -346,20 +346,18 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": {
-          "departments": [
-            {
-              "id": 1,
-              "name": "Parks and Recreation Department",
-              "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
-            }
-          ]
-        },
+        "body": [
+          {
+            "id": 1,
+            "name": "Parks and Recreation Department",
+            "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+          }
+        ],
         "matchingRules": {
-          "$.body.departments": {
+          "$.body": {
             "min": 1
           },
-          "$.body.departments[*].*": {
+          "$.body[*].*": {
             "match": "type"
           }
         }

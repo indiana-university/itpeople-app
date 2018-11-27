@@ -1,8 +1,12 @@
 import * as React from 'react'
-import { IDepartmentList } from "./store";
+import { IEntity } from '../types';
 import PageTitle from '../layout/PageTitle';
 
-const Presentation: React.SFC<IDepartmentList> =
+interface IProps {
+    departments: IEntity[]
+}
+
+const Presentation: React.SFC<IProps> =
     (props) => {
         return (
             <>
