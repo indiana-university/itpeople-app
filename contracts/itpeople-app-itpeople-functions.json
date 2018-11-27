@@ -163,7 +163,6 @@
             "campusPhone": "812-856-1234",
             "campusEmail": "rswanso@iu.edu",
             "campus": "IUBLA",
-            "role": "Manager",
             "tools": [
               "Claw hammer"
             ],
@@ -216,9 +215,6 @@
             "match": "type"
           },
           "$.body.user.campus": {
-            "match": "type"
-          },
-          "$.body.user.role": {
             "match": "type"
           },
           "$.body.user.tools": {
@@ -450,7 +446,6 @@
             "campusPhone": "812-856-1234",
             "campusEmail": "rswanso@iu.edu",
             "campus": "IUBLA",
-            "role": "Manager",
             "tools": [
               "Claw hammer"
             ],
@@ -503,9 +498,6 @@
             "match": "type"
           },
           "$.body.user.campus": {
-            "match": "type"
-          },
-          "$.body.user.role": {
             "match": "type"
           },
           "$.body.user.tools": {
