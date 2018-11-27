@@ -37,9 +37,6 @@ const Presentation: React.SFC<IUserProfile> = (props) => {
                             <PageTitle>{user.name}</PageTitle>
                             <div className="rvt-ts-26">{user.position}</div>
 
-                            {user.role &&
-                                <div>{user.role}</div>
-                            }
                             {/* {department &&
                             <div>
                                 <a href={`/departments/${department.id}`}>{department.name}</a>

@@ -1,5 +1,5 @@
 //#region TYPES
-import { IApiState, IApplicationState, IEntity, IRole } from '../types'
+import { IApiState, IApplicationState, IEntity } from '../types'
 
 export const enum ProfileActionTypes {
   PROFILE_FETCH_REQUEST = '@@profile/PROFILE_FETCH_REQUEST',
@@ -14,8 +14,7 @@ export interface IUserRequest {
   id: number,
 }
 
-
-export interface IUser extends IEntity, IRole {
+export interface IUser extends IEntity {
   netId: string,
   position: string,
   location: string,

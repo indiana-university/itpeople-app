@@ -2,8 +2,17 @@
  * @jest-environment node
  */
 import * as path from 'path'
-import { Pact } from '@pact-foundation/pact'
+import { Pact, Matchers } from '@pact-foundation/pact'
 import axios from 'axios'
+import * as traverse from 'traverse'
+
+const deepMatchify = (obj: Object) => traverse(obj).map(function (this: traverse.TraverseContext, x: any) {
+  if (Array.isArray(x) && x.length > 0) {
+    this.update(Matchers.eachLike(x[0]), true)
+    return
+  }
+  if (this.isLeaf) this.update(Matchers.like(x), true)
+})
 
 const PACT_PORT = 6123
 const PACT_SERVER = `http://localhost:${PACT_PORT}`
@@ -18,7 +27,10 @@ const pactServer = new Pact({
   provider: 'itpeople-functions'
 })
 
-const GET = (server: String, path: String) => (axios.get(`${server}${path}`))
+const authHeader = {
+  Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+}
+const GET = (server: String, path: String) => (axios.get(`${server}${path}`, { headers: authHeader }))
 
 const getFixture = (path: String) => (GET(JSON_SERVER, path))
 const getPact = (path: String) => (GET(PACT_SERVER, path))
@@ -30,6 +42,23 @@ describe('Contracts', () => {
 
   describe('for units', () => {
 
+    it('requires authentication to view a unit', async () => {
+      const path = '/units/401'
+      await pactServer.addInteraction({
+        state: 'the server requires authorization',
+        uponReceiving: 'an unauthorized GET request for unit 401',
+        withRequest: {
+          method: 'GET',
+          path: path
+        },
+        willRespondWith: {
+          status: 401
+        }
+      })
+      expect.assertions(1)
+      return expect(axios.get(`${PACT_SERVER}${path}`)).rejects.toEqual(new Error('Request failed with status code 401'))
+    })
+
     it('retrieves unit 1', async () => {
       const path = '/units/1'
       const resource = (await getFixture(path)).data
@@ -39,6 +68,7 @@ describe('Contracts', () => {
         uponReceiving: 'a GET request for unit 1',
         withRequest: {
           method: 'GET',
+          headers: authHeader,
           path: path
         },
         willRespondWith: {
@@ -46,11 +76,11 @@ describe('Contracts', () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: resource
+          body: deepMatchify(resource)
         }
       })
       const responseBody = (await getPact(path)).data
-      expect(responseBody).toEqual(resource)
+      expect(responseBody).not.toEqual({})
     })
 
     it('retrieves all units', async () => {
@@ -62,6 +92,7 @@ describe('Contracts', () => {
         uponReceiving: 'a GET request to list units',
         withRequest: {
           method: 'GET',
+          headers: authHeader,
           path: path
         },
         willRespondWith: {
@@ -69,25 +100,25 @@ describe('Contracts', () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: resource
+          body: deepMatchify(resource)
         }
       })
       const responseBody = (await getPact(path)).data
-      expect(responseBody).toEqual(resource)
+      expect(responseBody).not.toEqual({})
     })
 
     describe('for profiles', () => {
 
       it('retrieves profile 1', async () => {
-        const path = '/profiles/1'
-        // the 'profiles' resource lives at /users
-        const resource = (await getFixture('/users/1')).data
+        const path = '/people/1'
+        const resource = (await getFixture(path)).data
         expect(resource).not.toEqual({})
         await pactServer.addInteraction({
-          state: 'profile 1 exists',
-          uponReceiving: 'a GET request for profile 1',
+          state: 'person 1 exists',
+          uponReceiving: 'a GET request for person 1',
           withRequest: {
             method: 'GET',
+            headers: authHeader,
             path: path
           },
           willRespondWith: {
@@ -95,35 +126,11 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: resource
+            body: deepMatchify(resource)
           }
         })
         const responseBody = (await getPact(path)).data
-        expect(responseBody).toEqual(resource)
-      })
-
-      it('retrieves all profiles', async () => {
-        const path = '/profiles'
-        // the 'profiles' resource lives at /users
-        const resource = (await getFixture('/users')).data
-        expect(resource).not.toEqual({})
-        await pactServer.addInteraction({
-          state: 'at least one profile exists',
-          uponReceiving: 'a GET request to list profiles',
-          withRequest: {
-            method: 'GET',
-            path: path
-          },
-          willRespondWith: {
-            status: 200,
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: resource
-          }
-        })
-        const responseBody = (await getPact(path)).data
-        expect(responseBody).toEqual(resource)
+        expect(responseBody).not.toEqual({})
       })
     })
 
@@ -138,6 +145,7 @@ describe('Contracts', () => {
           uponReceiving: 'a GET request for department 1',
           withRequest: {
             method: 'GET',
+            headers: authHeader,
             path: path
           },
           willRespondWith: {
@@ -145,11 +153,11 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: resource
+            body: deepMatchify(resource)
           }
         })
         const responseBody = (await getPact(path)).data
-        expect(responseBody).toEqual(resource)
+        expect(responseBody).not.toEqual({})
       })
 
       it('retrieves all departments', async () => {
@@ -161,6 +169,7 @@ describe('Contracts', () => {
           uponReceiving: 'a GET request to list departments',
           withRequest: {
             method: 'GET',
+            headers: authHeader,
             path: path
           },
           willRespondWith: {
@@ -168,37 +177,41 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: resource
+            body: deepMatchify(resource)
           }
         })
         const responseBody = (await getPact(path)).data
-        expect(responseBody).toEqual(resource)
+        expect(responseBody).not.toEqual({})
       })
     })
 
     describe('for searches', () => {
 
-      it('searches without parameters', async () => {
+      it('searches for foo', async () => {
         const path = '/search'
         const resource = (await getFixture(path)).data
         expect(resource).not.toEqual({})
         await pactServer.addInteraction({
-          state: 'some data exists',
-          uponReceiving: 'a GET request to search',
+          state: 'data exists to be returned by term',
+          uponReceiving: 'a GET request to search with a term',
           withRequest: {
             method: 'GET',
-            path: path
+            headers: authHeader,
+            path: path,
+            query: {
+              term: "foo"
+            }
           },
           willRespondWith: {
             status: 200,
             headers: {
               'Content-Type': 'application/json'
             },
-            body: resource
+            body: deepMatchify(resource)
           }
         })
-        const responseBody = (await getPact(path)).data
-        expect(responseBody).toEqual(resource)
+        const responseBody = (await getPact(path + "?term=foo")).data
+        expect(responseBody).not.toEqual({})
       })
     })
 
@@ -214,6 +227,7 @@ describe('Contracts', () => {
           state: 'there is a user logged in for whom a profile exists',
           uponReceiving: 'a GET request to retrieve my profile',
           withRequest: {
+            headers: authHeader,
             method: 'GET',
             path: path
           },
@@ -222,11 +236,11 @@ describe('Contracts', () => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: resource
+            body: deepMatchify(resource)
           }
         })
         const responseBody = (await getPact(path)).data
-        expect(responseBody).toEqual(resource)
+        expect(responseBody).not.toEqual({})
       })
     })
   })

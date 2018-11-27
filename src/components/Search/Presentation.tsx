@@ -10,7 +10,7 @@ const Presentation: React.SFC<ISimpleSearchResult> =
                     <h2 className="rvt-ts-26 rvt-m-top-lg">People</h2>
                     <Panel margin={{ top: "xs" }}>
                         <List variant="plain">
-                            {props.users.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
+                            {props.users.map((r, i) => (<li key={i}><a href={`/people/${r.id}`}>{r.name}</a></li>))}
                         </List>
                     </Panel>
                 </Col>

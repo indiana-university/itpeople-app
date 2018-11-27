@@ -2,48 +2,7 @@
     "auth": {
         "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
     },
-    "me": {
-        "user": {
-            "name": "Ron Swanson",
-            "netId": "rswanso",
-            "position": "Parks and Rec Director",
-            "location": "Municipal Building, Office 123",
-            "campusPhone": "812-856-1234",
-            "campusEmail": "rswanso@iu.edu",
-            "campus": "Bloomington",
-            "tools": [
-                "Claw hammer",
-                "Chisel",
-                "Bureaucracy"
-            ],
-            "expertise": ["Wood-working", "fishing"],
-            "responsibilities": [
-                "IT Leadership",
-                "Other stuff"
-            ],
-            "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
-        },
-        "unitMemberships": [
-            {
-                "id": 1,
-                "name": "Parks and Recreation IT",
-                "description": "This is a description for a test unit.",
-                "title": "Developer",
-                "role": "Admin",
-                "tools":[
-                    "Bureaucracy",
-                    "Chisel",
-                    "Claw hammer"
-                ]
-            }
-        ],
-        "department": {
-            "id": 1,
-            "name": "Parks and Recreation Department",
-            "description": "This is a description for a test unit."
-        }
-    },
-    "users": [
+    "people": [
         {
             "id": 1,
             "user": {
@@ -51,21 +10,16 @@
                 "name": "Ron Swanson",
                 "netId": "rswanso",
                 "position": "Parks and Rec Director",
-                "location": "",
+                "location": "Municipal Building, Office 123",
                 "campusPhone": "812-856-1234",
                 "campusEmail": "rswanso@iu.edu",
-                "campus": "IUBLA",
-                "role": "Manager",
+                "campus": "Bloomington",
                 "tools": [
                     "Claw hammer",
                     "Chisel",
                     "Bureaucracy"
                 ],
                 "expertise": ["Wood-working", "fishing"],
-                "department": {
-                    "id": 1,
-                    "name": "Parks and Recreation department"
-                },
                 "responsibilities": [
                     "IT Leadership",
                     "Other things"
@@ -103,7 +57,6 @@
                 "campusPhone": "812-856-1234",
                 "campusEmail": "lknope@iu.edu",
                 "campus": "IUBLA",
-                "role": "Manager",
                 "tools": [
                     "Clip board",
                     "Tenacity"
@@ -176,30 +129,14 @@
             }
         }
     ],
-    "people": {
-        "users": [
-            {
-                "id": 1,
-                "name": "Ron Swanson",
-                "netId": "rswanso",
-                "position": "Parks and Rec Director",
-                "location": "",
-                "campusPhone": "812-856-1234",
-                "campusEmail": "rswanso@iu.edu",
-                "campus": "IUBLA"
-            },
-            {
-                "id": 2,
-                "name": "Leslie Knope",
-                "netId": "lknope",
-                "position": "Parks and Rec project manager",
-                "location": "",
-                "campusPhone": "812-856-1234",
-                "campusEmail": "lknope@iu.edu",
-                "campus": "IUBLA"
-            }
-        ]
-    },
+    "allUnits": [
+        {
+            "id": 1,
+            "name": "Parks and Recreation IT",
+            "description": "This page is under construction",
+            "url": "http://pawneeindiana.com/information-technology/"
+        }
+    ],
     "units": [
         {
             "id": 1,
