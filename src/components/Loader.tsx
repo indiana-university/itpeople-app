@@ -1,5 +1,6 @@
 import * as React from "react";
 import { IApiState2 } from "./types";
+import NotFound from './Errors/404'
 
 export const Loader = (props: IApiState2<any> & IProps) => {
     const loading = props.loading;
@@ -18,7 +19,7 @@ export const Loader = (props: IApiState2<any> & IProps) => {
             <>{props.children}</>
         }
         {props.error &&
-            <p>{props.error}</p>
+            <NotFound error={props.error} />
         }
     </>
 }

@@ -3,3 +3,7 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.light-grey-bg {
+  background-color: #F2F2F2;
+}

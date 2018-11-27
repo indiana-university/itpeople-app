@@ -49,7 +49,11 @@
             }
           ],
           "supportedDepartments": [
-
+            {
+              "id": 1,
+              "name": "Parks and Recreation Department",
+              "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+            }
           ],
           "children": [
             {
@@ -84,6 +88,9 @@
             "match": "type"
           },
           "$.body.supportedDepartments": {
+            "min": 1
+          },
+          "$.body.supportedDepartments[*].*": {
             "match": "type"
           },
           "$.body.children": {
@@ -159,28 +166,33 @@
             "name": "Ron Swanson",
             "netId": "rswanso",
             "position": "Parks and Rec Director",
-            "location": "",
+            "location": "Municipal Building, Office 123",
             "campusPhone": "812-856-1234",
             "campusEmail": "rswanso@iu.edu",
-            "campus": "IUBLA",
+            "campus": "Bloomington",
             "tools": [
               "Claw hammer"
             ],
-            "expertise": "Wood-working, fishing",
-            "department": {
-              "id": 1,
-              "name": "Parks and Recreation department"
-            },
+            "expertise": [
+              "Wood-working"
+            ],
             "responsibilities": [
-              "ItLeadership"
+              "IT Leadership"
             ],
             "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
           },
           "unitMemberships": [
             {
               "id": 1,
-              "name": "Test Unit",
-              "description": "This is a description for a test unit."
+              "name": "Parks and Recreation IT",
+              "description": "This is a description for a test unit.",
+              "title": "Developer",
+              "role": "Admin",
+              "tools": [
+                "Bureaucracy",
+                "Chisel",
+                "Claw hammer"
+              ]
             }
           ],
           "department": {
@@ -224,12 +236,9 @@
             "match": "type"
           },
           "$.body.user.expertise": {
-            "match": "type"
+            "min": 1
           },
-          "$.body.user.department.id": {
-            "match": "type"
-          },
-          "$.body.user.department.name": {
+          "$.body.user.expertise[*].*": {
             "match": "type"
           },
           "$.body.user.responsibilities": {
@@ -442,28 +451,33 @@
             "name": "Ron Swanson",
             "netId": "rswanso",
             "position": "Parks and Rec Director",
-            "location": "",
+            "location": "Municipal Building, Office 123",
             "campusPhone": "812-856-1234",
             "campusEmail": "rswanso@iu.edu",
-            "campus": "IUBLA",
+            "campus": "Bloomington",
             "tools": [
               "Claw hammer"
             ],
-            "expertise": "Wood-working, fishing",
-            "department": {
-              "id": 1,
-              "name": "Parks and Recreation department"
-            },
+            "expertise": [
+              "Wood-working"
+            ],
             "responsibilities": [
-              "ItLeadership"
+              "IT Leadership"
             ],
             "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
           },
           "unitMemberships": [
             {
               "id": 1,
-              "name": "Test Unit",
-              "description": "This is a description for a test unit."
+              "name": "Parks and Recreation IT",
+              "description": "This is a description for a test unit.",
+              "title": "Developer",
+              "role": "Admin",
+              "tools": [
+                "Bureaucracy",
+                "Chisel",
+                "Claw hammer"
+              ]
             }
           ],
           "department": {
@@ -507,12 +521,9 @@
             "match": "type"
           },
           "$.body.user.expertise": {
-            "match": "type"
+            "min": 1
           },
-          "$.body.user.department.id": {
-            "match": "type"
-          },
-          "$.body.user.department.name": {
+          "$.body.user.expertise[*].*": {
             "match": "type"
           },
           "$.body.user.responsibilities": {

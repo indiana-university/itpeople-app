@@ -6,6 +6,7 @@ import PageTitle from '../layout/PageTitle';
 import { IApplicationState } from '../types';
 import Search from './Presentation';
 import { fetchRequest, ISimpleSearchRequest, IState } from './store';
+import { Content } from '../layout/Content';
 
 interface ILocationProps {
     search: string;
@@ -41,7 +42,7 @@ class Container extends React.Component<ISimpleSearchContainerProps>{
     
     public render() {
         return (
-            <>
+            <Content>
                 <PageTitle>Search Results</PageTitle>
                 { this.props.loading && 
                     <p>Searching...</p>}
@@ -49,7 +50,7 @@ class Container extends React.Component<ISimpleSearchContainerProps>{
                     <Search {...this.props.data} /> }
                 { this.props.error && 
                     <p>{this.props.error}</p> }
-            </>
+            </Content>
         )
     }
 }

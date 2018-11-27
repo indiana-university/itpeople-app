@@ -5,6 +5,7 @@ import { IApplicationState } from '../types';
 import Profile from './Presentation';
 import { fetchRequest, IState, IUserRequest, updateRequest } from './store';
 import { Loader } from '../Loader';
+import { Content } from '../layout/Content';
 
 interface IProfileProps {
     match: any,
@@ -28,24 +29,26 @@ class Container extends React.Component<IState & IProfileProps & IPropsFromDispa
 
     public render() {
         return (
-            <Loader {...this.props}>
-                { this.props.data && 
-                    <Profile  {...this.props.data} />
-                }
-            </Loader>
+            <Content>
+                <Loader {...this.props}>
+                    {this.props.data &&
+                        <Profile  {...this.props.data} />
+                    }
+                </Loader>
+            </Content>
         )
     }
 }
 
-const mapStateToProps = (state: IApplicationState) => 
+const mapStateToProps = (state: IApplicationState) =>
     state.profile
-  
-const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
+
+const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
     profileFetchRequest: (request: IUserRequest) => dispatch(fetchRequest(request)),
     profileUpdateRequest: (request: IUserRequest) => dispatch(updateRequest(request))
 })
-  
+
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Container)
+)(Container)

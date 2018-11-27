@@ -5,6 +5,8 @@ import PageTitle from '../layout/PageTitle';
 import { IApplicationState } from '../types';
 import Units from './Presentation';
 import * as units from './store';
+import { Content } from '../layout/Content';
+import { Loader } from '../Loader';
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface IDispatchProps {
@@ -19,15 +21,14 @@ class Container extends React.Component<units.IState & IDispatchProps>{
 
     public render() {
         return (
-            <>
+            <Content>
                 <PageTitle>Units</PageTitle>
-                {/* { this.props.loading && 
-                    <p>Loading...</p>} */}
+
+                <Loader {...this.props}>
                 { this.props.data &&  
                     <Units units={this.props.data} /> }
-                { this.props.error && 
-                    <p>{this.props.error}</p> }
-            </>
+                </Loader>
+            </Content>
         )
     }
 }
