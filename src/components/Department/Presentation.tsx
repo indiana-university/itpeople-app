@@ -18,7 +18,7 @@ const Presentation: React.SFC<IDepartmentProfile> = (props) => {
                     <div>
                         <h2 className="rvt-ts-26 rvt-m-top-lg">IT Professional Staff</h2>
                         <ul>
-                            {members.map((r, i) => (<li key={i}><a href={`/profiles/${r.id}`}>{r.name}</a></li>))}
+                            {members.map((r, i) => (<li key={i}><a href={`/people/${r.id}`}>{r.name}</a></li>))}
                         </ul>
                     </div>
                 }

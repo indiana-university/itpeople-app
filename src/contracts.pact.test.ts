@@ -110,13 +110,12 @@ describe('Contracts', () => {
     describe('for profiles', () => {
 
       it('retrieves profile 1', async () => {
-        const path = '/profiles/1'
-        // the 'profiles' resource lives at /users
-        const resource = (await getFixture('/users/1')).data
+        const path = '/people/1'
+        const resource = (await getFixture(path)).data
         expect(resource).not.toEqual({})
         await pactServer.addInteraction({
-          state: 'profile 1 exists',
-          uponReceiving: 'a GET request for profile 1',
+          state: 'person 1 exists',
+          uponReceiving: 'a GET request for person 1',
           withRequest: {
             method: 'GET',
             headers: authHeader,
@@ -198,7 +197,10 @@ describe('Contracts', () => {
           withRequest: {
             method: 'GET',
             headers: authHeader,
-            path: path
+            path: path,
+            query: {
+              term: "foo"
+            }
           },
           willRespondWith: {
             status: 200,
@@ -208,7 +210,7 @@ describe('Contracts', () => {
             body: deepMatchify(resource)
           }
         })
-        const responseBody = (await getPact(path)).data
+        const responseBody = (await getPact(path+"?term=foo")).data
         expect(responseBody).not.toEqual({})
       })
     })
