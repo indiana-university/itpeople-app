@@ -4,6 +4,19 @@ body {
   font-family: sans-serif;
 }
 
-.light-grey-bg {
-  background-color: #F2F2F2;
+body::after {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background-color: #cccccc;
+  background-image: url('/images/it-people-background.svg');
+  background-size: cover;
+  opacity: 0.2;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
