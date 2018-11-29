@@ -25,3 +25,10 @@ body::after {
 .rvt-bg-white {
   background-color: #ffffff;
 }
+
+.list-stripes > *:nth-child(even) {
+    background-color: #f7f7f7;
+}
+.list-stripes > *:nth-child(odd) {
+    background-color: #e5e5e5;
+}

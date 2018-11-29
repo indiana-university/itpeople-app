@@ -5,12 +5,12 @@ import { IEntity } from "../types";
 
 export const ProfileList: React.SFC<IProps> = ({ users, title }) => {
   return (<>
-    <Section className="rvt-m-bottom-lg">
+    <Section className="rvt-m-bottom-lg list-stripes">
       {title &&
         <h3 className="rvt-ts-20 rvt-ts-26-lg-up rvt-m-bottom-xs">{title}</h3>
       }
       {users &&
-        users.map((m, i) => (<ProfileListItem key="i" {...m} dark={!!((i + 1) % 2)} />))
+        users.map((m, i) => (<ProfileListItem key="i" {...m} />))
       }
     </Section>
   </>)
