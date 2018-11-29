@@ -1,20 +1,24 @@
-
-import * as React from 'react';
-import { Dispatch } from 'redux'
-import { connect } from 'react-redux';
-import { Col, Row } from 'rivet-react'
-import PageTitle from '../layout/PageTitle';
-import { Content } from '../layout/Content';
-import SearchForm from '../layout/SearchForm';
+import * as React from "react";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
+import { Col, Row } from "rivet-react";
+import PageTitle from "../layout/PageTitle";
+import { Content } from "../layout/Content";
+import SearchForm from "../layout/SearchForm";
 import * as Search from "../Search/store";
+import * as Auth from "../SignIn/store";
+import { IApplicationState } from "../types";
 
-interface IProps {
-  submitSearch: typeof Search.submit
-}
-
-const Component: React.SFC<IProps> = ({ submitSearch }) => (
+const Component: React.SFC<IDispatchProps & IStateProps> = ({
+  signInRequest,
+  submitSearch,
+  user
+}) => (
   <>
-    <div className="rvt-bg-cream rvt-p-top-xl rvt-p-bottom-xl rvt-m-top-xxl rvt-m-bottom-xxl">
+    <div
+      className="rvt-p-top-xl rvt-p-bottom-xl rvt-m-top-xxl rvt-m-bottom-xxl"
+      style={{ backgroundColor: "#ffffff" }}
+    >
       <Content>
         <Row>
           <Col lg={8} style={{ color: "#333" }}>
@@ -29,25 +33,47 @@ const Component: React.SFC<IProps> = ({ submitSearch }) => (
             </p>
           </Col>
         </Row>
+
+        {user ? (
+          <Row>
+            <Col className="rvt-m-top-lg">
+              <SearchForm onSubmit={submitSearch} />
+            </Col>
+          </Row>
+        ) : (
+          <Row>
+            <Col className="rvt-m-top-lg">
+              <button className="rvt-button" onClick={signInRequest}>
+                Login
+              </button>
+            </Col>
+          </Row>
+        )}
       </Content>
     </div>
-    <Content>
-      <Row>
-        <Col className="rvt-m-top-lg">
-          <SearchForm onSubmit={submitSearch} />
-        </Col>
-      </Row>
-    </Content>
   </>
 );
 
-Component.displayName = 'Home';
+Component.displayName = "Home";
 
-function mapDispatchToProps(dispatch: Dispatch){
-  return {
-    submitSearch: () => dispatch(Search.submit())
-  }
+interface IDispatchProps {
+  signInRequest: typeof Auth.signInRequest;
+  submitSearch: typeof Search.submit;
 }
+interface IStateProps {
+  user?: object;
+}
+
+const mapStateToProps = ({ auth }: IApplicationState) => ({
+  user: auth.data
+});
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
+  signInRequest: () => dispatch(Auth.signInRequest()),
+  submitSearch: () => dispatch(Search.submit())
+});
+
 export default connect(
-  () => ({}),
-  mapDispatchToProps)(Component);
+  mapStateToProps,
+  mapDispatchToProps
+)(Component);
