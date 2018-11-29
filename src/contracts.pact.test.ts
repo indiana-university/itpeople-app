@@ -188,7 +188,7 @@ describe('Contracts', () => {
 
     describe('for searches', () => {
 
-      it('searches for foo', async () => {
+      it('searches for "park"', async () => {
         const path = '/search'
         const resource = (await getFixture(path)).data
         expect(resource).not.toEqual({})
@@ -200,7 +200,7 @@ describe('Contracts', () => {
             headers: authHeader,
             path: path,
             query: {
-              term: "foo"
+              term: "park"
             }
           },
           willRespondWith: {
@@ -211,7 +211,7 @@ describe('Contracts', () => {
             body: deepMatchify(resource)
           }
         })
-        const responseBody = (await getPact(path + "?term=foo")).data
+        const responseBody = (await getPact(path + "?term=park")).data
         expect(responseBody).not.toEqual({})
       })
     })
