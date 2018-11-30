@@ -32,7 +32,7 @@ const Presentation: React.SFC<IProps> = ({ departments }) => {
             departments.length > 0 &&
             departments.map((r, i) => (
               <Col key={i} md={5} className="rvt-p-bottom-lg">
-                <a href={`/units/${r.id}`} className="rvt-link-bold">
+                <a href={`/departments/${r.id}`} className="rvt-link-bold">
                   {r.name}
                 </a>
                 <p className="rvt-m-top-remove">{r.description}</p>
