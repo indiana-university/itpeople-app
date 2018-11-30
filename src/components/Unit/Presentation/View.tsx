@@ -50,7 +50,8 @@ const Presentation: React.SFC<IUnitProfile> = props => (
         </Col>
         <Col lg={5} last={true}>
           <div className="rvt-m-all-md">
-            {(props.parent || props.children) && (
+            {(props.parent ||
+              (props.children && props.children.length > 0)) && (
               <div className="rvt-m-bottom-lg">
                 <Panel title="Parent and Children">
                   <ParentCard parent={props.parent} />
