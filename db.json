@@ -179,6 +179,17 @@
         "name": "CITY COUNCIL",
         "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
       }
+    },
+
+    {
+      "id": 4,
+      "name": "Fourth floor IT",
+      "description": "It is creepy up here",
+      "url": null,
+      "members": [],
+      "supportedDepartments": [],
+      "children": [],
+      "parent": null
     }
   ],
   "allDepartments": [
