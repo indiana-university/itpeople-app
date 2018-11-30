@@ -7,7 +7,6 @@ import { Content } from "../layout/Content";
 
 const Presentation: React.SFC<IUserProfile> = props => {
   const user = props || {};
-  // const department = props.department || null;
   const responsibilities = user.responsibilities || [];
   const tools = user.tools || [];
   const memberships = props.unitMemberships || [];

@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Breadcrumbs, Col, List, Row, Section } from "rivet-react";
-import { ChildrenCard, IUnitProfile, MemberLists, ParentCard } from "./index";
-import { Panel } from "../Panel";
-import PageTitle from "../layout/PageTitle";
-import { Content } from "../layout";
+import { ChildrenCard, IUnitProfile, MemberLists, ParentCard } from "../index";
+import { Panel } from "../../Panel";
+import PageTitle from "../../layout/PageTitle";
+import { Content } from "../../layout";
 
 const Presentation: React.SFC<IUnitProfile> = props => (
   <>

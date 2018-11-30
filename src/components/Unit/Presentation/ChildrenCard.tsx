@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Col, Row } from 'rivet-react'
-import { IEntity } from "../types";
-import { ChildrenUnitsIcon } from '../icons';
+import { IEntity } from "../../types";
+import { ChildrenUnitsIcon } from '../../icons';
 
 interface IProps {
     children?: IEntity[]

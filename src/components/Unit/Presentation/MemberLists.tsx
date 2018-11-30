@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Row, Col } from "rivet-react";
 import { MemberList } from "./MemberList";
-import { IUnitMember, UitsRole } from "./";
+import { IUnitMember, UitsRole } from "..";
 
 export const MemberLists: React.SFC<IProps> = ({ members, title }) => {
   const leaders: IUnitMember[] = [];

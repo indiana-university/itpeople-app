@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IUnitMember } from "./store";
+import { IUnitMember } from "../store";
 import { Row, Col } from "rivet-react";
 
 const getItials = (name: string) => {
