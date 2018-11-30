@@ -91,9 +91,9 @@
       }
     },
     {
-      "id":5,
+      "id": 5,
       "name": "Jerry Gergich",
-      "netId":"garryg",
+      "netId": "garryg",
       "campusEmail": "terry@pawnee.in.us"
     }
   ],
@@ -103,7 +103,11 @@
       "name": "Parks and Recreation IT",
       "description": "This page is under construction"
     },
-    { "id": 4, "name": "Fourth floor IT", "description": "It is creepy up here" },
+    {
+      "id": 4,
+      "name": "Fourth floor IT",
+      "description": "It is creepy up here"
+    },
     {
       "id": 1,
       "name": "Unit name",
@@ -273,27 +277,16 @@
       { "id": 1, "name": "Fourth floor", "description": "It's creepy up there" }
     ],
     "users": [
-      {
-        "id": 2,
-        "name": "Leslie Knope",
-        "description": "Manager"
-      },
+      { "id": 2, "name": "Leslie Knope", "description": "Manager" },
       {
         "id": 1,
         "name": "Ron Swanson",
         "description": "Manager",
         "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
       },
-      {
-        "id": 3,
-        "name": "Andy Dwyer",
-        "description": "Developer"
-      },
-      {
-        "id": 4,
-        "name": "Li’l Sebastian",
-        "description": "Small Horse"
-      }
+      { "id": 3, "name": "Andy Dwyer", "description": "Developer" },
+      { "id": 4, "name": "Li’l Sebastian", "description": "Small Horse" },
+      { "id": 5, "name": "Garry Gergich", "description": "Not sure" }
     ]
   }
 }
