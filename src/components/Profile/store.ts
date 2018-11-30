@@ -27,14 +27,14 @@ export interface IUser extends IEntity {
   photoUrl?: string
 }
 
-interface IUnitMemberships extends IEntity {
+export interface IUnitMembership extends IEntity {
   tools?: string[],
   title?: string,
   role?: string
 }
 
 export interface IUserProfile extends IUser {
-  unitMemberships: IUnitMemberships[],
+  unitMemberships: IUnitMembership[],
   department: IEntity,
 }
 
