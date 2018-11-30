@@ -197,7 +197,15 @@
       "name": "Fourth floor IT",
       "description": "It is creepy up here",
       "url": null,
-      "members": [],
+      "members": [
+        {
+          "id": 1,
+          "name": "Ron Swanson",
+          "percentage": 100,
+          "role": "Leader",
+          "title": "Manager"
+        }
+      ],
       "supportedDepartments": [],
       "children": [],
       "parent": null

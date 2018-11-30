@@ -2,28 +2,17 @@ import * as React from "react";
 import { IUnitMember } from "../store";
 import { Row, Col } from "rivet-react";
 
-const getItials = (name: string) => {
-  return name
-    .split(" ")
-    .map(p => {
-      return p[0] || "";
-    })
-    .join("");
-};
-
 export const MemberListItem: React.SFC<IUnitMember & IProps> = ({
   id,
   name,
   title,
   photoUrl,
-  showImage,
-  dark = false
+  showImage
 }) => {
   return (
     <Row className="rvt-p-all-lg">
-      {showImage && (
+      {showImage && photoUrl && (
         <Col sm={2}>
-          {photoUrl ? (
             <img
               src={photoUrl}
               width={"100%"}
@@ -33,9 +22,6 @@ export const MemberListItem: React.SFC<IUnitMember & IProps> = ({
                 objectFit: "cover"
               }}
             />
-          ) : (
-            <div className="profile--image-wrap">{getItials(name)}</div>
-          )}
         </Col>
       )}
       <Col style={{ alignSelf: "center" }}>
@@ -58,5 +44,4 @@ export const MemberListItem: React.SFC<IUnitMember & IProps> = ({
 
 interface IProps {
   showImage?: boolean;
-  dark?: boolean;
 }
