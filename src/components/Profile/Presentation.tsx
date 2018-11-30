@@ -21,9 +21,7 @@ const Presentation: React.SFC<IUserProfile> = props => {
                 <li>
                   <a href="/">Home</a>
                 </li>
-                <li>
-                  Profiles
-                </li>
+                <li>Profiles</li>
                 <li>{user.name}</li>
               </List>
             </Breadcrumbs>
@@ -35,7 +33,11 @@ const Presentation: React.SFC<IUserProfile> = props => {
         <div className="rvt-bg-white">
           {user.photoUrl && (
             <Row
-              style={{ justifyContent: "center", marginTop: "12em" }}
+              style={{
+                justifyContent: "center",
+                marginTop: "14em",
+                marginBottom: "-1em"
+              }}
               className="rvt-p-lr-md"
             >
               <Col md={4} lg={3} style={{ marginTop: "-10em" }}>
@@ -62,7 +64,7 @@ const Presentation: React.SFC<IUserProfile> = props => {
           )}
 
           <Row style={{ justifyContent: "center" }}>
-            <Col md={9} className="rvt-text-center">
+            <Col md={9} className="rvt-text-center rvt-m-top-md">
               <PageTitle>{user.name}</PageTitle>
               <div className="rvt-ts-26">{user.position}</div>
               {user.location && <div>{user.location}</div>}
@@ -86,29 +88,35 @@ const Presentation: React.SFC<IUserProfile> = props => {
                 {responsibilities.length && (
                   <Row>
                     <Col>
-                      <h2 className="rvt-ts-26">Responsibilities</h2>
-                      {responsibilities.map((r, i) => (
-                        <div key={i}>{r}</div>
-                      ))}
+                      <h2 className="rvt-ts-23 rvt-text-bold">
+                        Responsibilities
+                      </h2>
+                      <List variant="plain">
+                        {responsibilities.map((r, i) => (
+                          <li key={i}>{r}</li>
+                        ))}
+                      </List>
                     </Col>
                   </Row>
                 )}
                 {!!tools.length && (
                   <Row>
                     <Col>
-                      <h2 className="rvt-ts-26 rvt-m-top-md rvt-border-top rvt-p-top-md">
+                      <h2 className="rvt-ts-23 rvt-text-bold rvt-m-top-md rvt-border-top rvt-p-top-md">
                         Tools
                       </h2>
-                      {tools.map((t, i) => (
-                        <div key={i}>{t}</div>
-                      ))}
+                      <List variant="plain">
+                        {tools.map((t, i) => (
+                          <li key={i}>{t}</li>
+                        ))}
+                      </List>
                     </Col>
                   </Row>
                 )}
                 {user.expertise && user.expertise.length > 0 && (
                   <Row>
                     <Col>
-                      <h2 className="rvt-ts-26 rvt-m-top-md rvt-border-top rvt-p-top-md">
+                      <h2 className="rvt-ts-23 rvt-text-bold rvt-m-top-md rvt-border-top rvt-p-top-md">
                         Interests
                       </h2>
                       <List variant="plain">
@@ -125,36 +133,32 @@ const Presentation: React.SFC<IUserProfile> = props => {
                 <>
                   <Panel title="IT Units">
                     {memberships.map((m, i) => {
-                      return (
-                        <div key={i}>
+                      return <div key={i}>
                           <div>
                             <a href={`/units/${m.id}`}>
-                              <h2 className="rvt-ts-23">{m.name}</h2>
+                              <h2 className="rvt-ts-23 rvt-text-bold">
+                                {m.name}
+                              </h2>
                             </a>
                             <div>{m.description}</div>
                           </div>
 
-                          {m.title && (
-                            <div>
-                              <h3 className="rvt-ts-20 rvt-m-top-md rvt-border-top rvt-p-top-md">
+                          {m.title && <div>
+                              <h3 className="rvt-ts-20 rvt-text-bold rvt-m-top-md rvt-border-top rvt-p-top-md">
                                 Title
                               </h3>
                               <div>{m.title}</div>
-                            </div>
-                          )}
+                            </div>}
 
-                          {m.role && (
-                            <div>
-                              <h3 className="rvt-ts-20 rvt-m-top-md rvt-border-top rvt-p-top-md">
+                          {m.role && <div>
+                              <h3 className="rvt-ts-20 rvt-text-bold rvt-m-top-md rvt-border-top rvt-p-top-md">
                                 Role
                               </h3>
                               <div>{m.role}</div>
-                            </div>
-                          )}
+                            </div>}
 
-                          {tools && tools.length && (
-                            <>
-                              <h3 className="rvt-ts-20 rvt-m-top-md rvt-border-top rvt-p-top-md">
+                          {tools && tools.length && <>
+                              <h3 className="rvt-ts-20 rvt-text-bold rvt-m-top-md rvt-border-top rvt-p-top-md">
                                 Tools
                               </h3>
                               <List variant="plain">
@@ -162,10 +166,8 @@ const Presentation: React.SFC<IUserProfile> = props => {
                                   <li key={i}>{t}</li>
                                 ))}
                               </List>
-                            </>
-                          )}
-                        </div>
-                      );
+                            </>}
+                        </div>;
                     })}
                   </Panel>
                 </>
