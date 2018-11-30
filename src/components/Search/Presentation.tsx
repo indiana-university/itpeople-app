@@ -4,7 +4,12 @@ import { ISimpleSearchResult } from "./store";
 import { Content, PageTitle, SearchForm } from "../layout";
 import { ProfileList } from "../Profile/ProfileList";
 
-const Presentation: React.SFC<ISimpleSearchResult> = props => (
+const Presentation: React.SFC<ISimpleSearchResult & IProps> = ({
+  departments,
+  submitSearch,
+  units,
+  users
+}) => (
   <>
     <div
       className="rvt-p-top-xl rvt-p-bottom-xl rvt-m-top-xxl rvt-m-bottom-xxl"
@@ -27,7 +32,7 @@ const Presentation: React.SFC<ISimpleSearchResult> = props => (
 
         <Row>
           <Col className="rvt-m-top-lg">
-            <SearchForm />
+              <SearchForm onSubmit={submitSearch} />
           </Col>
         </Row>
       </Content>
@@ -39,36 +44,32 @@ const Presentation: React.SFC<ISimpleSearchResult> = props => (
     >
       <Content>
         <Row>
-          {props.users.length > 0 && (
+          {users.length > 0 && (
             <Col lg={4}>
               <h2 className="rvt-ts-26 rvt-m-top-lg">People</h2>
-              <ProfileList users={props.users} />
+              <ProfileList users={users} />
             </Col>
           )}
-          {props.units.length > 0 && (
+          {units.length > 0 && (
             <Col lg={4}>
               <h2 className="rvt-ts-26 rvt-m-top-lg">Units</h2>
               <List variant="plain" className="list-stripes">
-                {props.units.map((r, i) => (
+                {units.map((r, i) => (
                   <li key={i} className="rvt-p-all-lg">
-                    <a href={`/units/${r.id}`}>
-                      {r.name}
-                    </a>
+                    <a href={`/units/${r.id}`}>{r.name}</a>
                     {r.description && <p>{r.description}</p>}
                   </li>
                 ))}
               </List>
             </Col>
           )}
-          {props.departments.length > 0 && (
+          {departments.length > 0 && (
             <Col lg={4}>
               <h2 className="rvt-ts-26 rvt-m-top-lg">Departments</h2>
               <List variant="plain" className="list-stripes">
-                {props.departments.map((r, i) => (
+                {departments.map((r, i) => (
                   <li className="rvt-p-all-lg">
-                    <a href={`/departments/${r.id}`}>
-                      {r.name}
-                    </a>
+                    <a href={`/departments/${r.id}`}>{r.name}</a>
                     {r.description && <p>{r.description}</p>}
                   </li>
                 ))}
@@ -80,4 +81,8 @@ const Presentation: React.SFC<ISimpleSearchResult> = props => (
     </div>
   </>
 );
+
+interface IProps{
+  submitSearch?: any
+}
 export default Presentation;
