@@ -24,7 +24,7 @@ const Presentation: React.SFC<IProps> = ({ units }) => (
       </Row>
     </Content>
 
-    <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-tb-lg">
+    <Content className="rvt-bg-white rvt-p-tb-xxl rvt-m-tb-lg">
       <Row style={{ justifyContent: "space-between" }}>
         {units.map((r, i) => (
           <Col key={i} md={5} className="rvt-p-bottom-lg">
