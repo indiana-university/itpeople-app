@@ -1,29 +1,19 @@
 import * as React from "react";
-import { Breadcrumbs, Col, List, Row, Section } from "rivet-react";
+import { Col, List, Row, Section } from "rivet-react";
 import { ChildrenCard, IUnitProfile, MemberLists, ParentCard } from "../index";
 import { Panel } from "../../Panel";
 import PageTitle from "../../layout/PageTitle";
-import { Content } from "../../layout";
+import { Breadcrumbs, Content } from "../../layout";
 
 const Presentation: React.SFC<IUnitProfile> = props => (
   <>
-    <Content className="rvt-m-bottom-md">
-      <Row>
-        <Col>
-          <Breadcrumbs>
-            <List variant="plain" orientation="inline">
-              <li>
-                <a href="/">Home</a>
-              </li>
-              <li>
-                <a href="/units">Units</a>
-              </li>
-              <li>{props.name}</li>
-            </List>
-          </Breadcrumbs>
-        </Col>
-      </Row>
-    </Content>
+    <Breadcrumbs
+      crumbs={[
+        { text: "Home", href: "/" },
+        { text: "Units", href: "/units" },
+        props.name
+      ]}
+    />
 
     <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
       <PageTitle>{props.name}</PageTitle>

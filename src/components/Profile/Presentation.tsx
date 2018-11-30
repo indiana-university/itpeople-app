@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Breadcrumbs, Col, List, Row } from "rivet-react";
+import { Col, List, Row } from "rivet-react";
 import { IUserProfile } from "./store";
 import PageTitle from "../layout/PageTitle";
 import { Panel } from "../Panel";
-import { Content } from "../layout/Content";
+import { Breadcrumbs, Content } from "../layout";
 
 const Presentation: React.SFC<IUserProfile> = props => {
   const user = props || {};
@@ -12,22 +12,9 @@ const Presentation: React.SFC<IUserProfile> = props => {
   const memberships = props.unitMemberships || [];
   return (
     <>
-      <Content>
-        <Row className="rvt-m-bottom-md rvt-m-left-sm">
-          <Col>
-            <Breadcrumbs>
-              <List variant="plain" orientation="inline">
-                <li>
-                  <a href="/">Home</a>
-                </li>
-                <li>Profiles</li>
-                <li>{user.name}</li>
-              </List>
-            </Breadcrumbs>
-          </Col>
-        </Row>
-      </Content>
-
+      <Breadcrumbs
+        crumbs={[{ text: "Home", href: "/" }, "Profiles", user.name]}
+      />
       <Content>
         <div className="rvt-bg-white">
           {user.photoUrl && (

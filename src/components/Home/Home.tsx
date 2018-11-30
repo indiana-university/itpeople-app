@@ -15,42 +15,37 @@ const Component: React.SFC<IDispatchProps & IStateProps> = ({
   user
 }) => (
   <>
-    <div
-      className="rvt-p-top-xl rvt-p-bottom-xl rvt-m-top-xxl rvt-m-bottom-xxl"
-      style={{ backgroundColor: "#ffffff" }}
-    >
-      <Content>
+    <Content className="rvt-p-top-xl rvt-bg-white rvt-p-bottom-xl rvt-m-top-xxl rvt-m-bottom-xxl">
+      <Row>
+        <Col lg={8} style={{ color: "#333" }}>
+          <PageTitle>IT People</PageTitle>
+          <p>
+            Description of what IT People is and how to use it...Lorem ipsum
+            dolor sit amet, usu an elit euismod pertinax, iudico ignota possit
+            mei ei. Ius ad dicta praesent, malis liber nec ei. Adhuc novum
+            ceteros sed ea, omnes possit graecis at eam. In pri aeterno
+            delectus. Porro facer ad eum, vel vivendum lobortis praesent ei, mea
+            at prompta numquam consulatu.
+          </p>
+        </Col>
+      </Row>
+
+      {user ? (
         <Row>
-          <Col lg={8} style={{ color: "#333" }}>
-            <PageTitle>IT People</PageTitle>
-            <p>
-              Description of what IT People is and how to use it...Lorem ipsum
-              dolor sit amet, usu an elit euismod pertinax, iudico ignota possit
-              mei ei. Ius ad dicta praesent, malis liber nec ei. Adhuc novum
-              ceteros sed ea, omnes possit graecis at eam. In pri aeterno
-              delectus. Porro facer ad eum, vel vivendum lobortis praesent ei,
-              mea at prompta numquam consulatu.
-            </p>
+          <Col className="rvt-m-top-lg">
+            <SearchForm onSubmit={submitSearch} />
           </Col>
         </Row>
-
-        {user ? (
-          <Row>
-            <Col className="rvt-m-top-lg">
-              <SearchForm onSubmit={submitSearch} />
-            </Col>
-          </Row>
-        ) : (
-          <Row>
-            <Col className="rvt-m-top-lg">
-              <button className="rvt-button" onClick={signInRequest}>
-                Login
-              </button>
-            </Col>
-          </Row>
-        )}
-      </Content>
-    </div>
+      ) : (
+        <Row>
+          <Col className="rvt-m-top-lg">
+            <button className="rvt-button" onClick={signInRequest}>
+              Login
+            </button>
+          </Col>
+        </Row>
+      )}
+    </Content>
   </>
 );
 

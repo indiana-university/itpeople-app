@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Breadcrumbs, Row, Col } from "rivet-react";
+import { Row, Col } from "rivet-react";
 import { IDepartmentProfile } from "./store";
 import PageTitle from "../layout/PageTitle";
 import { Panel } from "../Panel";
 import { MemberList } from "./MemberList";
 import { List } from "rivet-react/build/dist/components/List/List";
-import { Content } from "../layout";
+import { Breadcrumbs, Content } from "../layout";
 
 const Presentation: React.SFC<IDepartmentProfile> = props => {
   const name = props.name;
@@ -15,21 +15,9 @@ const Presentation: React.SFC<IDepartmentProfile> = props => {
   const supportingUnits = props.supportingUnits || [];
   return (
     <>
-      <Content>
-        <Row>
-          <Col>
-            <Breadcrumbs>
-              <List variant="plain" orientation="inline">
-                <li>
-                  <a href="/">Home</a>
-                </li>
-                <li>Departments</li>
-                <li>{name}</li>
-              </List>
-            </Breadcrumbs>
-          </Col>
-        </Row>
-      </Content>
+      <Breadcrumbs
+        crumbs={[{ text: "Home", href: "/" }, "Departments", name]}
+      />
 
       <Content className="rvt-bg-white rvt-m-tb-xl rvt-p-tb-xl">
         <Row>
