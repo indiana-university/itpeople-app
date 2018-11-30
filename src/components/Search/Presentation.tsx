@@ -51,7 +51,10 @@ const Presentation: React.SFC<ISimpleSearchResult> = props => (
               <List variant="plain" className="list-stripes">
                 {props.units.map((r, i) => (
                   <li key={i} className="rvt-p-all-lg">
-                    <a href={`/units/${r.id}`}>{r.name}</a>
+                    <a href={`/units/${r.id}`}>
+                      {r.name}
+                    </a>
+                    {r.description && <p>{r.description}</p>}
                   </li>
                 ))}
               </List>
@@ -65,8 +68,8 @@ const Presentation: React.SFC<ISimpleSearchResult> = props => (
                   <li className="rvt-p-all-lg">
                     <a href={`/departments/${r.id}`}>
                       {r.name}
-                      {r.description && ` (${r.description})`}
                     </a>
+                    {r.description && <p>{r.description}</p>}
                   </li>
                 ))}
               </List>
