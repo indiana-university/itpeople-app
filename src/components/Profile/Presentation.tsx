@@ -133,7 +133,8 @@ const Presentation: React.SFC<IUserProfile> = props => {
                 <>
                   <Panel title="IT Units">
                     {memberships.map((m, i) => {
-                      return <div key={i}>
+                      return (
+                        <div key={i}>
                           <div>
                             <a href={`/units/${m.id}`}>
                               <h2 className="rvt-ts-23 rvt-text-bold">
@@ -143,21 +144,26 @@ const Presentation: React.SFC<IUserProfile> = props => {
                             <div>{m.description}</div>
                           </div>
 
-                          {m.title && <div>
+                          {m.title && (
+                            <div>
                               <h3 className="rvt-ts-20 rvt-text-bold rvt-m-top-md rvt-border-top rvt-p-top-md">
                                 Title
                               </h3>
                               <div>{m.title}</div>
-                            </div>}
+                            </div>
+                          )}
 
-                          {m.role && <div>
+                          {m.role && (
+                            <div>
                               <h3 className="rvt-ts-20 rvt-text-bold rvt-m-top-md rvt-border-top rvt-p-top-md">
                                 Role
                               </h3>
                               <div>{m.role}</div>
-                            </div>}
+                            </div>
+                          )}
 
-                          {tools && tools.length && <>
+                          {tools && tools.length && (
+                            <>
                               <h3 className="rvt-ts-20 rvt-text-bold rvt-m-top-md rvt-border-top rvt-p-top-md">
                                 Tools
                               </h3>
@@ -166,8 +172,10 @@ const Presentation: React.SFC<IUserProfile> = props => {
                                   <li key={i}>{t}</li>
                                 ))}
                               </List>
-                            </>}
-                        </div>;
+                            </>
+                          )}
+                        </div>
+                      );
                     })}
                   </Panel>
                 </>

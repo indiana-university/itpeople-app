@@ -23,8 +23,9 @@ const Component: React.SFC<IProps> = ({ submitSearch, error }) => (
             <h2 className="rvt-ts-46">Well, this is embarassing.</h2>
             <p>
               This page did not load properly. Try clicking on the{" "}
-              <a href="/">IT People</a> button at the top of the page, but if this
-              happens again, please let someone know <a href="mailto:someone@iu.edu">here</a>.
+              <a href="/">IT People</a> button at the top of the page, but if
+              this happens again, please let someone know at {" "}
+              <a href="mailto:dcdreq@iu.edu">dcdreq@iu.edu</a>..
             </p>
             {error && <p>{error}</p>}
           </Col>

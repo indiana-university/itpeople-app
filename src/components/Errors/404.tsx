@@ -21,11 +21,12 @@ const Component: React.SFC<IProps> = ({ submitSearch, error }) => (
             <div className="rvt-display-none">
               <PageTitle>404: Not Found</PageTitle>
             </div>
-            <h2 className="rvt-ts-46">Well, this is embarassing.</h2>
+            <h2 className="rvt-ts-46">Uh-oh, this is a 404.</h2>
             <p>
-              This page was not found. Try searching below, or if this page
-              should exist, please let someone know{" "}
-              <a href="mailto:someone@iu.edu">here</a>.
+              This page can’t be found. The link may be broken or this page may
+              have been moved. Try clicking on the  IT People button at the top
+              of the page, but if this happens again, please let someone know at
+              {' '}<a href="mailto:dcdreq@iu.edu">dcdreq@iu.edu</a>.
             </p>
             {error && (
               <div className="rvt-m-top-lg rvt-display-none">
