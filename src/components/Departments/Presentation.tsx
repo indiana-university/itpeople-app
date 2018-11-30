@@ -40,7 +40,6 @@ const Presentation: React.SFC<IProps> = ({ departments }) => {
             ))}
         </Row>
       </Content>
-      Í
     </>
   );
 };
