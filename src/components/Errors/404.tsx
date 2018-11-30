@@ -14,7 +14,7 @@ interface IProps {
 
 const Component: React.SFC<IProps> = ({ submitSearch, error }) => (
   <>
-    <div className="rvt-p-top-xl rvt-p-bottom-xl">
+    <div className="rvt-p-top-xl rvt-p-bottom-xl rvt-bg-white">
       <Content>
         <Row>
           <Col lg={8}>
@@ -35,14 +35,14 @@ const Component: React.SFC<IProps> = ({ submitSearch, error }) => (
           </Col>
         </Row>
       </Content>
+      <Content>
+        <Row>
+          <Col className="rvt-m-top-lg">
+            <SearchForm onSubmit={submitSearch} />
+          </Col>
+        </Row>
+      </Content>
     </div>
-    <Content>
-      <Row>
-        <Col className="rvt-m-top-lg">
-          <SearchForm onSubmit={submitSearch} />
-        </Col>
-      </Row>
-    </Content>
   </>
 );
 

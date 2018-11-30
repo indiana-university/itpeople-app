@@ -22,7 +22,7 @@ const Presentation: React.SFC<IUserProfile> = props => {
                   <a href="/">Home</a>
                 </li>
                 <li>
-                  <a href="/profiles">Profiles</a>
+                  Profiles
                 </li>
                 <li>{user.name}</li>
               </List>
