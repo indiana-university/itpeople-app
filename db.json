@@ -89,6 +89,12 @@
         "name": "Parks and Recreation department",
         "description": "This is a description for a test unit."
       }
+    },
+    {
+      "id":5,
+      "name": "Jerry Gergich",
+      "netId":"garryg",
+      "campusEmail": "terry@pawnee.in.us"
     }
   ],
   "allUnits": [
@@ -97,6 +103,7 @@
       "name": "Parks and Recreation IT",
       "description": "This page is under construction"
     },
+    { "id": 4, "name": "Fourth floor IT", "description": "It is creepy up here" },
     {
       "id": 1,
       "name": "Unit name",

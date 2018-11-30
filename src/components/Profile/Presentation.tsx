@@ -84,7 +84,7 @@ const Presentation: React.SFC<IUserProfile> = props => {
           <Row className="rvt-p-top-lg">
             <Col md={6} className="rvt-p-all-lg">
               <Panel title="Personal Information">
-                {responsibilities.length && (
+                {responsibilities.length > 0 && (
                   <Row>
                     <Col>
                       <h2 className="rvt-ts-23 rvt-text-bold">
@@ -98,7 +98,7 @@ const Presentation: React.SFC<IUserProfile> = props => {
                     </Col>
                   </Row>
                 )}
-                {!!tools.length && (
+                {tools.length > 0 && (
                   <Row>
                     <Col>
                       <h2 className="rvt-ts-23 rvt-text-bold rvt-m-top-md rvt-border-top rvt-p-top-md">
