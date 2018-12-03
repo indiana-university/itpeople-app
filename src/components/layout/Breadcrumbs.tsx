@@ -10,19 +10,17 @@ export const Breadcrumbs: React.SFC<IBreadcrumbsProps> = ({ crumbs }) => (
           <Rivet.List variant="plain" orientation="inline">
             {crumbs &&
               crumbs.length > 0 &&
-              crumbs.map(crumb => {
-                if (typeof crumb === "string") {
-                  return <li>{crumb}</li>;
-                } else if (crumb.href) {
-                  return (
-                    <li>
-                      <a href={crumb.href}>{crumb.text}</a>
-                    </li>
-                  );
-                } else {
-                  return <li>{crumb.text}</li>;
-                }
-              })}
+              crumbs.map((crumb, i) => (
+                <li key={"crumb:" + i}>
+                  {typeof crumb === "string" ? (
+                    crumb
+                  ) : crumb.href ? (
+                    <a href={crumb.href}>{crumb.text}</a>
+                  ) : (
+                    crumb.text
+                  )}
+                </li>
+              ))}
           </Rivet.List>
         </Rivet.Breadcrumbs>
       </Rivet.Col>

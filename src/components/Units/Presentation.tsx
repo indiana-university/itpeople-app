@@ -28,7 +28,7 @@ const Presentation: React.SFC<IProps> = ({ units }) => (
     <Content className="rvt-bg-white rvt-p-tb-xxl rvt-m-tb-lg">
       <Row style={{ justifyContent: "space-between" }}>
         {units.map((r, i) => (
-          <Col key={i} md={5} className="rvt-p-bottom-lg">
+          <Col key={"unit:" + i} md={5} className="rvt-p-bottom-lg">
             <a href={`/units/${r.id}`} className="rvt-link-bold">
               {r.name}
             </a>

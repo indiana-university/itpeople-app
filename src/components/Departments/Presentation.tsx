@@ -27,7 +27,6 @@ const Presentation: React.SFC<IProps> = ({ departments }) => {
       </Content>
       
       <Content className="rvt-bg-white rvt-p-tb-xxl rvt-m-tb-lg">
-        <caption className="sr-only">List of Departments</caption>
         <Row style={{ justifyContent: "space-between" }}>
           {departments &&
             departments.length > 0 &&

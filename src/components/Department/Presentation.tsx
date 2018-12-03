@@ -44,7 +44,7 @@ const Presentation: React.SFC<IDepartmentProfile> = props => {
                 <Panel title="Constituent Units">
                   <List variant="plain">
                     {units.map((r, i) => (
-                      <li key={i}>
+                      <li key={"unit:"+i}>
                         <a href={`/units/${r.id}`}>{r.name}</a>
                         {r.description && <p>{r.description}</p>}
                       </li>
@@ -58,7 +58,7 @@ const Presentation: React.SFC<IDepartmentProfile> = props => {
               <Panel title="Supporting Units">
                 <List variant="plain">
                   {supportingUnits.map((r, i) => (
-                    <li key={i}>
+                    <li key={"supporting"+i}>
                       <a href={`/units/${r.id}`}>{r.name}</a>
                       {r.description && <p>{r.description}</p>}
                     </li>
