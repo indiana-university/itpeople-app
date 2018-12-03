@@ -33,37 +33,69 @@ export const Results: React.SFC<IProps> = ({
   const showPeople = () => {
     setCurrentList(SearchLists.People);
   };
-  return <>
+  return (
+    <>
       <Row>
         <List variant="plain" orientation="inline">
-          {users.length > 0 && <button onClick={showPeople}>
-              People {users.length}
-            </button>}
-          {units.length > 0 && <button onClick={showUnits}>
-              Units {units.length}
-            </button>}
-          {departments.length > 0 && <button onClick={showDepartments}>
-              Departments {departments.length}
-            </button>}
+          {users.length > 0 && (
+            <button
+              onClick={showPeople}
+              className={
+                "rvt-button--plain" +
+                (selectedList == SearchLists.People ? " selected" : "")
+              }
+            >
+              People ({users.length})
+            </button>
+          )}
+          {units.length > 0 && (
+            <button
+              onClick={showUnits}
+              className={
+                "rvt-button--plain" +
+                (selectedList == SearchLists.Units ? " selected" : "")
+              }
+            >
+              Units ({units.length})
+            </button>
+          )}
+          {departments.length > 0 && (
+            <button
+              onClick={showDepartments}
+              className={
+                "rvt-button--plain" +
+                (selectedList == SearchLists.Departments ? " selected" : "")
+              }
+            >
+              Departments ({departments.length})
+            </button>
+          )}
         </List>
       </Row>
       <Row>
-        {users.length > 0 && selectedList === SearchLists.People && <Col lg={4}>
+        {users.length > 0 && selectedList === SearchLists.People && (
+          <Col lg={4}>
             <h2 className="rvt-ts-26 rvt-m-top-lg">People</h2>
             <ProfileList users={users} />
-          </Col>}
+          </Col>
+        )}
 
-      {units.length > 0 && selectedList === SearchLists.Units && <Col lg={4}>
+        {units.length > 0 && selectedList === SearchLists.Units && (
+          <Col lg={4}>
             <h2 className="rvt-ts-26 rvt-m-top-lg">Units</h2>
             <List variant="plain" className="list-stripes">
-              {units.map((r, i) => <li key={i} className="rvt-p-all-lg">
+              {units.map((r, i) => (
+                <li key={i} className="rvt-p-all-lg">
                   <a href={`/units/${r.id}`}>{r.name}</a>
                   {r.description && <p>{r.description}</p>}
-                </li>)}
+                </li>
+              ))}
             </List>
-          </Col>}
+          </Col>
+        )}
 
-      {departments.length > 0 && selectedList === SearchLists.Departments && <Col lg={4}>
+        {departments.length > 0 && selectedList === SearchLists.Departments && (
+          <Col lg={4}>
             <h2 className="rvt-ts-26 rvt-m-top-lg">Departments</h2>
             <List variant="plain" className="list-stripes">
               {departments.map((r, i) => (
@@ -73,7 +105,9 @@ export const Results: React.SFC<IProps> = ({
                 </li>
               ))}
             </List>
-          </Col>}
+          </Col>
+        )}
       </Row>
-    </>;
+    </>
+  );
 };
