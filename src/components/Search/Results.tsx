@@ -82,7 +82,7 @@ export const Results: React.SFC<IProps> = ({
             <h2 className="sr-only">Units</h2>
             <List variant="plain" className="list-dividers">
               {units.map((r, i) => (
-                <li key={"membership:" + r.id} className="rvt-p-tb-lg">
+                <li key={"unit-results:" + i} className="rvt-p-tb-lg">
                   <a href={`/units/${r.id}`}>{r.name}</a>
                   {r.description && <p>{r.description}</p>}
                 </li>
@@ -98,7 +98,7 @@ export const Results: React.SFC<IProps> = ({
               <h2 className="sr-only">Departments</h2>
               <List variant="plain" className="list-dividers">
                 {departments.map((r, i) => (
-                  <li className="rvt-p-tb-lg" key={"department:" + r.id}>
+                  <li className="rvt-p-tb-lg" key={"department-result:" + i}>
                     <a href={`/departments/${r.id}`}>{r.name}</a>
                     {r.description && <p>{r.description}</p>}
                   </li>
