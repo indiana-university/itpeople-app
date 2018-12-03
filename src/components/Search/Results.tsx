@@ -33,71 +33,40 @@ export const Results: React.SFC<IProps> = ({
   const showPeople = () => {
     setCurrentList(SearchLists.People);
   };
-  return (
-    <>
+  return <>
       <Row>
-        <Col className="rvt-m-bottom-lg">
+        <Col className="rvt-m-bottom-lg search-list-button">
           <List variant="plain" orientation="inline">
-            {users.length > 0 && (
-              <button
-                onClick={showPeople}
-                className={
-                  "rvt-button--plain" +
-                  (selectedList == SearchLists.People ? " selected" : "")
-                }
-              >
+            <span className="sr-only">Filters</span>
+            {users.length > 0 && <button onClick={showPeople} className={"rvt-button--plain" + (selectedList == SearchLists.People ? " selected" : "")}>
                 People ({users.length})
-              </button>
-            )}
-            {units.length > 0 && (
-              <button
-                onClick={showUnits}
-                className={
-                  "rvt-button--plain" +
-                  (selectedList == SearchLists.Units ? " selected" : "")
-                }
-              >
+              </button>}
+            {units.length > 0 && <button onClick={showUnits} className={"rvt-button--plain" + (selectedList == SearchLists.Units ? " selected" : "")}>
                 Units ({units.length})
-              </button>
-            )}
-            {departments.length > 0 && (
-              <button
-                onClick={showDepartments}
-                className={
-                  "rvt-button--plain" +
-                  (selectedList == SearchLists.Departments ? " selected" : "")
-                }
-              >
+              </button>}
+            {departments.length > 0 && <button onClick={showDepartments} className={"rvt-button--plain" + (selectedList == SearchLists.Departments ? " selected" : "")}>
                 Departments ({departments.length})
-              </button>
-            )}
+              </button>}
           </List>
         </Col>
       </Row>
       <Row>
-        {users.length > 0 && selectedList === SearchLists.People && (
-          <Col>
+        {users.length > 0 && selectedList === SearchLists.People && <Col>
             <h2 className="sr-only">People</h2>
             <ProfileList users={users} />
-          </Col>
-        )}
+          </Col>}
 
-        {units.length > 0 && selectedList === SearchLists.Units && (
-          <Col>
+        {units.length > 0 && selectedList === SearchLists.Units && <Col>
             <h2 className="sr-only">Units</h2>
             <List variant="plain" className="list-dividers">
-              {units.map((r, i) => (
-                <li key={i} className="rvt-p-tb-lg">
+              {units.map((r, i) => <li key={i} className="rvt-p-tb-lg">
                   <a href={`/units/${r.id}`}>{r.name}</a>
                   {r.description && <p>{r.description}</p>}
-                </li>
-              ))}
+                </li>)}
             </List>
-          </Col>
-        )}
+          </Col>}
 
-        {departments.length > 0 && selectedList === SearchLists.Departments && (
-          <Col>
+        {departments.length > 0 && selectedList === SearchLists.Departments && <Col>
             <h2 className="sr-only">Departments</h2>
             <List variant="plain" className="list-dividers">
               {departments.map((r, i) => (
@@ -107,9 +76,7 @@ export const Results: React.SFC<IProps> = ({
                 </li>
               ))}
             </List>
-          </Col>
-        )}
+          </Col>}
       </Row>
-    </>
-  );
+    </>;
 };
