@@ -1,11 +1,13 @@
 import * as React from "react";
-import { Col, List, Row } from "rivet-react";
+import { Col, Row } from "rivet-react";
 import { ISimpleSearchResult } from "./store";
 import { Content, PageTitle, SearchForm } from "../layout";
-import { ProfileList } from "../Profile/ProfileList";
+import { Results, SearchLists } from "./Results";
 
 const Presentation: React.SFC<ISimpleSearchResult & IProps> = ({
+  selectedList,
   departments,
+  setCurrentList,
   submitSearch,
   units,
   users
@@ -34,45 +36,20 @@ const Presentation: React.SFC<ISimpleSearchResult & IProps> = ({
     </Content>
 
     <Content className="rvt-p-top-xl rvt-bg-white rvt-p-bottom-xl rvt-m-top-xxl rvt-m-bottom-xxl">
-      <Row>
-        {users.length > 0 && (
-          <Col lg={4}>
-            <h2 className="rvt-ts-26 rvt-m-top-lg">People</h2>
-            <ProfileList users={users} />
-          </Col>
-        )}
-        {units.length > 0 && (
-          <Col lg={4}>
-            <h2 className="rvt-ts-26 rvt-m-top-lg">Units</h2>
-            <List variant="plain" className="list-stripes">
-              {units.map((r, i) => (
-                <li key={i} className="rvt-p-all-lg">
-                  <a href={`/units/${r.id}`}>{r.name}</a>
-                  {r.description && <p>{r.description}</p>}
-                </li>
-              ))}
-            </List>
-          </Col>
-        )}
-        {departments.length > 0 && (
-          <Col lg={4}>
-            <h2 className="rvt-ts-26 rvt-m-top-lg">Departments</h2>
-            <List variant="plain" className="list-stripes">
-              {departments.map((r, i) => (
-                <li className="rvt-p-all-lg">
-                  <a href={`/departments/${r.id}`}>{r.name}</a>
-                  {r.description && <p>{r.description}</p>}
-                </li>
-              ))}
-            </List>
-          </Col>
-        )}
-      </Row>
+      <Results
+        users={users}
+        departments={departments}
+        units={units}
+        selectedList={selectedList || SearchLists.People}
+        setCurrentList={setCurrentList}
+      />
     </Content>
   </>
 );
 
 interface IProps {
   submitSearch?: any;
+  setCurrentList(list: any): void;
 }
+
 export default Presentation;
