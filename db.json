@@ -21,9 +21,21 @@
           "id": 1,
           "name": "Parks and Recreation IT",
           "description": "This is a description for a test unit.",
+          "title": "Manager",
+          "role": "Admin",
+          "tools": [
+            "AccountMgt"
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Other IT",
+          "description": "This is a description for a test unit.",
           "title": "Developer",
           "role": "Admin",
-          "tools": ["AccountMgt"]
+          "tools": [
+            "AccountMgt"
+          ]
         }
       ],
       "department": {

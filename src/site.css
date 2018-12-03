@@ -33,17 +33,25 @@ body::after {
 }
 
 .list-dividers > * {
-  border-bottom: 1px solid #BDBDBD;
+  border-bottom: 1px solid #bdbdbd;
 }
 
 .list-dividers > *:last-child {
   border-bottom: none;
 }
+.profile-units > * {
+  padding-bottom: 2em;
+  margin-bottom: 2em;
+}
+.profile-units > *:last-child {
+  padding-bottom: initial;
+  margin-bottom: initial;
+}
 
 .rvt-button--plain {
   position: relative;
 }
-.rvt-button--plain:before {
+.search-list-button .rvt-button--plain:before {
   content: "";
   position: absolute;
   width: 100%;
@@ -58,8 +66,16 @@ body::after {
   transition: all 0.3s ease-in-out 0s;
 }
 
-.rvt-button--plain.selected:before, .rvt-button--plain:hover:before {
+.search-list-button .rvt-button--plain.selected:before,
+.search-list-button .rvt-button--plain:hover:before {
   visibility: visible;
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
+}
+
+button svg {
+  transition: 0.20s;
+}
+button.expanded svg {
+  transform: rotate(180deg);
 }

@@ -3,7 +3,13 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { IApplicationState } from "../types";
 import Profile from "./Presentation";
-import { fetchRequest, IState, IUserRequest, updateRequest } from "./store";
+import {
+  fetchRequest,
+  IState,
+  IUserRequest,
+  updateRequest,
+  toggleUnit
+} from "./store";
 import { Loader } from "../Loader";
 // import { Content } from "../layout/Content";
 
@@ -14,6 +20,7 @@ interface IProfileProps {
 interface IPropsFromDispatch {
   profileFetchRequest: typeof fetchRequest;
   profileUpdateRequest: typeof updateRequest;
+  toggleUnit: typeof toggleUnit;
 }
 
 class Container extends React.Component<
@@ -31,7 +38,7 @@ class Container extends React.Component<
   public render() {
     return (
       <Loader {...this.props}>
-        {this.props.data && <Profile {...this.props.data} />}
+        {this.props.data && <Profile {...this.props.data} toggleUnit={this.props.toggleUnit} />}
       </Loader>
     );
   }
@@ -43,7 +50,8 @@ const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
   profileFetchRequest: (request: IUserRequest) =>
     dispatch(fetchRequest(request)),
   profileUpdateRequest: (request: IUserRequest) =>
-    dispatch(updateRequest(request))
+    dispatch(updateRequest(request)),
+  toggleUnit: (id: number) => dispatch(toggleUnit(id))
 });
 
 export default connect(
