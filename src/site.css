@@ -32,6 +32,14 @@ body::after {
   background-color: #f7f7f7;
 }
 
+.list-dividers > * {
+  border-bottom: 1px solid #BDBDBD;
+}
+
+.list-dividers > *:last-child {
+  border-bottom: none;
+}
+
 .rvt-button--plain {
   position: relative;
 }

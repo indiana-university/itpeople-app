@@ -36,56 +36,58 @@ export const Results: React.SFC<IProps> = ({
   return (
     <>
       <Row>
-        <List variant="plain" orientation="inline">
-          {users.length > 0 && (
-            <button
-              onClick={showPeople}
-              className={
-                "rvt-button--plain" +
-                (selectedList == SearchLists.People ? " selected" : "")
-              }
-            >
-              People ({users.length})
-            </button>
-          )}
-          {units.length > 0 && (
-            <button
-              onClick={showUnits}
-              className={
-                "rvt-button--plain" +
-                (selectedList == SearchLists.Units ? " selected" : "")
-              }
-            >
-              Units ({units.length})
-            </button>
-          )}
-          {departments.length > 0 && (
-            <button
-              onClick={showDepartments}
-              className={
-                "rvt-button--plain" +
-                (selectedList == SearchLists.Departments ? " selected" : "")
-              }
-            >
-              Departments ({departments.length})
-            </button>
-          )}
-        </List>
+        <Col className="rvt-m-bottom-lg">
+          <List variant="plain" orientation="inline">
+            {users.length > 0 && (
+              <button
+                onClick={showPeople}
+                className={
+                  "rvt-button--plain" +
+                  (selectedList == SearchLists.People ? " selected" : "")
+                }
+              >
+                People ({users.length})
+              </button>
+            )}
+            {units.length > 0 && (
+              <button
+                onClick={showUnits}
+                className={
+                  "rvt-button--plain" +
+                  (selectedList == SearchLists.Units ? " selected" : "")
+                }
+              >
+                Units ({units.length})
+              </button>
+            )}
+            {departments.length > 0 && (
+              <button
+                onClick={showDepartments}
+                className={
+                  "rvt-button--plain" +
+                  (selectedList == SearchLists.Departments ? " selected" : "")
+                }
+              >
+                Departments ({departments.length})
+              </button>
+            )}
+          </List>
+        </Col>
       </Row>
       <Row>
         {users.length > 0 && selectedList === SearchLists.People && (
-          <Col lg={4}>
-            <h2 className="rvt-ts-26 rvt-m-top-lg">People</h2>
+          <Col>
+            <h2 className="sr-only">People</h2>
             <ProfileList users={users} />
           </Col>
         )}
 
         {units.length > 0 && selectedList === SearchLists.Units && (
-          <Col lg={4}>
-            <h2 className="rvt-ts-26 rvt-m-top-lg">Units</h2>
-            <List variant="plain" className="list-stripes">
+          <Col>
+            <h2 className="sr-only">Units</h2>
+            <List variant="plain" className="list-dividers">
               {units.map((r, i) => (
-                <li key={i} className="rvt-p-all-lg">
+                <li key={i} className="rvt-p-tb-lg">
                   <a href={`/units/${r.id}`}>{r.name}</a>
                   {r.description && <p>{r.description}</p>}
                 </li>
@@ -95,11 +97,11 @@ export const Results: React.SFC<IProps> = ({
         )}
 
         {departments.length > 0 && selectedList === SearchLists.Departments && (
-          <Col lg={4}>
-            <h2 className="rvt-ts-26 rvt-m-top-lg">Departments</h2>
-            <List variant="plain" className="list-stripes">
+          <Col>
+            <h2 className="sr-only">Departments</h2>
+            <List variant="plain" className="list-dividers">
               {departments.map((r, i) => (
-                <li className="rvt-p-all-lg" key={"departments/" + r.id}>
+                <li className="rvt-p-tb-lg" key={"departments/" + r.id}>
                   <a href={`/departments/${r.id}`}>{r.name}</a>
                   {r.description && <p>{r.description}</p>}
                 </li>

@@ -5,7 +5,7 @@ import { IEntity } from "../types";
 
 export const ProfileList: React.SFC<IProps> = ({ users, title }) => {
   return (<>
-    <Section className="rvt-m-bottom-lg list-stripes">
+    <Section className="rvt-m-bottom-lg list-dividers">
       {title &&
         <h3 className="rvt-ts-20 rvt-ts-26-lg-up rvt-m-bottom-xs">{title}</h3>
       }

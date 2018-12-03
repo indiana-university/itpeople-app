@@ -8,9 +8,10 @@ export const ProfileListItem: React.SFC<IEntity & IProps> = ({
   description,
   photoUrl
 }) => {
-  return <div className="rvt-p-all-lg">
+  return <div className="rvt-p-tb-lg">
       <Row>
-        {photoUrl && <Col sm={3}>
+        {photoUrl && 
+        <Col sm={3} style={{maxWidth:"180px"}}>
             <img src={photoUrl} width={"100%"} style={{ borderRadius: "100%", overflow: "hidden", objectFit: "cover" }} />
           </Col>}
         <Col style={{ alignSelf: "center" }}>
