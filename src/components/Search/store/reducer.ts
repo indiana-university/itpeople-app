@@ -28,7 +28,7 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
       return FetchRequestReducer(state, act);
     case SearchActionTypes.SEARCH_SIMPLE_FETCH_SUCCESS:
       if (act.payload) {
-        if (act.payload.people && act.payload.people.length) {
+        if (act.payload.users && act.payload.users.length) {
           act.payload.selectedList = SearchLists.People;
         } else if (act.payload.units && act.payload.units.length) {
           act.payload.selectedList = SearchLists.Units;
