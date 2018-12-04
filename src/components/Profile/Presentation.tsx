@@ -69,127 +69,122 @@ const Presentation: React.SFC<IUserProfile & IProps> = props => {
         </div>
       </Content>
 
-      <div className="rvt-bg-white">
-        <Content>
-          <Row className="rvt-p-top-lg">
-            <Col md={6} className="rvt-p-all-lg">
-              <Panel title="Personal Information">
+      <Content className="rvt-bg-white">
+        <Row className="rvt-p-top-lg">
+          <Col md={6} className="rvt-p-all-lg">
+            <Panel title="Personal Information">
+              <div className="list-dividers">
                 {responsibilities.length > 0 && (
-                  <Row>
-                    <Col>
-                      <h2 className="rvt-ts-23 rvt-text-bold">
-                        Responsibilities
-                      </h2>
-                      <List variant="plain">
-                        {responsibilities.map((r, i) => (
-                          <li key={i}>{r}</li>
-                        ))}
-                      </List>
-                    </Col>
-                  </Row>
+                  <div>
+                    <h2 className="rvt-ts-23 rvt-text-bold">
+                      Responsibilities
+                    </h2>
+                    <List variant="plain">
+                      {responsibilities.map((r, i) => (
+                        <li key={i}>{r}</li>
+                      ))}
+                    </List>
+                  </div>
                 )}
                 {tools.length > 0 && (
-                  <Row>
-                    <Col>
-                      <h2 className="rvt-ts-23 rvt-text-bold rvt-m-top-md rvt-border-top rvt-p-top-md">
-                        Tools
-                      </h2>
-                      <List variant="plain">
-                        {tools.map((t, i) => (
-                          <li key={i}>{t}</li>
-                        ))}
-                      </List>
-                    </Col>
-                  </Row>
+                  <div>
+                    <h2 className="rvt-ts-23 rvt-text-bold">Tools</h2>
+                    <List variant="plain">
+                      {tools.map((t, i) => (
+                        <li key={i}>{t}</li>
+                      ))}
+                    </List>
+                  </div>
                 )}
                 {user.expertise && user.expertise.length > 0 && (
-                  <Row>
-                    <Col>
-                      <h2 className="rvt-ts-23 rvt-text-bold rvt-m-top-md rvt-border-top rvt-p-top-md">
-                        Interests
-                      </h2>
-                      <List variant="plain">
-                        {user.expertise.map &&
-                          user.expertise.map((e, i) => <li key={i}>{e}</li>)}
-                      </List>
-                    </Col>
-                  </Row>
+                  <div>
+                    <h2 className="rvt-ts-23 rvt-text-bold">Interests</h2>
+                    <List variant="plain">
+                      {user.expertise.map &&
+                        user.expertise.map((e, i) => <li key={i}>{e}</li>)}
+                    </List>
+                  </div>
                 )}
-              </Panel>
-            </Col>
-            <Col md={6} className="rvt-p-all-lg">
-              {!!memberships.length && (
-                <>
-                  <Panel title="IT Units">
-                    <div className="list-dividers profile-units">
-                      {memberships.map((m, i) => {
-                        const isExpanded =
-                          visuallyExpandedUnits.indexOf(m.id) > -1;
-                        const toggle = () => {
-                          toggleUnit(m.id);
-                        };
-                        return <div key={i + "-profile-unit"}>
-                            <Row>
-                              <Col>
-                                <a href={`/units/${m.id}`}>
-                                  <h2 className="rvt-ts-23 rvt-text-bold">
-                                    {m.name}
-                                  </h2>
-                                </a>
-                                {m.description && <div className="rvt-m-bottom-sm">
-                                    {m.description}
-                                  </div>}
-                              </Col>
-                              <Col sm={1}>
-                                <button className={"rvt-button--plain" + (isExpanded ? " expanded" : "")} onClick={toggle}>
-                                  <span className="sr-only">
-                                    Toggle
-                                  </span>
-                                  <Chevron />
-                                </button>
-                              </Col>
-                            </Row>
-                            {isExpanded && <Row>
-                                <Col>
-                                  {m.title && <div className="rvt-m-top-sm">
-                                      <span className="rvt-text-bold">
-                                        Title:{" "}
-                                      </span>
-                                      {m.title}
-                                    </div>}
+              </div>
+            </Panel>
+          </Col>
+          <Col md={6} className="rvt-p-all-lg">
+            {!!memberships.length && (
+              <Panel title="IT Units">
+                <div className="list-dividers profile-units">
+                  {memberships.map((m, i) => {
+                    const isExpanded = visuallyExpandedUnits.indexOf(m.id) > -1;
+                    const toggle = () => {
+                      toggleUnit(m.id);
+                    };
+                    return (
+                      <div key={i + "-profile-unit"}>
+                        <Row>
+                          <Col>
+                            <a href={`/units/${m.id}`}>
+                              <h2 className="rvt-ts-23 rvt-text-bold">
+                                {m.name}
+                              </h2>
+                            </a>
+                            {m.description && (
+                              <div className="rvt-m-bottom-sm">
+                                {m.description}
+                              </div>
+                            )}
+                          </Col>
+                          <Col sm={1}>
+                            <button
+                              className={
+                                "rvt-button--plain" +
+                                (isExpanded ? " expanded" : "")
+                              }
+                              onClick={toggle}
+                            >
+                              <span className="sr-only">Toggle</span>
+                              <Chevron />
+                            </button>
+                          </Col>
+                        </Row>
+                        {isExpanded && (
+                          <Row>
+                            <Col>
+                              {m.title && (
+                                <div className="rvt-m-top-sm">
+                                  <span className="rvt-text-bold">Title: </span>
+                                  {m.title}
+                                </div>
+                              )}
 
-                                  {m.role && <div className="rvt-m-top-sm">
-                                      <span className="rvt-text-bold">
-                                        Role:{" "}
-                                      </span>
-                                      {m.role}
-                                    </div>}
-                                  {m.tools && m.tools.length > 0 && <div className="rvt-m-top-sm">
-                                      <h3 className="rvt-ts-16 rvt-text-bold">
-                                        Tools
-                                      </h3>
-                                      <List variant="plain">
-                                        {m.tools.map(
-                                          (t, i) => (
-                                            <li key={i}>
-                                              {t}
-                                            </li>
-                                          )
-                                        )}
-                                      </List>
-                                    </div>}
-                                </Col>
-                              </Row>}
-                          </div>;
-                      })}
-                    </div>
-                  </Panel>
-                </>
-              )}
-            </Col>
-          </Row>
-        </Content>
-      </div>
+                              {m.role && (
+                                <div className="rvt-m-top-sm">
+                                  <span className="rvt-text-bold">Role: </span>
+                                  {m.role}
+                                </div>
+                              )}
+                              {m.tools && m.tools.length > 0 && (
+                                <div className="rvt-m-top-sm">
+                                  <h3 className="rvt-ts-16 rvt-text-bold">
+                                    Tools
+                                  </h3>
+                                  <List variant="plain">
+                                    {m.tools.map((t, i) => (
+                                      <li key={i}>{t}</li>
+                                    ))}
+                                  </List>
+                                </div>
+                              )}
+                            </Col>
+                          </Row>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </Panel>
+            )}
+          </Col>
+        </Row>
+      </Content>
     </>
   );
 };

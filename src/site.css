@@ -34,16 +34,12 @@ body::after {
 
 .list-dividers > * {
   border-bottom: 1px solid #bdbdbd;
+  padding-bottom: 2em;
+  margin-bottom: 2em;
 }
 
 .list-dividers > *:last-child {
   border-bottom: none;
-}
-.profile-units > * {
-  padding-bottom: 2em;
-  margin-bottom: 2em;
-}
-.profile-units > *:last-child {
   padding-bottom: initial;
   margin-bottom: initial;
 }
