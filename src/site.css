@@ -38,7 +38,7 @@ body::after {
   margin-bottom: 2em;
 }
 
-.list-dividers > *:last-child {
+.list-dividers:not(.list-dividers--show-last) > *:last-child {
   border-bottom: none;
   padding-bottom: initial;
   margin-bottom: initial;

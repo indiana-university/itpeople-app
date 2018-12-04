@@ -8,21 +8,17 @@ export const MemberList: React.SFC<IProps> = ({
   title,
   showImages
 }) => {
-  return (
-    <Section className="rvt-m-bottom-lg">
-      {title && (
-        <h3 className="rvt-ts-20 rvt-ts-26-lg-up rvt-m-bottom-xs rvt-text-bold">
+  return <Section className="rvt-m-bottom-lg">
+      {title && <h3 className="rvt-ts-20 rvt-ts-26-lg-up rvt-m-bottom-sm rvt-text-bold">
           {title}
-        </h3>
-      )}
-      <div className="list-stripes">
+        </h3>}
+    <div className="list-dividers list-dividers--show-last">
         {members &&
           members.map((m, i) => (
             <MemberListItem key={i} {...m} showImage={showImages} />
           ))}
       </div>
-    </Section>
-  );
+    </Section>;
 };
 interface IProps {
   members: IUnitMember[];
