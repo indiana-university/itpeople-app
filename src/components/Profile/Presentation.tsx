@@ -12,7 +12,8 @@ const Presentation: React.SFC<IUserProfile & IProps> = props => {
   const tools = user.tools || [];
   const memberships = props.unitMemberships || [];
   const toggleUnit = props.toggleUnit;
-  const visuallyExpandedUnits: Array<number> = props.visuallyExpandedUnits || [];
+  const visuallyExpandedUnits: Array<number> =
+    props.visuallyExpandedUnits || [];
   return (
     <>
       <Breadcrumbs
@@ -139,6 +140,7 @@ const Presentation: React.SFC<IUserProfile & IProps> = props => {
                                 (isExpanded ? " expanded" : "")
                               }
                               onClick={toggle}
+                              style={{ position: "absolute", right: 0 }}
                             >
                               <span className="sr-only">Toggle</span>
                               <Chevron />

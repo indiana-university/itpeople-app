@@ -47,6 +47,7 @@ body::after {
 .rvt-button--plain {
   position: relative;
 }
+
 .search-list-button .rvt-button--plain:before {
   content: "";
   position: absolute;
