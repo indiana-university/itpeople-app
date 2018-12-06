@@ -130,8 +130,7 @@
           {
             "id": 1,
             "name": "Parks and Recreation IT",
-            "description": "This page is under construction",
-            "url": "http://pawneeindiana.com/information-technology/"
+            "description": "This page is under construction"
           }
         ],
         "matchingRules": {
@@ -183,7 +182,7 @@
               "id": 1,
               "name": "Parks and Recreation IT",
               "description": "This is a description for a test unit.",
-              "title": "Developer",
+              "title": "Manager",
               "role": "Admin",
               "tools": [
                 "AccountMgt"
@@ -381,19 +380,22 @@
           "departments": [
             {
               "id": 1,
-              "name": "Parks and Recreation Department"
+              "name": "Parks and Recreation Department",
+              "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
             }
           ],
           "units": [
             {
               "id": 1,
-              "name": "Parks and Recreation IT"
+              "name": "Parks and Recreation IT",
+              "description": "This page is under construction"
             }
           ],
           "users": [
             {
               "id": 2,
-              "name": "Leslie Knope"
+              "name": "Leslie Knope",
+              "description": "Manager"
             }
           ]
         },
@@ -458,7 +460,7 @@
               "id": 1,
               "name": "Parks and Recreation IT",
               "description": "This is a description for a test unit.",
-              "title": "Developer",
+              "title": "Manager",
               "role": "Admin",
               "tools": [
                 "AccountMgt"
