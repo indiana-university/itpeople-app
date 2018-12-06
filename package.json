@@ -20,10 +20,11 @@
     "typesafe-actions": "^2.0.4"
   },
   "scripts": {
-    "dev": "json-server --watch db.json --routes db.routes.json --port 3001 & react-scripts-ts start && kill 0",
+    "json-server": "json-server --watch db.json --routes db.routes.json --port 3001",
+    "dev": "yarn json-server & yarn start && kill 0",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
-    "test": "json-server --watch db.json --routes db.routes.json --port 3002 & jest --env=jsdom",
+    "test": "yarn json-server & jest --env=jsdom",
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {

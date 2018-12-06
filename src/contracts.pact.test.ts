@@ -17,7 +17,7 @@ const deepMatchify = (obj: Object) => traverse(obj).map(function (this: traverse
 
 const PACT_PORT = 6123
 const PACT_SERVER = `http://localhost:${PACT_PORT}`
-const JSON_SERVER = 'http://localhost:3002'
+const JSON_SERVER = 'http://localhost:3001'
 
 const pactServer = new Pact({
   port: PACT_PORT,
