@@ -1,246 +1,312 @@
 {
-    "auth": {
-        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+  "auth": {
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+  },
+  "people": [
+    {
+      "id": 1,
+      "name": "Ron Swanson",
+      "netId": "rswanso",
+      "position": "Parks and Rec Director",
+      "location": "Municipal Building, Office 123",
+      "campusPhone": "812-856-1234",
+      "campusEmail": "rswanso@iu.edu",
+      "campus": "Bloomington",
+      "tools": ["Claw hammer", "Chisel", "Bureaucracy"],
+      "expertise": ["Wood-working", "fishing"],
+      "responsibilities": ["IT Leadership", "Other things"],
+      "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
+      "unitMemberships": [
+        {
+          "id": 1,
+          "name": "Parks and Recreation IT",
+          "description": "This is a description for a test unit.",
+          "title": "Manager",
+          "role": "Admin",
+          "tools": [
+            "AccountMgt"
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Other IT",
+          "description": "This is a description for a test unit.",
+          "title": "Developer",
+          "role": "Admin",
+          "tools": [
+            "AccountMgt"
+          ]
+        }
+      ],
+      "department": {
+        "id": 1,
+        "name": "Parks and Recreation Department",
+        "description": "This is a description for a test unit."
+      }
     },
-    "people": [
+    {
+      "id": 2,
+      "name": "Leslie Knope",
+      "netId": "lknope",
+      "position": "Parks and Rec project manager",
+      "location": "",
+      "campusPhone": "812-856-1234",
+      "campusEmail": "lknope@iu.edu",
+      "campus": "IUBLA",
+      "tools": ["Clip board", "Tenacity"],
+      "expertise": ["Canvasing"],
+      "responsibilities": ["IT Leadership"],
+      "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg",
+      "unitMemberships": [
         {
-            "id": 1,
-            "name": "Ron Swanson",
-            "netId": "rswanso",
-            "position": "Parks and Rec Director",
-            "location": "Municipal Building, Office 123",
-            "campusPhone": "812-856-1234",
-            "campusEmail": "rswanso@iu.edu",
-            "campus": "Bloomington",
-            "tools": [
-                "Claw hammer",
-                "Chisel",
-                "Bureaucracy"
-            ],
-            "expertise": ["Wood-working", "fishing"],
-            "responsibilities": [
-                "IT Leadership",
-                "Other things"
-            ],
-            "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
-            "unitMemberships": [
-                {
-                    "id": 1,
-                    "name": "Parks and Recreation IT",
-                    "description": "This is a description for a test unit.",
-                    "title": "Developer",
-                    "role": "Admin",
-                    "tools": [
-                        "AccountMgt"
-                    ]
-                }
-            ],
-            "department": {
-                "id": 1,
-                "name": "Parks and Recreation Department",
-                "description": "This is a description for a test unit."
-            }
+          "id": 1,
+          "name": "Parks and Recreation IT",
+          "description": "This is a description for a test unit.",
+          "title": "Developer",
+          "role": "Member",
+          "tools": []
+        }
+      ],
+      "department": {
+        "id": 1,
+        "name": "Parks and Recreation department",
+        "description": "This is a description for a test unit."
+      }
+    },
+    {
+      "id": 4,
+      "name": "Li’l Sebastian",
+      "netId": "lsebastian",
+      "position": "Pageant winner",
+      "location": "Stable #4",
+      "campusPhone": "812-856-1234",
+      "campusEmail": "lsebastian@iu.edu",
+      "campus": "IUBLA",
+      "role": "Manager",
+      "tools": ["Hay", "Shoes"],
+      "expertise": ["Horsin' around"],
+      "responsibilities": ["Being a horse"],
+      "unitMemberships": [
+        {
+          "id": 1,
+          "name": "Parks and Recreation IT",
+          "description": "This is a description for a test unit.",
+          "title": "Small Horse",
+          "role": "Member",
+          "tools": []
+        }
+      ],
+      "department": {
+        "id": 1,
+        "name": "Parks and Recreation department",
+        "description": "This is a description for a test unit."
+      }
+    },
+    {
+      "id": 5,
+      "name": "Jerry Gergich",
+      "netId": "garryg",
+      "campusEmail": "terry@pawnee.in.us"
+    }
+  ],
+  "allUnits": [
+    {
+      "id": 1,
+      "name": "Parks and Recreation IT",
+      "description": "This page is under construction"
+    },
+    {
+      "id": 4,
+      "name": "Fourth floor IT",
+      "description": "It is creepy up here"
+    },
+    {
+      "id": 1,
+      "name": "Unit name",
+      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
+    },
+    {
+      "id": 1,
+      "name": "Unit name",
+      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
+    },
+    {
+      "id": 1,
+      "name": "Unit name",
+      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
+    },
+    {
+      "id": 1,
+      "name": "Unit name",
+      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
+    }
+  ],
+  "units": [
+    {
+      "id": 1,
+      "name": "Parks and Recreation IT",
+      "description": "This page is under construction",
+      "url": "http://pawneeindiana.com/information-technology/",
+      "members": [
+        {
+          "id": 2,
+          "name": "Leslie Knope",
+          "percentage": 100,
+          "role": "Member",
+          "title": "Developer"
         },
         {
-            "id": 2,
-            "name": "Leslie Knope",
-            "netId": "lknope",
-            "position": "Parks and Rec project manager",
-            "location": "",
-            "campusPhone": "812-856-1234",
-            "campusEmail": "lknope@iu.edu",
-            "campus": "IUBLA",
-            "tools": [
-                "Clip board",
-                "Tenacity"
-            ],
-            "expertise": ["Canvasing"],
-            "responsibilities": [
-                "IT Leadership"
-            ],
-            "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg",
-            "unitMemberships": [
-                {
-                    "id": 1,
-                    "name": "Parks and Recreation IT",
-                    "description": "This is a description for a test unit.",
-                    "title": "Developer",
-                    "role": "Member",
-                    "tools": []
-                }
-            ],
-            "department": {
-                "id": 1,
-                "name": "Parks and Recreation department",
-                "description": "This is a description for a test unit."
-            }
+          "id": 1,
+          "name": "Ron Swanson",
+          "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
+          "percentage": 100,
+          "role": "Leader",
+          "title": "Manager"
         },
         {
-            "id": 4,
-            "name": "Li’l Sebastian",
-            "netId": "lsebastian",
-            "position": "Pageant winner",
-            "location": "Stable #4",
-            "campusPhone": "812-856-1234",
-            "campusEmail": "lsebastian@iu.edu",
-            "campus": "IUBLA",
-            "role": "Manager",
-            "tools": [
-                "Hay",
-                "Shoes"
-            ],
-            "expertise": ["Horsin' around"],
-            "responsibilities": [
-                "Being a horse"
-            ],
-            "unitMemberships": [
-                {
-                    "id": 1,
-                    "name": "Parks and Recreation IT",
-                    "description": "This is a description for a test unit.",
-                    "title": "Small Horse",
-                    "role": "Member",
-                    "tools": []
-                }
-            ],
-            "department": {
-                "id": 1,
-                "name": "Parks and Recreation department",
-                "description": "This is a description for a test unit."
-            }
-        }
-    ],
-    "allUnits": [
+          "id": 3,
+          "name": "Andy Dwyer",
+          "percentage": 100,
+          "role": "Member",
+          "title": "Developer"
+        },
         {
-            "id": 1,
-            "name": "Parks and Recreation IT",
-            "description": "This page is under construction",
-            "url": "http://pawneeindiana.com/information-technology/"
+          "id": 4,
+          "name": "Li’l Sebastian",
+          "percentage": 100,
+          "role": "Related",
+          "title": "Outside consultant"
         }
+      ],
+      "supportedDepartments": [
+        {
+          "id": 1,
+          "name": "Parks and Recreation Department",
+          "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+        }
+      ],
+      "children": [
+        {
+          "id": 2,
+          "name": "Fourth floor",
+          "description": "This is a child unit description"
+        },
+        {
+          "id": 2,
+          "name": "Other Child Unit",
+          "description": "This is a child unit description"
+        }
+      ],
+      "parent": {
+        "id": 1,
+        "name": "CITY COUNCIL",
+        "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+      }
+    },
+
+    {
+      "id": 4,
+      "name": "Fourth floor IT",
+      "description": "It is creepy up here",
+      "url": null,
+      "members": [
+        {
+          "id": 1,
+          "name": "Ron Swanson",
+          "percentage": 100,
+          "role": "Leader",
+          "title": "Manager"
+        }
+      ],
+      "supportedDepartments": [],
+      "children": [],
+      "parent": null
+    }
+  ],
+  "allDepartments": [
+    {
+      "id": 1,
+      "name": "Parks and Recreation Department",
+      "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+    },
+    {
+      "id": 1,
+      "name": "Parks and Recreation Department",
+      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
+    },
+    {
+      "id": 1,
+      "name": "Parks and Recreation Department",
+      "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+    },
+    {
+      "id": 1,
+      "name": "Parks and Recreation Department",
+      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
+    },
+    {
+      "id": 1,
+      "name": "Parks and Recreation Department",
+      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
+    }
+  ],
+  "departments": [
+    {
+      "id": 1,
+      "name": "Parks and Recreation Department",
+      "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities.",
+      "members": [
+        {
+          "id": 1,
+          "name": "Ron Swanson"
+        }
+      ],
+      "units": [
+        {
+          "id": 1,
+          "name": "Parks and Recreation IT"
+        }
+      ],
+      "supportingUnits": [
+        {
+          "id": 1,
+          "name": "Sanitization"
+        }
+      ]
+    }
+  ],
+  "search": {
+    "departments": [
+      {
+        "id": 1,
+        "name": "Parks and Recreation Department",
+        "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+      }
     ],
     "units": [
-        {
-            "id": 1,
-            "name": "Parks and Recreation IT",
-            "description": "This page is under construction",
-            "url": "http://pawneeindiana.com/information-technology/",
-            "members": [
-                {
-                    "id": 2,
-                    "name": "Leslie Knope",
-                    "percentage": 100,
-                    "role": "Member",
-                    "title": "Developer"
-                },
-                {
-                    "id": 1,
-                    "name": "Ron Swanson",
-                    "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
-                    "percentage": 100,
-                    "role": "Leader",
-                    "title": "Manager"
-                },
-                {
-                    "id": 3,
-                    "name": "Andy Dwyer",
-                    "percentage": 100,
-                    "role": "Member",
-                    "title": "Developer"
-                },
-                {
-                    "id": 4,
-                    "name": "Li’l Sebastian",
-                    "percentage": 100,
-                    "role": "Related",
-                    "title": "Outside consultant"
-                }
-            ],
-            "supportedDepartments": [{
-                "id": 1,
-                "name": "Parks and Recreation Department",
-                "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
-            }],
-            "children": [
-                {
-                    "id": 2,
-                    "name": "Fourth floor",
-                    "description": "This is a child unit description"
-                },
-                {
-                    "id": 2,
-                    "name": "Other Child Unit",
-                    "description": "This is a child unit description"
-                }
-            ],
-            "parent": {
-                "id": 1,
-                "name": "CITY COUNCIL",
-                "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
-            }
-        }
+      {
+        "id": 1,
+        "name": "Parks and Recreation IT",
+        "description": "This page is under construction"
+      },
+      {
+        "id": 1,
+        "name": "Pawnee Indiana city council",
+        "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+      },
+      { "id": 1, "name": "Fourth floor", "description": "It's creepy up there" }
     ],
-    "allDepartments": [
-        {
-            "id": 1,
-            "name": "Parks and Recreation Department",
-            "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
-        }
-    ],
-    "departments": [
-        {
-            "id": 1,
-            "name": "Parks and Recreation Department",
-            "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities.",
-            "members": [
-                {
-                    "id": 1,
-                    "name": "Ron Swanson"
-                }
-            ],
-            "units": [
-                {
-                    "id": 1,
-                    "name": "Parks and Recreation IT"
-                }
-            ],
-            "supportingUnits": [
-                {
-                    "id": 1,
-                    "name": "Sanitization"
-                }
-            ]
-        }
-    ],
-    "search": {
-        "departments": [
-            {
-                "id": 1,
-                "name": "Parks and Recreation Department"
-            }
-        ],
-        "units": [
-            {
-                "id": 1,
-                "name": "Parks and Recreation IT"
-            }
-        ],
-        "users": [
-            {
-                "id": 2,
-                "name": "Leslie Knope"
-            },
-            {
-                "id": 1,
-                "name": "Ron Swanson"
-            },
-            {
-                "id": 3,
-                "name": "Andy Dwyer"
-            },
-            {
-                "id": 4,
-                "name": "Li’l Sebastian"
-            }
-        ]
-    }
+    "users": [
+      { "id": 2, "name": "Leslie Knope", "description": "Manager" },
+      {
+        "id": 1,
+        "name": "Ron Swanson",
+        "description": "Manager",
+        "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg"
+      },
+      { "id": 3, "name": "Andy Dwyer", "description": "Developer" },
+      { "id": 4, "name": "Li’l Sebastian", "description": "Small Horse" },
+      { "id": 5, "name": "Garry Gergich", "description": "Not sure" }
+    ]
+  }
 }

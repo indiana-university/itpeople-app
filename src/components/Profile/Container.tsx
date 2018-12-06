@@ -1,54 +1,60 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { IApplicationState } from '../types';
-import Profile from './Presentation';
-import { fetchRequest, IState, IUserRequest, updateRequest } from './store';
-import { Loader } from '../Loader';
-import { Content } from '../layout/Content';
+import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { IApplicationState } from "../types";
+import Profile from "./Presentation";
+import {
+  fetchRequest,
+  IState,
+  IUserRequest,
+  updateRequest,
+  toggleUnit
+} from "./store";
+import { Loader } from "../Loader";
+// import { Content } from "../layout/Content";
 
 interface IProfileProps {
-    match: any,
-    path: string
+  match: any;
+  path: string;
 }
 interface IPropsFromDispatch {
-    profileFetchRequest: typeof fetchRequest,
-    profileUpdateRequest: typeof updateRequest
+  profileFetchRequest: typeof fetchRequest;
+  profileUpdateRequest: typeof updateRequest;
+  toggleUnit: typeof toggleUnit;
 }
 
-class Container extends React.Component<IState & IProfileProps & IPropsFromDispatch>{
+class Container extends React.Component<
+  IState & IProfileProps & IPropsFromDispatch
+> {
+  public isMyProfile() {
+    return this.props.match.params.id === undefined;
+  }
 
-    public isMyProfile() {
-        return this.props.match.params.id === undefined
-    }
+  public componentDidMount() {
+    const id = this.isMyProfile() ? 0 : Number(this.props.match.params.id);
+    this.props.profileFetchRequest({ id });
+  }
 
-    public componentDidMount() {
-        const id = this.isMyProfile() ? 0 : Number(this.props.match.params.id)
-        this.props.profileFetchRequest({ id })
-    }
-
-    public render() {
-        return (
-            <Content>
-                <Loader {...this.props}>
-                    {this.props.data &&
-                        <Profile  {...this.props.data} />
-                    }
-                </Loader>
-            </Content>
-        )
-    }
+  public render() {
+    return (
+      <Loader {...this.props}>
+        {this.props.data && <Profile {...this.props.data} toggleUnit={this.props.toggleUnit} />}
+      </Loader>
+    );
+  }
 }
 
-const mapStateToProps = (state: IApplicationState) =>
-    state.profile
+const mapStateToProps = (state: IApplicationState) => state.profile;
 
 const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
-    profileFetchRequest: (request: IUserRequest) => dispatch(fetchRequest(request)),
-    profileUpdateRequest: (request: IUserRequest) => dispatch(updateRequest(request))
-})
+  profileFetchRequest: (request: IUserRequest) =>
+    dispatch(fetchRequest(request)),
+  profileUpdateRequest: (request: IUserRequest) =>
+    dispatch(updateRequest(request)),
+  toggleUnit: (id: number) => dispatch(toggleUnit(id))
+});
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Container)
+  mapStateToProps,
+  mapDispatchToProps
+)(Container);
