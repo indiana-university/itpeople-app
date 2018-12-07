@@ -16,7 +16,7 @@ export const ParentCard: React.SFC<IProps> = (props) => {
                     <Row>
                         <Col sm={2}> <ParentUnitIcon width="100%" /> </Col>
                         <Col>
-                        <a href={parent.id + ""} className="rvt-m-bottom-remove related-group-item-name rvt-text-bold">{parent.name}</a>
+                        <a href={`/units/${parent.id}`} className="rvt-m-bottom-remove related-group-item-name rvt-text-bold">{parent.name}</a>
                         {parent.description &&
                             <p className="rvt-ts-14 rvt-m-top-remove rvt-m-bottom-remove">{parent.description}</p>
                         }
