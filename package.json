@@ -55,6 +55,7 @@
     "redux-devtools-extension": "^2.13.5",
     "redux-saga-test-plan": "^3.7.0",
     "traverse": "^0.6.6",
-    "typescript": "^3.0.3"
+    "typescript": "^3.0.3",
+    "whatwg-fetch": "^3.0.0"
   }
 }
