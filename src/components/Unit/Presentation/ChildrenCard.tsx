@@ -11,22 +11,18 @@ export const ChildrenCard: React.SFC<IProps> = (props) => {
     return (
         <>
             {
-                children && children.length &&
-                <>
-                    {
-                        children.map((child, i) => (
-                            <Row key={i}>
-                                <Col sm={2}><ChildrenUnitsIcon width="100%" /></Col>
-                                <Col>
-                                    <div className="related-group rvt-m-bottom-md" id="user-research">
-                                        <a href={`/units/${child.id}`} className="rvt-m-bottom-remove related-group-item-name rvt-text-bold">{child.name}</a>
-                                        <p className="rvt-ts-14 rvt-m-top-remove rvt-m-bottom-remove">{child.description}</p>
-                                    </div>
-                                </Col>
-                            </Row>
-                        ))
-                    }
-                </>
+                children &&
+                children.map((child, i) => (
+                    <Row key={i}>
+                        <Col sm={2}><ChildrenUnitsIcon width="100%" /></Col>
+                        <Col>
+                            <div className="related-group rvt-m-bottom-md" id="user-research">
+                                <a href={`/units/${child.id}`} className="rvt-m-bottom-remove related-group-item-name rvt-text-bold">{child.name}</a>
+                                <p className="rvt-ts-14 rvt-m-top-remove rvt-m-bottom-remove">{child.description}</p>
+                            </div>
+                        </Col>
+                    </Row>
+                ))
             }
         </>
     )
