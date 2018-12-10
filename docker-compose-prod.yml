@@ -5,7 +5,7 @@
 version: "3.3"
 services:
   frontend:
-    image: uitsssl/itpeople-app:develop
+    image: uitsssl/itpeople-app:master
     networks:
       - backend
     deploy:
