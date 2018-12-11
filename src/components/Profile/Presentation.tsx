@@ -8,8 +8,8 @@ import { Chevron } from "../icons";
 
 const Presentation: React.SFC<IUserProfile & IProps> = props => {
   const user = props || {};
-  const responsibilities = user.responsibilities || [];
-  const tools = user.tools || [];
+  // const responsibilities = user.responsibilities || [];
+  // const tools = user.tools || [];
   const memberships = props.unitMemberships || [];
   const toggleUnit = props.toggleUnit;
   const visuallyExpandedUnits: Array<number> =
