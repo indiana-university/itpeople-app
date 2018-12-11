@@ -74,14 +74,27 @@ const Presentation: React.SFC<IUserProfile & IProps> = props => {
         <Row className="rvt-p-top-lg">
           <Col md={6} className="rvt-p-all-lg">
             <Panel title="Contact Information">
-            {user.location && <div>{user.location}</div>}
-              {user.campus && <div>{user.campus}</div>}
-              {user.campusEmail && (
+            {user.location && 
                 <div>
+                  <strong>Location:</strong> 
+                  {user.location}
+                </div>}
+              {user.campus && 
+                <div>
+                  <strong>Campus:</strong> 
+                  {user.campus}
+                </div>}
+              {user.campusEmail && 
+                <div>
+                  <strong>Email:</strong> 
                   <a href={`mailto:${user.campusEmail}`}>{user.campusEmail}</a>
                 </div>
-              )}
-              {user.campusPhone && <div>{user.campusPhone}</div>}
+              }
+              {user.campusPhone && 
+                <div>
+                  <strong>Phone:</strong> 
+                  {user.campusPhone}
+                </div>}
               {/* <div className="list-dividers">
                 {responsibilities.length > 0 && (
                   <div>
