@@ -76,23 +76,23 @@ const Presentation: React.SFC<IUserProfile & IProps> = props => {
             <Panel title="Contact Information">
             {user.location && 
                 <div>
-                  <strong>Location:</strong> 
+                  <strong>Location: </strong> 
                   {user.location}
                 </div>}
               {user.campus && 
                 <div>
-                  <strong>Campus:</strong> 
+                  <strong>Campus: </strong> 
                   {user.campus}
                 </div>}
               {user.campusEmail && 
                 <div>
-                  <strong>Email:</strong> 
+                  <strong>Email: </strong> 
                   <a href={`mailto:${user.campusEmail}`}>{user.campusEmail}</a>
                 </div>
               }
               {user.campusPhone && 
                 <div>
-                  <strong>Phone:</strong> 
+                  <strong>Phone: </strong> 
                   {user.campusPhone}
                 </div>}
               {/* <div className="list-dividers">
