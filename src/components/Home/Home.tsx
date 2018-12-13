@@ -20,12 +20,10 @@ const Component: React.SFC<IDispatchProps & IStateProps> = ({
         <Col lg={8} style={{ color: "#333" }}>
           <PageTitle>IT People</PageTitle>
           <p>
-            Description of what IT People is and how to use it...Lorem ipsum
-            dolor sit amet, usu an elit euismod pertinax, iudico ignota possit
-            mei ei. Ius ad dicta praesent, malis liber nec ei. Adhuc novum
-            ceteros sed ea, omnes possit graecis at eam. In pri aeterno
-            delectus. Porro facer ad eum, vel vivendum lobortis praesent ei, mea
-            at prompta numquam consulatu.
+            IT People is a directory of people doing or supporting information 
+            technology (IT) work at Indiana University. You can search for units 
+            and people by name, or browse all <a href="/units">units</a> and 
+            their membership.
           </p>
         </Col>
       </Row>

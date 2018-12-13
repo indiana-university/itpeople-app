@@ -332,3 +332,4 @@ ASALocalRun/
 
 build
 .DS_Store
+*.local

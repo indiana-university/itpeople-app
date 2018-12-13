@@ -8,8 +8,8 @@ import { Chevron } from "../icons";
 
 const Presentation: React.SFC<IUserProfile & IProps> = props => {
   const user = props || {};
-  const responsibilities = user.responsibilities || [];
-  const tools = user.tools || [];
+  // const responsibilities = user.responsibilities || [];
+  // const tools = user.tools || [];
   const memberships = props.unitMemberships || [];
   const toggleUnit = props.toggleUnit;
   const visuallyExpandedUnits: Array<number> =
@@ -57,14 +57,14 @@ const Presentation: React.SFC<IUserProfile & IProps> = props => {
             <Col md={9} className="rvt-text-center rvt-m-top-md">
               <PageTitle>{user.name}</PageTitle>
               <div className="rvt-ts-26">{user.position}</div>
-              {user.location && <div>{user.location}</div>}
+              {/* {user.location && <div>{user.location}</div>}
               {user.campus && <div>{user.campus}</div>}
               {user.campusEmail && (
                 <div>
                   <a href={`mailto:${user.campusEmail}`}>{user.campusEmail}</a>
                 </div>
               )}
-              {user.campusPhone && <div>{user.campusPhone}</div>}
+              {user.campusPhone && <div>{user.campusPhone}</div>} */}
             </Col>
           </Row>
         </div>
@@ -73,8 +73,29 @@ const Presentation: React.SFC<IUserProfile & IProps> = props => {
       <Content className="rvt-bg-white">
         <Row className="rvt-p-top-lg">
           <Col md={6} className="rvt-p-all-lg">
-            <Panel title="Personal Information">
-              <div className="list-dividers">
+            <Panel title="Contact Information">
+            {user.location && 
+                <div>
+                  <strong>Location: </strong> 
+                  {user.location}
+                </div>}
+              {user.campus && 
+                <div>
+                  <strong>Campus: </strong> 
+                  {user.campus}
+                </div>}
+              {user.campusEmail && 
+                <div>
+                  <strong>Email: </strong> 
+                  <a href={`mailto:${user.campusEmail}`}>{user.campusEmail}</a>
+                </div>
+              }
+              {user.campusPhone && 
+                <div>
+                  <strong>Phone: </strong> 
+                  {user.campusPhone}
+                </div>}
+              {/* <div className="list-dividers">
                 {responsibilities.length > 0 && (
                   <div>
                     <h2 className="rvt-ts-23 rvt-text-bold">
@@ -106,7 +127,7 @@ const Presentation: React.SFC<IUserProfile & IProps> = props => {
                     </List>
                   </div>
                 )}
-              </div>
+              </div> */}
             </Panel>
           </Col>
           <Col md={6} className="rvt-p-all-lg">

@@ -15,11 +15,9 @@ const Presentation: React.SFC<IProps> = ({ units }) => (
         <Col>
           <PageTitle>Units</PageTitle>
           <p>
-            Description of what IT units are...Lorem ipsum dolor sit amet, usu
-            an elit euismod pertinax, iudico ignota possit mei ei. Ius ad dicta
-            praesent, malis liber nec ei. Adhuc novum ceteros sed ea, omnes
-            possit graecis at eam. In pri aeterno delectus. Porro facer ad eum,
-            vel vivendum lobortis praesent ei, mea at prompta numquam consulatu.
+            IT Units are organizations of people doing IT work. Some IT Units 
+            are primarily responsible for departmental IT support, while others 
+            are principally engaged in IT service development and delivery.  
           </p>
         </Col>
       </Row>
