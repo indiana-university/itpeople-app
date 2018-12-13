@@ -50,9 +50,15 @@
     "enzyme-adapter-react-16": "^1.5.0",
     "json-server": "0.14.0",
     "lowdb": "^1.0.0",
-    "react-scripts-ts": "2.17.0",
+    "react-scripts-ts": "4.0.8",
     "redux-devtools-extension": "^2.13.5",
     "traverse": "^0.6.6",
     "typescript": "^3.0.3"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
