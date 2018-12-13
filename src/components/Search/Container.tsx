@@ -34,8 +34,11 @@ interface ISimpleSearchContainerProps
     IPropsFromDispatch {}
 
 const executeSearch = (props: ISimpleSearchContainerProps) => {
-  const queryParam = queryString.parse(props.location.search);
-  props.searchRequest({ term: queryParam.term });
+  const term = queryString.parse(props.location.search).term;
+  const resolved = term && (Array.isArray(term)) ? term[0] : term;
+  if (resolved) {
+    props.searchRequest({ term: resolved });
+  }
 };
 
 class Container extends React.Component<ISimpleSearchContainerProps> {
