@@ -1,0 +1,118 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2.1
+
+commands:
+  build:
+    description: "Test app and build for target environment"
+    parameters:
+      environment:
+        type: string
+        default: "test"
+    steps:
+      - run:
+          # A workspace allows us to pass files/artifacts from job to job.
+          # https://circleci.com/blog/deep-diving-into-circleci-workspaces/
+          name: Create workspace
+          command: mkdir -p /tmp/workspace
+      - checkout 
+      - restore_cache:
+          keys:
+            - v2-node-modules-{{ checksum "package.json" }}
+      - run: 
+          name: Install SPA packages
+          command: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v2-node-modules-{{ checksum "package.json" }}
+      - run: 
+         name: Test SPA app
+         command: yarn test -w 1 --coverage
+      - run: 
+          name: Configure build parameters
+          command: cp .env.<<parameters.environment>> .env.production.local
+      - run: 
+          name: Build SPA app
+          command: yarn build
+      - run:
+          name: Copy SPA assets to workspace
+          command: cp -a build/. /tmp/workspace/<<parameters.environment>>
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - <<parameters.environment>>
+  deploy:
+    description: "Deploy app assets to target environment"
+    parameters:
+      environment:
+        type: string
+        default: "test"
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Login with Azure Service Principal
+          command: az login --service-principal -u $SERVICE_PRINCIPAL_USER -p $SERVICE_PRINCIPAL_PASSWORD --tenant $SERVICE_PRINCIPAL_TENANT
+      - run: 
+          name: Ensure Azure Storage Container exists
+          command: az storage container create --name app --account-name $STORAGE_ACCOUNT_<<parameters.environment>> --public-access container
+      - run: 
+          name: Publish SPA assets to Azure Storage Container
+          command: az storage blob upload-batch --account-name $STORAGE_ACCOUNT_<<parameters.environment>> --source /tmp/workspace/<<parameters.environment>> --destination app --validate-content
+      - run:
+          name: Purge Azure CDN
+          command: az cdn endpoint purge --resource-group $RESOURCE_GROUP --profile-name $CDN_PROFILE --name $STORAGE_ACCOUNT_<<parameters.environment>> --content-paths '/app/index.html' '/app/asset-manifest.json' '/app/service-worker.js'
+# Job definitions. Job execution is orchestrated in the 'workflows' section.
+jobs:
+  build_for_test:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - build:
+          environment: "test"
+  build_for_production:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - build:
+          environment: "production"
+  deploy_to_test:
+    docker:
+      - image: microsoft/azure-cli
+    steps:
+      - deploy:
+          environment: "test"
+  deploy_to_production:
+    docker:
+      - image: microsoft/azure-cli
+    steps:
+      - deploy:
+          environment: "production"
+
+# Job orchestration
+workflows:
+  version: 2
+  # Build and test the code on every commit. 
+  # Publish the style guide on successful build/test of master.
+  build-publish:
+    jobs:
+      - build_for_test:
+          filters:
+            branches:
+              ignore: gh-pages
+#      - deploy_to_test:
+#          requires: 
+#            - build_for_test
+#          context: itpro
+      - build_for_production:
+          filters: 
+            branches:
+              only:
+              - master
+#      - deploy_to_production:
+#          requires: 
+#            - build_for_production
+#          context: itpro

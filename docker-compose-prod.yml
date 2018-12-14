@@ -1,0 +1,29 @@
+
+# NOTE: This compose file assumes the service is being created as a stack,
+#  'dcd-itpeople'. If you need to change the stack name, you'll want to change
+#  the label services/frontend/deploy/labels/com.docker.lb.network as well.
+version: "3.3"
+services:
+  frontend:
+    image: uitsssl/itpeople-app:master
+    networks:
+      - backend
+    deploy:
+      mode: replicated
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 60s
+        failure_action: rollback
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      labels:
+        com.docker.lb.hosts: "itpeople.apps.iu.edu"
+        com.docker.lb.network: "dcd-itpeople_backend"
+        com.docker.lb.port: 80
+networks:
+  backend:
+    driver: overlay
