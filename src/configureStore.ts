@@ -1,3 +1,8 @@
+/** 
+ * Copyright (C) 2018 The Trustees of Indiana University
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 import { connectRouter, routerMiddleware } from 'connected-react-router'
 import { History } from 'history'
 import { applyMiddleware, createStore, Store  } from 'redux'

@@ -1,3 +1,8 @@
+/** 
+ * Copyright (C) 2018 The Trustees of Indiana University
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 import { ConnectedRouter  } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import * as React from 'react';

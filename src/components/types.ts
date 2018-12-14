@@ -1,3 +1,8 @@
+/** 
+ * Copyright (C) 2018 The Trustees of Indiana University
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 import * as Department from "../components/Department/store";
 import * as Departments from "../components/Departments/store";
 import * as People from '../components/Profile/store'
