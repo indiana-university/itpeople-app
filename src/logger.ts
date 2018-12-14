@@ -1,3 +1,6 @@
+// Copyright (C) 2018 The Trustees of Indiana University
+// SPDX-License-Identifier: BSD-3-Clause
+
 import {Dispatch, Middleware, MiddlewareAPI} from 'redux'
 /**
  * Logger middleware doesn't add any extra types to dispatch, just logs actions
