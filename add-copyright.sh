@@ -1,5 +1,5 @@
 #!/bin/bash
-for i in $(find . -name '*.ts' -o -name '*.tsx')
+for i in $(find ./src -name '*.ts' -o -name '*.tsx')
 do
   if ! grep -q Copyright $i
   then
