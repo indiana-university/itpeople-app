@@ -1,6 +1,3 @@
-// Copyright (C) 2018 The Trustees of Indiana University
-// SPDX-License-Identifier: BSD-3-Clause
-
 // import { mount } from 'enzyme';
 // import * as React from 'react';
 // import { BrowserRouter as Router } from 'react-router-dom';

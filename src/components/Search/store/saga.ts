@@ -1,6 +1,3 @@
-// Copyright (C) 2018 The Trustees of Indiana University
-// SPDX-License-Identifier: BSD-3-Clause
-
 import { push } from 'react-router-redux';
 import { all, fork, put, select, takeEvery, } from 'redux-saga/effects';
 import { httpGet } from '../../effects';
