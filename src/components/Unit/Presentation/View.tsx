@@ -9,8 +9,18 @@ import { ChildrenCard, IUnitProfile, MemberLists, ParentCard } from "../index";
 import { Panel } from "../../Panel";
 import PageTitle from "../../layout/PageTitle";
 import { Breadcrumbs, Content } from "../../layout";
+// import { Link } from "react-router-dom";
+function canEdit(currentUsername:string){
+  return true;
+}
 
-const Presentation: React.SFC<IUnitProfile> = props => (
+interface IAuthenticatedUsername {
+  authenticatedUsername: string;
+}
+
+const Presentation: React.SFC<
+  IUnitProfile & IAuthenticatedUsername
+> = props => (
   <>
     <Breadcrumbs
       crumbs={[
@@ -20,8 +30,14 @@ const Presentation: React.SFC<IUnitProfile> = props => (
       ]}
     />
 
-    <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
+    <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl" >
+      {canEdit(props.authenticatedUsername) && (
+        <div style={{"position":"relative"}}>
+          <a href={`/units/${props.id}/edit`}  style={{position:"absolute", top:"10", right:"10px"}} >{props.authenticatedUsername} can edit </a>
+        </div>
+      )}
       <PageTitle>{props.name}</PageTitle>
+
       <Section>
         {props.description && (
           <div className="group-describer rvt-m-bottom-md">

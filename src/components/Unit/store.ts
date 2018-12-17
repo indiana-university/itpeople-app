@@ -23,6 +23,7 @@ export interface IUrl {
 export interface IUnitMember extends IEntity {
   title: string,
   role: ItProRole | UitsRole,
+  permissions: UnitPermissions,
   percentage: number
   photoUrl?: string
 }
@@ -39,6 +40,11 @@ export enum UitsRole {
   Sublead = "Sublead",
   Member = "Member",
   Related = "Related"
+}
+
+export enum UnitPermissions {
+  Editor = "Editor",
+  Viewer = "Viewer"
 }
 
 export interface IWebEntity extends IEntity, IUrl { }

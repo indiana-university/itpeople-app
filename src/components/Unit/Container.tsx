@@ -9,6 +9,7 @@ import { Dispatch } from "redux";
 import { IApplicationState } from "../types";
 import Unit from "./Presentation";
 import * as unit from "./store";
+import * as auth from "../SignIn/store";
 import { Loader } from "../Loader";
 
 interface IContainerProps {
@@ -20,18 +21,25 @@ interface IDispatchProps {
   fetchRequest: typeof unit.fetchRequest;
 }
 
+interface ICurrentUser {
+  auth: auth.IState
+}
+
 // tslint:disable-next-line:max-classes-per-file
 class Container extends React.Component<
-  unit.IState & IContainerProps & IDispatchProps
+  unit.IState & ICurrentUser & IContainerProps & IDispatchProps
 > {
   public componentDidMount() {
     this.props.fetchRequest(this.props.match.params);
   }
 
   public render() {
+    let authenticatedUsername = (this.props.auth && this.props.auth.data && this.props.auth.data.user_name) || "";
     return (
       <Loader {...this.props}>
-        {this.props.data && <Unit {...this.props.data} />}
+        {this.props.data && 
+        <Unit {...this.props.data} authenticatedUsername={authenticatedUsername} />
+        }
       </Loader>
     );
   }
@@ -40,7 +48,8 @@ class Container extends React.Component<
 // Although if necessary, you can always include multiple contexts. Just make sure to
 // separate them from each other to prevent prop conflicts.
 const mapStateToProps = (state: IApplicationState) => ({
-  ...state.unit
+  ...state.unit,
+  auth: state.auth
 });
 
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
