@@ -397,8 +397,8 @@ describe('searching for "park"', () => {
   it('works', async () => {
     const resource = (await getFixture(path + queryParam)).data
     await pactServer.addInteraction({
-      state: 'data exists to be returned by term',
-      uponReceiving: 'a GET request to search with a term',
+      state: "data exists to be returned by term 'park'",
+      uponReceiving: "a GET request to search with term 'park'",
       withRequest: {
         method: 'GET',
         headers: authHeader,
