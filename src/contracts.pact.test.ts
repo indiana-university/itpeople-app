@@ -48,20 +48,20 @@ const authHeader = {
   Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
 }
 const GET = (server: String, path: String) =>
-  (axios.get(`${server}${path}`, { headers: authHeader }))
+  axios.get(`${server}${path}`, { headers: authHeader })
 
 const POST = (server: String, path: String, body: Object = {}) =>
-  (axios.post(`${server}${path}`, body, { headers: authHeader }))
+  axios.post(`${server}${path}`, body, { headers: authHeader })
 
-const getFixture = (path: String) => (GET(JSON_SERVER, path))
-const postFixture = (path: String, body: Object) => (POST(JSON_SERVER, path, body))
-const getPact = (path: String) => (GET(PACT_SERVER, path))
-const postPact = (path: String, body: Object) => (POST(PACT_SERVER, path, body))
+const getFixture = (path: String) => GET(JSON_SERVER, path)
+const postFixture = (path: String, body: Object) => POST(JSON_SERVER, path, body)
+const getPact = (path: String) => GET(PACT_SERVER, path)
+const postPact = (path: String, body: Object) => POST(PACT_SERVER, path, body)
 
 let jsonServerState: Object = {}
 
-const getJsonServerState = () => (getFixture("/db"))
-const resetJsonServerState = () => (postFixture("/reset", jsonServerState))
+const getJsonServerState = () => getFixture("/db")
+const resetJsonServerState = () => postFixture("/reset", jsonServerState)
 
 beforeAll( async () => {
   jsonServerState = (await getJsonServerState()).data
