@@ -9,6 +9,7 @@ import { ChildrenCard, IUnitProfile, MemberLists, ParentCard } from "../index";
 import { Panel } from "../../Panel";
 import PageTitle from "../../layout/PageTitle";
 import { Breadcrumbs, Content } from "../../layout";
+import { Pencil } from "src/components/icons";
 // import { Link } from "react-router-dom";
 function canEdit(currentUsername:string){
   return true;
@@ -33,7 +34,7 @@ const Presentation: React.SFC<
     <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl" >
       {canEdit(props.authenticatedUsername) && (
         <div style={{"position":"relative"}}>
-          <a href={`/units/${props.id}/edit`}  style={{position:"absolute", top:"10", right:"10px"}} >{props.authenticatedUsername} can edit </a>
+          <button className="rvt-button" style={{position:"absolute", top:"10", right:"10px"}} title="edit"> <span className="sr-only">Edit</span> <Pencil /> </button>
         </div>
       )}
       <PageTitle>{props.name}</PageTitle>
