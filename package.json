@@ -23,6 +23,7 @@
   "scripts": {
     "json-server": "json-server --watch db.json --routes db.routes.json --port 3001 --middlewares 'node_modules/json-server-reset/src/index.js'",
     "dev": "yarn json-server & yarn start && kill 0",
+    "tdd": "yarn json-server & jest --env=jsdom --watch && kill 0",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "yarn json-server & jest --env=jsdom",
