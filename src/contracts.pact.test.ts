@@ -57,7 +57,6 @@ const POST = (server: String, path: String, body: Object = {}) =>
 const getFixture = (path: String) => GET(JSON_SERVER, path)
 const postFixture = (path: String, body: Object) => POST(JSON_SERVER, path, body)
 const getPact = (path: String) => GET(PACT_SERVER, path)
-const postPact = (path: String, body: Object) => POST(PACT_SERVER, path, body)
 
 let jsonServerState: Object = {}
 
@@ -117,6 +116,7 @@ describe('Contracts', () => {
         })
         const pactResponseBody = (await getPact(path)).data
         expect(pactResponseBody).not.toEqual({})
+        resetJsonServerState()
       })
 
       it('works through app saga', async () => {
