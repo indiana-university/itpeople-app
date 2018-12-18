@@ -2,6 +2,7 @@
   "name": "app",
   "version": "0.1.0",
   "private": true,
+  "license": "BSD-3-Clause",
   "dependencies": {
     "connected-react-router": "^4.4.1",
     "jwt-decode": "^2.2.0",
