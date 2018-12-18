@@ -2,10 +2,10 @@
  * @jest-environment node
  */
 
- /**
- * Copyright (C) 2018 The Trustees of Indiana University
- * SPDX-License-Identifier: BSD-3-Clause
- */
+/**
+* Copyright (C) 2018 The Trustees of Indiana University
+* SPDX-License-Identifier: BSD-3-Clause
+*/
 
 import * as path from 'path'
 import { Pact, Matchers } from '@pact-foundation/pact'
@@ -47,13 +47,29 @@ const pactServer = new Pact({
 const authHeader = {
   Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
 }
-const GET = (server: String, path: String) => (axios.get(`${server}${path}`, { headers: authHeader }))
+const GET = (server: String, path: String) =>
+  (axios.get(`${server}${path}`, { headers: authHeader }))
+
+const POST = (server: String, path: String, body: Object = {}) =>
+  (axios.post(`${server}${path}`, body, { headers: authHeader }))
 
 const getFixture = (path: String) => (GET(JSON_SERVER, path))
+const postFixture = (path: String, body: Object) => (POST(JSON_SERVER, path, body))
 const getPact = (path: String) => (GET(PACT_SERVER, path))
+const postPact = (path: String, body: Object) => (POST(PACT_SERVER, path, body))
 
-beforeAll(() => pactServer.setup())
+let jsonServerState: Object = {}
+
+const getJsonServerState = () => (getFixture("/db"))
+const resetJsonServerState = () => (postFixture("/reset", jsonServerState))
+
+beforeAll( async () => {
+  jsonServerState = (await getJsonServerState()).data
+  await pactServer.setup()
+})
 afterAll(() => pactServer.finalize())
+
+beforeEach( async () => await resetJsonServerState())
 
 describe('Contracts', () => {
 
@@ -235,23 +251,23 @@ describe('Contracts', () => {
           })
           const pactResponseBody = (await getPact(path)).data
           expect(pactResponseBody).not.toEqual({})
-        const reducer: Reducer = () => {
-          return {
-            profile: {
-              request: { id: 0 }
+          const reducer: Reducer = () => {
+            return {
+              profile: {
+                request: { id: 0 }
+              }
             }
           }
-        }
-        const { allEffects } = await expectSaga(profileSaga)
-          .withReducer(reducer)
-          .dispatch({ type: ProfileActionTypes.PROFILE_FETCH_REQUEST })
-          .put.actionType(
-            ProfileActionTypes.PROFILE_FETCH_SUCCESS
-          )
-          .run()
+          const { allEffects } = await expectSaga(profileSaga)
+            .withReducer(reducer)
+            .dispatch({ type: ProfileActionTypes.PROFILE_FETCH_REQUEST })
+            .put.actionType(
+              ProfileActionTypes.PROFILE_FETCH_SUCCESS
+            )
+            .run()
 
-        const sagaPayload = lastSagaPutActionPayload(allEffects)
-        expect(sagaPayload).toEqual(resource)
+          const sagaPayload = lastSagaPutActionPayload(allEffects)
+          expect(sagaPayload).toEqual(resource)
         })
       })
     })
