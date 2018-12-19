@@ -23,10 +23,23 @@ export interface IApplicationState {
     form: any
 }
 
-export interface IApiState2<TResponse> {
-    readonly data?: TResponse
+export enum ViewStateType {
+    Loading,
+    Viewing,
+    Editing,
+    Saving,
+    Error
+}
+export interface IDefaultState<TData> {
+    readonly data?: TData
     readonly error?: string
     readonly loading: boolean
+    readonly view?: ViewStateType
+}
+// Declare state types with `readonly` modifier to get compile time immutability.
+// https://github.com/piotrwitek/react-redux-typescript-guide#state-with-type-level-immutability
+export interface IApiState<TRequest, TResponse> extends IDefaultState<TResponse> {
+    readonly request?: TRequest,
 }
 
 export interface IEntity {
@@ -39,13 +52,6 @@ export interface IRole {
     role: string
 }
 
-// Declare state types with `readonly` modifier to get compile time immutability.
-// https://github.com/piotrwitek/react-redux-typescript-guide#state-with-type-level-immutability
-export interface IApiState<TRequest, TResponse> extends IApiState2<TResponse> {
-    readonly request?: TRequest,
-}
-
-
 import { AnyAction } from "redux";
 export const FetchRequestReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => {
     return {
@@ -54,6 +60,7 @@ export const FetchRequestReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, ac
         error: undefined,
         loading: true,
         request: action.payload,
+        view: ViewStateType.Loading
     }
 }
 
@@ -64,6 +71,7 @@ export const FetchSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, ac
         error: undefined,
         loading: false,
         request: undefined,
+        view: ViewStateType.Viewing
     }
 )
 
@@ -74,6 +82,7 @@ export const FetchErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, acti
         error: action.payload,
         loading: false,
         request: undefined,
+        view: ViewStateType.Error
     }
 )
 
@@ -84,6 +93,7 @@ export const PutRequestReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, acti
         error: undefined,
         loading: true,
         request: action.payload,
+        view: ViewStateType.Saving
     }
 }
 
@@ -94,6 +104,7 @@ export const PutSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, acti
         error: undefined,
         loading: false,
         request: undefined,
+        view: ViewStateType.Viewing
     }
 )
 
@@ -104,5 +115,6 @@ export const PutErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action
         error: action.payload,
         loading: false,
         request: undefined,
+        view: ViewStateType.Error
     }
 )

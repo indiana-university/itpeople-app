@@ -4,10 +4,10 @@
  */
 
 import * as React from "react";
-import { IApiState2 } from "./types";
+import { IDefaultState } from "./types";
 import NotFound from './Errors/404'
 
-export const Loader = (props: IApiState2<any> & IProps) => {
+export const Loader = (props: IDefaultState<any> & IProps) => {
     const loading = props.loading;
     return <>
         {loading &&

@@ -6,7 +6,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { IApplicationState } from "../types";
+import { IApplicationState, ViewStateType } from "../types";
 import Unit from "./Presentation";
 import * as unit from "./store";
 import * as auth from "../SignIn/store";
@@ -19,6 +19,8 @@ interface IContainerProps {
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface IDispatchProps {
   fetchRequest: typeof unit.fetchRequest;
+  edit: typeof unit.edit;
+  cancel: typeof unit.cancel;
 }
 
 interface ICurrentUser {
@@ -28,20 +30,29 @@ interface ICurrentUser {
 // tslint:disable-next-line:max-classes-per-file
 class Container extends React.Component<
   unit.IState & ICurrentUser & IContainerProps & IDispatchProps
-> {
+  > {
   public componentDidMount() {
     this.props.fetchRequest(this.props.match.params);
   }
 
   public render() {
     let authenticatedUsername = (this.props.auth && this.props.auth.data && this.props.auth.data.user_name) || "";
-    return (
-      <Loader {...this.props}>
-        {this.props.data && 
-        <Unit {...this.props.data} authenticatedUsername={authenticatedUsername} />
-        }
-      </Loader>
-    );
+
+    switch (this.props.view) {
+      case ViewStateType.Editing:
+        return (<div>
+          <button onClick={this.props.cancel}>toggle edit</button>
+          edit view 🐁</div>)
+
+      default:
+        return (
+          <Loader {...this.props}>
+            {this.props.data &&
+              <Unit {...this.props.data} authenticatedUsername={authenticatedUsername} edit={this.props.edit} />
+            }
+          </Loader>
+        );
+    }
   }
 }
 
@@ -55,8 +66,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
-  fetchRequest: (request: unit.IUnitRequest) =>
-    dispatch(unit.fetchRequest(request))
+  fetchRequest: (request: unit.IUnitRequest) => dispatch(unit.fetchRequest(request)),
+  edit: () => dispatch(unit.edit()),
+  cancel: () => dispatch(unit.cancel())
 });
 
 // Now let's connect our component!

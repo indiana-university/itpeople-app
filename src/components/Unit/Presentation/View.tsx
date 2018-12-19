@@ -11,16 +11,19 @@ import PageTitle from "../../layout/PageTitle";
 import { Breadcrumbs, Content } from "../../layout";
 import { Pencil } from "src/components/icons";
 // import { Link } from "react-router-dom";
-function canEdit(currentUsername:string){
+function canEdit(currentUsername: string) {
   return true;
 }
 
 interface IAuthenticatedUsername {
   authenticatedUsername: string;
 }
+interface IProps {
+  edit(): any
+}
 
 const Presentation: React.SFC<
-  IUnitProfile & IAuthenticatedUsername
+  IUnitProfile & IAuthenticatedUsername & IProps
 > = props => (
   <>
     <Breadcrumbs
@@ -33,8 +36,12 @@ const Presentation: React.SFC<
 
     <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl" >
       {canEdit(props.authenticatedUsername) && (
-        <div style={{"position":"relative"}}>
-          <button className="rvt-button" style={{position:"absolute", top:"10", right:"10px"}} title="edit"> <span className="sr-only">Edit</span> <Pencil /> </button>
+        <div style={{ "position": "relative" }}>
+          <button
+            onClick={props.edit}
+            className="rvt-button"
+            style={{ position: "absolute", top: "10", right: "10px" }}
+            title="edit"> <span className="sr-only">Edit</span> <Pencil /> </button>
         </div>
       )}
       <PageTitle>{props.name}</PageTitle>
@@ -64,13 +71,13 @@ const Presentation: React.SFC<
           <div className="rvt-m-all-md">
             {(props.parent ||
               (props.children && props.children.length > 0)) && (
-              <div className="rvt-m-bottom-lg">
-                <Panel title="Parent and Children">
-                  <ParentCard parent={props.parent} />
-                  <ChildrenCard children={props.children} />
-                </Panel>
-              </div>
-            )}
+                <div className="rvt-m-bottom-lg">
+                  <Panel title="Parent and Children">
+                    <ParentCard parent={props.parent} />
+                    <ChildrenCard children={props.children} />
+                  </Panel>
+                </div>
+              )}
             {props.supportedDepartments.length > 0 && (
               <Panel title="Supported Departments">
                 <List variant="plain">
