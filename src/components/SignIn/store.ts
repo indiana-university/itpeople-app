@@ -102,7 +102,7 @@ function* handlePostSignIn() {
       yield call(setAuthToken, response.access_token)
       const decoded = JWT<IAuthUser>(response.access_token)
       yield put(postSignInSuccess(decoded))
-      yield put(push(`/me`))
+      yield put(push(`/units`))
     }
   } catch (err) {
     yield call(clearAuthToken)

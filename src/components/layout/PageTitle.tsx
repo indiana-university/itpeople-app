@@ -13,7 +13,7 @@ interface IPageTitleProps {
 
 const PageTitle : React.SFC<IPageTitleProps> = ({ children, ...attrs }) => (
   <>
-    <Helmet><title>{children} - IT Pro Database - Indiana University</title></Helmet>
+    <Helmet><title>{children} - IT People - Indiana University</title></Helmet>
     <h1 {...attrs} className="rvt-ts-32 rvt-ts-41-lg-up rvt-text-bold">{children}</h1>
   </>
 );
