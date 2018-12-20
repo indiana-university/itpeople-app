@@ -49,7 +49,7 @@ const EditForm: React.SFC<IFormProps> = props => {
                         <RivetTextareaField name="description" value="foo" label="Description" component={RivetTextarea} defaultValue="existing description" />
                     </div>
                     <div>
-                        <RivetInputField name="rivet" value="bar" label="URL" note="this is a note" variant="info" component={RivetInput} defaultValue="http://example.com" />
+                        <RivetInputField name="rivet" value="bar" label="URL" note="this is a note" variant="info" component={RivetInput} defaultValue="http://example.com"  />
                     </div>
                     <div>
                         <Field name="test" value="test" component={ (props:any) => {console.log(props); return <input type="text"/>; }} />
