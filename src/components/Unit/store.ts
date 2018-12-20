@@ -69,7 +69,7 @@ export interface IState extends IApiState<IUnitRequest, IUnitProfile> {
 import { action } from 'typesafe-actions'
 
 const edit = () => action(UnitActionTypes.UNIT_EDIT, {})
-const saveRequest = (data: IUnitProfile) => action(UnitActionTypes.UNIT_SAVE_REQUEST, data)
+const saveRequest = () => action(UnitActionTypes.UNIT_SAVE_REQUEST, {})
 const saveSuccess = (data: IUnitProfile) => action(UnitActionTypes.UNIT_SAVE_SUCCESS, data)
 const saveError = (error: string) => action(UnitActionTypes.UNIT_SAVE_ERROR, error)
 const cancel = () => action(UnitActionTypes.UNIT_CANCEL, {})

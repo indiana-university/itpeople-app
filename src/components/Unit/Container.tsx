@@ -11,6 +11,7 @@ import Unit from "./Presentation";
 import * as unit from "./store";
 import * as auth from "../SignIn/store";
 import { Loader } from "../Loader";
+import EditForm from "./Presentation/EditForm";
 
 interface IContainerProps {
   match: any;
@@ -19,6 +20,7 @@ interface IContainerProps {
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface IDispatchProps {
   fetchRequest: typeof unit.fetchRequest;
+  save: typeof unit.saveRequest;
   edit: typeof unit.edit;
   cancel: typeof unit.cancel;
 }
@@ -37,22 +39,22 @@ class Container extends React.Component<
 
   public render() {
     let authenticatedUsername = (this.props.auth && this.props.auth.data && this.props.auth.data.user_name) || "";
+    return (
+      <Loader {...this.props}>
+        {this.props.data &&
+          <>
+            {this.props.view == ViewStateType.Editing &&
+              <EditForm {...this.props.data} save={this.props.save} cancel={this.props.cancel} onSubmit={this.props.save} />
+            }
 
-    switch (this.props.view) {
-      case ViewStateType.Editing:
-        return (<div>
-          <button onClick={this.props.cancel}>toggle edit</button>
-          edit view 🐁</div>)
-
-      default:
-        return (
-          <Loader {...this.props}>
-            {this.props.data &&
+            {this.props.view != ViewStateType.Editing &&
               <Unit {...this.props.data} authenticatedUsername={authenticatedUsername} edit={this.props.edit} />
             }
-          </Loader>
-        );
-    }
+          </>
+        }
+
+      </Loader>)
+
   }
 }
 
@@ -68,6 +70,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
   fetchRequest: (request: unit.IUnitRequest) => dispatch(unit.fetchRequest(request)),
   edit: () => dispatch(unit.edit()),
+  save: () => dispatch(unit.saveRequest()),
   cancel: () => dispatch(unit.cancel())
 });
 
