@@ -1,10 +1,28 @@
 import * as React from 'react';
-import { reduxForm, InjectedFormProps, Field, GenericField, WrappedFieldProps } from 'redux-form';
+import { reduxForm, InjectedFormProps, Field, GenericField, WrappedFieldProps, WrappedFieldMetaProps } from 'redux-form';
 import * as unit from '../store';
 import { Breadcrumbs, Content, PageTitle } from 'src/components/layout';
 import { Section, Input, Textarea } from 'rivet-react';
 import { TextProps } from 'rivet-react/build/dist/components/Input/common';
 
+// Validation
+const required = (value:any) => value ? undefined : "This field is required.";
+
+var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
+
+const validURL = (str: string) =>
+  urlregex.test(str.trim()) ? undefined : "Please enter a valid URL (ex: https://domain.iu.edu).";
+
+const resolveVariant = (meta:WrappedFieldMetaProps) =>
+    meta.pristine
+    ? undefined
+    : meta.error ? "invalid" : meta.warning ? "warning" : "valid" 
+
+const resolveNote = (meta: WrappedFieldMetaProps) => 
+    meta.pristine
+    ? undefined
+    : meta.error || meta.warning || undefined
+    
 const RivetInputField = Field as new () => GenericField<React.InputHTMLAttributes<HTMLInputElement> & TextProps>;
 const RivetInput: React.SFC<WrappedFieldProps & React.InputHTMLAttributes<HTMLInputElement> & TextProps> = props =>
     <Input 
