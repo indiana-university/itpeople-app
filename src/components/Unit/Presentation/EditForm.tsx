@@ -24,19 +24,23 @@ const resolveNote = (meta: WrappedFieldMetaProps) =>
     : meta.error || meta.warning || undefined
     
 const RivetInputField = Field as new () => GenericField<React.InputHTMLAttributes<HTMLInputElement> & TextProps>;
-const RivetInput: React.SFC<WrappedFieldProps & React.InputHTMLAttributes<HTMLInputElement> & TextProps> = props =>
-    <Input 
-    type="text" 
-    label={props.label} 
-    variant={props.variant} 
-    defaultValue={props.defaultValue} 
-    onChange={e => props.input.onChange(e)} />;
+const RivetInput: React.SFC<WrappedFieldProps & React.InputHTMLAttributes<HTMLInputElement> & TextProps> = props => {
+    return <Input 
+        type="text" 
+        label={props.label} 
+        variant={resolveVariant(props.meta)} 
+        note={resolveNote(props.meta)} 
+        {...props.input } />;  
+}
 
 const RivetTextareaField = Field as new () => GenericField<React.TextareaHTMLAttributes<HTMLTextAreaElement> & TextProps>;
-const RivetTextarea: React.SFC<WrappedFieldProps & React.TextareaHTMLAttributes<HTMLTextAreaElement> & TextProps> = props =>
-    <Textarea label="foo" />;
-
-interface IFormData extends unit.IWebEntity { }
+const RivetTextarea: React.SFC<WrappedFieldProps & React.TextareaHTMLAttributes<HTMLTextAreaElement> & TextProps> = props => {
+    return <Textarea 
+        label={props.label}
+        variant={resolveVariant(props.meta)}
+        note={resolveNote(props.meta)}
+        {...props.input } />;  
+}
 
 interface IOwnProps {
     save: typeof unit.saveRequest;
