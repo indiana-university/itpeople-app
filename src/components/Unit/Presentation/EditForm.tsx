@@ -42,60 +42,46 @@ const RivetTextarea: React.SFC<WrappedFieldProps & React.TextareaHTMLAttributes<
         {...props.input } />;  
 }
 
-interface IOwnProps {
+interface IFormActions {
     save: typeof unit.saveRequest;
     cancel: typeof unit.cancel;
 }
 
-
 interface IFormProps extends
-    IFormData, IOwnProps, InjectedFormProps<IFormData, IOwnProps> { }
+    unit.IUnitProfile, IFormActions, InjectedFormProps<unit.IUnitProfile, IFormActions> { }
 
-const EditForm: React.SFC<IFormProps> = props => {
-
-
-    return <>
-        <Breadcrumbs
+const EditForm: React.SFC<IFormProps> = props => 
+    <>
+        <Breadcrumbs 
             crumbs={[
                 { text: "Home", href: "/" },
                 { text: "Units", href: "/units" },
                 props.name
-            ]}
-        />
+            ]} />
         <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl" >
-            <PageTitle>Edit</PageTitle>
-
+            <PageTitle>Edit Unit</PageTitle>
             <Section>
-                <form onSubmit={props.handleSubmit}>
-                    {props.description && (
-                        <div className="group-describer rvt-m-bottom-md">
-                            <span>{props.description}</span>
-                        </div>
-                    )}
+                <form onSubmit={props.save}>
                     <div>
-                        <RivetTextareaField name="description" value="foo" label="Description" component={RivetTextarea} defaultValue="existing description" />
+                        <RivetInputField name="name" component={RivetInput} label="Name" validate={[required]} />
                     </div>
                     <div>
-                        <RivetInputField name="rivet" value="bar" label="URL" note="this is a note" variant="info" component={RivetInput} defaultValue="http://example.com"  />
+                        <RivetTextareaField name="description" component={RivetTextarea} label="Description" validate={[required]}/>
                     </div>
                     <div>
-                        <Field name="test" value="test" component={ (props:any) => {console.log(props); return <input type="text"/>; }} />
+                        <RivetInputField name="url" component={RivetInput} label="URL" validate={[validURL]}/>
                     </div>
                     <div>
-                        <Field name="test2" value="test2" component="input" />
-                    </div>
-                    <div>
-                        <div>
-                            <button onClick={props.cancel}>Cancel</button>
-                        </div>
-                        <button type="submit">Save</button>
+                        <button onClick={props.cancel}>Cancel</button>
+                        <button type="submit" disabled={props.invalid}>Save</button>
                     </div>
                 </form>
             </Section>
         </Content>
-    </>
-}
-export default reduxForm<IFormData, IOwnProps>({
-    // a unique name for the form
-    form: 'editUnit'
-})(EditForm)
+    </>;
+
+export default reduxForm<unit.IUnitProfile, IFormActions>({
+  form: "editUnit",
+  enableReinitialize: true
+})(EditForm);
+
