@@ -44,7 +44,7 @@ class Container extends React.Component<
         {this.props.data &&
           <>
             {this.props.view == ViewStateType.Editing &&
-              <EditForm {...this.props.data} save={this.props.save} cancel={this.props.cancel} onSubmit={this.props.save} />
+              <EditForm save={this.props.save} cancel={this.props.cancel} initialValues={this.props.data}/>
             }
 
             {this.props.view != ViewStateType.Editing &&
