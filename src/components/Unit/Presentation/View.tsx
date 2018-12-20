@@ -78,7 +78,7 @@ const Presentation: React.SFC<
                   </Panel>
                 </div>
               )}
-            {props.supportedDepartments.length > 0 && (
+            {props.supportedDepartments && props.supportedDepartments.length > 0 && (
               <Panel title="Supported Departments">
                 <List variant="plain">
                   {props.supportedDepartments.map((r, i) => (
