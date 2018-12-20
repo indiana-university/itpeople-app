@@ -7,7 +7,12 @@ import { TextProps } from 'rivet-react/build/dist/components/Input/common';
 
 const RivetInputField = Field as new () => GenericField<React.InputHTMLAttributes<HTMLInputElement> & TextProps>;
 const RivetInput: React.SFC<WrappedFieldProps & React.InputHTMLAttributes<HTMLInputElement> & TextProps> = props =>
-    <Input type="text" label={props.label} variant={props.variant} defaultValue={props.defaultValue} />;
+    <Input 
+    type="text" 
+    label={props.label} 
+    variant={props.variant} 
+    defaultValue={props.defaultValue} 
+    onChange={e => props.input.onChange(e)} />;
 
 const RivetTextareaField = Field as new () => GenericField<React.TextareaHTMLAttributes<HTMLTextAreaElement> & TextProps>;
 const RivetTextarea: React.SFC<WrappedFieldProps & React.TextareaHTMLAttributes<HTMLTextAreaElement> & TextProps> = props =>
