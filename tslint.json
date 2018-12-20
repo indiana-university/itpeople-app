@@ -5,7 +5,8 @@
     "no-bitwise": false,
     "object-literal-sort-keys": false,
     "no-unused-variable": true,
-    "no-unused-imports": true
+    "no-unused-imports": true,
+    "jsx-no-lambda": false
   },
   "linterOptions": {
     "exclude": [
