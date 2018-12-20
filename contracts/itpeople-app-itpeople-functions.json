@@ -7,19 +7,6 @@
   },
   "interactions": [
     {
-      "description": "an unauthorized GET request for unit 401",
-      "providerState": "the server requires authorization",
-      "request": {
-        "method": "GET",
-        "path": "/units/401"
-      },
-      "response": {
-        "status": 401,
-        "headers": {
-        }
-      }
-    },
-    {
       "description": "a GET request for unit 1",
       "providerState": "unit 1 exists",
       "request": {
@@ -32,7 +19,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "id": 1,
@@ -124,7 +111,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": [
           {
@@ -156,7 +143,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "id": 1,
@@ -272,7 +259,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "id": 1,
@@ -388,7 +375,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "id": 1,
@@ -457,7 +444,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": [
           {
@@ -490,7 +477,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "departments": [

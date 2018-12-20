@@ -48,11 +48,15 @@ const pactServer = new Pact({
 const authHeader = {
   Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
 }
+
+const responseHeaders = {
+  'Content-Type': 'application/json; charset=utf-8'
+}
 const GET = (server: String, path: String) =>
   axios.get(`${server}${path}`, { headers: authHeader })
 
 const POST = (server: String, path: String, body: Object = {}) =>
-  axios.post(`${server}${path}`, body, { headers: authHeader })
+  axios.post(`${server}${path}`, body)
 
 const getFixture = (path: String) => GET(JSON_SERVER, path)
 const postFixture = (path: String, body: Object) => POST(JSON_SERVER, path, body)
@@ -74,24 +78,6 @@ describe('Contracts', () => {
 
   describe('for units', () => {
 
-    it('requires authentication to view a unit', async () => {
-      const path = '/units/401'
-      await pactServer.addInteraction({
-        state: 'the server requires authorization',
-        uponReceiving: 'an unauthorized GET request for unit 401',
-        withRequest: {
-          method: 'GET',
-          path: path
-        },
-        willRespondWith: {
-          status: 401
-        }
-      })
-      expect.assertions(1)
-      return expect(axios.get(`${PACT_SERVER}${path}`)).rejects.toEqual(
-        new Error('Request failed with status code 401'))
-    })
-
     describe('retrieving a unit', () => {
       const recordId = 1
       const path = `/units/${recordId}`
@@ -108,9 +94,7 @@ describe('Contracts', () => {
           },
           willRespondWith: {
             status: 200,
-            headers: {
-              'Content-Type': 'application/json'
-            },
+            headers: responseHeaders,
             body: deepMatchify(resource)
           }
         })
@@ -155,9 +139,7 @@ describe('Contracts', () => {
           },
           willRespondWith: {
             status: 200,
-            headers: {
-              'Content-Type': 'application/json'
-            },
+            headers: responseHeaders,
             body: deepMatchify(resource)
           }
         })
@@ -206,9 +188,7 @@ describe('Contracts', () => {
           },
           willRespondWith: {
             status: 200,
-            headers: {
-              'Content-Type': 'application/json'
-            },
+            headers: responseHeaders,
             body: deepMatchify(resource)
           }
         })
@@ -255,9 +235,7 @@ describe('Contracts', () => {
           },
           willRespondWith: {
             status: 200,
-            headers: {
-              'Content-Type': 'application/json'
-            },
+            headers: responseHeaders,
             body: deepMatchify(resource)
           }
         })
@@ -308,9 +286,7 @@ describe('Contracts', () => {
           },
           willRespondWith: {
             status: 200,
-            headers: {
-              'Content-Type': 'application/json'
-            },
+            headers: responseHeaders,
             body: deepMatchify(resource)
           }
         })
@@ -355,9 +331,7 @@ describe('Contracts', () => {
         },
         willRespondWith: {
           status: 200,
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: responseHeaders,
           body: deepMatchify(resource)
         }
       })
@@ -409,9 +383,7 @@ describe('searching for "park"', () => {
       },
       willRespondWith: {
         status: 200,
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: responseHeaders,
         body: deepMatchify(resource)
       }
     })
