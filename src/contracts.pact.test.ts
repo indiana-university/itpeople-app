@@ -18,7 +18,6 @@ import { DepartmentActionTypes, saga as departmentSaga } from './components/Depa
 import { SearchActionTypes, saga as searchSaga } from './components/Search/store'
 import { Reducer } from 'redux';
 import { Effect } from 'redux-saga';
-import { async } from 'q';
 
 const lastSagaPutActionPayload = (ar: Array<Effect>) =>
   ar[ar.length - 1]["PUT"]["action"]["payload"]
