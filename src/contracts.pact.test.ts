@@ -68,15 +68,7 @@ const postFixture = (path: string, data: Object) => axiosRequest('POST', JSON_SE
 const getPact = (path: string) => axiosRequest('GET', PACT_SERVER, path)
 const putPact = (path: string, data: Object) => axiosRequest('PUT', PACT_SERVER, path, data)
 
-let jsonServerState: Object = {}
-
-const getJsonServerState = () => getFixture("/db")
-const resetJsonServerState = async () => await postFixture("/reset", jsonServerState)
-
-beforeAll(async () => {
-  jsonServerState = (await getJsonServerState()).data
-  await pactServer.setup()
-})
+beforeAll(async () => pactServer.setup())
 
 afterAll(() => pactServer.finalize())
 
