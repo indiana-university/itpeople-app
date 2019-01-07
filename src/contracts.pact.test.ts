@@ -52,15 +52,21 @@ const authHeader = {
 const responseHeaders = {
   'Content-Type': 'application/json; charset=utf-8'
 }
-const GET = (server: String, path: String) =>
-  axios.get(`${server}${path}`, { headers: authHeader })
 
-const POST = (server: String, path: String, body: Object = {}) =>
-  axios.post(`${server}${path}`, body)
+const axiosRequest =
+  (method: string, server: string, path: string, data: Object = {}, headers: Object = authHeader) =>
+    axios.request({
+      method: method,
+      url: `${server}${path}`,
+      headers: headers,
+      data: data
+    })
 
-const getFixture = (path: String) => GET(JSON_SERVER, path)
-const postFixture = (path: String, body: Object) => POST(JSON_SERVER, path, body)
-const getPact = (path: String) => GET(PACT_SERVER, path)
+const getFixture = (path: string) => axiosRequest('GET', JSON_SERVER, path)
+const postFixture = (path: string, data: Object) => axiosRequest('POST', JSON_SERVER, path, data)
+
+const getPact = (path: string) => axiosRequest('GET', PACT_SERVER, path)
+const putPact = (path: string, data: Object) => axiosRequest('PUT', PACT_SERVER, path, data)
 
 let jsonServerState: Object = {}
 
