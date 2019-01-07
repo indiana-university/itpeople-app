@@ -70,7 +70,7 @@ import { action } from 'typesafe-actions'
 
 const edit = () => action(UnitActionTypes.UNIT_EDIT, {})
 const saveRequest = () => action(UnitActionTypes.UNIT_SAVE_REQUEST, {})
-const saveSuccess = (data: IUnitProfile) => action(UnitActionTypes.UNIT_SAVE_SUCCESS, data)
+const saveSuccess = (state: IState) =>  action(UnitActionTypes.UNIT_SAVE_SUCCESS, state.data)
 const saveError = (error: string) => action(UnitActionTypes.UNIT_SAVE_ERROR, error)
 const cancel = () => action(UnitActionTypes.UNIT_CANCEL, {})
 const fetchRequest = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request)
@@ -119,7 +119,7 @@ function* handleFetch() {
 }
 
 function* handleSave() {
-  const state = (yield select<IApplicationState>((s) => s.unit)) as IUnitProfile
+  const state = (yield select<IApplicationState>((s) => s.unit)) as IState
   // Do the save here...
   yield put(saveSuccess(state))
 }
