@@ -12,7 +12,7 @@ export const MemberLists: React.SFC<IProps> = ({ members, title }) => {
   const leaders: IUnitMember[] = [];
   const related: IUnitMember[] = [];
   const team: IUnitMember[] = [];
-  members.forEach(m => {
+  members && members.forEach(m => {
     switch (m.role) {
       case UitsRole.Leader:
         leaders.push(m);

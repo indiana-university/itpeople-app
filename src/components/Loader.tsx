@@ -20,10 +20,10 @@ export const Loader = (props: IDefaultState<any> & IProps) => {
             </>
 
         }
-        {props.data && props.children &&
+        {!loading && props.data && props.children &&
             <>{props.children}</>
         }
-        {props.error &&
+        {!loading && props.error &&
             <NotFound error={props.error} />
         }
     </>
