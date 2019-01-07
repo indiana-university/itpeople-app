@@ -70,7 +70,7 @@ import { action } from 'typesafe-actions'
 
 const edit = () => action(UnitActionTypes.UNIT_EDIT, {})
 const saveRequest = () => action(UnitActionTypes.UNIT_SAVE_REQUEST, {})
-const saveSuccess = (state: IState) =>  action(UnitActionTypes.UNIT_SAVE_SUCCESS, state.data)
+const saveSuccess = (unitData: IUnitProfile) => action(UnitActionTypes.UNIT_SAVE_SUCCESS, unitData)
 const saveError = (error: string) => action(UnitActionTypes.UNIT_SAVE_ERROR, error)
 const cancel = () => action(UnitActionTypes.UNIT_CANCEL, {})
 const fetchRequest = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request)
@@ -98,7 +98,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_SAVE_REQUEST: return PutRequestReducer(state, act)
     case UnitActionTypes.UNIT_SAVE_SUCCESS: return PutSuccessReducer(state, act)
     case UnitActionTypes.UNIT_SAVE_ERROR: return PutErrorReducer(state, act)
-    case UnitActionTypes.UNIT_CANCEL: return {...state, view: ViewStateType.Viewing }
+    case UnitActionTypes.UNIT_CANCEL: return { ...state, view: ViewStateType.Viewing }
     case UnitActionTypes.UNIT_FETCH_REQUEST: return FetchRequestReducer(state, act)
     case UnitActionTypes.UNIT_FETCH_SUCCESS: return FetchSuccessReducer(state, act)
     case UnitActionTypes.UNIT_FETCH_ERROR: return FetchErrorReducer(state, act)
@@ -109,8 +109,8 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 
 //#region SAGA
-import { all, fork, put, select, takeEvery } from 'redux-saga/effects'
-import { httpGet } from '../effects'
+import { all, fork, select, takeEvery } from 'redux-saga/effects'
+import { httpGet, httpPut } from '../effects'
 
 function* handleFetch() {
   const state = (yield select<IApplicationState>((s) => s.unit.request)) as IUnitRequest
@@ -119,9 +119,12 @@ function* handleFetch() {
 }
 
 function* handleSave() {
-  const state = (yield select<IApplicationState>((s) => s.unit)) as IState
-  // Do the save here...
-  yield put(saveSuccess(state))
+  // todo: check if form exists - is there a strongly typed way to do this?
+  const formValues = (yield select<IApplicationState>((s) => s.form.editUnit.values))
+  const id = formValues.id;
+  const path = `/units/${id}`
+
+  yield httpPut<IUnitProfile, IUnitProfile>(path, formValues, saveSuccess, saveError)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
