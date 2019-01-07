@@ -18,6 +18,7 @@ import { DepartmentActionTypes, saga as departmentSaga } from './components/Depa
 import { SearchActionTypes, saga as searchSaga } from './components/Search/store'
 import { Reducer } from 'redux';
 import { Effect } from 'redux-saga';
+import { async } from 'q';
 
 const lastSagaPutActionPayload = (ar: Array<Effect>) =>
   ar[ar.length - 1]["PUT"]["action"]["payload"]
@@ -49,12 +50,12 @@ const authHeader = {
   Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
 }
 
-const responseHeaders = {
+const contentTypeHeader = {
   'Content-Type': 'application/json; charset=utf-8'
 }
 
 const axiosRequest =
-  (method: string, server: string, path: string, data: Object = {}, headers: Object = authHeader) =>
+  (method: string, server: string, path: string, data: Object = {}, headers: Object = { ...authHeader, ...contentTypeHeader }) =>
     axios.request({
       method: method,
       url: `${server}${path}`,
@@ -63,7 +64,6 @@ const axiosRequest =
     })
 
 const getFixture = (path: string) => axiosRequest('GET', JSON_SERVER, path)
-const postFixture = (path: string, data: Object) => axiosRequest('POST', JSON_SERVER, path, data)
 
 const getPact = (path: string) => axiosRequest('GET', PACT_SERVER, path)
 const putPact = (path: string, data: Object) => axiosRequest('PUT', PACT_SERVER, path, data)
@@ -92,13 +92,12 @@ describe('Contracts', () => {
           },
           willRespondWith: {
             status: 200,
-            headers: responseHeaders,
+            headers: contentTypeHeader,
             body: deepMatchify(resource)
           }
         })
         const pactResponseBody = (await getPact(path)).data
         expect(pactResponseBody).not.toEqual({})
-        resetJsonServerState()
       })
 
       it('works through app saga', async () => {
@@ -137,7 +136,7 @@ describe('Contracts', () => {
           },
           willRespondWith: {
             status: 200,
-            headers: responseHeaders,
+            headers: contentTypeHeader,
             body: deepMatchify(resource)
           }
         })
@@ -165,6 +164,52 @@ describe('Contracts', () => {
         expect(sagaPayload).toEqual(resource)
       })
     })
+
+    describe('updating an existing unit', async () => {
+      const recordId = 1
+      const path = `/units/${recordId}`
+      it('works', async () => {
+        let putBody = (await getFixture(`/allUnits/4`)).data
+        delete putBody.id
+        await pactServer.addInteraction({
+          state: `unit ${recordId} exists`,
+          uponReceiving: `a PUT request to update attributes for unit ${recordId}`,
+          withRequest: {
+            method: 'PUT',
+            headers: { ...authHeader, ...contentTypeHeader },
+            path: path,
+            body: putBody
+          },
+          willRespondWith: {
+            status: 200,
+          }
+        })
+        const pactResponseStatus = (await putPact(path, putBody)).status
+        expect(pactResponseStatus).toEqual(200)
+      })
+
+      it('works through app saga', async () => {
+        const resource = (await getFixture(path)).data
+        const reducer: Reducer = () =>
+          ({
+            unit: {
+              request: { id: recordId }
+            }
+          })
+
+        const { allEffects } = await expectSaga(unitSaga)
+          .withReducer(reducer)
+          .dispatch({ type: UnitActionTypes.UNIT_FETCH_REQUEST })
+          .put.actionType(
+            UnitActionTypes.UNIT_FETCH_SUCCESS
+          )
+          .run()
+
+        const sagaPayload = lastSagaPutActionPayload(allEffects)
+        expect(sagaPayload).toEqual(resource)
+      })
+
+    })
   })
   describe('for profiles', () => {
 
@@ -186,7 +231,7 @@ describe('Contracts', () => {
           },
           willRespondWith: {
             status: 200,
-            headers: responseHeaders,
+            headers: contentTypeHeader,
             body: deepMatchify(resource)
           }
         })
@@ -233,7 +278,7 @@ describe('Contracts', () => {
           },
           willRespondWith: {
             status: 200,
-            headers: responseHeaders,
+            headers: contentTypeHeader,
             body: deepMatchify(resource)
           }
         })
@@ -284,7 +329,7 @@ describe('Contracts', () => {
           },
           willRespondWith: {
             status: 200,
-            headers: responseHeaders,
+            headers: contentTypeHeader,
             body: deepMatchify(resource)
           }
         })
@@ -329,7 +374,7 @@ describe('Contracts', () => {
         },
         willRespondWith: {
           status: 200,
-          headers: responseHeaders,
+          headers: contentTypeHeader,
           body: deepMatchify(resource)
         }
       })
@@ -381,7 +426,7 @@ describe('searching for "park"', () => {
       },
       willRespondWith: {
         status: 200,
-        headers: responseHeaders,
+        headers: contentTypeHeader,
         body: deepMatchify(resource)
       }
     })
