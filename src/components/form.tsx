@@ -16,8 +16,8 @@ export const url = (str: string) =>
 
 const resolveVariant = (meta: WrappedFieldMetaProps) =>
     meta.pristine
-        ? undefined
-        : meta.error ? "invalid" : meta.warning ? "warning" : "valid"
+    ? undefined
+    : meta.error ? "danger" : meta.warning ? "warning" : "success"
 
 const resolveNote = (meta: WrappedFieldMetaProps) =>
     meta.pristine
