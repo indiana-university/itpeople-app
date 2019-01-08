@@ -114,7 +114,7 @@ const renderMembers = ({ fields }: any) => {
 
         <h2>Members</h2>
         <List variant="plain">
-            {standardMember.map((member, index) => renderMember(member, index, fields)))}
+            {standardMember.map((member, index) => renderMember(member, index, fields))}
         </List>
 
         <h2>Other</h2>
