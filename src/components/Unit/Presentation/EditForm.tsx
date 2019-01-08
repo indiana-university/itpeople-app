@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { reduxForm, InjectedFormProps, FieldArray, Field } from 'redux-form';
+import { reduxForm, InjectedFormProps, FieldArray, Field, FieldArrayFieldsProps } from 'redux-form';
 import * as unit from '../store';
 import { Breadcrumbs, Content, PageTitle } from 'src/components/layout';
 import { Section, List, Button } from 'rivet-react';
@@ -13,6 +13,7 @@ interface IFormActions {
 interface IFormProps extends
     unit.IUnitProfile, IFormActions, InjectedFormProps<unit.IUnitProfile, IFormActions> { }
 
+interface IMemberField extends unit.IUnitMember { fieldId: number };
 
 const renderParent = ({ input }: any) => {
     const unit = input.value;
@@ -85,12 +86,22 @@ const renderDepartments = ({ fields }: any) => {
     </>
 }
 
+const renderMember = (member: IMemberField, index: number, fields: FieldArrayFieldsProps<any>) => (<li key={index}>
+    <Button
+        className="rvt-button--danger"
+        type="button"
+        title="Remove Member"
+        onClick={() => fields.remove(member.fieldId)}
+    >x</Button>
+    <h4>{member.name}</h4>
+    <div>{member.role}</div>
+</li>)
+
 const renderMembers = ({ fields }: any) => {
     let members = fields.map((target: any, index: number) => {
         let member = fields.get(index) as unit.IUnitMember;
         return { ...member, fieldId: index };
     }) as (unit.IUnitMember & { fieldId: number })[];
-
     let leaders = members.filter((m) => (m.role == unit.ItProRole.Admin || m.role == unit.UitsRole.Leader))
     let standardMember = members.filter((m) => (m.role == unit.ItProRole.Pro || m.role == unit.UitsRole.Member || m.role == unit.UitsRole.Sublead))
     let others = members.filter((m) => (m.role == unit.ItProRole.Aux || m.role == unit.UitsRole.Related))
@@ -98,56 +109,17 @@ const renderMembers = ({ fields }: any) => {
     return <>
         <h2>Leadership</h2>
         <List variant="plain">
-            {leaders.map((member, index) => {
-                return (<li key={index}>
-                    <Button
-                        className="rvt-button--danger"
-                        type="button"
-                        title="Remove Member"
-                        onClick={() => fields.remove(member.fieldId)}
-                    >x</Button>
-                    <h4>{member.name}</h4>
-                    <div>{member.role}</div>
-                </li>
-                )
-            }
-            )}
+            {leaders.map((member, index) => renderMember(member, index, fields))}
         </List>
 
         <h2>Members</h2>
         <List variant="plain">
-            {standardMember.map((member, index) => {
-                return (<li key={index}>
-                    <Button
-                        className="rvt-button--danger"
-                        type="button"
-                        title="Remove Member"
-                        onClick={() => fields.remove(member.fieldId)}
-                    >x</Button>
-                    <h4>{member.name}</h4>
-                    <div>{member.role}</div>
-                </li>
-                )
-            }
-            )}
+            {standardMember.map((member, index) => renderMember(member, index, fields)))}
         </List>
 
         <h2>Other</h2>
         <List variant="plain">
-            {others.map((member, index) => {
-                return (<li key={index}>
-                    <Button
-                        className="rvt-button--danger"
-                        type="button"
-                        title="Remove Member"
-                        onClick={() => fields.remove(member.fieldId)}
-                    >x</Button>
-                    <h4>{member.name}</h4>
-                    <div>{member.role}</div>
-                </li>
-                )
-            }
-            )}
+            {others.map((member, index) => renderMember(member, index, fields))}
         </List>
 
         <Button type="button" onClick={() => alert("add member modal")}>Add Member</Button>
