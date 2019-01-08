@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { reduxForm, InjectedFormProps, FieldArray, Field, FieldArrayFieldsProps } from 'redux-form';
+import { reduxForm, InjectedFormProps, FieldArray, Field } from 'redux-form';
 import * as unit from '../store';
 import { Breadcrumbs, Content, PageTitle } from 'src/components/layout';
-import { Section, List, Button } from 'rivet-react';
+import { Section, List, Button, Row, Col } from 'rivet-react';
 import { RivetInputField, RivetInput, RivetTextarea, RivetTextareaField, required, url } from 'src/components/form';
+import { TrashCan, ArrowUp, ArrowDown } from 'src/components/icons';
 
 interface IFormActions {
     save: typeof unit.saveRequest;
@@ -86,22 +87,50 @@ const renderDepartments = ({ fields }: any) => {
     </>
 }
 
-const renderMember = (member: IMemberField, index: number, fields: FieldArrayFieldsProps<any>) => (<li key={index}>
-    <Button
-        className="rvt-button--danger"
-        type="button"
-        title="Remove Member"
-        onClick={() => fields.remove(member.fieldId)}
-    >x</Button>
-    <h4>{member.name}</h4>
-    <div>{member.role}</div>
-</li>)
+const renderMember = (
+    member: IMemberField,
+    index: number,
+    remove?: () => any | null,
+    moveUp?: () => any | null,
+    moveDown?: () => any | null) => (<li key={index}>
+        <Row>
+            <Col>
+                <h4>{member.name}</h4>
+                <div>{member.role}</div>
+            </Col>
+            <Col last={true}>
+                {moveUp && <Button
+                    style={{ rotate: '180deg' }}
+                    className="rvt-button--plain"
+                    type="button"
+                    title="Move Member"
+                    onClick={moveUp}
+                ><ArrowUp /></Button>
+                }
+                {moveDown &&
+                    <Button
+                        className="rvt-button--plain"
+                        type="button"
+                        title="Move Member"
+                        onClick={moveDown}
+                    ><ArrowDown /></Button>
+                }
+                {remove && <Button
+                    className="rvt-button--plain"
+                    type="button"
+                    title="Remove Member"
+                    onClick={remove}
+                ><TrashCan /></Button>
+                }
+            </Col>
+        </Row>
+    </li>)
 
 const renderMembers = ({ fields }: any) => {
     let members = fields.map((target: any, index: number) => {
         let member = fields.get(index) as unit.IUnitMember;
         return { ...member, fieldId: index };
-    }) as (unit.IUnitMember & { fieldId: number })[];
+    }) as IMemberField[];
     let leaders = members.filter((m) => (m.role == unit.ItProRole.Admin || m.role == unit.UitsRole.Leader))
     let standardMember = members.filter((m) => (m.role == unit.ItProRole.Pro || m.role == unit.UitsRole.Member || m.role == unit.UitsRole.Sublead))
     let others = members.filter((m) => (m.role == unit.ItProRole.Aux || m.role == unit.UitsRole.Related))
@@ -109,19 +138,36 @@ const renderMembers = ({ fields }: any) => {
     return <>
         <h2>Leadership</h2>
         <List variant="plain">
-            {leaders.map((member, index) => renderMember(member, index, fields))}
+            {
+                leaders.map((member, index) => {
+                    const moveDown = leaders[index + 1] ? () => { fields.swap(member.fieldId, leaders[index + 1].fieldId) } : undefined;
+                    const moveUp = leaders[index - 1] ? () => { fields.swap(member.fieldId, leaders[index - 1].fieldId) } : undefined;
+                    const remove = () => { fields.remove(index) };
+                    return renderMember(member, index, remove, moveUp, moveDown)
+                })}
         </List>
 
         <h2>Members</h2>
         <List variant="plain">
-            {standardMember.map((member, index) => renderMember(member, index, fields))}
+            {
+                standardMember.map((member, index) => {
+                    const moveDown = standardMember[index + 1] ? () => { fields.swap(member.fieldId, standardMember[index + 1].fieldId) } : undefined;
+                    const moveUp = standardMember[index - 1] ? () => { fields.swap(member.fieldId, standardMember[index - 1].fieldId) } : undefined;
+                    const remove = () => { fields.remove(index) };
+                    return renderMember(member, index, remove, moveUp, moveDown)
+                })}
         </List>
 
         <h2>Other</h2>
         <List variant="plain">
-            {others.map((member, index) => renderMember(member, index, fields))}
+            {
+                others.map((member, index) => {
+                    const moveDown = others[index + 1] ? () => { fields.swap(member.fieldId, others[index + 1].fieldId) } : undefined;
+                    const moveUp = others[index - 1] ? () => { fields.swap(member.fieldId, others[index - 1].fieldId) } : undefined;
+                    const remove = () => { fields.remove(index) };
+                    return renderMember(member, index, remove, moveUp, moveDown)
+                })}
         </List>
-
         <Button type="button" onClick={() => alert("add member modal")}>Add Member</Button>
     </>;
 }
@@ -169,7 +215,7 @@ const EditForm: React.SFC<IFormProps> = props =>
                     <hr />
                     <h2>Supported departments</h2>
                     <div>
-                        <FieldArray name="departments" component={renderDepartments} />
+                        <FieldArray name="supportedDepartments" component={renderDepartments} />
                     </div>
 
                     <code><pre>{JSON.stringify(props)}</pre></code>
