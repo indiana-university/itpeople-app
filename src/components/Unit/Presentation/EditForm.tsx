@@ -16,37 +16,6 @@ interface IFormProps extends
 
 interface IMemberField extends unit.IUnitMember { fieldId: number };
 
-
-const renderDepartments = ({ fields }: any) => {
-    return <>
-        <List variant="plain">
-            {fields.map((field: any, index: number) => {
-                const department = fields.get(index);
-                return (<li key={index}>
-                    <Button
-                        className="rvt-button--danger"
-                        type="button"
-                        title="Remove department"
-                        onClick={() => fields.remove(index)}
-                    >x</Button>
-                    <h4>{department.name}</h4>
-                    {department.description &&
-                        <p>{department.description}</p>
-                    }
-                </li>
-                )
-            }
-            )}
-        </List>
-        <Button
-            className="rvt-button"
-            type="button"
-            title="Add department unit"
-            onClick={() => alert("Add department modal")}
-        >Add department</Button>
-    </>
-}
-
 const EditForm: React.SFC<IFormProps> = props =>
     <>
         <Breadcrumbs
@@ -92,9 +61,6 @@ const EditForm: React.SFC<IFormProps> = props =>
                     <div>
                         <FieldArray name="supportedDepartments" component={renderDepartments} />
                     </div>
-
-                    <code><pre>{JSON.stringify(props)}</pre></code>
-
                     <div>
                         <Button onClick={props.cancel}>Cancel</Button>
                         <Button type="submit" disabled={props.invalid}>Save</Button>
@@ -227,7 +193,7 @@ const renderChildren = ({ fields }: any) => {
                                 <Button
                                     variant="plain"
                                     type="button"
-                                    title="Remove Unit"
+                                    title="Move Unit up"
                                     onClick={() => fields.swap(index, index - 1)}
                                 ><ArrowUp /></Button>
                             }
@@ -235,7 +201,7 @@ const renderChildren = ({ fields }: any) => {
                                 <Button
                                     variant="plain"
                                     type="button"
-                                    title="Remove Unit"
+                                    title="Move Unit down"
                                     onClick={() => fields.swap(index, index + 1)}
                                 ><ArrowDown /></Button>
                             }
@@ -260,6 +226,59 @@ const renderChildren = ({ fields }: any) => {
         >Add child</Button>
     </>
 }
+
+const renderDepartments = ({ fields }: any) => {
+    return <>
+        <List variant="plain">
+            {fields.map((field: any, index: number) => {
+                const department = fields.get(index);
+                return (<li key={index}>
+                    <Row>
+                        <Col>
+                            <h4>{department.name}</h4>
+                            {department.description &&
+                                <p>{department.description}</p>
+                            }
+                        </Col>
+                        <Col>
+                            {fields.get(index - 1) &&
+                                <Button
+                                    variant="plain"
+                                    type="button"
+                                    title="Move department up"
+                                    onClick={() => fields.swap(index, index - 1)}
+                                ><ArrowUp /></Button>
+                            }
+                            {fields.get(index + 1) &&
+                                <Button
+                                    variant="plain"
+                                    type="button"
+                                    title="Move department down"
+                                    onClick={() => fields.swap(index, index + 1)}
+                                ><ArrowDown /></Button>
+                            }
+                            <Button
+                                variant="plain"
+                                type="button"
+                                title="Remove Department"
+                                onClick={() => fields.remove(index)}
+                            ><TrashCan /></Button>
+                        </Col>
+                    </Row>
+                </li>
+                )
+            }
+            )}
+        </List>
+        <Button
+            className="rvt-button"
+            type="button"
+            title="Add department unit"
+            onClick={() => alert("Add department modal")}
+        >Add department</Button>
+    </>
+}
+
 
 export default reduxForm<unit.IUnitProfile, IFormActions>({
     form: "editUnit",

@@ -205,7 +205,17 @@
       "supportedDepartments": [
         {
           "id": 1,
-          "name": "Parks and Recreation Department",
+          "name": "Parks and Recreation Department 1",
+          "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+        },
+        {
+          "id": 2,
+          "name": "Parks and Recreation Department 2",
+          "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+        },
+        {
+          "id": 3,
+          "name": "Parks and Recreation Department 3",
           "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
         }
       ],
