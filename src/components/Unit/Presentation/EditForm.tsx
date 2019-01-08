@@ -16,16 +16,6 @@ interface IFormProps extends
 
 interface IMemberField extends unit.IUnitMember { fieldId: number };
 
-const renderParent = ({ input }: any) => {
-    const unit = input.value;
-    return <>
-        <h4>{unit.name}</h4>
-        {unit.description &&
-            <p>{unit.description}</p>
-        }
-
-    </>
-}
 
 const renderChildren = ({ fields }: any) => {
     return <>
@@ -87,91 +77,6 @@ const renderDepartments = ({ fields }: any) => {
     </>
 }
 
-const renderMember = (
-    member: IMemberField,
-    index: number,
-    remove?: () => any | null,
-    moveUp?: () => any | null,
-    moveDown?: () => any | null) => (<li key={index}>
-        <Row>
-            <Col>
-                <h4>{member.name}</h4>
-                <div>{member.role}</div>
-            </Col>
-            <Col last={true}>
-                {moveUp && <Button
-                    style={{ rotate: '180deg' }}
-                    className="rvt-button--plain"
-                    type="button"
-                    title="Move Member"
-                    onClick={moveUp}
-                ><ArrowUp /></Button>
-                }
-                {moveDown &&
-                    <Button
-                        className="rvt-button--plain"
-                        type="button"
-                        title="Move Member"
-                        onClick={moveDown}
-                    ><ArrowDown /></Button>
-                }
-                {remove && <Button
-                    className="rvt-button--plain"
-                    type="button"
-                    title="Remove Member"
-                    onClick={remove}
-                ><TrashCan /></Button>
-                }
-            </Col>
-        </Row>
-    </li>)
-
-const renderMembers = ({ fields }: any) => {
-    let members = fields.map((target: any, index: number) => {
-        let member = fields.get(index) as unit.IUnitMember;
-        return { ...member, fieldId: index };
-    }) as IMemberField[];
-    let leaders = members.filter((m) => (m.role == unit.ItProRole.Admin || m.role == unit.UitsRole.Leader))
-    let standardMember = members.filter((m) => (m.role == unit.ItProRole.Pro || m.role == unit.UitsRole.Member || m.role == unit.UitsRole.Sublead))
-    let others = members.filter((m) => (m.role == unit.ItProRole.Aux || m.role == unit.UitsRole.Related))
-
-    return <>
-        <h2>Leadership</h2>
-        <List variant="plain">
-            {
-                leaders.map((member, index) => {
-                    const moveDown = leaders[index + 1] ? () => { fields.swap(member.fieldId, leaders[index + 1].fieldId) } : undefined;
-                    const moveUp = leaders[index - 1] ? () => { fields.swap(member.fieldId, leaders[index - 1].fieldId) } : undefined;
-                    const remove = () => { fields.remove(index) };
-                    return renderMember(member, index, remove, moveUp, moveDown)
-                })}
-        </List>
-
-        <h2>Members</h2>
-        <List variant="plain">
-            {
-                standardMember.map((member, index) => {
-                    const moveDown = standardMember[index + 1] ? () => { fields.swap(member.fieldId, standardMember[index + 1].fieldId) } : undefined;
-                    const moveUp = standardMember[index - 1] ? () => { fields.swap(member.fieldId, standardMember[index - 1].fieldId) } : undefined;
-                    const remove = () => { fields.remove(index) };
-                    return renderMember(member, index, remove, moveUp, moveDown)
-                })}
-        </List>
-
-        <h2>Other</h2>
-        <List variant="plain">
-            {
-                others.map((member, index) => {
-                    const moveDown = others[index + 1] ? () => { fields.swap(member.fieldId, others[index + 1].fieldId) } : undefined;
-                    const moveUp = others[index - 1] ? () => { fields.swap(member.fieldId, others[index - 1].fieldId) } : undefined;
-                    const remove = () => { fields.remove(index) };
-                    return renderMember(member, index, remove, moveUp, moveDown)
-                })}
-        </List>
-        <Button type="button" onClick={() => alert("add member modal")}>Add Member</Button>
-    </>;
-}
-
 const EditForm: React.SFC<IFormProps> = props =>
     <>
         <Breadcrumbs
@@ -229,6 +134,111 @@ const EditForm: React.SFC<IFormProps> = props =>
             </Section>
         </Content>
     </>;
+
+
+const renderMembers = ({ fields }: any) => {
+    let members = fields.map((target: any, index: number) => {
+        let member = fields.get(index) as unit.IUnitMember;
+        return { ...member, fieldId: index };
+    }) as IMemberField[];
+    let leaders = members.filter((m) => (m.role == unit.ItProRole.Admin || m.role == unit.UitsRole.Leader))
+    let standardMember = members.filter((m) => (m.role == unit.ItProRole.Pro || m.role == unit.UitsRole.Member || m.role == unit.UitsRole.Sublead))
+    let others = members.filter((m) => (m.role == unit.ItProRole.Aux || m.role == unit.UitsRole.Related))
+
+    return <>
+        <h2>Leadership</h2>
+        <List variant="plain">
+            {
+                leaders.map((member, index) => {
+                    const moveDown = leaders[index + 1] ? () => { fields.swap(member.fieldId, leaders[index + 1].fieldId) } : undefined;
+                    const moveUp = leaders[index - 1] ? () => { fields.swap(member.fieldId, leaders[index - 1].fieldId) } : undefined;
+                    const remove = () => { fields.remove(index) };
+                    return renderMember(member, index, remove, moveUp, moveDown)
+                })}
+        </List>
+
+        <h2>Members</h2>
+        <List variant="plain">
+            {
+                standardMember.map((member, index) => {
+                    const moveDown = standardMember[index + 1] ? () => { fields.swap(member.fieldId, standardMember[index + 1].fieldId) } : undefined;
+                    const moveUp = standardMember[index - 1] ? () => { fields.swap(member.fieldId, standardMember[index - 1].fieldId) } : undefined;
+                    const remove = () => { fields.remove(index) };
+                    return renderMember(member, index, remove, moveUp, moveDown)
+                })}
+        </List>
+
+        <h2>Other</h2>
+        <List variant="plain">
+            {
+                others.map((member, index) => {
+                    const moveDown = others[index + 1] ? () => { fields.swap(member.fieldId, others[index + 1].fieldId) } : undefined;
+                    const moveUp = others[index - 1] ? () => { fields.swap(member.fieldId, others[index - 1].fieldId) } : undefined;
+                    const remove = () => { fields.remove(index) };
+                    return renderMember(member, index, remove, moveUp, moveDown)
+                })}
+        </List>
+        <Button type="button" onClick={() => alert("add member modal")}>Add Member</Button>
+    </>;
+}
+
+const renderMember = (
+    member: IMemberField,
+    index: number,
+    remove?: () => any,
+    moveUp?: () => any,
+    moveDown?: () => any) => (<li key={index}>
+        <Row>
+            <Col>
+                <h4>{member.name}</h4>
+                <div>{member.role}</div>
+            </Col>
+            <Col last={true}>
+                {moveUp && <Button
+                    style={{ rotate: '180deg' }}
+                    className="rvt-button--plain"
+                    type="button"
+                    title="Move Member"
+                    onClick={moveUp}
+                ><ArrowUp /></Button>
+                }
+                {moveDown &&
+                    <Button
+                        className="rvt-button--plain"
+                        type="button"
+                        title="Move Member"
+                        onClick={moveDown}
+                    ><ArrowDown /></Button>
+                }
+                {remove && <Button
+                    className="rvt-button--plain"
+                    type="button"
+                    title="Remove Member"
+                    onClick={remove}
+                ><TrashCan /></Button>
+                }
+            </Col>
+        </Row>
+    </li>)
+
+const renderParent = ({ input }: any) => {
+    const unit = input.value;
+    return <>
+        <Button type="button" onClick={() => alert("Update parent modal")}>Update parent</Button>
+        <h4>{unit.name}</h4>
+        <Button
+            className="rvt-button--plain"
+            type="button"
+            title="Remove Member"
+            onClick={() => input.onChange(null)}
+        ><TrashCan /></Button>
+        {unit.description &&
+            <p>{unit.description}</p>
+        }
+
+    </>
+}
+
 
 export default reduxForm<unit.IUnitProfile, IFormActions>({
     form: "editUnit",
