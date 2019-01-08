@@ -17,36 +17,6 @@ interface IFormProps extends
 interface IMemberField extends unit.IUnitMember { fieldId: number };
 
 
-const renderChildren = ({ fields }: any) => {
-    return <>
-        <List variant="plain">
-            {fields.map((field: any, index: number) => {
-                const unit = fields.get(index);
-                return (<li key={index}>
-                    <Button
-                        className="rvt-button--danger"
-                        type="button"
-                        title="Remove Unit"
-                        onClick={() => fields.remove(index)}
-                    >x</Button>
-                    <h4>{unit.name}</h4>
-                    {unit.description &&
-                        <p>{unit.description}</p>
-                    }
-                </li>
-                )
-            }
-            )}
-        </List>
-        <Button
-            className="rvt-button"
-            type="button"
-            title="Add child unit"
-            onClick={() => alert("Add child modal?")}
-        >Add child</Button>
-    </>
-}
-
 const renderDepartments = ({ fields }: any) => {
     return <>
         <List variant="plain">
@@ -239,6 +209,57 @@ const renderParent = ({ input }: any) => {
     </>
 }
 
+const renderChildren = ({ fields }: any) => {
+    return <>
+        <List variant="plain">
+            {fields.map((field: any, index: number) => {
+                const unit = fields.get(index);
+                return (<li key={index}>
+                    <Row>
+                        <Col>
+                            <h4>{unit.name}</h4>
+                            {unit.description &&
+                                <p>{unit.description}</p>
+                            }
+                        </Col>
+                        <Col>
+                            {fields.get(index - 1) &&
+                                <Button
+                                    variant="plain"
+                                    type="button"
+                                    title="Remove Unit"
+                                    onClick={() => fields.swap(index, index - 1)}
+                                ><ArrowUp /></Button>
+                            }
+                            {fields.get(index + 1) &&
+                                <Button
+                                    variant="plain"
+                                    type="button"
+                                    title="Remove Unit"
+                                    onClick={() => fields.swap(index, index + 1)}
+                                ><ArrowDown /></Button>
+                            }
+                            <Button
+                                variant="plain"
+                                type="button"
+                                title="Remove Unit"
+                                onClick={() => fields.remove(index)}
+                            ><TrashCan /></Button>
+                        </Col>
+                    </Row>
+                </li>
+                )
+            }
+            )}
+        </List>
+        <Button
+            className="rvt-button"
+            type="button"
+            title="Add child unit"
+            onClick={() => alert("Add child modal?")}
+        >Add child</Button>
+    </>
+}
 
 export default reduxForm<unit.IUnitProfile, IFormActions>({
     form: "editUnit",
