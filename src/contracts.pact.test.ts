@@ -54,7 +54,7 @@ const contentTypeHeader = {
 }
 
 const axiosRequest =
-  (method: string, server: string, path: string, data: Object = {}, headers: Object = { ...authHeader, ...contentTypeHeader }) =>
+  (method: string, server: string, path: string, data = {}, headers = { ...authHeader, ...contentTypeHeader }) =>
     axios.request({
       method: method,
       url: `${server}${path}`,
