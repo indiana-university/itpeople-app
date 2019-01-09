@@ -167,6 +167,44 @@
       }
     },
     {
+      "description": "a POST request to create a unit",
+      "providerState": "units may be created",
+      "request": {
+        "method": "POST",
+        "path": "/units",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "name": "Fourth floor IT",
+          "description": "It is creepy up here",
+          "url": "https://map.concept3d.com/?id=951#!m/9510954"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Location": "/units/1",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 4,
+          "name": "Fourth floor IT",
+          "description": "It is creepy up here",
+          "url": "https://map.concept3d.com/?id=951#!m/9510954"
+        },
+        "matchingRules": {
+          "$.headers.Location": {
+            "match": "type"
+          },
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
       "description": "a GET request for person 1",
       "providerState": "person 1 exists",
       "request": {

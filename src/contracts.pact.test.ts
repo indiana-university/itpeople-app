@@ -18,6 +18,7 @@ import { DepartmentActionTypes, saga as departmentSaga } from './components/Depa
 import { SearchActionTypes, saga as searchSaga } from './components/Search/store'
 import { Reducer } from 'redux';
 import { Effect } from 'redux-saga';
+import { somethingLike } from '@pact-foundation/pact/dsl/matchers';
 
 const lastSagaPutActionPayload = (ar: Array<Effect>) =>
   ar[ar.length - 1]["PUT"]["action"]["payload"]
@@ -66,6 +67,7 @@ const getFixture = (path: string) => axiosRequest('GET', JSON_SERVER, path)
 
 const getPact = (path: string) => axiosRequest('GET', PACT_SERVER, path)
 const putPact = (path: string, data: Object) => axiosRequest('PUT', PACT_SERVER, path, data)
+const postPact = (path: string, data: Object) => axiosRequest('POST', PACT_SERVER, path, data)
 
 beforeAll(async () => pactServer.setup())
 
@@ -75,10 +77,10 @@ describe('Contracts', () => {
 
   describe('for units', () => {
 
-    const resourceName = '/units'
+    const unitsResource = '/units'
 
     it('requires authentication to view a unit', async () => {
-      const path = `${resourceName}/401`
+      const path = `${unitsResource}/401`
       await pactServer.addInteraction({
         state: 'the server requires authorization for GET /units/*',
         uponReceiving: 'an unauthorized GET request for unit 401',
@@ -97,7 +99,7 @@ describe('Contracts', () => {
 
     describe('retrieving a unit', () => {
       const recordId = 1
-      const path = `${resourceName}/${recordId}`
+      const path = `${unitsResource}/${recordId}`
 
       it('works', async () => {
         const resource = (await getFixture(path)).data
@@ -141,7 +143,7 @@ describe('Contracts', () => {
       })
     })
     describe('retrieving all units', () => {
-      const path = resourceName
+      const path = unitsResource
 
       it('works', async () => {
         const resource = (await getFixture(path)).data
@@ -186,7 +188,7 @@ describe('Contracts', () => {
 
     describe('updating attributes of an existing unit', async () => {
       const recordId = 1
-      const path = `${resourceName}/${recordId}`
+      const path = `${unitsResource}/${recordId}`
 
       it('works', async () => {
         let putBody = (await getFixture(`/allUnits/4`)).data
@@ -208,14 +210,41 @@ describe('Contracts', () => {
         expect(pactResponseStatus).toEqual(200)
       })
     })
+
+    describe('creating a new unit', async () => {
+      const path = unitsResource
+
+      it('works', async () => {
+        const fixtureUnit = (await getFixture(`/allUnits/4`)).data
+        const { id, ...postBody } = fixtureUnit
+        await pactServer.addInteraction({
+          state: 'units may be created',
+          uponReceiving: 'a POST request to create a unit',
+          withRequest: {
+            method: 'POST',
+            headers: { ...authHeader, ...contentTypeHeader },
+            path: path,
+            body: postBody
+          },
+          willRespondWith: {
+            status: 201,
+            headers: { ...{ Location: somethingLike(`${path}/1`) }, ...contentTypeHeader },
+            body: somethingLike(fixtureUnit)
+          }
+        })
+        const pactResponseStatus = (await postPact(path, postBody)).status
+        expect(pactResponseStatus).toEqual(201)
+      })
+    })
+
   })
   describe('for people', () => {
 
-    const resourceName = '/people'
+    const peopleResource = '/people'
 
     describe('retrieving a person', () => {
       const recordId = 1
-      const path = `${resourceName}/${recordId}`
+      const path = `${peopleResource}/${recordId}`
 
       it('works', async () => {
         const resource = (await getFixture(path)).data
@@ -311,7 +340,7 @@ describe('Contracts', () => {
     describe('updating location of an existing person', async () => {
 
       const recordId = 5
-      const path = `${resourceName}/${recordId}`
+      const path = `${peopleResource}/${recordId}`
 
       it('works', async () => {
 
@@ -338,12 +367,12 @@ describe('Contracts', () => {
 
   describe('for departments', () => {
 
-    const resourceName = '/departments'
+    const departmentsResource = '/departments'
 
     describe('retrieving a department', () => {
 
       const recordId = 1
-      const path = `${resourceName}/${recordId}`
+      const path = `${departmentsResource}/${recordId}`
 
       it('works', async () => {
         const resource = (await getFixture(path)).data
@@ -387,7 +416,7 @@ describe('Contracts', () => {
     })
     describe('retrieving all departments', () => {
 
-      const path = resourceName
+      const path = departmentsResource
 
       it('works', async () => {
         const resource = (await getFixture(path)).data
@@ -434,7 +463,7 @@ describe('Contracts', () => {
     describe('updating attributes of a department', async () => {
 
       const recordId = 1
-      const path = `${resourceName}/${recordId}`
+      const path = `${departmentsResource}/${recordId}`
 
       it('works', async () => {
         let putBody = (await getFixture(`/allDepartments/${recordId}`)).data
