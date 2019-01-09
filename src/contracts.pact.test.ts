@@ -75,8 +75,10 @@ describe('Contracts', () => {
 
   describe('for units', () => {
 
+    const resourceName = '/units'
+
     it('requires authentication to view a unit', async () => {
-      const path = '/units/401'
+      const path = `${resourceName}/401`
       await pactServer.addInteraction({
         state: 'the server requires authorization for GET /units/*',
         uponReceiving: 'an unauthorized GET request for unit 401',
@@ -95,7 +97,7 @@ describe('Contracts', () => {
 
     describe('retrieving a unit', () => {
       const recordId = 1
-      const path = `/units/${recordId}`
+      const path = `${resourceName}/${recordId}`
 
       it('works', async () => {
         const resource = (await getFixture(path)).data
@@ -139,7 +141,7 @@ describe('Contracts', () => {
       })
     })
     describe('retrieving all units', () => {
-      const path = '/units'
+      const path = resourceName
 
       it('works', async () => {
         const resource = (await getFixture(path)).data
@@ -184,7 +186,7 @@ describe('Contracts', () => {
 
     describe('updating attributes of an existing unit', async () => {
       const recordId = 1
-      const path = `/units/${recordId}`
+      const path = `${resourceName}/${recordId}`
 
       it('works', async () => {
         let putBody = (await getFixture(`/allUnits/4`)).data
@@ -207,12 +209,13 @@ describe('Contracts', () => {
       })
     })
   })
-  describe('for profiles', () => {
+  describe('for people', () => {
 
-    describe('retrieving a profile', () => {
+    const resourceName = '/people'
 
+    describe('retrieving a person', () => {
       const recordId = 1
-      const path = `/people/${recordId}`
+      const path = `${resourceName}/${recordId}`
 
       it('works', async () => {
         const resource = (await getFixture(path)).data
@@ -304,13 +307,15 @@ describe('Contracts', () => {
         expect(sagaPayload).toEqual(resource)
       })
     })
-    
+
     describe('updating location of an existing person', async () => {
+
       const recordId = 5
-      const path = `/people/${recordId}`
+      const path = `${resourceName}/${recordId}`
 
       it('works', async () => {
-        let putBody = { location: 'CIB sub-sub-basement' }
+
+        const putBody = { location: 'CIB sub-sub-basement' }
         await pactServer.addInteraction({
           state: `person ${recordId} exists`,
           uponReceiving: `a PUT request to update location for person ${recordId}`,
@@ -333,10 +338,12 @@ describe('Contracts', () => {
 
   describe('for departments', () => {
 
+    const resourceName = '/departments'
+
     describe('retrieving a department', () => {
 
       const recordId = 1
-      const path = `/departments/${recordId}`
+      const path = `${resourceName}/${recordId}`
 
       it('works', async () => {
         const resource = (await getFixture(path)).data
@@ -378,50 +385,77 @@ describe('Contracts', () => {
         expect(sagaPayload).toEqual(resource)
       })
     })
-  })
-  describe('retrieving all departments', () => {
+    describe('retrieving all departments', () => {
 
-    const path = '/departments'
+      const path = resourceName
 
-    it('works', async () => {
-      const resource = (await getFixture(path)).data
-      await pactServer.addInteraction({
-        state: 'at least one department exists',
-        uponReceiving: 'a GET request to list departments',
-        withRequest: {
-          method: 'GET',
-          headers: authHeader,
-          path: path
-        },
-        willRespondWith: {
-          status: 200,
-          headers: contentTypeHeader,
-          body: deepMatchify(resource)
-        }
-      })
-      const pactResponseBody = (await getPact(path)).data
-      expect(pactResponseBody).not.toEqual({})
-    })
-
-    it('works through app saga', async () => {
-      const resource = (await getFixture(path)).data
-      const reducer: Reducer = () =>
-        ({
-          department: {
-            request: { id: '' }
+      it('works', async () => {
+        const resource = (await getFixture(path)).data
+        await pactServer.addInteraction({
+          state: 'at least one department exists',
+          uponReceiving: 'a GET request to list departments',
+          withRequest: {
+            method: 'GET',
+            headers: authHeader,
+            path: path
+          },
+          willRespondWith: {
+            status: 200,
+            headers: contentTypeHeader,
+            body: deepMatchify(resource)
           }
         })
+        const pactResponseBody = (await getPact(path)).data
+        expect(pactResponseBody).not.toEqual({})
+      })
 
-      const { allEffects } = await expectSaga(departmentSaga)
-        .withReducer(reducer)
-        .dispatch({ type: DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST })
-        .put.actionType(
-          DepartmentActionTypes.DEPARTMENT_FETCH_SUCCESS
-        )
-        .run()
+      it('works through app saga', async () => {
+        const resource = (await getFixture(path)).data
+        const reducer: Reducer = () =>
+          ({
+            department: {
+              request: { id: '' }
+            }
+          })
 
-      const sagaPayload = lastSagaPutActionPayload(allEffects)
-      expect(sagaPayload).toEqual(resource)
+        const { allEffects } = await expectSaga(departmentSaga)
+          .withReducer(reducer)
+          .dispatch({ type: DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST })
+          .put.actionType(
+            DepartmentActionTypes.DEPARTMENT_FETCH_SUCCESS
+          )
+          .run()
+
+        const sagaPayload = lastSagaPutActionPayload(allEffects)
+        expect(sagaPayload).toEqual(resource)
+      })
+    })
+
+    describe('updating attributes of a department', async () => {
+
+      const recordId = 1
+      const path = `${resourceName}/${recordId}`
+
+      it('works', async () => {
+        let putBody = (await getFixture(`/allDepartments/${recordId}`)).data
+        delete putBody.id
+
+        await pactServer.addInteraction({
+          state: `department ${recordId} exists`,
+          uponReceiving: `a PUT request to update department ${recordId}`,
+          withRequest: {
+            method: 'PUT',
+            headers: { ...authHeader, ...contentTypeHeader },
+            path: path,
+            body: putBody
+          },
+          willRespondWith: {
+            status: 200,
+          }
+        })
+        const pactResponseStatus = (await putPact(path, putBody)).status
+        expect(pactResponseStatus).toEqual(200)
+      })
     })
   })
 })
