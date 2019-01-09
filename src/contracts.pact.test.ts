@@ -304,6 +304,31 @@ describe('Contracts', () => {
         expect(sagaPayload).toEqual(resource)
       })
     })
+    
+    describe('updating location of an existing person', async () => {
+      const recordId = 5
+      const path = `/people/${recordId}`
+
+      it('works', async () => {
+        let putBody = { location: 'CIB sub-sub-basement' }
+        await pactServer.addInteraction({
+          state: `person ${recordId} exists`,
+          uponReceiving: `a PUT request to update location for person ${recordId}`,
+          withRequest: {
+            method: 'PUT',
+            headers: { ...authHeader, ...contentTypeHeader },
+            path: path,
+            body: putBody
+          },
+          willRespondWith: {
+            status: 200,
+          }
+        })
+        const pactResponseStatus = (await putPact(path, putBody)).status
+        expect(pactResponseStatus).toEqual(200)
+      })
+    })
+
   })
 
   describe('for departments', () => {
