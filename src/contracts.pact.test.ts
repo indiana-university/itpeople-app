@@ -18,7 +18,6 @@ import { DepartmentActionTypes, saga as departmentSaga } from './components/Depa
 import { SearchActionTypes, saga as searchSaga } from './components/Search/store'
 import { Reducer } from 'redux';
 import { Effect } from 'redux-saga';
-import { somethingLike } from '@pact-foundation/pact/dsl/matchers';
 
 const lastSagaPutActionPayload = (ar: Array<Effect>) =>
   ar[ar.length - 1]["PUT"]["action"]["payload"]
@@ -228,8 +227,8 @@ describe('Contracts', () => {
           },
           willRespondWith: {
             status: 201,
-            headers: { ...{ Location: somethingLike(`${path}/1`) }, ...contentTypeHeader },
-            body: somethingLike(fixtureUnit)
+            headers: { ...{ Location: Matchers.like(`${path}/1`) }, ...contentTypeHeader },
+            body: Matchers.like(fixtureUnit)
           }
         })
         const pactResponseStatus = (await postPact(path, postBody)).status
@@ -364,7 +363,6 @@ describe('Contracts', () => {
     })
 
   })
-
   describe('for departments', () => {
 
     const departmentsResource = '/departments'
@@ -460,15 +458,14 @@ describe('Contracts', () => {
       })
     })
 
-    describe('updating attributes of a department', async () => {
+    describe('updating attributes of a department', () => {
 
       const recordId = 1
       const path = `${departmentsResource}/${recordId}`
 
       it('works', async () => {
-        let putBody = (await getFixture(`/allDepartments/${recordId}`)).data
-        delete putBody.id
-
+        const fixtureDept = (await getFixture(`/allDepartments/${recordId}`)).data
+        const { id, ...putBody } = fixtureDept
         await pactServer.addInteraction({
           state: `department ${recordId} exists`,
           uponReceiving: `a PUT request to update department ${recordId}`,
@@ -486,6 +483,34 @@ describe('Contracts', () => {
         expect(pactResponseStatus).toEqual(200)
       })
     })
+
+    describe('creating a new department', () => {
+
+      const path = departmentsResource
+      
+      it('works', async () => {
+        const fixtureDept = (await getFixture('/allDepartments/1')).data
+        const { id, ...postBody } = fixtureDept
+        await pactServer.addInteraction({
+          state: 'departments may be created',
+          uponReceiving: 'a POST request to create a department',
+          withRequest: {
+            method: 'POST',
+            headers: { ...authHeader, ...contentTypeHeader },
+            path: path,
+            body: postBody
+          },
+          willRespondWith: {
+            status: 201,
+            headers: { ...{ Location: Matchers.like(`${path}/1`) }, ...contentTypeHeader },
+            body: Matchers.like(fixtureDept)
+          }
+        })
+        const pactResponseStatus = (await postPact(path, postBody)).status
+        expect(pactResponseStatus).toEqual(201)
+      })
+    })
+
   })
 })
 
