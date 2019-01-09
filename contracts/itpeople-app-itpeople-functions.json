@@ -7,6 +7,19 @@
   },
   "interactions": [
     {
+      "description": "an unauthorized GET request for unit 401",
+      "providerState": "the server requires authorization for GET /units/*",
+      "request": {
+        "method": "GET",
+        "path": "/units/401"
+      },
+      "response": {
+        "status": 401,
+        "headers": {
+        }
+      }
+    },
+    {
       "description": "a GET request for unit 1",
       "providerState": "unit 1 exists",
       "request": {

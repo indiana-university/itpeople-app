@@ -75,6 +75,24 @@ describe('Contracts', () => {
 
   describe('for units', () => {
 
+    it('requires authentication to view a unit', async () => {
+      const path = '/units/401'
+      await pactServer.addInteraction({
+        state: 'the server requires authorization for GET /units/*',
+        uponReceiving: 'an unauthorized GET request for unit 401',
+        withRequest: {
+          method: 'GET',
+          path: path
+        },
+        willRespondWith: {
+          status: 401
+        }
+      })
+      expect.assertions(1)
+      return expect(axios.get(`${PACT_SERVER}${path}`)).rejects.toEqual(
+        new Error('Request failed with status code 401'))
+    })
+
     describe('retrieving a unit', () => {
       const recordId = 1
       const path = `/units/${recordId}`
