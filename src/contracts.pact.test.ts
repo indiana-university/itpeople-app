@@ -182,9 +182,10 @@ describe('Contracts', () => {
       })
     })
 
-    describe('updating an existing unit', async () => {
+    describe('updating attributes of an existing unit', async () => {
       const recordId = 1
       const path = `/units/${recordId}`
+
       it('works', async () => {
         let putBody = (await getFixture(`/allUnits/4`)).data
         delete putBody.id
@@ -204,28 +205,6 @@ describe('Contracts', () => {
         const pactResponseStatus = (await putPact(path, putBody)).status
         expect(pactResponseStatus).toEqual(200)
       })
-
-      it('works through app saga', async () => {
-        const resource = (await getFixture(path)).data
-        const reducer: Reducer = () =>
-          ({
-            unit: {
-              request: { id: recordId }
-            }
-          })
-
-        const { allEffects } = await expectSaga(unitSaga)
-          .withReducer(reducer)
-          .dispatch({ type: UnitActionTypes.UNIT_FETCH_REQUEST })
-          .put.actionType(
-            UnitActionTypes.UNIT_FETCH_SUCCESS
-          )
-          .run()
-
-        const sagaPayload = lastSagaPutActionPayload(allEffects)
-        expect(sagaPayload).toEqual(resource)
-      })
-
     })
   })
   describe('for profiles', () => {
