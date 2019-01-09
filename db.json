@@ -130,7 +130,11 @@
       "id": 5,
       "name": "Jerry Gergich",
       "netId": "garryg",
-      "campusEmail": "terry@pawnee.in.us"
+      "position": "Parks and Rec Dude",
+      "location": "Municipal Building, Office 123",
+      "campusPhone": "812-856-1234",
+      "campusEmail": "terry@pawnee.in.us",
+      "campus": "Bloomington"
     }
   ],
   "allUnits": [
