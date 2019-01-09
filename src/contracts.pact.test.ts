@@ -91,7 +91,7 @@ describe('Contracts', () => {
         }
       })
       expect.assertions(1)
-      return expect(axios.get(`${PACT_SERVER}${path}`)).rejects.toEqual(
+      await expect(axios.get(`${PACT_SERVER}${path}`)).rejects.toEqual(
         new Error('Request failed with status code 401'))
     })
 
