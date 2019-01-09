@@ -205,6 +205,22 @@
       }
     },
     {
+      "description": "a DELETE request for /units/1",
+      "providerState": "/units/1 exists",
+      "request": {
+        "method": "DELETE",
+        "path": "/units/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 204,
+        "headers": {
+        }
+      }
+    },
+    {
       "description": "a GET request for person 1",
       "providerState": "person 1 exists",
       "request": {

@@ -237,6 +237,29 @@ describe('Contracts', () => {
       })
     })
 
+    describe('deleting a unit', () => {
+
+      const recordId = 1
+      const path = `${unitsResource}/${recordId}`
+      
+      it('works', async () => {
+        await pactServer.addInteraction({
+          state: `${path} exists`,
+          uponReceiving: `a DELETE request for ${path}`,
+          withRequest: {
+            method: 'DELETE',
+            headers: authHeader,
+            path: path
+          },
+          willRespondWith: {
+            status: 204
+          }
+        })
+        const pactResponseStatus = (await deletePact(path)).status
+        expect(pactResponseStatus).toEqual(204)
+      })
+    })
+
   })
   describe('for people', () => {
 
