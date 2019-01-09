@@ -457,8 +457,8 @@
       }
     },
     {
-      "description": "a GET request for department 1",
-      "providerState": "department 1 exists",
+      "description": "a GET request for /departments/1",
+      "providerState": "/departments/1 exists",
       "request": {
         "method": "GET",
         "path": "/departments/1",
@@ -559,7 +559,7 @@
     },
     {
       "description": "a PUT request to update department 1",
-      "providerState": "department 1 exists",
+      "providerState": "/departments/1 exists",
       "request": {
         "method": "PUT",
         "path": "/departments/1",
@@ -579,8 +579,8 @@
       }
     },
     {
-      "description": "a POST request to create a department",
-      "providerState": "departments may be created",
+      "description": "a POST request for /departments",
+      "providerState": "no state",
       "request": {
         "method": "POST",
         "path": "/departments",
@@ -611,6 +611,22 @@
           "$.body": {
             "match": "type"
           }
+        }
+      }
+    },
+    {
+      "description": "a DELETE request for /departments/1",
+      "providerState": "/departments/1 exists",
+      "request": {
+        "method": "DELETE",
+        "path": "/departments/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 204,
+        "headers": {
         }
       }
     },

@@ -67,6 +67,7 @@ const getFixture = (path: string) => axiosRequest('GET', JSON_SERVER, path)
 const getPact = (path: string) => axiosRequest('GET', PACT_SERVER, path)
 const putPact = (path: string, data: Object) => axiosRequest('PUT', PACT_SERVER, path, data)
 const postPact = (path: string, data: Object) => axiosRequest('POST', PACT_SERVER, path, data)
+const deletePact = (path: string) => axiosRequest('DELETE', PACT_SERVER, path)
 
 beforeAll(async () => pactServer.setup())
 
@@ -375,8 +376,8 @@ describe('Contracts', () => {
       it('works', async () => {
         const resource = (await getFixture(path)).data
         await pactServer.addInteraction({
-          state: `department ${recordId} exists`,
-          uponReceiving: `a GET request for department ${recordId}`,
+          state: `${path} exists`,
+          uponReceiving: `a GET request for ${path}`,
           withRequest: {
             method: 'GET',
             headers: authHeader,
@@ -467,7 +468,7 @@ describe('Contracts', () => {
         const fixtureDept = (await getFixture(`/allDepartments/${recordId}`)).data
         const { id, ...putBody } = fixtureDept
         await pactServer.addInteraction({
-          state: `department ${recordId} exists`,
+          state: `${path} exists`,
           uponReceiving: `a PUT request to update department ${recordId}`,
           withRequest: {
             method: 'PUT',
@@ -492,8 +493,8 @@ describe('Contracts', () => {
         const fixtureDept = (await getFixture('/allDepartments/1')).data
         const { id, ...postBody } = fixtureDept
         await pactServer.addInteraction({
-          state: 'departments may be created',
-          uponReceiving: 'a POST request to create a department',
+          state: 'no state',
+          uponReceiving: `a POST request for ${path}`,
           withRequest: {
             method: 'POST',
             headers: { ...authHeader, ...contentTypeHeader },
@@ -508,6 +509,29 @@ describe('Contracts', () => {
         })
         const pactResponseStatus = (await postPact(path, postBody)).status
         expect(pactResponseStatus).toEqual(201)
+      })
+    })
+
+    describe('deleting a department', () => {
+
+      const recordId = 1
+      const path = `${departmentsResource}/${recordId}`
+      
+      it('works', async () => {
+        await pactServer.addInteraction({
+          state: `${path} exists`,
+          uponReceiving: `a DELETE request for ${path}`,
+          withRequest: {
+            method: 'DELETE',
+            headers: authHeader,
+            path: path
+          },
+          willRespondWith: {
+            status: 204
+          }
+        })
+        const pactResponseStatus = (await deletePact(path)).status
+        expect(pactResponseStatus).toEqual(204)
       })
     })
 
