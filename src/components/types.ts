@@ -20,7 +20,8 @@ export interface IApplicationState {
     units: Units.IState,
     department: Department.IState,
     departments: Departments.IState,
-    form: any
+    form: any,
+    modal: string
 }
 
 export enum ViewStateType {

@@ -2,7 +2,8 @@ import * as React from 'react';
 import { reduxForm, InjectedFormProps, FieldArray, Field } from 'redux-form';
 import * as unit from '../store';
 import { Breadcrumbs, Content, PageTitle } from 'src/components/layout';
-import { Section, List, Button, Row, Col } from 'rivet-react';
+import { Section, List, Button, Row, Col, ModalBody, Input, RadioButton, ModalControls } from 'rivet-react';
+import { Modal } from '../../layout/Modal'
 import { RivetInputField, RivetInput, RivetTextarea, RivetTextareaField, required, url } from 'src/components/form';
 import { TrashCan, ArrowUp, ArrowDown } from 'src/components/icons';
 
@@ -11,13 +12,11 @@ interface IFormActions {
     cancel: typeof unit.cancel;
 }
 
-interface IFormProps extends
-    unit.IUnitProfile, IFormActions, InjectedFormProps<unit.IUnitProfile, IFormActions> { }
+interface IFormProps extends unit.IUnitProfile, IFormActions, InjectedFormProps<unit.IUnitProfile, IFormActions> {}
 
 interface IMemberField extends unit.IUnitMember { fieldId: number };
 
-const EditForm: React.SFC<IFormProps> = props =>
-    <>
+const EditForm: React.SFC<IFormProps> = props => <>
         <Breadcrumbs
             crumbs={[
                 { text: "Home", href: "/" },
@@ -114,7 +113,38 @@ const renderMembers = ({ fields }: any) => {
                     return renderMember(member, index, remove, moveUp, moveDown)
                 })}
         </List>
-        <Button type="button" onClick={() => alert("add member modal")}>Add Member</Button>
+        <Modal
+            id="Add member to unit"
+            title="Modal Dialog"
+            buttonText="Add Member"
+        >
+            <form onSubmit={(props)=>{
+                console.log(props)
+            }}>
+                <ModalBody>
+                    <Input type="text" name="username" label="Username" margin={{ bottom: 'md' }} />
+                    <Input type="text" name="title" label="Title" margin={{ bottom: 'md' }} />
+                    <fieldset>
+                        <legend>Display in Orgcharts?</legend>
+                        <List orientation="inline">
+                            <RadioButton name="orgchart" label="Yes" />
+                            <RadioButton name="orgchart" label="No" />
+                        </List>
+                    </fieldset>
+                    <Input type="number" name="percentage" label="Percentage" />
+                    <fieldset>
+                        <legend>Display percentage in Orgcharts?</legend>
+                        <List orientation="inline">
+                            <RadioButton name="show-percentage" label="Yes" />
+                            <RadioButton name="show-percentage" label="No" />
+                        </List>
+                    </fieldset>
+                </ModalBody>
+                <ModalControls>
+                    <Button type="submit">Submit</Button>
+                </ModalControls>
+            </form>
+        </Modal>
     </>;
 }
 
@@ -131,7 +161,6 @@ const renderMember = (
             </Col>
             <Col last={true}>
                 {moveUp && <Button
-                    style={{ rotate: '180deg' }}
                     className="rvt-button--plain"
                     type="button"
                     title="Move Member"
@@ -160,7 +189,15 @@ const renderMember = (
 const renderParent = ({ input }: any) => {
     const unit = input.value;
     return <>
-        <Button type="button" onClick={() => alert("Update parent modal")}>Update parent</Button>
+        <Modal 
+        id="update unit parents" 
+        title="Update Parent"
+        buttonText="Update parent"
+        >
+            <ModalBody>
+                todo: update unit parents modal
+            </ModalBody>
+        </Modal>
         <h4>{unit.name}</h4>
         <Button
             className="rvt-button--plain"
@@ -218,12 +255,11 @@ const renderChildren = ({ fields }: any) => {
             }
             )}
         </List>
-        <Button
-            className="rvt-button"
-            type="button"
-            title="Add child unit"
-            onClick={() => alert("Add child modal?")}
-        >Add child</Button>
+        <Modal title="Add child unit" id="Add child unit" buttonText="Add child">
+            <ModalBody>
+                TODO: Add child unit modal
+            </ModalBody>
+        </Modal>
     </>
 }
 
@@ -270,18 +306,15 @@ const renderDepartments = ({ fields }: any) => {
             }
             )}
         </List>
-        <Button
-            className="rvt-button"
-            type="button"
-            title="Add department unit"
-            onClick={() => alert("Add department modal")}
-        >Add department</Button>
+        <Modal id="add department to unit" title="Update Parent" buttonText="Add department">
+            <ModalBody>
+                todo: add department to unit modal
+            </ModalBody>
+        </Modal>
     </>
 }
-
 
 export default reduxForm<unit.IUnitProfile, IFormActions>({
     form: "editUnit",
     enableReinitialize: true
 })(EditForm);
-

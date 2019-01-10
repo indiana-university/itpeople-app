@@ -5,7 +5,7 @@
 
 import { connectRouter, routerMiddleware } from 'connected-react-router'
 import { History } from 'history'
-import { applyMiddleware, createStore, Store  } from 'redux'
+import { applyMiddleware, createStore, Store } from 'redux'
 // We'll be using Redux Devtools. We can use the `composeWithDevTools()`
 // directive so we can pass our middleware along with it
 import { composeWithDevTools } from 'redux-devtools-extension'
@@ -20,19 +20,21 @@ import { reducer as formReducer } from 'redux-form'
 import { all, fork } from 'redux-saga/effects'
 import { IApplicationState } from 'src/components/types';
 
+import * as Auth from './components/SignIn/store'
 import * as Department from "./components/Department/store";
 import * as Departments from "./components/Departments/store";
+import * as Modal from "./components/layout/Modal/store";
 import * as Profile from './components/Profile/store'
 import * as SearchSimple from './components/Search/store'
-import * as Auth from './components/SignIn/store'
 import * as Unit from "./components/Unit/store";
 import * as Units from "./components/Units/store";
 
-export const initialState : IApplicationState = {
+export const initialState: IApplicationState = {
   auth: Auth.initialState,
-  form: {},
   department: Department.initialState,
   departments: Departments.initialState,
+  form: {},
+  modal: "",
   profile: Profile.initialState,
   searchSimple: SearchSimple.initialState,
   unit: Unit.initialState,
@@ -49,9 +51,10 @@ export interface IConnectedReduxProps<A extends Action = AnyAction> {
 // the reducer acts on the corresponding ApplicationState property type.
 export const rootReducer = combineReducers<IApplicationState>({
   auth: Auth.reducer,
-  form: formReducer,
   department: Department.reducer,
   departments: Departments.reducer,
+  form: formReducer,
+  modal: Modal.reducer,
   profile: Profile.reducer,
   searchSimple: SearchSimple.reducer,
   unit: Unit.reducer,
@@ -63,11 +66,11 @@ export const rootReducer = combineReducers<IApplicationState>({
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
 export function* rootSaga() {
   yield all([
-    fork(Auth.saga), 
+    fork(Auth.saga),
     fork(Department.saga),
-    fork(Departments.saga), 
-    fork(Profile.saga), 
-    fork(SearchSimple.saga), 
+    fork(Departments.saga),
+    fork(Profile.saga),
+    fork(SearchSimple.saga),
     fork(Unit.saga),
     fork(Units.saga),
   ])
@@ -76,7 +79,7 @@ export function* rootSaga() {
 
 // Attempt to load persisted state from session storage.
 // Otherwise, return the default initial state.
-const loadState = () : IApplicationState  => {
+const loadState = (): IApplicationState => {
   try {
     const serializedState = localStorage.getItem('state')
     if (serializedState) {
@@ -102,7 +105,7 @@ const saveState = (state: IApplicationState) => {
   }
 }
 
-export default function configureStore( history: History ): Store<IApplicationState> {
+export default function configureStore(history: History): Store<IApplicationState> {
   // create the composing function for our middlewares
   const composeEnhancers = composeWithDevTools({})
   // create the redux-saga middleware
