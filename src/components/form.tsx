@@ -1,7 +1,7 @@
 import * as React from "react";
 import { WrappedFieldMetaProps, Field, WrappedFieldProps, GenericField } from "redux-form";
 import { TextProps } from "rivet-react/build/dist/components/Input/common";
-import { Input, Textarea } from "rivet-react";
+import { Input, Textarea, Select } from "rivet-react";
 
 // Validation
 export const required = (value: any) => value ? undefined : "This field is required.";
@@ -43,3 +43,13 @@ export const RivetTextarea: React.SFC<WrappedFieldProps & React.TextareaHTMLAttr
         variant={resolveVariant(props.meta)}
         note={resolveNote(props.meta)}
         {...props.input} />;
+        // React.StatelessComponent<TextProps & React.SelectHTMLAttributes<HTMLSelectElement> & Rivet.Props>;   
+export const RivetSelectField = Field as new () => GenericField<React.SelectHTMLAttributes<HTMLSelectElement> & TextProps>;
+export const RivetSelect: React.SFC<WrappedFieldProps & React.SelectHTMLAttributes<HTMLSelectElement> & TextProps> = props =>
+    <Select
+        label={props.label}
+        variant={resolveVariant(props.meta)}
+        note={resolveNote(props.meta)}
+        {...props.input} >
+        {props.children}
+        </Select>

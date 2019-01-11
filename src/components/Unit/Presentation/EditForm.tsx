@@ -2,21 +2,29 @@ import * as React from 'react';
 import { reduxForm, InjectedFormProps, FieldArray, Field } from 'redux-form';
 import * as unit from '../store';
 import { Breadcrumbs, Content, PageTitle } from 'src/components/layout';
-import { Section, List, Button, Row, Col, ModalBody, Input, RadioButton, ModalControls } from 'rivet-react';
-import { Modal } from '../../layout/Modal'
+import { Section, List, Button, Row, Col, ModalBody } from 'rivet-react';
+import { Modal, closeModal } from '../../layout/Modal'
 import { RivetInputField, RivetInput, RivetTextarea, RivetTextareaField, required, url } from 'src/components/form';
 import { TrashCan, ArrowUp, ArrowDown } from 'src/components/icons';
+import AddMemeberForm from './AddMemeberForm';
+import { connect } from 'react-redux';
+import UpdateParentForm from './UpdateParentForm';
+import AddChildForm from './AddChildForm';
+import AddDepartmentForm from './AddDepartment';
 
 interface IFormActions {
     save: typeof unit.saveRequest;
     cancel: typeof unit.cancel;
+    closeModal: typeof closeModal
 }
 
-interface IFormProps extends unit.IUnitProfile, IFormActions, InjectedFormProps<unit.IUnitProfile, IFormActions> {}
+interface IFormProps extends unit.IUnitProfile, IFormActions, InjectedFormProps<unit.IUnitProfile, IFormActions> { }
 
 interface IMemberField extends unit.IUnitMember { fieldId: number };
-
-const EditForm: React.SFC<IFormProps> = props => <>
+let modalClose = () => { };
+let EditForm: React.SFC<IFormProps> | any = (props: IFormProps) => {
+    modalClose = props.closeModal;
+    return <>
         <Breadcrumbs
             crumbs={[
                 { text: "Home", href: "/" },
@@ -68,7 +76,8 @@ const EditForm: React.SFC<IFormProps> = props => <>
                 </form>
             </Section>
         </Content>
-    </>;
+    </>
+};
 
 
 const renderMembers = ({ fields }: any) => {
@@ -118,32 +127,13 @@ const renderMembers = ({ fields }: any) => {
             title="Modal Dialog"
             buttonText="Add Member"
         >
-            <form onSubmit={(props)=>{
-                console.log(props)
-            }}>
-                <ModalBody>
-                    <Input type="text" name="username" label="Username" margin={{ bottom: 'md' }} />
-                    <Input type="text" name="title" label="Title" margin={{ bottom: 'md' }} />
-                    <fieldset>
-                        <legend>Display in Orgcharts?</legend>
-                        <List orientation="inline">
-                            <RadioButton name="orgchart" label="Yes" />
-                            <RadioButton name="orgchart" label="No" />
-                        </List>
-                    </fieldset>
-                    <Input type="number" name="percentage" label="Percentage" />
-                    <fieldset>
-                        <legend>Display percentage in Orgcharts?</legend>
-                        <List orientation="inline">
-                            <RadioButton name="show-percentage" label="Yes" />
-                            <RadioButton name="show-percentage" label="No" />
-                        </List>
-                    </fieldset>
-                </ModalBody>
-                <ModalControls>
-                    <Button type="submit">Submit</Button>
-                </ModalControls>
-            </form>
+            <ModalBody>
+                <AddMemeberForm onSubmit={(member: any) => {
+                    fields.push(member);
+                    console.log(member)
+                    modalClose();
+                }} />
+            </ModalBody>
         </Modal>
     </>;
 }
@@ -189,13 +179,16 @@ const renderMember = (
 const renderParent = ({ input }: any) => {
     const unit = input.value;
     return <>
-        <Modal 
-        id="update unit parents" 
-        title="Update Parent"
-        buttonText="Update parent"
+        <Modal
+            id="update unit parents"
+            title="Update Parent"
+            buttonText="Update parent"
         >
             <ModalBody>
-                todo: update unit parents modal
+                <UpdateParentForm onSubmit={(parent: any) => {
+                    console.log(parent);
+                    modalClose();
+                }} />
             </ModalBody>
         </Modal>
         <h4>{unit.name}</h4>
@@ -257,7 +250,10 @@ const renderChildren = ({ fields }: any) => {
         </List>
         <Modal title="Add child unit" id="Add child unit" buttonText="Add child">
             <ModalBody>
-                TODO: Add child unit modal
+                <AddChildForm onSubmit={(child: any) => {
+                    fields.push(child);
+                    modalClose()
+                }} />
             </ModalBody>
         </Modal>
     </>
@@ -308,13 +304,23 @@ const renderDepartments = ({ fields }: any) => {
         </List>
         <Modal id="add department to unit" title="Update Parent" buttonText="Add department">
             <ModalBody>
-                todo: add department to unit modal
+                <AddDepartmentForm onSubmit={(department: any) => {
+                    console.log(department);
+                    fields.push(department);
+                    modalClose();
+                }} />
             </ModalBody>
         </Modal>
     </>
 }
 
-export default reduxForm<unit.IUnitProfile, IFormActions>({
+EditForm = reduxForm<unit.IUnitProfile, IFormActions>({
     form: "editUnit",
     enableReinitialize: true
 })(EditForm);
+
+EditForm = connect(null, {
+    closeModal: closeModal
+})(EditForm)
+
+export default EditForm;

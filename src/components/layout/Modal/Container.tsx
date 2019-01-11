@@ -11,23 +11,6 @@ import { closeModal, openModal } from "./store";
 import { Modal as RivetModal, Button } from "rivet-react";
 import { ModalProps } from "rivet-react/build/dist/components/Modal/Modal";
 
-interface IDispatchProps {
-    closeModal: typeof closeModal;
-    openModal: typeof openModal;
-}
-interface IStateProps {
-    current: string,
-}
-
-interface IElementProps extends ModalProps {
-    id: string,
-    children?: any,
-    title: string,
-    buttonText?: string
-}
-
-interface IProps extends IDispatchProps, IStateProps, IElementProps { }
-
 const Container: React.SFC<IElementProps> = (props: IProps) => {
     const isOpen = props.id == props.current;
     return <>
@@ -44,6 +27,23 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
     closeModal: () => dispatch(closeModal()),
     openModal: (id) => dispatch(openModal(id))
 });
+
+interface IDispatchProps {
+    closeModal: typeof closeModal;
+    openModal: typeof openModal;
+}
+interface IStateProps {
+    current: string,
+}
+
+interface IElementProps extends ModalProps {
+    id: string,
+    children?: any,
+    title: string,
+    buttonText?: string
+}
+
+interface IProps extends IDispatchProps, IStateProps, IElementProps { }
 
 export const Modal = connect(
     (state: IApplicationState) => {
