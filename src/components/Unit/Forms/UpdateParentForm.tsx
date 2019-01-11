@@ -17,7 +17,7 @@ const updateParentForm: React.SFC<IFormProps> = props => {
         <form onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            props.onSubmit && props.onSubmit({
+            props.onSubmit({
                 id: props.id
             })
             props.reset();

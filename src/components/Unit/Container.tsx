@@ -11,7 +11,7 @@ import Unit from "./Presentation";
 import * as unit from "./store";
 import * as auth from "../SignIn/store";
 import { Loader } from "../Loader";
-import EditForm from "./Presentation/EditForm";
+import EditForm from "./Forms/EditForm";
 
 interface IContainerProps {
   match: any;

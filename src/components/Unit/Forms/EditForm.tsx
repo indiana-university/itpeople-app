@@ -10,7 +10,7 @@ import AddMemeberForm from './AddMemeberForm';
 import { connect } from 'react-redux';
 import UpdateParentForm from './UpdateParentForm';
 import AddChildForm from './AddChildForm';
-import AddDepartmentForm from './AddDepartment';
+import AddDepartmentForm from './AddDepartmentFrom';
 
 interface IFormActions {
     save: typeof unit.saveRequest;
@@ -177,7 +177,6 @@ const renderMember = (
     </li>)
 
 const renderParent = ({ input }: any) => {
-    const unit = input.value;
     return <>
         <Modal
             id="update unit parents"
@@ -186,20 +185,20 @@ const renderParent = ({ input }: any) => {
         >
             <ModalBody>
                 <UpdateParentForm onSubmit={(parent: any) => {
-                    console.log(parent);
+                    input.onChange(parent);
                     modalClose();
                 }} />
             </ModalBody>
         </Modal>
-        <h4>{unit.name}</h4>
+        <h4>{input.value.name}</h4>
         <Button
             className="rvt-button--plain"
             type="button"
             title="Remove Member"
             onClick={() => input.onChange(null)}
         ><TrashCan /></Button>
-        {unit.description &&
-            <p>{unit.description}</p>
+        {input.value.description &&
+            <p>{input.value.description}</p>
         }
 
     </>
