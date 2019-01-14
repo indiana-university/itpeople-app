@@ -8,7 +8,7 @@
   "interactions": [
     {
       "description": "an unauthorized GET request for unit 401",
-      "providerState": "the server requires authorization",
+      "providerState": "the server requires authorization for GET /units/*",
       "request": {
         "method": "GET",
         "path": "/units/401"
@@ -32,7 +32,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "id": 1,
@@ -124,13 +124,14 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": [
           {
             "id": 1,
             "name": "Parks and Recreation IT",
-            "description": "This page is under construction"
+            "description": "This page is under construction",
+            "url": "http://pawneeindiana.com/information-technology/"
           }
         ],
         "matchingRules": {
@@ -140,6 +141,82 @@
           "$.body[*].*": {
             "match": "type"
           }
+        }
+      }
+    },
+    {
+      "description": "a PUT request to update attributes for unit 1",
+      "providerState": "unit 1 exists",
+      "request": {
+        "method": "PUT",
+        "path": "/units/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "name": "Fourth floor IT",
+          "description": "It is creepy up here",
+          "url": "https://map.concept3d.com/?id=951#!m/9510954"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        }
+      }
+    },
+    {
+      "description": "a POST request to create a unit",
+      "providerState": "units may be created",
+      "request": {
+        "method": "POST",
+        "path": "/units",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "name": "Fourth floor IT",
+          "description": "It is creepy up here",
+          "url": "https://map.concept3d.com/?id=951#!m/9510954"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Location": "/units/1",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 4,
+          "name": "Fourth floor IT",
+          "description": "It is creepy up here",
+          "url": "https://map.concept3d.com/?id=951#!m/9510954"
+        },
+        "matchingRules": {
+          "$.headers.Location": {
+            "match": "type"
+          },
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a DELETE request for /units/1",
+      "providerState": "/units/1 exists",
+      "request": {
+        "method": "DELETE",
+        "path": "/units/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 204,
+        "headers": {
         }
       }
     },
@@ -156,7 +233,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "id": 1,
@@ -272,7 +349,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "id": 1,
@@ -376,8 +453,28 @@
       }
     },
     {
-      "description": "a GET request for department 1",
-      "providerState": "department 1 exists",
+      "description": "a PUT request to update location for person 5",
+      "providerState": "person 5 exists",
+      "request": {
+        "method": "PUT",
+        "path": "/people/5",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "location": "CIB sub-sub-basement"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        }
+      }
+    },
+    {
+      "description": "a GET request for /departments/1",
+      "providerState": "/departments/1 exists",
       "request": {
         "method": "GET",
         "path": "/departments/1",
@@ -388,7 +485,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "id": 1,
@@ -457,7 +554,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": [
           {
@@ -477,8 +574,81 @@
       }
     },
     {
-      "description": "a GET request to search with a term",
-      "providerState": "data exists to be returned by term",
+      "description": "a PUT request to update department 1",
+      "providerState": "/departments/1 exists",
+      "request": {
+        "method": "PUT",
+        "path": "/departments/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "name": "Parks and Recreation Department",
+          "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        }
+      }
+    },
+    {
+      "description": "a POST request for /departments",
+      "providerState": "no state",
+      "request": {
+        "method": "POST",
+        "path": "/departments",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "name": "Parks and Recreation Department",
+          "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Location": "/departments/1",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "name": "Parks and Recreation Department",
+          "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+        },
+        "matchingRules": {
+          "$.headers.Location": {
+            "match": "type"
+          },
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a DELETE request for /departments/1",
+      "providerState": "/departments/1 exists",
+      "request": {
+        "method": "DELETE",
+        "path": "/departments/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 204,
+        "headers": {
+        }
+      }
+    },
+    {
+      "description": "a GET request to search with term 'park'",
+      "providerState": "data exists to be returned by term 'park'",
       "request": {
         "method": "GET",
         "path": "/search",
@@ -490,7 +660,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "departments": [
