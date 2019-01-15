@@ -4,6 +4,7 @@
  */
 
 import { IApiState, IApplicationState, IEntity, ViewStateType } from '../types'
+import { lookup } from '../lookup';
 
 //#region TYPES
 export const enum UnitActionTypes {
@@ -76,6 +77,7 @@ const cancel = () => action(UnitActionTypes.UNIT_CANCEL, {})
 const fetchRequest = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request)
 const fetchSuccess = (data: IUnitProfile) => action(UnitActionTypes.UNIT_FETCH_SUCCESS, data)
 const fetchError = (error: string) => action(UnitActionTypes.UNIT_FETCH_ERROR, error)
+const lookupUnit = (q: string) => lookup(q ? `/units?q=${q}` : '')
 //#endregion
 
 //#region REDUCER
@@ -154,6 +156,7 @@ export {
   fetchRequest,
   fetchError,
   fetchSuccess,
+  lookupUnit,
   saveRequest,
   saveSuccess,
   saveError,
