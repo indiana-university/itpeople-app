@@ -14,6 +14,7 @@ import * as Units from "../components/Units/store";
 // The top-level state object
 export interface IApplicationState {
     auth: Auth.IState,
+    lookup: ILookupState,
     profile: People.IState,
     searchSimple: SearchSimple.IState,
     unit: Unit.IState,
@@ -54,6 +55,7 @@ export interface IRole {
 }
 
 import { AnyAction } from "redux";
+import { ILookupState } from "./lookup";
 export const FetchRequestReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => {
     return {
         ...state,
