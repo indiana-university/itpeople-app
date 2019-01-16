@@ -5,12 +5,13 @@ import { Breadcrumbs, Content, PageTitle } from 'src/components/layout';
 import { Section, List, Button, Row, Col, ModalBody } from 'rivet-react';
 import { Modal, closeModal } from '../../layout/Modal'
 import { RivetInputField, RivetInput, RivetTextarea, RivetTextareaField, required, url } from 'src/components/form';
-import { TrashCan, ArrowUp, ArrowDown } from 'src/components/icons';
+import { TrashCan, ArrowUp, ArrowDown, ParentUnitIcon, ChildrenUnitsIcon } from 'src/components/icons';
 import AddMemeberForm from './AddMemeberForm';
 import { connect } from 'react-redux';
 import UpdateParentForm from './UpdateParentForm';
 import AddChildForm from './AddChildForm';
 import AddDepartmentForm from './AddDepartmentFrom';
+import { Panel } from 'src/components/Panel';
 
 interface IFormActions {
     save: typeof unit.saveRequest;
@@ -31,10 +32,11 @@ let EditForm: React.SFC<IFormProps> | any = (props: IFormProps) => {
                 { text: "Units", href: "/units" },
                 props.name
             ]} />
-        <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl" >
-            <PageTitle>Edit Unit</PageTitle>
-            <Section>
-                <form onSubmit={props.save}>
+        <form onSubmit={props.save}>
+            <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl" >
+                <Button onClick={props.cancel} type="button" style={{ float: "right" }}>Cancel</Button>
+                <PageTitle>Edit Unit</PageTitle>
+                <Section>
                     <div>
                         <RivetInputField name="name" component={RivetInput} label="Name" validate={[required]} />
                     </div>
@@ -45,37 +47,49 @@ let EditForm: React.SFC<IFormProps> | any = (props: IFormProps) => {
                         <RivetInputField name="url" component={RivetInput} label="URL" validate={[url]} />
                     </div>
 
-                    <hr />
-                    <h2>Members</h2>
-                    <div>
-                        <FieldArray name="members" component={renderMembers} />
-                    </div>
+                </Section>
+            </Content>
+            <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl" >
+                <Row>
+                    <Col md={6}>
+                        <div>
+                            <FieldArray name="members" component={renderMembers} />
+                        </div>
+                    </Col>
+                    <Col md={6}>
+                        <Panel title="Parents and children">
+                            <h2 className="rvt-text-bold">Parent</h2>
+                            <p>A parent is a step higher on the org chart. If your unit is part of a larger group, add that group here.</p>
+                            <div>
+                                <Field name="parent" component={renderParent} />
+                            </div>
 
-                    <hr />
-                    <h2>Parent</h2>
-                    <div>
-                        <Field name="parent" component={renderParent} />
-                    </div>
+                            <h2 className="rvt-text-bold rvt-m-top-xxl">Children</h2>
+                            <p>A child is a step lower on the org chart. If this unit has groups associated with it, add those groups here.</p>
+                            <div>
+                                <FieldArray name="children" component={renderChildren} />
+                            </div>
+                        </Panel>
 
-                    <hr />
-                    <h2>Children</h2>
-                    <div>
-                        <FieldArray name="children" component={renderChildren} />
-                    </div>
+                        <Panel title="Supported Departments">
+                            <p>Some units provide support for departments. If this unit supports other departments, add them here.</p>
+                            <div>
+                                <FieldArray name="supportedDepartments" component={renderDepartments} />
+                            </div>
+                        </Panel>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <div>
+                            <Button type="submit" disabled={props.invalid}>Save Edits</Button>
+                            <Button onClick={props.cancel} variant="plain">Cancel</Button>
+                        </div>
+                    </Col>
+                </Row>
+            </Content>
+        </form>
 
-                    <hr />
-                    <h2>Supported departments</h2>
-                    <div>
-                        <FieldArray name="supportedDepartments" component={renderDepartments} />
-                    </div>
-                    <div>
-                        <Button onClick={props.cancel}>Cancel</Button>
-                        <Button type="submit" disabled={props.invalid}>Save</Button>
-                    </div>
-
-                </form>
-            </Section>
-        </Content>
     </>
 };
 
@@ -90,8 +104,10 @@ const renderMembers = ({ fields }: any) => {
     let others = members.filter((m) => (m.role == unit.ItProRole.Aux || m.role == unit.UitsRole.Related))
 
     return <>
-        <h2>Leadership</h2>
-        <List variant="plain">
+
+        <h2 className="rvt-ts-29 rvt-text-bold">Unit Leadership</h2>
+        <p>Use Leadership for VPs directors and managers. Click on the person’s name to edit more detailed information about their role within this unit.</p>
+        <List variant="plain" className="list-dividers list-dividers--show-last">
             {
                 leaders.map((member, index) => {
                     const moveDown = leaders[index + 1] ? () => { fields.swap(member.fieldId, leaders[index + 1].fieldId) } : undefined;
@@ -101,8 +117,10 @@ const renderMembers = ({ fields }: any) => {
                 })}
         </List>
 
-        <h2>Members</h2>
-        <List variant="plain">
+        <h2 className="rvt-ts-29 rvt-text-bold">Unit Members</h2>
+        <p>Use Related People for admins and others who are do not solely report to this unit. Click on the person’s name to edit more detailed information about their role within this unit.</p>
+
+        <List variant="plain" className="list-dividers list-dividers--show-last">
             {
                 standardMember.map((member, index) => {
                     const moveDown = standardMember[index + 1] ? () => { fields.swap(member.fieldId, standardMember[index + 1].fieldId) } : undefined;
@@ -112,8 +130,10 @@ const renderMembers = ({ fields }: any) => {
                 })}
         </List>
 
-        <h2>Other</h2>
-        <List variant="plain">
+        <h2 className="rvt-ts-29 rvt-text-bold">Related people</h2>
+        <p>Use Related People for admins and others who are do not solely report to this unit. Click on the person’s name to edit more detailed information about their role within this unit.</p>
+
+        <List variant="plain" className="list-dividers list-dividers--show-last">
             {
                 others.map((member, index) => {
                     const moveDown = others[index + 1] ? () => { fields.swap(member.fieldId, others[index + 1].fieldId) } : undefined;
@@ -146,10 +166,17 @@ const renderMember = (
     moveDown?: () => any) => (<li key={index}>
         <Row>
             <Col>
-                <h4>{member.name}</h4>
+                <Button
+                    title={"Edit: " + member.name}
+                    type="button"
+                    variant="plain"
+                    className="rvt-p-all-remove"
+                    style={{ border: 0 }}
+                    onClick={() => { alert("edit members") }}
+                >{member.name}</Button>
                 <div>{member.role}</div>
             </Col>
-            <Col last={true}>
+            <Col last={true} md={3} style={{ textAlign: "right" }}>
                 {moveUp && <Button
                     className="rvt-button--plain"
                     type="button"
@@ -190,15 +217,26 @@ const renderParent = ({ input }: any) => {
                 }} />
             </ModalBody>
         </Modal>
-        <h4>{input.value.name}</h4>
-        <Button
-            className="rvt-button--plain"
-            type="button"
-            title="Remove Member"
-            onClick={() => input.onChange(null)}
-        ><TrashCan /></Button>
+
+        <Row className="rvt-m-top-md">
+            <Col style={{ minWidth: 60, flexGrow: 0 }}><ParentUnitIcon /></Col>
+            <Col><h4>{input.value.name}</h4></Col>
+            <Col style={{ minWidth: 60, flexGrow: 0 }}>
+                <Button
+                    className="rvt-button--plain"
+                    type="button"
+                    title="Remove Member"
+                    onClick={() => input.onChange(null)}
+                ><TrashCan /></Button>
+            </Col>
+        </Row>
+
+
         {input.value.description &&
-            <p>{input.value.description}</p>
+            <Row className="rvt-grid">
+                <Col style={{ minWidth: 60, flexGrow: 0 }} />
+                <Col className="rvt-grid__item">{input.value.description}</Col>
+            </Row>
         }
 
     </>
@@ -206,18 +244,22 @@ const renderParent = ({ input }: any) => {
 
 const renderChildren = ({ fields }: any) => {
     return <>
+        <Modal title="Add child unit" id="Add child unit" buttonText="Add child">
+            <ModalBody>
+                <AddChildForm onSubmit={(child: any) => {
+                    fields.push(child);
+                    modalClose()
+                }} />
+            </ModalBody>
+        </Modal>
         <List variant="plain">
             {fields.map((field: any, index: number) => {
                 const unit = fields.get(index);
                 return (<li key={index}>
                     <Row>
-                        <Col>
-                            <h4>{unit.name}</h4>
-                            {unit.description &&
-                                <p>{unit.description}</p>
-                            }
-                        </Col>
-                        <Col>
+                        <Col style={{ minWidth: 60, flexGrow: 0 }}><ChildrenUnitsIcon width="100%" height="auto" /></Col>
+                        <Col><h4>{unit.name}</h4></Col>
+                        <Col style={{ minWidth: 150, flexGrow: 0, textAlign: "right" }}>
                             {fields.get(index - 1) &&
                                 <Button
                                     variant="plain"
@@ -242,24 +284,31 @@ const renderChildren = ({ fields }: any) => {
                             ><TrashCan /></Button>
                         </Col>
                     </Row>
+                    {unit.description &&
+                        <Row className="rvt-grid">
+                            <Col style={{ minWidth: 60, flexGrow: 0 }} />
+                            <Col className="rvt-grid__item">{unit.description}</Col>
+                        </Row>
+                    }
                 </li>
                 )
             }
             )}
         </List>
-        <Modal title="Add child unit" id="Add child unit" buttonText="Add child">
-            <ModalBody>
-                <AddChildForm onSubmit={(child: any) => {
-                    fields.push(child);
-                    modalClose()
-                }} />
-            </ModalBody>
-        </Modal>
     </>
 }
 
 const renderDepartments = ({ fields }: any) => {
     return <>
+        <Modal id="add department to unit" title="Add department" buttonText="Add department">
+            <ModalBody>
+                <AddDepartmentForm onSubmit={(department: any) => {
+                    console.log(department);
+                    fields.push(department);
+                    modalClose();
+                }} />
+            </ModalBody>
+        </Modal>
         <List variant="plain">
             {fields.map((field: any, index: number) => {
                 const department = fields.get(index);
@@ -267,11 +316,8 @@ const renderDepartments = ({ fields }: any) => {
                     <Row>
                         <Col>
                             <h4>{department.name}</h4>
-                            {department.description &&
-                                <p>{department.description}</p>
-                            }
                         </Col>
-                        <Col>
+                        <Col style={{ flexGrow: 0, minWidth: 150, textAlign: "right" }}>
                             {fields.get(index - 1) &&
                                 <Button
                                     variant="plain"
@@ -296,20 +342,16 @@ const renderDepartments = ({ fields }: any) => {
                             ><TrashCan /></Button>
                         </Col>
                     </Row>
+                    {department.description &&
+                        <Row>
+                            <Col>{department.description}</Col>
+                        </Row>
+                    }
                 </li>
                 )
             }
             )}
         </List>
-        <Modal id="add department to unit" title="Update Parent" buttonText="Add department">
-            <ModalBody>
-                <AddDepartmentForm onSubmit={(department: any) => {
-                    console.log(department);
-                    fields.push(department);
-                    modalClose();
-                }} />
-            </ModalBody>
-        </Modal>
     </>
 }
 
