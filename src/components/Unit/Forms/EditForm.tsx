@@ -8,7 +8,15 @@ import {
 } from "redux-form";
 import * as unit from "../store";
 import { Breadcrumbs, Content, PageTitle } from "src/components/layout";
-import { Section, List, Button, Row, Col, ModalBody } from "rivet-react";
+import {
+  Section,
+  List,
+  Button,
+  Row,
+  Col,
+  ModalBody,
+  ModalControls
+} from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
 import {
   RivetInputField,
@@ -276,6 +284,11 @@ const renderMembers = ({ fields, input }: any) => {
             }}
           />
         </ModalBody>
+        <ModalControls>
+          <Button type="button" onClick={modalClose} variant="plain">
+            Cancel
+          </Button>
+        </ModalControls>
       </Modal>
     </>
   );
@@ -295,7 +308,7 @@ const renderMember = function(
           <Modal
             id={`Edit member: ${member.id}`}
             buttonText={member.name}
-            title="test"
+            title={`Edit member: ${member.name}`}
             onOpen={() => {
               editMember(member);
             }}
@@ -309,6 +322,11 @@ const renderMember = function(
                 }}
               />
             </ModalBody>
+            <ModalControls>
+              <Button type="button" onClick={modalClose} variant="plain">
+                Cancel
+              </Button>
+            </ModalControls>
           </Modal>
           {member.title && <div>{member.title}</div>}
         </Col>
@@ -365,6 +383,11 @@ const renderParent = ({ input }: any) => {
             }}
           />
         </ModalBody>
+        <ModalControls>
+          <Button type="button" onClick={modalClose} variant="plain">
+            Cancel
+          </Button>
+        </ModalControls>
       </Modal>
 
       <Row className="rvt-m-top-md">
@@ -408,6 +431,11 @@ const renderChildren = ({ fields }: any) => {
             }}
           />
         </ModalBody>
+        <ModalControls>
+          <Button type="button" onClick={modalClose} variant="plain">
+            Cancel
+          </Button>
+        </ModalControls>
       </Modal>
       <List variant="plain">
         {fields.map((field: any, index: number) => {
@@ -483,6 +511,11 @@ const renderDepartments = ({ fields }: any) => {
             }}
           />
         </ModalBody>
+        <ModalControls>
+          <Button type="button" onClick={modalClose} variant="plain">
+            Cancel
+          </Button>
+        </ModalControls>
       </Modal>
       <List variant="plain">
         {fields.map((field: any, index: number) => {
@@ -547,7 +580,8 @@ EditForm = connect(
   dispatch => {
     return {
       closeModal: () => dispatch(closeModal()), // <-- closes modal
-      editMember: (member: unit.IUnitMember) => { // <-- loads member into edit form
+      editMember: (member: unit.IUnitMember) => {
+        // <-- loads member into edit form
         dispatch(change("updateMemberForm", "name", member.name));
         dispatch(change("updateMemberForm", "title", member.title));
         dispatch(change("updateMemberForm", "role", member.role));
