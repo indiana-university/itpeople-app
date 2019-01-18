@@ -42,7 +42,6 @@ const form: React.SFC<IFormProps> = props => {
       >
         <div>
           <h1>{props.name}</h1>
-          <pre>{JSON.stringify(props)}</pre>
           <Field name="id" component="input" type="hidden" />
         </div>
         <div>
