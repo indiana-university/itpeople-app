@@ -65,33 +65,17 @@ let EditForm: React.SFC<IFormProps> | any = (props: IFormProps) => {
       />
       <form onSubmit={props.save}>
         <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
-          <Button
-            onClick={props.cancel}
-            type="button"
-            style={{ float: "right" }}
-          >
-            Cancel
-          </Button>
+          <Button onClick={props.cancel} type="button" style={{ float: "right" }}>Cancel</Button>
           <PageTitle>Edit Unit</PageTitle>
           <Section>
             <div>
               <RivetInputField name="name" component={RivetInput} label="Name" validate={[required]} />
             </div>
             <div>
-              <RivetTextareaField
-                name="description"
-                component={RivetTextarea}
-                label="Description"
-                validate={[required]}
-              />
+              <RivetTextareaField name="description" component={RivetTextarea} label="Description" validate={[required]} />
             </div>
             <div>
-              <RivetInputField
-                name="url"
-                component={RivetInput}
-                label="URL"
-                validate={[url]}
-              />
+              <RivetInputField name="url" component={RivetInput} label="URL" validate={[url]} />
             </div>
           </Section>
         </Content>
@@ -129,10 +113,7 @@ let EditForm: React.SFC<IFormProps> | any = (props: IFormProps) => {
                   supports other departments, add them here.
                 </p>
                 <div>
-                  <FieldArray
-                    name="supportedDepartments"
-                    component={renderDepartments}
-                  />
+                  <FieldArray name="supportedDepartments" component={renderDepartments}/>
                 </div>
               </Panel>
             </Col>
@@ -509,10 +490,7 @@ const renderDepartments = ({ fields }: any) => {
                     variant="plain"
                     type="button"
                     title="Remove Department"
-                    onClick={() => fields.remove(index)}
-                  >
-                    <TrashCan />
-                  </Button>
+                    onClick={() => fields.remove(index)}><TrashCan /></Button>
                 </Col>
               </Row>
               {department.description && (
