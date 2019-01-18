@@ -47,7 +47,7 @@ interface IFormProps
 
 interface IMemberField extends unit.IUnitMember {
   fieldId: number;
-  change: (m: any) => any;
+  update: (m: any) => any;
 }
 let modalClose = () => {};
 let editMember = (member: unit.IUnitMember) => {};
@@ -65,17 +65,38 @@ let EditForm: React.SFC<IFormProps> | any = (props: IFormProps) => {
       />
       <form onSubmit={props.save}>
         <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
-          <Button onClick={props.cancel} type="button" style={{ float: "right" }}>Cancel</Button>
+          <Button
+            onClick={props.cancel}
+            type="button"
+            style={{ float: "right" }}
+          >
+            Cancel
+          </Button>
           <PageTitle>Edit Unit</PageTitle>
           <Section>
             <div>
-              <RivetInputField name="name" component={RivetInput} label="Name" validate={[required]} />
+              <RivetInputField
+                name="name"
+                component={RivetInput}
+                label="Name"
+                validate={[required]}
+              />
             </div>
             <div>
-              <RivetTextareaField name="description" component={RivetTextarea} label="Description" validate={[required]} />
+              <RivetTextareaField
+                name="description"
+                component={RivetTextarea}
+                label="Description"
+                validate={[required]}
+              />
             </div>
             <div>
-              <RivetInputField name="url" component={RivetInput} label="URL" validate={[url]} />
+              <RivetInputField
+                name="url"
+                component={RivetInput}
+                label="URL"
+                validate={[url]}
+              />
             </div>
           </Section>
         </Content>
@@ -83,7 +104,11 @@ let EditForm: React.SFC<IFormProps> | any = (props: IFormProps) => {
           <Row>
             <Col md={6}>
               <div>
-                <FieldArray name="members" component={renderMembers} />
+                <FieldArray
+                  name="members"
+                  component={renderMembers}
+                  rerenderOnEveryChange={true}
+                />
               </div>
             </Col>
             <Col md={6}>
@@ -113,7 +138,10 @@ let EditForm: React.SFC<IFormProps> | any = (props: IFormProps) => {
                   supports other departments, add them here.
                 </p>
                 <div>
-                  <FieldArray name="supportedDepartments" component={renderDepartments}/>
+                  <FieldArray
+                    name="supportedDepartments"
+                    component={renderDepartments}
+                  />
                 </div>
               </Panel>
             </Col>
@@ -139,12 +167,12 @@ let EditForm: React.SFC<IFormProps> | any = (props: IFormProps) => {
 const renderMembers = ({ fields, input }: any) => {
   let members = fields.map(function(field: any, index: number) {
     let member = fields.get(index) as unit.IUnitMember;
-    let change = (m: unit.IUnitMember) => {
-      fields.remove(index);
-      fields.insert(index, { ...member, ...m });
+    let update = (m: unit.IUnitMember) => {
+      fields.splice(index, 1, { ...member, ...m });
     };
-    return { ...member, fieldId: index, change };
+    return { ...member, fieldId: index, update };
   }) as IMemberField[];
+
   let leaders = members.filter(
     m => m.role == unit.ItProRole.Admin || m.role == unit.UitsRole.Leader
   );
@@ -276,7 +304,7 @@ const renderMember = function(
               <UpdateMemberForm
                 {...member}
                 onSubmit={(m: any) => {
-                  member.change(m);
+                  member.update(m);
                   modalClose();
                 }}
               />
@@ -490,7 +518,10 @@ const renderDepartments = ({ fields }: any) => {
                     variant="plain"
                     type="button"
                     title="Remove Department"
-                    onClick={() => fields.remove(index)}><TrashCan /></Button>
+                    onClick={() => fields.remove(index)}
+                  >
+                    <TrashCan />
+                  </Button>
                 </Col>
               </Row>
               {department.description && (
@@ -515,8 +546,8 @@ EditForm = connect(
   null,
   dispatch => {
     return {
-      closeModal: () => dispatch(closeModal()),
-      editMember: (member: unit.IUnitMember) => {
+      closeModal: () => dispatch(closeModal()), // <-- closes modal
+      editMember: (member: unit.IUnitMember) => { // <-- loads member into edit form
         dispatch(change("updateMemberForm", "name", member.name));
         dispatch(change("updateMemberForm", "title", member.title));
         dispatch(change("updateMemberForm", "role", member.role));
