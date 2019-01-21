@@ -141,6 +141,23 @@ describe('Contracts', () => {
         const sagaPayload = lastSagaPutActionPayload(allEffects)
         expect(sagaPayload).toEqual(resource)
       })
+
+      it('fails with bad id via saga', async () => {
+        const reducer: Reducer = () =>
+          ({
+            unit: {
+              request: { id: 10000 }
+            }
+          })
+
+        const { allEffects } = await expectSaga(unitSaga)
+          .withReducer(reducer)
+          .dispatch({ type: UnitActionTypes.UNIT_FETCH_REQUEST })
+          .put.actionType(
+            UnitActionTypes.UNIT_FETCH_ERROR
+          )
+          .run()
+      })
     })
     describe('retrieving all units', () => {
       const path = unitsResource
@@ -310,6 +327,23 @@ describe('Contracts', () => {
         const sagaPayload = lastSagaPutActionPayload(allEffects)
         expect(sagaPayload).toEqual(resource)
       })
+
+      it('fails with bad id via saga', async () => {
+        const reducer: Reducer = () =>
+          ({
+            profile: {
+              request: { id: 100000 }
+            }
+          })
+
+        const { allEffects } = await expectSaga(profileSaga)
+          .withReducer(reducer)
+          .dispatch({ type: ProfileActionTypes.PROFILE_FETCH_REQUEST })
+          .put.actionType(
+            ProfileActionTypes.PROFILE_FETCH_ERROR
+          )
+          .run()
+      })
     })
 
     describe('retrieving the current user profile', () => {
@@ -415,6 +449,7 @@ describe('Contracts', () => {
         const pactResponseBody = (await getPact(path)).data
         expect(pactResponseBody).not.toEqual({})
       })
+      
       it('works through app saga', async () => {
         const resource = (await getFixture(path)).data
         const reducer: Reducer = () =>
@@ -434,6 +469,24 @@ describe('Contracts', () => {
 
         const sagaPayload = lastSagaPutActionPayload(allEffects)
         expect(sagaPayload).toEqual(resource)
+      })
+
+      it('fails with bad id via saga', async () => {
+        const reducer: Reducer = () =>
+          ({
+            department: {
+              request: { id: 10000 }
+            }
+          })
+
+        const { allEffects } = await expectSaga(departmentSaga)
+          .withReducer(reducer)
+          .dispatch({ type: DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST })
+          .put.actionType(
+            DepartmentActionTypes.DEPARTMENT_FETCH_ERROR
+          )
+          .run()
+
       })
     })
     describe('retrieving all departments', () => {
