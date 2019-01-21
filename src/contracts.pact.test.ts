@@ -150,7 +150,7 @@ describe('Contracts', () => {
             }
           })
 
-        const { allEffects } = await expectSaga(unitSaga)
+        await expectSaga(unitSaga)
           .withReducer(reducer)
           .dispatch({ type: UnitActionTypes.UNIT_FETCH_REQUEST })
           .put.actionType(
@@ -336,7 +336,7 @@ describe('Contracts', () => {
             }
           })
 
-        const { allEffects } = await expectSaga(profileSaga)
+        await expectSaga(profileSaga)
           .withReducer(reducer)
           .dispatch({ type: ProfileActionTypes.PROFILE_FETCH_REQUEST })
           .put.actionType(
@@ -479,7 +479,7 @@ describe('Contracts', () => {
             }
           })
 
-        const { allEffects } = await expectSaga(departmentSaga)
+        await expectSaga(departmentSaga)
           .withReducer(reducer)
           .dispatch({ type: DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST })
           .put.actionType(
