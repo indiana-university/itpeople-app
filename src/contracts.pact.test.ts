@@ -241,7 +241,7 @@ describe('Contracts', () => {
 
       const recordId = 1
       const path = `${unitsResource}/${recordId}`
-      
+
       it('works', async () => {
         await pactServer.addInteraction({
           state: `${path} exists`,
@@ -511,7 +511,7 @@ describe('Contracts', () => {
     describe('creating a new department', () => {
 
       const path = departmentsResource
-      
+
       it('works', async () => {
         const fixtureDept = (await getFixture('/allDepartments/1')).data
         const { id, ...postBody } = fixtureDept
@@ -539,7 +539,7 @@ describe('Contracts', () => {
 
       const recordId = 1
       const path = `${departmentsResource}/${recordId}`
-      
+
       it('works', async () => {
         await pactServer.addInteraction({
           state: `${path} exists`,
