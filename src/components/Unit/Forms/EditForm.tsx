@@ -214,7 +214,7 @@ const renderMembers = ({ fields, input }: any) => {
               }
             : undefined;
           const remove = () => {
-            fields.remove(index);
+            fields.remove(member.fieldId);
           };
           return renderMember(member, index, remove, moveUp, moveDown);
         })}
@@ -240,7 +240,7 @@ const renderMembers = ({ fields, input }: any) => {
               }
             : undefined;
           const remove = () => {
-            fields.remove(index);
+            fields.remove(member.fieldId);
           };
           return renderMember(member, index, remove, moveUp, moveDown);
         })}
@@ -266,7 +266,7 @@ const renderMembers = ({ fields, input }: any) => {
               }
             : undefined;
           const remove = () => {
-            fields.remove(index);
+            fields.remove(member.fieldId);
           };
           return renderMember(member, index, remove, moveUp, moveDown);
         })}
