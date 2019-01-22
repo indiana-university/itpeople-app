@@ -31,7 +31,8 @@ import {
   ArrowUp,
   ArrowDown,
   ParentUnitIcon,
-  ChildrenUnitsIcon
+  ChildrenUnitsIcon,
+  Pencil
 } from "src/components/icons";
 import AddMemeberForm from "./AddMemeberForm";
 import { connect } from "react-redux";
@@ -306,29 +307,7 @@ const renderMember = function(
     <li key={index}>
       <Row>
         <Col>
-          <Modal
-            id={`Edit member: ${member.id}`}
-            buttonText={member.name}
-            title={`Edit member: ${member.name}`}
-            onOpen={() => {
-              editMember(member);
-            }}
-          >
-            <ModalBody>
-              <UpdateMemberForm
-                {...member}
-                onSubmit={(m: any) => {
-                  member.update(m);
-                  modalClose();
-                }}
-              />
-            </ModalBody>
-            <ModalControls>
-              <Button type="button" onClick={modalClose} variant="plain">
-                Cancel
-              </Button>
-            </ModalControls>
-          </Modal>
+          <h3 className="rvt-ts-18 rvt-text-bold">{member.name}</h3>
           {member.title && <div>{member.title}</div>}
         </Col>
         <Col last={true} md={3} style={{ textAlign: "right" }}>
@@ -352,6 +331,36 @@ const renderMember = function(
               <ArrowDown />
             </Button>
           )}
+          <span style={{ textAlign: "left" }}>
+            <Modal
+              id={`Edit member: ${member.id}`}
+              buttonText={
+                <span style={{ color: "#333" }}>
+                  <Pencil />
+                </span>
+              }
+              variant="plain"
+              title={`Edit member: ${member.name}`}
+              onOpen={() => {
+                editMember(member);
+              }}
+            >
+              <ModalBody>
+                <UpdateMemberForm
+                  {...member}
+                  onSubmit={(m: any) => {
+                    member.update(m);
+                    modalClose();
+                  }}
+                />
+              </ModalBody>
+              <ModalControls>
+                <Button type="button" onClick={modalClose} variant="plain">
+                  Cancel
+                </Button>
+              </ModalControls>
+            </Modal>
+          </span>
           {remove && (
             <Button
               className="rvt-button--plain"
