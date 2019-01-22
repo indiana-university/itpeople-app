@@ -44,12 +44,13 @@ const updateParentForm: React.SFC<IFormProps> = props => {
             }}
           />
         </div>
-        <div
-          className="rvt-dropdown__menu"
-          style={{ position: "relative", padding: 0 }}
-        >
-          {props.units &&
-            props.units.map((unit: any, i: number) => {
+
+        {props.units && props.units.length > 0 && (
+          <div
+            className="rvt-dropdown__menu"
+            style={{ position: "relative", padding: 0 }}
+          >
+            {props.units.map((unit: any, i: number) => {
               // todo: circular reference check
               return (
                 <div key={i}>
@@ -68,7 +69,8 @@ const updateParentForm: React.SFC<IFormProps> = props => {
                 </div>
               );
             })}
-        </div>
+          </div>
+        )}
       </form>
     </>
   );

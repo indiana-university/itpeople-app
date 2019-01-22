@@ -119,27 +119,28 @@ let EditForm: React.SFC<IFormProps> | any = (props: IFormProps) => {
                 />
               </div>
             </Col>
-            <Col md={6}>
-              <Panel title="Parents and children">
-                <h2 className="rvt-text-bold">Parent</h2>
-                <p>
-                  A parent is a step higher on the org chart. If your unit is
-                  part of a larger group, add that group here.
-                </p>
-                <div>
-                  <Field name="parent" component={renderParent} />
-                </div>
+            <Col md={5} last={true}>
+              <div className="rvt-m-bottom-lg">
+                <Panel title="Parents and children">
+                  <h2 className="rvt-text-bold">Parent</h2>
+                  <p>
+                    A parent is a step higher on the org chart. If your unit is
+                    part of a larger group, add that group here.
+                  </p>
+                  <div>
+                    <Field name="parent" component={renderParent} />
+                  </div>
 
-                <h2 className="rvt-text-bold rvt-m-top-xxl">Children</h2>
-                <p>
-                  A child is a step lower on the org chart. If this unit has
-                  groups associated with it, add those groups here.
-                </p>
-                <div>
-                  <FieldArray name="children" component={renderChildren} />
-                </div>
-              </Panel>
-
+                  <h2 className="rvt-text-bold rvt-m-top-xxl">Children</h2>
+                  <p>
+                    A child is a step lower on the org chart. If this unit has
+                    groups associated with it, add those groups here.
+                  </p>
+                  <div>
+                    <FieldArray name="children" component={renderChildren} />
+                  </div>
+                </Panel>
+              </div>
               <Panel title="Supported Departments">
                 <p>
                   Some units provide support for departments. If this unit
@@ -373,7 +374,8 @@ const renderParent = ({ input }: any) => {
       <Modal
         id="update unit parents"
         title="Update Parent"
-        buttonText="Update parent"
+        buttonText="+ Add new parent"
+        variant="plain"
       >
         <ModalBody>
           <UpdateParentForm
@@ -390,24 +392,26 @@ const renderParent = ({ input }: any) => {
         </ModalControls>
       </Modal>
 
-      <Row className="rvt-m-top-md">
-        <Col style={{ minWidth: 60, flexGrow: 0 }}>
-          <ParentUnitIcon />
-        </Col>
-        <Col>
-          <h4>{input.value.name}</h4>
-        </Col>
-        <Col style={{ minWidth: 60, flexGrow: 0 }}>
-          <Button
-            className="rvt-button--plain"
-            type="button"
-            title="Remove Member"
-            onClick={() => input.onChange(null)}
-          >
-            <TrashCan />
-          </Button>
-        </Col>
-      </Row>
+      {input.value && (
+        <Row className="rvt-m-top-md">
+          <Col style={{ minWidth: 60, flexGrow: 0 }}>
+            <ParentUnitIcon />
+          </Col>
+          <Col>
+            <h4>{input.value.name}</h4>
+          </Col>
+          <Col style={{ minWidth: 60, flexGrow: 0 }}>
+            <Button
+              className="rvt-button--plain"
+              type="button"
+              title="Remove Member"
+              onClick={() => input.onChange(null)}
+            >
+              <TrashCan />
+            </Button>
+          </Col>
+        </Row>
+      )}
 
       {input.value.description && (
         <Row className="rvt-grid">
@@ -422,7 +426,12 @@ const renderParent = ({ input }: any) => {
 const renderChildren = ({ fields }: any) => {
   return (
     <>
-      <Modal title="Add child unit" id="Add child unit" buttonText="Add child">
+      <Modal
+        title="Add child unit"
+        id="+ add child unit"
+        buttonText="+ Add new child"
+        variant="plain"
+      >
         <ModalBody>
           <AddChildForm
             onSubmit={(child: any) => {
@@ -499,8 +508,9 @@ const renderDepartments = ({ fields }: any) => {
     <>
       <Modal
         id="add department to unit"
-        title="Add department"
-        buttonText="Add department"
+        title="+ add department"
+        buttonText="+ add department"
+        variant="plain"
       >
         <ModalBody>
           <AddDepartmentForm
