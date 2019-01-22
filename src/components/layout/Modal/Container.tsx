@@ -13,9 +13,8 @@ import { ModalProps } from "rivet-react/build/dist/components/Modal/Modal";
 import { ButtonProps } from "rivet-react/build/dist/components/Button/Button";
 
 const Container: React.SFC<IElementProps> = (props: IProps) => {
-  const id = props.id;
-  const { variant, size, modifier, innerRef } = props;
-  const buttonProps = { variant, size, modifier, innerRef } ;
+  const { id, variant, size, modifier, innerRef, title } = props;
+  const buttonProps = { variant, size, modifier, innerRef, title } ;
   let button = (
     <Button type="button" {...buttonProps} onClick={() => props.openModal(id)}>
       {props.buttonText}
@@ -50,7 +49,7 @@ interface IElementProps extends ModalProps, ButtonProps {
   id: string;
   children?: any;
   title: string;
-  buttonText?: string | typeof Button;
+  buttonText?: string | JSX.Element;
   onOpen?: () => any;
 }
 
