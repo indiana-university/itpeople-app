@@ -32,9 +32,10 @@ import {
   ArrowDown,
   ParentUnitIcon,
   ChildrenUnitsIcon,
-  Pencil
+  Pencil,
+  AddUser
 } from "src/components/icons";
-import AddMemeberForm from "./AddMemeberForm";
+import AddMemeberForm from "./AddMemberForm";
 import { connect } from "react-redux";
 import UpdateParentForm from "./UpdateParentForm";
 import AddChildForm from "./AddChildForm";
@@ -195,88 +196,38 @@ const renderMembers = ({ fields, input }: any) => {
   let others = members.filter(
     m => m.role == unit.ItProRole.Aux || m.role == unit.UitsRole.Related
   );
-  return (
-    <>
-      <h2 className="rvt-ts-29 rvt-text-bold">Unit Leadership</h2>
-      <p>
-        Use Leadership for VPs directors and managers. Click on the person’s
-        name to edit more detailed information about their role within this
-        unit.
-      </p>
-      <List variant="plain" className="list-dividers list-dividers--show-last">
-        {leaders.map((member, index) => {
-          const moveDown = leaders[index + 1]
-            ? () => {
-                fields.swap(member.fieldId, leaders[index + 1].fieldId);
-              }
-            : undefined;
-          const moveUp = leaders[index - 1]
-            ? () => {
-                fields.swap(member.fieldId, leaders[index - 1].fieldId);
-              }
-            : undefined;
-          const remove = () => {
-            fields.remove(member.fieldId);
-          };
-          return renderMember(member, index, remove, moveUp, moveDown);
-        })}
-      </List>
-
-      <h2 className="rvt-ts-29 rvt-text-bold">Unit Members</h2>
-      <p>
-        Use Related People for admins and others who are do not solely report to
-        this unit. Click on the person’s name to edit more detailed information
-        about their role within this unit.
-      </p>
-
-      <List variant="plain" className="list-dividers list-dividers--show-last">
-        {standardMember.map((member, index) => {
-          const moveDown = standardMember[index + 1]
-            ? () => {
-                fields.swap(member.fieldId, standardMember[index + 1].fieldId);
-              }
-            : undefined;
-          const moveUp = standardMember[index - 1]
-            ? () => {
-                fields.swap(member.fieldId, standardMember[index - 1].fieldId);
-              }
-            : undefined;
-          const remove = () => {
-            fields.remove(member.fieldId);
-          };
-          return renderMember(member, index, remove, moveUp, moveDown);
-        })}
-      </List>
-
-      <h2 className="rvt-ts-29 rvt-text-bold">Related people</h2>
-      <p>
-        Use Related People for admins and others who are do not solely report to
-        this unit. Click on the person’s name to edit more detailed information
-        about their role within this unit.
-      </p>
-
-      <List variant="plain" className="list-dividers list-dividers--show-last">
-        {others.map((member, index) => {
-          const moveDown = others[index + 1]
-            ? () => {
-                fields.swap(member.fieldId, others[index + 1].fieldId);
-              }
-            : undefined;
-          const moveUp = others[index - 1]
-            ? () => {
-                fields.swap(member.fieldId, others[index - 1].fieldId);
-              }
-            : undefined;
-          const remove = () => {
-            fields.remove(member.fieldId);
-          };
-          return renderMember(member, index, remove, moveUp, moveDown);
-        })}
-      </List>
+  const createActions = (
+    member: IMemberField,
+    index: number,
+    list: IMemberField[]
+  ) => {
+    return {
+      down: list[index + 1]
+        ? () => {
+            fields.swap(member.fieldId, list[index + 1].fieldId);
+          }
+        : undefined,
+      up: list[index - 1]
+        ? () => {
+            fields.swap(member.fieldId, list[index - 1].fieldId);
+          }
+        : undefined,
+      remove: () => {
+        fields.remove(member.fieldId);
+      }
+    };
+  };
+  const addMemberFrom = (
+    <div>
       <Modal
         id="Add member to unit"
-        title="Modal Dialog"
-        buttonText="Add Member"
+        title="Add member"
+        buttonText={
+          <span style={{ color: "#006298" }}>
+            <AddUser /> Add member
+          </span>
+        }
+        variant="plain"
       >
         <ModalBody>
           <AddMemeberForm
@@ -292,6 +243,54 @@ const renderMembers = ({ fields, input }: any) => {
           </Button>
         </ModalControls>
       </Modal>
+    </div>
+  );
+  return (
+    <>
+      <h2 className="rvt-ts-29 rvt-text-bold">Unit Leadership</h2>
+      <p>
+        Use Leadership for VPs directors and managers. Click on the person’s
+        name to edit more detailed information about their role within this
+        unit.
+      </p>
+      {addMemberFrom}
+      <List variant="plain" className="list-dividers list-dividers--show-last">
+        {leaders.map((member, index) => {
+          const { down, up, remove } = createActions(member, index, leaders);
+          return renderMember(member, index, remove, up, down);
+        })}
+      </List>
+
+      <h2 className="rvt-ts-29 rvt-text-bold">Unit Members</h2>
+      <p>
+        Use Related People for admins and others who are do not solely report to
+        this unit. Click on the person’s name to edit more detailed information
+        about their role within this unit.
+      </p>
+      {addMemberFrom}
+      <List
+        variant="plain"
+        className="list-dividers list-dividers--show-last rvt-m-top-lg"
+      >
+        {standardMember.map((member, index) => {
+          const { down, up, remove } = createActions(member, index, standardMember);
+          return renderMember(member, index, remove, up, down);
+        })}
+      </List>
+
+      <h2 className="rvt-ts-29 rvt-text-bold">Related people</h2>
+      <p>
+        Use Related People for admins and others who are do not solely report to
+        this unit. Click on the person’s name to edit more detailed information
+        about their role within this unit.
+      </p>
+      {addMemberFrom}
+      <List variant="plain" className="list-dividers list-dividers--show-last">
+        {others.map((member, index) => {
+          const { down, up, remove } = createActions(member, index, others);
+          return renderMember(member, index, remove, up, down);
+        })}
+      </List>
     </>
   );
 };
@@ -310,7 +309,7 @@ const renderMember = function(
           <h3 className="rvt-ts-18 rvt-text-bold">{member.name}</h3>
           {member.title && <div>{member.title}</div>}
         </Col>
-        <Col last={true} md={3} style={{ textAlign: "right" }}>
+        <div style={{ textAlign: "right" }}>
           {moveUp && (
             <Button
               className="rvt-button--plain"
@@ -334,11 +333,7 @@ const renderMember = function(
           <span style={{ textAlign: "left" }}>
             <Modal
               id={`Edit member: ${member.id}`}
-              buttonText={
-                <span style={{ color: "#333" }}>
-                  <Pencil />
-                </span>
-              }
+              buttonText={<Pencil />}
               variant="plain"
               title={`Edit member: ${member.name}`}
               onOpen={() => {
@@ -371,7 +366,7 @@ const renderMember = function(
               <TrashCan />
             </Button>
           )}
-        </Col>
+        </div>
       </Row>
     </li>
   );
