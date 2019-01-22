@@ -534,7 +534,7 @@ const renderDepartments = ({ fields }: any) => {
             <li key={index}>
               <Row>
                 <Col>
-                  <h4>{department.name}</h4>
+                  <h4 className="rvt-text-bold">{department.name}</h4>
                 </Col>
                 <Col style={{ flexGrow: 0, minWidth: 150, textAlign: "right" }}>
                   {fields.get(index - 1) && (
