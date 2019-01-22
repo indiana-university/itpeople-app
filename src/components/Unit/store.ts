@@ -78,6 +78,7 @@ const fetchRequest = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETC
 const fetchSuccess = (data: IUnitProfile) => action(UnitActionTypes.UNIT_FETCH_SUCCESS, data)
 const fetchError = (error: string) => action(UnitActionTypes.UNIT_FETCH_ERROR, error)
 const lookupUnit = (q: string) => lookup(q ? `/units?q=${q}` : '')
+const lookupDepartment = (q: string) => lookup(q ? `/departments?q=${q}` : '')
 //#endregion
 
 //#region REDUCER
@@ -157,6 +158,7 @@ export {
   fetchError,
   fetchSuccess,
   lookupUnit,
+  lookupDepartment,
   saveRequest,
   saveSuccess,
   saveError,

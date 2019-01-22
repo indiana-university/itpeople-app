@@ -1,5 +1,5 @@
 export * from "./AddChildForm";
-export * from "./AddDepartmentFrom";
+export * from "./AddDepartmentForm";
 export * from "./AddMemeberForm";
 export * from "./EditForm";
 export * from "./UpdateParentForm";

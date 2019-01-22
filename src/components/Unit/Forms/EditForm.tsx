@@ -37,7 +37,7 @@ import AddMemeberForm from "./AddMemeberForm";
 import { connect } from "react-redux";
 import UpdateParentForm from "./UpdateParentForm";
 import AddChildForm from "./AddChildForm";
-import AddDepartmentForm from "./AddDepartmentFrom";
+import AddDepartmentForm from "./AddDepartmentForm";
 import { Panel } from "src/components/Panel";
 import UpdateMemberForm from "./UpdateMemberForm";
 
