@@ -20,7 +20,9 @@ const setAuthToken = (token: string) =>
 const redirectToLogin = () =>
     window.location.assign(`${process.env.REACT_APP_OAUTH2_AUTH_URL}?response_type=code&client_id=${process.env.REACT_APP_OAUTH2_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_WEB_URL}/signin`)
 
-const callApi = (method: string, url: string, path: string, data?: any, headers?: any) => {
+type apiFn = (method: string, url: string, path: string, data?: any, headers?: any) => Promise<any>
+
+const callApi : apiFn = (method: string, url: string, path: string, data?: any, headers?: any) => {
     const combinedHeaders = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -31,15 +33,11 @@ const callApi = (method: string, url: string, path: string, data?: any, headers?
         headers: combinedHeaders,
         method,
     })
-        .then(res => {
-            if (!res.ok){
-                throw res.status === 401 
-                    ? new NotAuthorizedError("user not authorized")
-                    : new Error(`Unable to complete request. The server returned ${res.statusText} (${res.status})`)
-            }
-            
-            return res.json()})
-
+    .then(res => {
+        if (res.status === 401) return { unauthorized: true }
+        else if (!res.ok) return { errors: [`Unable to complete request. The server returned ${res.statusText} (${res.status})`] }
+        else return res.json()})
+    .catch(err => { errors: [err.ToString()]});
 }
 
 const callApiWithAuth = (method: string, url: string, path: string, data?: any) => {
@@ -82,11 +80,13 @@ function* handleResponse<TResponse>(
     response: any,
     success: (r:TResponse) => PayloadMetaAction<string,TResponse,any>, 
     error: (r:string) => PayloadMetaAction<string,string,any>){
-    if (response.errors) {
+    if (response.unauthorized) {
+        yield put(signInRequest())
+    } else if (response.errors) {
         yield put(error(response.errors))
-        } else {
+    } else {
         yield put(success(response))
-        }      
+    }      
 }
 
 /**
@@ -101,12 +101,8 @@ function* httpGet<TResponse>(
     path: string, 
     success: (r:TResponse) => PayloadMetaAction<string,TResponse,any>, 
     error: (r:string) => PayloadMetaAction<string,string,any>) {
-  try {
-    const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
-    yield handleResponse(response, success, error)
-  } catch (err) {
-    yield handleError(err, error)
-  }
+        const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
+        yield handleResponse(response, success, error)
 }
 
 /**
@@ -120,19 +116,17 @@ function* httpGet<TResponse>(
  * @param {(r:string) => PayloadMetaAction<string,string,any>} error A request failure action generator
  */
 function* httpPut<TRequest, TResponse>(
+    api: apiFn,
     path: string, 
     data: TRequest,
     success: (r:TResponse) => PayloadMetaAction<string,TResponse,any>, 
     error: (r:string) => PayloadMetaAction<string,string,any>) {
-  try {
-    const response = yield call(callApiWithAuth, 'put', API_ENDPOINT, path, data)
-    yield handleResponse(response, success, error)
-  } catch (err) {
-    yield handleError(err, error)
-  }
+        const response = yield call(api, 'put', API_ENDPOINT, path, data)
+        yield handleResponse(response, success, error)
 }
 
 export { 
+    apiFn,
     callApi,
     callApiWithAuth,
     clearAuthToken,

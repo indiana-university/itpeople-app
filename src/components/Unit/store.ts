@@ -113,7 +113,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 import { all, fork, select, takeEvery } from 'redux-saga/effects'
-import { httpGet, httpPut } from '../effects'
+import { apiFn as apiFn, httpGet, httpPut, callApiWithAuth } from '../effects'
 
 function* handleFetch() {
   const state = (yield select<IApplicationState>((s) => s.unit.request)) as IUnitRequest
@@ -122,21 +122,18 @@ function* handleFetch() {
 }
 
 /*
-// ✓ GET units/1 (unit, member, department, parent/child) -> IUnitProfile
-// POST units
-// PUT units/1
-// DELETE units/1
-// POST units/1/members
-// PUT units/1/members
-// DELETE units/1/members
-// POST/DELETE units/1/departments
-// POST/DELETE units/1/parent
-// POST/DELETE units/1/children
+ ✓  GET units/1 (unit, member, department, parent/child) -> IUnitProfile
+ ▢  POST units
+ ▢  PUT/DELETE units/1
+ ▢  POST/PUT/DELETE units/{uid}/members/{cid}
+ ▢  POST/DELETE units/{uid}/departments/{cid}
+ ▢  POST/DELETE units/{uid}/parent
+ ▢  POST/DELETE units/{uid}/children/{cid}
 */
 
-function* handleSaveUnit() {
+function* handleSaveUnit(api: apiFn) {
   const formValues = (yield select<IApplicationState>((s) => s.form.editUnit.values)) as IWebEntity
-  yield httpPut<IWebEntity, IUnitProfile>(`/units/${formValues.id}`, formValues, saveSuccess, saveError);
+  yield httpPut<IWebEntity, IUnitProfile>(api, `/units/${formValues.id}`, formValues, saveSuccess, saveError);
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
@@ -148,7 +145,7 @@ function* watchUnitFetch() {
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchUnitSave() {
-  yield takeEvery(UnitActionTypes.UNIT_SAVE_REQUEST, handleSaveUnit)
+  yield takeEvery(UnitActionTypes.UNIT_SAVE_REQUEST, () => handleSaveUnit(callApiWithAuth));
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.
@@ -174,5 +171,6 @@ export {
   saveError,
   reducer,
   initialState,
-  saga
-}
+  saga,
+  handleSaveUnit
+};

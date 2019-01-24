@@ -29,6 +29,7 @@ import * as Profile from './components/Profile/store'
 import * as SearchSimple from './components/Search/store'
 import * as Unit from "./components/Unit/store";
 import * as Units from "./components/Units/store";
+import { callApiWithAuth } from './components/effects';
 
 export const initialState: IApplicationState = {
   auth: Auth.initialState,

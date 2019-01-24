@@ -51,7 +51,7 @@
           "supportedDepartments": [
             {
               "id": 1,
-              "name": "Parks and Recreation Department",
+              "name": "Parks and Recreation Department 1",
               "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
             }
           ],
@@ -463,7 +463,14 @@
           "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
-          "location": "CIB sub-sub-basement"
+          "id": 5,
+          "name": "Jerry Gergich",
+          "netId": "garryg",
+          "position": "Parks and Rec Dude",
+          "location": "CIB sub-sub-basement",
+          "campusPhone": "812-856-1234",
+          "campusEmail": "terry@pawnee.in.us",
+          "campus": "Bloomington"
         }
       },
       "response": {

@@ -13,11 +13,12 @@ import axios from 'axios'
 import * as traverse from 'traverse'
 import { expectSaga } from 'redux-saga-test-plan'
 import { ProfileActionTypes, saga as profileSaga } from './components/Profile/store'
-import { UnitActionTypes, saga as unitSaga } from './components/Unit/store'
+import { UnitActionTypes, saga as unitSaga, handleSaveUnit } from './components/Unit/store'
 import { DepartmentActionTypes, saga as departmentSaga } from './components/Department/store'
 import { SearchActionTypes, saga as searchSaga } from './components/Search/store'
 import { Reducer } from 'redux';
 import { Effect } from 'redux-saga';
+import { apiFn } from './components/effects';
 
 const lastSagaPutActionPayload = (ar: Array<Effect>) =>
   ar[ar.length - 1]["PUT"]["action"]["payload"]
@@ -123,13 +124,7 @@ describe('Contracts', () => {
 
       it('works through app saga', async () => {
         const resource = (await getFixture(path)).data
-        const reducer: Reducer = () =>
-          ({
-            unit: {
-              request: { id: recordId }
-            }
-          })
-
+        const reducer: Reducer = () => ({ unit: { request: { id: recordId } } })
         const { allEffects } = await expectSaga(unitSaga)
           .withReducer(reducer)
           .dispatch({ type: UnitActionTypes.UNIT_FETCH_REQUEST })
@@ -143,13 +138,7 @@ describe('Contracts', () => {
       })
 
       it('fails with bad id via saga', async () => {
-        const reducer: Reducer = () =>
-          ({
-            unit: {
-              request: { id: 10000 }
-            }
-          })
-
+        const reducer: Reducer = () => ({ unit: { request: { id: 10000 } } })
         await expectSaga(unitSaga)
           .withReducer(reducer)
           .dispatch({ type: UnitActionTypes.UNIT_FETCH_REQUEST })
@@ -203,13 +192,13 @@ describe('Contracts', () => {
       })
     })
 
-    describe('updating attributes of an existing unit', async () => {
+    describe('updating attributes of an existing unit', () => {
       const recordId = 1
       const path = `${unitsResource}/${recordId}`
-
+      
       it('works', async () => {
-        let putBody = (await getFixture(`/allUnits/4`)).data
-        delete putBody.id
+        const fixtureUnit = (await getFixture(`/allUnits/4`)).data
+        const { id, ...putBody } = fixtureUnit
         await pactServer.addInteraction({
           state: `unit ${recordId} exists`,
           uponReceiving: `a PUT request to update attributes for unit ${recordId}`,
@@ -226,9 +215,29 @@ describe('Contracts', () => {
         const pactResponseStatus = (await putPact(path, putBody)).status
         expect(pactResponseStatus).toEqual(200)
       })
+
+      it("works through app saga", async () => {
+        const successPayload = { result: "success!" }
+        const formValues = { id: recordId, name: "foo", description: "bar", url: "baz" }
+        const api: apiFn = (m, u, p, d, h) => {
+          expect(p).toEqual(path);
+          expect(d).toEqual(formValues);
+          return Promise.resolve(successPayload);
+        }
+        await expectSaga(handleSaveUnit, api)
+          .withState({ form: { editUnit: { values: formValues } } })
+          .put({
+            type: UnitActionTypes.UNIT_SAVE_SUCCESS,
+            payload: successPayload,
+            meta: undefined
+          })
+          .run();
+        });
+
+        // it ("fails 😟"
     })
 
-    describe('creating a new unit', async () => {
+    describe('creating a new unit', () => {
       const path = unitsResource
 
       it('works', async () => {
@@ -309,23 +318,15 @@ describe('Contracts', () => {
 
       it('works through app saga', async () => {
         const resource = (await getFixture(path)).data
-        const reducer: Reducer = () =>
-          ({
-            profile: {
-              request: { id: recordId }
-            }
-          })
-
-        const { allEffects } = await expectSaga(profileSaga)
-          .withReducer(reducer)
+        await expectSaga(profileSaga)
+          .withState({ profile: { request: { id: recordId } } })
           .dispatch({ type: ProfileActionTypes.PROFILE_FETCH_REQUEST })
-          .put.actionType(
-            ProfileActionTypes.PROFILE_FETCH_SUCCESS
-          )
-          .run()
-
-        const sagaPayload = lastSagaPutActionPayload(allEffects)
-        expect(sagaPayload).toEqual(resource)
+          .put({
+            type: ProfileActionTypes.PROFILE_FETCH_SUCCESS,
+            payload: resource,
+            meta: undefined
+          })
+          .run();
       })
 
       it('fails with bad id via saga', async () => {
@@ -400,8 +401,8 @@ describe('Contracts', () => {
       const path = `${peopleResource}/${recordId}`
 
       it('works', async () => {
-
-        const putBody = { location: 'CIB sub-sub-basement' }
+        const resource = (await getFixture(path)).data
+        const putBody = { ...resource, location: 'CIB sub-sub-basement' }
         await pactServer.addInteraction({
           state: `person ${recordId} exists`,
           uponReceiving: `a PUT request to update location for person ${recordId}`,
