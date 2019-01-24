@@ -2,6 +2,7 @@
   "name": "app",
   "version": "0.1.0",
   "private": true,
+  "license": "BSD-3-Clause",
   "dependencies": {
     "connected-react-router": "^4.4.1",
     "jwt-decode": "^2.2.0",
@@ -22,6 +23,7 @@
   "scripts": {
     "json-server": "json-server --watch db.json --routes db.routes.json --port 3001",
     "dev": "yarn json-server & yarn start && kill 0",
+    "tdd": "yarn json-server & jest --env=jsdom --watch && kill 0",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "yarn json-server & jest --env=jsdom",

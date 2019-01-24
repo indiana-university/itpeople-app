@@ -130,32 +130,38 @@
       "id": 5,
       "name": "Jerry Gergich",
       "netId": "garryg",
-      "campusEmail": "terry@pawnee.in.us"
+      "position": "Parks and Rec Dude",
+      "location": "Municipal Building, Office 123",
+      "campusPhone": "812-856-1234",
+      "campusEmail": "terry@pawnee.in.us",
+      "campus": "Bloomington"
     }
   ],
   "allUnits": [
     {
       "id": 1,
       "name": "Parks and Recreation IT",
-      "description": "This page is under construction"
+      "description": "This page is under construction",
+      "url": "http://pawneeindiana.com/information-technology/"
     },
     {
       "id": 4,
       "name": "Fourth floor IT",
-      "description": "It is creepy up here"
+      "description": "It is creepy up here",
+      "url": "https://map.concept3d.com/?id=951#!m/9510954"
     },
     {
-      "id": 1,
+      "id": 5,
       "name": "Unit name",
       "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
     },
     {
-      "id": 1,
+      "id": 6,
       "name": "Unit name",
       "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
     },
     {
-      "id": 1,
+      "id": 7,
       "name": "Unit name",
       "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
     },

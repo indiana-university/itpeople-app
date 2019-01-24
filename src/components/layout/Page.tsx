@@ -31,7 +31,7 @@ interface IPropsFromDispatch {
 const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest, signOutRequest, submitSearch, children }) => (
   <>
     <div style={{ minHeight: "100%", marginBottom: -59 }}>
-    <Header title="IT Pro Database">
+    <Header title="IT People">
       { user &&
         <HeaderNavigation>
           <a style={fixNavLinkAlignment} href="/units">Units</a>

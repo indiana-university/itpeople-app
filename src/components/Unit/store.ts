@@ -111,7 +111,6 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 }
 //#endregion
 
-
 //#region SAGA
 import { all, fork, select, takeEvery } from 'redux-saga/effects'
 import { httpGet, httpPut } from '../effects'
@@ -119,16 +118,25 @@ import { httpGet, httpPut } from '../effects'
 function* handleFetch() {
   const state = (yield select<IApplicationState>((s) => s.unit.request)) as IUnitRequest
   const path = `/units/${state.id}`
-  yield httpGet<IUnitProfile>(path, fetchSuccess, fetchError)
+  yield httpGet<IUnitProfile>(path, fetchSuccess, fetchError);
 }
 
-function* handleSave() {
-  // todo: check if form exists - is there a strongly typed way to do this?
-  const formValues = (yield select<IApplicationState>((s) => s.form.editUnit.values))
-  const id = formValues.id;
-  const path = `/units/${id}`
+/*
+// ✓ GET units/1 (unit, member, department, parent/child) -> IUnitProfile
+// POST units
+// PUT units/1
+// DELETE units/1
+// POST units/1/members
+// PUT units/1/members
+// DELETE units/1/members
+// POST/DELETE units/1/departments
+// POST/DELETE units/1/parent
+// POST/DELETE units/1/children
+*/
 
-  yield httpPut<IUnitProfile, IUnitProfile>(path, formValues, saveSuccess, saveError)
+function* handleSaveUnit() {
+  const formValues = (yield select<IApplicationState>((s) => s.form.editUnit.values)) as IWebEntity
+  yield httpPut<IWebEntity, IUnitProfile>(`/units/${formValues.id}`, formValues, saveSuccess, saveError);
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
@@ -140,7 +148,7 @@ function* watchUnitFetch() {
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchUnitSave() {
-  yield takeEvery(UnitActionTypes.UNIT_SAVE_REQUEST, handleSave)
+  yield takeEvery(UnitActionTypes.UNIT_SAVE_REQUEST, handleSaveUnit)
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.

@@ -28,8 +28,6 @@ import {
 } from "src/components/form";
 import {
   TrashCan,
-  ArrowUp,
-  ArrowDown,
   ParentUnitIcon,
   ChildrenUnitsIcon,
   Pencil,
@@ -310,26 +308,6 @@ const renderMember = function(
           {member.title && <div>{member.title}</div>}
         </Col>
         <div style={{ textAlign: "right" }}>
-          {moveUp && (
-            <Button
-              className="rvt-button--plain"
-              type="button"
-              title="Move Member"
-              onClick={moveUp}
-            >
-              <ArrowUp />
-            </Button>
-          )}
-          {moveDown && (
-            <Button
-              className="rvt-button--plain"
-              type="button"
-              title="Move Member"
-              onClick={moveDown}
-            >
-              <ArrowDown />
-            </Button>
-          )}
           <span style={{ textAlign: "left" }}>
             <Modal
               id={`Edit member: ${member.id}`}
@@ -463,26 +441,6 @@ const renderChildren = ({ fields }: any) => {
                   <h4>{unit.name}</h4>
                 </Col>
                 <Col style={{ minWidth: 150, flexGrow: 0, textAlign: "right" }}>
-                  {fields.get(index - 1) && (
-                    <Button
-                      variant="plain"
-                      type="button"
-                      title="Move Unit up"
-                      onClick={() => fields.swap(index, index - 1)}
-                    >
-                      <ArrowUp />
-                    </Button>
-                  )}
-                  {fields.get(index + 1) && (
-                    <Button
-                      variant="plain"
-                      type="button"
-                      title="Move Unit down"
-                      onClick={() => fields.swap(index, index + 1)}
-                    >
-                      <ArrowDown />
-                    </Button>
-                  )}
                   <Button
                     variant="plain"
                     type="button"
@@ -541,26 +499,6 @@ const renderDepartments = ({ fields }: any) => {
                   <h4 className="rvt-text-bold">{department.name}</h4>
                 </Col>
                 <Col style={{ flexGrow: 0, minWidth: 150, textAlign: "right" }}>
-                  {fields.get(index - 1) && (
-                    <Button
-                      variant="plain"
-                      type="button"
-                      title="Move department up"
-                      onClick={() => fields.swap(index, index - 1)}
-                    >
-                      <ArrowUp />
-                    </Button>
-                  )}
-                  {fields.get(index + 1) && (
-                    <Button
-                      variant="plain"
-                      type="button"
-                      title="Move department down"
-                      onClick={() => fields.swap(index, index + 1)}
-                    >
-                      <ArrowDown />
-                    </Button>
-                  )}
                   <Button
                     variant="plain"
                     type="button"

@@ -39,7 +39,7 @@ const Presentation: React.SFC<IDepartmentProfile> = props => {
           <Col>
             {members && members.length > 0 && (
               <div>
-                <MemberList members={members} title="IT Professional Staff" />
+                <MemberList members={members} title="IT Staff" />
               </div>
             )}
           </Col>

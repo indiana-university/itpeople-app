@@ -20,5 +20,5 @@ module.exports = {
   // setting an actual url for jsdom rather than default of "about:config"
   // to avoid SecurityError
   "testURL": "https://localhost:3000",
-  "setupFiles": ["./jestSetEnv.js"]
+  "setupFiles": ["./jest.env.js"]
 }

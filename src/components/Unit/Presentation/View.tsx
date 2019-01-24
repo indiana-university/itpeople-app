@@ -45,7 +45,6 @@ const Presentation: React.SFC<
         </div>
       )}
       <PageTitle>{props.name}</PageTitle>
-
       <Section>
         {props.description && (
           <div className="group-describer rvt-m-bottom-md">
