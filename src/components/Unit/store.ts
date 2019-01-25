@@ -15,6 +15,9 @@ export const enum UnitActionTypes {
   UNIT_SAVE_REQUEST = '@@unit/SAVE_REQUEST',
   UNIT_SAVE_SUCCESS = '@@unit/SAVE_SUCCESS',
   UNIT_SAVE_ERROR = '@@unit/SAVE_ERROR',
+  UNIT_SAVE_MEMBER_REQUEST = '@@unit/SAVE_MEMBER_REQUEST',
+  UNIT_SAVE_MEMBER_SUCCESS = '@@unit/SAVE_MEMBER_SUCCESS',
+  UNIT_SAVE_MEMBER_ERROR = '@@unit/SAVE_MEMBER_ERROR',
   UNIT_CANCEL = '@@unit/UNIT_CANCEL',
 }
 
@@ -28,10 +31,14 @@ export interface IUrl {
 
 export interface IUnitMember extends IEntity {
   title: string,
-  role: ItProRole | UitsRole,
+  role: ItProRole | UitsRole | string,
   permissions: UnitPermissions,
   percentage: number
   photoUrl?: string
+}
+
+export interface IMembershipForm extends IUnitMember {
+  unitId: number
 }
 
 export enum ItProRole {
@@ -77,6 +84,9 @@ const cancel = () => action(UnitActionTypes.UNIT_CANCEL, {})
 const fetchRequest = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request)
 const fetchSuccess = (data: IUnitProfile) => action(UnitActionTypes.UNIT_FETCH_SUCCESS, data)
 const fetchError = (error: string) => action(UnitActionTypes.UNIT_FETCH_ERROR, error)
+const saveMemberRequest = (member: IMembershipForm) => action(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, member)
+const saveMemberSuccess = (request: IUnitMember) => action(UnitActionTypes.UNIT_SAVE_MEMBER_SUCCESS, request)
+const saveMemberError = (error: string) => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error)
 const lookupUnit = (q: string) => lookup(q ? `/units?q=${q}` : '')
 const lookupDepartment = (q: string) => lookup(q ? `/departments?q=${q}` : '')
 const lookupUser = (q: string) => lookup(q ? `/people?q=${q}` : '')
@@ -106,6 +116,18 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_FETCH_REQUEST: return FetchRequestReducer(state, act)
     case UnitActionTypes.UNIT_FETCH_SUCCESS: return FetchSuccessReducer(state, act)
     case UnitActionTypes.UNIT_FETCH_ERROR: return FetchErrorReducer(state, act)
+
+    case UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST: 
+      return state;
+
+    case UnitActionTypes.UNIT_SAVE_MEMBER_SUCCESS:
+      return state;
+
+    case UnitActionTypes.UNIT_SAVE_MEMBER_ERROR:
+      console.log("***" + UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, state, act)
+      return state;
+
+
     default: return state
   }
 }
@@ -123,10 +145,13 @@ function* handleFetch() {
 
 /*
  ✓  GET units/1 (unit, member, department, parent/child) -> IUnitProfile
- ▢  POST units
- ▢  PUT/DELETE units/1
- ▢  POST/PUT/DELETE units/{uid}/members/{cid}
- ▢  POST/DELETE units/{uid}/departments/{cid}
+ ✓  POST units
+ ✓  PUT units/1
+ ▢  DELETE units/1
+ ▢  POST units/{uid}/members
+ ▢  PUT units/{uid}/members/{mid}
+ ▢  DELETE units/{uid}/members/{mid}
+ ▢  POST/DELETE units/{uid}/departments/{did}
  ▢  POST/DELETE units/{uid}/parent
  ▢  POST/DELETE units/{uid}/children/{cid}
 */
@@ -138,6 +163,21 @@ function* handleSaveUnit(api: apiFn) {
   } else {
     yield httpPost<IWebEntity, IUnitProfile>(api, "/units", formValues, saveSuccess, saveError);
   }
+}
+
+function* handleSaveMember(api: apiFn){
+  const formValues = (yield select<IApplicationState>((s) => s.form.addMemberForm.values)) as IMembershipForm
+  // const unit = (yield select<IApplicationState>((s) => s.unit.data)) as IUnitProfile
+  // let members = unit.members;
+  // if(unit.members.find(m=>m.id==formValues.id)){
+  //   members = unit.members.map((member)=> (member.id == formValues.id) ? {...member, ...formValues} : member);
+  // } else {
+  //   members = [...unit.members, formValues];
+  // }
+  // const data = {members}
+ // yield httpPatch<IUnitMember, IUnitMember>(api, `/units/${formValues.unitId}`, data, saveMemberSuccess, saveMemberError);
+  
+ yield httpPut<IUnitMember, IUnitMember>(api, `/units/${formValues.unitId}/members/${formValues.id}`, formValues, saveMemberSuccess, saveMemberError);
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
@@ -152,9 +192,13 @@ function* watchUnitSave() {
   yield takeEvery(UnitActionTypes.UNIT_SAVE_REQUEST, () => handleSaveUnit(callApiWithAuth));
 }
 
+function* watchUnitAddMember() {
+  yield takeEvery(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, () => handleSaveMember(callApiWithAuth));
+}
+
 // We can also use `fork()` here to split our saga into multiple watchers.
 function* saga() {
-  yield all([fork(watchUnitFetch), fork(watchUnitSave)])
+  yield all([fork(watchUnitFetch), fork(watchUnitSave), fork(watchUnitAddMember)])
 }
 //#endregion
 
@@ -176,5 +220,7 @@ export {
   reducer,
   initialState,
   saga,
-  handleSaveUnit
+  handleSaveUnit,
+  handleSaveMember,
+  saveMemberRequest
 };

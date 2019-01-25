@@ -33,7 +33,7 @@ import {
   Pencil,
   AddUser
 } from "src/components/icons";
-import AddMemeberForm from "./AddMemberForm";
+import AddMemberForm from "./AddMemberForm";
 import { connect } from "react-redux";
 import UpdateParentForm from "./UpdateParentForm";
 import AddChildForm from "./AddChildForm";
@@ -46,6 +46,7 @@ interface IFormActions {
   cancel: typeof unit.cancel;
   closeModal: typeof closeModal;
   editMember: (member: unit.IUnitMember) => any;
+  addMember: (member: unit.IUnitMember) => any;
 }
 
 interface IFormProps
@@ -57,11 +58,15 @@ interface IMemberField extends unit.IUnitMember {
   fieldId: number;
   update: (m: any) => any;
 }
+
 let modalClose = () => {};
 let editMember = (member: unit.IUnitMember) => {};
+let addMember = (member: unit.IUnitMember) => {};
+
 let EditForm: React.SFC<IFormProps> | any = (props: IFormProps) => {
   modalClose = props.closeModal;
   editMember = props.editMember;
+  addMember = props.addMember;
   return (
     <>
       <Breadcrumbs
@@ -228,8 +233,11 @@ const renderMembers = ({ fields, input }: any) => {
         variant="plain"
       >
         <ModalBody>
-          <AddMemeberForm
+          <AddMemberForm
             onSubmit={(member: any) => {
+
+              addMember(member);
+
               fields.push(member);
               modalClose();
             }}
@@ -271,7 +279,11 @@ const renderMembers = ({ fields, input }: any) => {
         className="list-dividers list-dividers--show-last rvt-m-top-lg"
       >
         {standardMember.map((member, index) => {
-          const { down, up, remove } = createActions(member, index, standardMember);
+          const { down, up, remove } = createActions(
+            member,
+            index,
+            standardMember
+          );
           return renderMember(member, index, remove, up, down);
         })}
       </List>
@@ -537,7 +549,8 @@ EditForm = connect(
         dispatch(change("updateMemberForm", "name", member.name));
         dispatch(change("updateMemberForm", "title", member.title));
         dispatch(change("updateMemberForm", "role", member.role));
-      }
+      },
+      addMember: (member:any) => { dispatch(unit.saveMemberRequest(member))}
     };
   }
 )(EditForm);

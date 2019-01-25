@@ -13,7 +13,7 @@ import axios from 'axios'
 import * as traverse from 'traverse'
 import { expectSaga } from 'redux-saga-test-plan'
 import { ProfileActionTypes, saga as profileSaga } from './components/Profile/store'
-import { UnitActionTypes, saga as unitSaga, handleSaveUnit } from './components/Unit/store'
+import { UnitActionTypes, saga as unitSaga, handleSaveUnit, handleSaveMember } from './components/Unit/store'
 import { DepartmentActionTypes, saga as departmentSaga } from './components/Department/store'
 import { SearchActionTypes, saga as searchSaga } from './components/Search/store'
 import { Reducer } from 'redux';
@@ -69,6 +69,41 @@ const getPact = (path: string) => axiosRequest('GET', PACT_SERVER, path)
 const putPact = (path: string, data: Object) => axiosRequest('PUT', PACT_SERVER, path, data)
 const postPact = (path: string, data: Object) => axiosRequest('POST', PACT_SERVER, path, data)
 const deletePact = (path: string) => axiosRequest('DELETE', PACT_SERVER, path)
+
+
+const sagaApiHappyPath = async (saga: any, state: any, expectedMethod: string, expectedPath: string, expectedData: any, expectedDispatch: string) => {
+  const api: apiFn = (m, u, p, d, h) => {
+    expect(m).toEqual(expectedMethod);
+    expect(p).toEqual(expectedPath);
+    expect(d).toEqual(expectedData);
+    return Promise.resolve({});
+  }
+  await expectSaga(saga, api)
+    .withState(state)
+    .put({
+      type: expectedDispatch,
+      payload: {},
+      meta: undefined
+    })
+    .run();
+}
+
+const sagaApiSadPath = async (saga: any, state: any, expectedDispatch: string) => {
+  const api: apiFn = (m, u, p, d, h) =>
+    Promise.resolve({
+      errors: ["Error"]
+    });
+  await expectSaga(saga, api)
+    .withState(state)
+    .put({
+      type: expectedDispatch,
+      payload: ["Error"],
+      meta: undefined
+    })
+    .run();
+};
+
+
 
 beforeAll(async () => pactServer.setup())
 
@@ -312,6 +347,42 @@ describe('Contracts', () => {
 
     })
 
+    describe('creating/updating a unit membership', () => {
+      const path = "/units/4/members/1";
+      // it('works', async () => {
+      //   const fixtureUnit = (await getFixture(`/allUnits/4`)).data
+      //   const { id, ...postBody } = fixtureUnit
+      //   await pactServer.addInteraction({
+      //     state: 'units may be created',
+      //     uponReceiving: 'a POST request to create a unit',
+      //     withRequest: {
+      //       method: 'POST',
+      //       headers: { ...authHeader, ...contentTypeHeader },
+      //       path: path,
+      //       body: postBody
+      //     },
+      //     willRespondWith: {
+      //       status: 201,
+      //       headers: { ...{ Location: Matchers.like(`${path}/1`) }, ...contentTypeHeader },
+      //       body: Matchers.like(fixtureUnit)
+      //     }
+      //   })
+      //   const pactResponseStatus = (await postPact(path, postBody)).status
+      //   expect(pactResponseStatus).toEqual(201)
+      // })
+
+      const formValues = { unitId: 4, id: 1, name: "gmichael", title: "Mr Manager", role: "Leader" }; 
+      const state = { form: { addMemberForm: { values: formValues } } };
+
+      it("works through app saga", async () => 
+        await sagaApiHappyPath(handleSaveMember, state, "put", path, formValues, UnitActionTypes.UNIT_SAVE_MEMBER_SUCCESS)
+      );
+
+      it("fails through app saga", async () => 
+        await sagaApiSadPath(handleSaveMember, state, UnitActionTypes.UNIT_SAVE_MEMBER_ERROR));
+
+    })
+
     describe('deleting a unit', () => {
 
       const recordId = 1
@@ -333,8 +404,7 @@ describe('Contracts', () => {
         const pactResponseStatus = (await deletePact(path)).status
         expect(pactResponseStatus).toEqual(204)
       })
-    })
-
+    });
   })
   describe('for people', () => {
 

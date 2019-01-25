@@ -1,5 +1,5 @@
 import * as React from "react";
-import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
+import { reduxForm, InjectedFormProps, formValueSelector, Field } from "redux-form";
 import { Button } from "rivet-react";
 import {
   RivetInputField,
@@ -22,6 +22,7 @@ interface IFormProps
 }
 interface IMemberFields {
   id: number;
+  unitId: number;
   name: string;
   title: string;
   role: UitsRole | ItProRole;
@@ -38,7 +39,17 @@ const AddMemberForm: React.SFC<IFormProps> = props => {
     const q = e.target.value;
     props.lookupUser(q);
   };
-  const { id, name, title, role, users, lookupUser, change, invalid } = props;
+  const {
+    id,
+    unitId,
+    name,
+    title,
+    role,
+    users,
+    lookupUser,
+    change,
+    invalid
+  } = props;
   const hasUser = !!id;
   return (
     <>
@@ -46,10 +57,15 @@ const AddMemberForm: React.SFC<IFormProps> = props => {
         onSubmit={e => {
           e.preventDefault();
           e.stopPropagation();
-          props.onSubmit({id, name, title, role });
+
+          // TODO: dispatch add member action
+
+          props.onSubmit({ id, unitId, name, title, role });
           props.reset();
         }}
       >
+        <Field name="unitId" component="input" type="hidden" />
+
         {!hasUser && (
           <>
             <div>
@@ -67,7 +83,6 @@ const AddMemberForm: React.SFC<IFormProps> = props => {
                 style={{ position: "relative", padding: 0 }}
               >
                 {users.map((user: any, i: number) => {
-                  // todo: circular reference check
                   // todo: check if relationship already exists
                   return (
                     <div key={i}>
@@ -152,7 +167,8 @@ addMemberForm = connect(
     const title = selector(state, "title");
     const role = selector(state, "role");
     const users = state.lookup.current;
-    return { id, name, title, role, users };
+    const unitId = state.unit.data ? state.unit.data.id : undefined;
+    return { initialValues: { unitId }, id, name, title, role, users };
   },
   (dispatch: Dispatch) => {
     return {
