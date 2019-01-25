@@ -84,7 +84,7 @@ const lookupUser = (q: string) => lookup(q ? `/people?q=${q}` : '')
 
 //#region REDUCER
 import { Reducer } from 'redux'
-import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer, PutErrorReducer, PutRequestReducer, PutSuccessReducer } from '../types'
+import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer, SaveErrorReducer, SaveRequestReducer, SaveSuccessReducer } from '../types'
 
 // Type-safe initialState!
 const initialState: IState = {
@@ -99,9 +99,9 @@ const initialState: IState = {
 const reducer: Reducer<IState> = (state = initialState, act) => {
   switch (act.type) {
     case UnitActionTypes.UNIT_EDIT: return { ...state, view: ViewStateType.Editing }
-    case UnitActionTypes.UNIT_SAVE_REQUEST: return PutRequestReducer(state, act)
-    case UnitActionTypes.UNIT_SAVE_SUCCESS: return PutSuccessReducer(state, act)
-    case UnitActionTypes.UNIT_SAVE_ERROR: return PutErrorReducer(state, act)
+    case UnitActionTypes.UNIT_SAVE_REQUEST: return SaveRequestReducer(state, act)
+    case UnitActionTypes.UNIT_SAVE_SUCCESS: return SaveSuccessReducer(state, act)
+    case UnitActionTypes.UNIT_SAVE_ERROR: return SaveErrorReducer(state, act)
     case UnitActionTypes.UNIT_CANCEL: return { ...state, view: ViewStateType.Viewing }
     case UnitActionTypes.UNIT_FETCH_REQUEST: return FetchRequestReducer(state, act)
     case UnitActionTypes.UNIT_FETCH_SUCCESS: return FetchSuccessReducer(state, act)
@@ -113,7 +113,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 import { all, fork, select, takeEvery } from 'redux-saga/effects'
-import { apiFn as apiFn, httpGet, httpPut, callApiWithAuth } from '../effects'
+import { apiFn as apiFn, httpGet, httpPost, httpPut, callApiWithAuth } from '../effects'
 
 function* handleFetch() {
   const state = (yield select<IApplicationState>((s) => s.unit.request)) as IUnitRequest
@@ -133,7 +133,11 @@ function* handleFetch() {
 
 function* handleSaveUnit(api: apiFn) {
   const formValues = (yield select<IApplicationState>((s) => s.form.editUnit.values)) as IWebEntity
-  yield httpPut<IWebEntity, IUnitProfile>(api, `/units/${formValues.id}`, formValues, saveSuccess, saveError);
+  if (formValues.id) {
+    yield httpPut<IWebEntity, IUnitProfile>(api, `/units/${formValues.id}`, formValues, saveSuccess, saveError);
+  } else {
+    yield httpPost<IWebEntity, IUnitProfile>(api, "/units", formValues, saveSuccess, saveError);
+  }
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action

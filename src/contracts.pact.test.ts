@@ -220,6 +220,7 @@ describe('Contracts', () => {
         const successPayload = { result: "success!" }
         const formValues = { id: recordId, name: "foo", description: "bar", url: "baz" }
         const api: apiFn = (m, u, p, d, h) => {
+          expect(m).toEqual('put');
           expect(p).toEqual(path);
           expect(d).toEqual(formValues);
           return Promise.resolve(successPayload);
@@ -234,7 +235,20 @@ describe('Contracts', () => {
           .run();
         });
 
-        // it ("fails 😟"
+      it("fails through app saga", async () => {
+        const formValues = { id: recordId, name: "foo", description: "bar", url: "baz" }
+        const api: apiFn = (m, u, p, d, h) =>
+          Promise.resolve({errors: ["Error"]});
+
+        await expectSaga(handleSaveUnit, api)
+          .withState({ form: { editUnit: { values: formValues } } })
+          .put({
+            type: UnitActionTypes.UNIT_SAVE_ERROR,
+            payload: ["Error"],
+            meta: undefined
+          })
+          .run();
+      });
     })
 
     describe('creating a new unit', () => {
@@ -261,6 +275,41 @@ describe('Contracts', () => {
         const pactResponseStatus = (await postPact(path, postBody)).status
         expect(pactResponseStatus).toEqual(201)
       })
+
+      it("works through app saga", async () => {
+        const successPayload = { result: "success!" }
+        const formValues = { id: 0, name: "foo", description: "bar", url: "baz" }
+        const api: apiFn = (m, u, p, d, h) => {
+          expect(m).toEqual("post");
+          expect(p).toEqual(path);
+          expect(d).toEqual(formValues);
+          return Promise.resolve(successPayload);
+        }
+        await expectSaga(handleSaveUnit, api)
+          .withState({ form: { editUnit: { values: formValues } } })
+          .put({
+            type: UnitActionTypes.UNIT_SAVE_SUCCESS,
+            payload: successPayload,
+            meta: undefined
+          })
+          .run();
+      });
+
+      it("fails through app saga", async () => {
+        const formValues = { id: 0, name: "foo", description: "bar", url: "baz" }
+        const api: apiFn = (m, u, p, d, h) =>
+          Promise.resolve({ errors: ["Error"] });
+
+        await expectSaga(handleSaveUnit, api)
+          .withState({ form: { editUnit: { values: formValues } } })
+          .put({
+            type: UnitActionTypes.UNIT_SAVE_ERROR,
+            payload: ["Error"],
+            meta: undefined
+          })
+          .run();
+      });
+
     })
 
     describe('deleting a unit', () => {

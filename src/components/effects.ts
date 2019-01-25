@@ -106,6 +106,26 @@ function* httpGet<TResponse>(
 }
 
 /**
+ * Asynchronously issue an HTTP POST request with a payload and resolve the response.
+ *
+ * @template TRequest The request payload type.
+ * @template TResponse The expected response type
+ * @param {string} path The absolute path from the API root
+ * @param {TRequest} data The request payload
+ * @param {(r:TResponse) => PayloadMetaAction<string,TResponse,any>} success A request success action generator
+ * @param {(r:string) => PayloadMetaAction<string,string,any>} error A request failure action generator
+ */
+function* httpPost<TRequest, TResponse>(
+    api: apiFn,
+    path: string,
+    data: TRequest,
+    success: (r: TResponse) => PayloadMetaAction<string, TResponse, any>,
+    error: (r: string) => PayloadMetaAction<string, string, any>) {
+    const response = yield call(api, 'post', API_ENDPOINT, path, data)
+    yield handleResponse(response, success, error)
+}
+
+/**
  * Asynchronously issue an HTTP PUT request with a payload and resolve the response.
  *
  * @template TRequest The request payload type.
@@ -131,6 +151,7 @@ export {
     callApiWithAuth,
     clearAuthToken,
     httpGet,
+    httpPost,
     httpPut,
     handleError,
     getAuthToken,

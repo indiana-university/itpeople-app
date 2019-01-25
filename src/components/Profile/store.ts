@@ -72,9 +72,9 @@ import {
   FetchErrorReducer,
   FetchRequestReducer,
   FetchSuccessReducer,
-  PutErrorReducer,
-  PutRequestReducer,
-  PutSuccessReducer
+  SaveErrorReducer,
+  SaveRequestReducer,
+  SaveSuccessReducer
 } from "../types";
 
 // Type-safe initialState!
@@ -96,11 +96,11 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
     case ProfileActionTypes.PROFILE_FETCH_ERROR:
       return FetchErrorReducer(state, act);
     case ProfileActionTypes.PROFILE_UPDATE_REQUEST:
-      return PutRequestReducer(state, act);
+      return SaveRequestReducer(state, act);
     case ProfileActionTypes.PROFILE_UPDATE_SUCCESS:
-      return PutSuccessReducer(state, act);
+      return SaveSuccessReducer(state, act);
     case ProfileActionTypes.PROFILE_UPDATE_ERROR:
-      return PutErrorReducer(state, act);
+      return SaveErrorReducer(state, act);
     case ProfileActionTypes.PROFILE_TOGGLE_UNIT:
       if (
         state &&
@@ -128,7 +128,7 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGAS
 import { all, fork, select, takeEvery } from "redux-saga/effects";
-import { httpGet, httpPut } from "../effects";
+import { httpGet, httpPut, apiFn, callApiWithAuth } from "../effects";
 
 function* handleFetch() {
   const state = (yield select<IApplicationState>(
@@ -138,13 +138,13 @@ function* handleFetch() {
   yield httpGet<IUserProfile>(path, fetchSuccess, fetchError);
 }
 
-function* handleUpdate() {
+function* handleUpdate(api: apiFn) {
   const form = (yield select<any>(s => s.form.profile.values)) as IUser;
   const req = (yield select<IApplicationState>(
     s => s.profile.request
   )) as IUserRequest;
   const path = `/people/${req.id}`;
-  yield httpPut<IUser, IUserProfile>(path, form, fetchSuccess, fetchError);
+  yield httpPut<IUser, IUserProfile>(api, path, form, fetchSuccess, fetchError);
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
@@ -154,7 +154,7 @@ function* watchProfileFetch() {
 }
 
 function* watchProfileUpdate() {
-  yield takeEvery(ProfileActionTypes.PROFILE_UPDATE_REQUEST, handleUpdate);
+  yield takeEvery(ProfileActionTypes.PROFILE_UPDATE_REQUEST, () => handleUpdate(callApiWithAuth));
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.
