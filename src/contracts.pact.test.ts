@@ -166,7 +166,7 @@ describe('Contracts', () => {
           .put.actionType(
             UnitActionTypes.UNIT_FETCH_SUCCESS
           )
-          .run()
+          .silentRun(50)
 
         const sagaPayload = lastSagaPutActionPayload(allEffects)
         expect(sagaPayload).toEqual(resource)
@@ -180,7 +180,7 @@ describe('Contracts', () => {
           .put.actionType(
             UnitActionTypes.UNIT_FETCH_ERROR
           )
-          .run()
+          .silentRun(50)
       })
     })
     describe('retrieving all units', () => {
@@ -220,7 +220,7 @@ describe('Contracts', () => {
           .put.actionType(
             UnitActionTypes.UNIT_FETCH_SUCCESS
           )
-          .run()
+          .silentRun(50)
 
         const sagaPayload = lastSagaPutActionPayload(allEffects)
         expect(sagaPayload).toEqual(resource)
@@ -267,7 +267,7 @@ describe('Contracts', () => {
             payload: successPayload,
             meta: undefined
           })
-          .run();
+          .silentRun(50);
         });
 
       it("fails through app saga", async () => {
@@ -282,7 +282,7 @@ describe('Contracts', () => {
             payload: ["Error"],
             meta: undefined
           })
-          .run();
+          .silentRun(50);
       });
     })
 
@@ -327,7 +327,7 @@ describe('Contracts', () => {
             payload: successPayload,
             meta: undefined
           })
-          .run();
+          .silentRun(50);
       });
 
       it("fails through app saga", async () => {
@@ -342,7 +342,7 @@ describe('Contracts', () => {
             payload: ["Error"],
             meta: undefined
           })
-          .run();
+          .silentRun(50);
       });
 
     })
@@ -445,7 +445,7 @@ describe('Contracts', () => {
             payload: resource,
             meta: undefined
           })
-          .run();
+          .silentRun(50);
       })
 
       it('fails with bad id via saga', async () => {
@@ -462,7 +462,7 @@ describe('Contracts', () => {
           .put.actionType(
             ProfileActionTypes.PROFILE_FETCH_ERROR
           )
-          .run()
+          .silentRun(50)
       })
     })
 
@@ -507,7 +507,7 @@ describe('Contracts', () => {
           .put.actionType(
             ProfileActionTypes.PROFILE_FETCH_SUCCESS
           )
-          .run()
+          .silentRun(50)
 
         const sagaPayload = lastSagaPutActionPayload(allEffects)
         expect(sagaPayload).toEqual(resource)
@@ -585,7 +585,7 @@ describe('Contracts', () => {
           .put.actionType(
             DepartmentActionTypes.DEPARTMENT_FETCH_SUCCESS
           )
-          .run()
+          .silentRun(50)
 
         const sagaPayload = lastSagaPutActionPayload(allEffects)
         expect(sagaPayload).toEqual(resource)
@@ -605,7 +605,7 @@ describe('Contracts', () => {
           .put.actionType(
             DepartmentActionTypes.DEPARTMENT_FETCH_ERROR
           )
-          .run()
+          .silentRun(50)
 
       })
     })
@@ -648,7 +648,7 @@ describe('Contracts', () => {
           .put.actionType(
             DepartmentActionTypes.DEPARTMENT_FETCH_SUCCESS
           )
-          .run()
+          .silentRun(50)
 
         const sagaPayload = lastSagaPutActionPayload(allEffects)
         expect(sagaPayload).toEqual(resource)
@@ -778,7 +778,7 @@ describe('searching for "park"', () => {
       .put.actionType(
         SearchActionTypes.SEARCH_SIMPLE_FETCH_SUCCESS
       )
-      .run()
+      .silentRun(50)
 
     const sagaPayload = lastSagaPutActionPayload(allEffects)
     expect(sagaPayload).toEqual(resource)
