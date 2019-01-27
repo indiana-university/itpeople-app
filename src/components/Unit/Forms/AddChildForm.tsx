@@ -1,3 +1,4 @@
+// TODO: deprecate
 import * as React from "react";
 import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { connect } from "react-redux";

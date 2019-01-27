@@ -1,31 +1,34 @@
 import * as React from "react";
 import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { Button } from "rivet-react";
+import { Button, ModalBody, ModalControls, Row, Col } from "rivet-react";
 import { RivetInputField, RivetInput, required } from "../../form";
 import { IApplicationState } from "../../types";
 import { Dispatch } from "redux";
-import { lookupUnit } from "../store";
+import { lookupUnit, IUnitProfile } from "../store";
+import { Modal, closeModal } from "../../layout/Modal"
+import { ParentUnitIcon, TrashCan } from "../../icons";
 
 interface IFormProps
   extends InjectedFormProps<any>,
-    IFields,
     IDispathProps,
-    IProps {
-  onSubmit: (fields: IFields) => any;
-}
-interface IFields {
-  id: string | number;
-}
+    IUnitProfile,
+    IProps {}
+
 interface IDispathProps {
+  closeModal: typeof closeModal;
   lookupUnit: typeof lookupUnit;
+  removeParent(parentId: number, unitId: any): any; // TODO: wire up store
+  setParent(parentId: number, unitId: any): any; // TODO: wire up store
 }
 interface IProps {
   units: any;
 }
 
-const updateParentForm: React.SFC<IFormProps> = props => {
-  return (
+const form: React.SFC<IFormProps> = props => {
+  const { id, closeModal, lookupUnit, removeParent, setParent, parent } = props;
+
+  const EditParentForm = (
     <>
       <form>
         <div>
@@ -36,11 +39,11 @@ const updateParentForm: React.SFC<IFormProps> = props => {
             validate={[required]}
             onChange={(e: any) => {
               const q = e.target.value;
-              props.lookupUnit(q);
+              lookupUnit(q);
             }}
             onLoad={(e: any) => {
               const q = e.target.value;
-              props.lookupUnit(q);
+              lookupUnit(q);
             }}
           />
         </div>
@@ -59,7 +62,8 @@ const updateParentForm: React.SFC<IFormProps> = props => {
                     onClick={e => {
                       e.preventDefault();
                       e.stopPropagation();
-                      props.onSubmit(unit);
+                      closeModal();
+                      setParent(unit.id, id);
                       props.reset();
                       props.lookupUnit("");
                     }}
@@ -74,12 +78,58 @@ const updateParentForm: React.SFC<IFormProps> = props => {
       </form>
     </>
   );
+  return (
+    <>
+      <Modal
+        id="update unit parents"
+        title="Update Parent"
+        buttonText="+ Add new parent"
+        variant="plain"
+      >
+        <ModalBody>{EditParentForm}</ModalBody>
+        <ModalControls>
+          <Button type="button" onClick={closeModal} variant="plain">
+            Cancel
+          </Button>
+        </ModalControls>
+      </Modal>
+
+      {parent && (
+        <>
+          <Row className="rvt-m-top-md">
+            <Col style={{ minWidth: 60, flexGrow: 0 }}>
+              <ParentUnitIcon />
+            </Col>
+            <Col>
+              <h4>{parent.name}</h4>
+            </Col>
+            <Col style={{ minWidth: 60, flexGrow: 0 }}>
+              <Button
+                className="rvt-button--plain"
+                type="button"
+                title="Remove Parent"
+                onClick={() => removeParent(parent.id, id)}
+              >
+                <TrashCan />
+              </Button>
+            </Col>
+          </Row>
+          {parent.description && (
+            <Row className="rvt-grid">
+              <Col style={{ minWidth: 60, flexGrow: 0 }} />
+              <Col className="rvt-grid__item">{parent.description}</Col>
+            </Row>
+          )}
+        </>
+      )}
+    </>
+  );
 };
 
 let UpdateParentForm: any = reduxForm<IFormProps>({
   form: "updateUnitParent",
   enableReinitialize: true
-})(updateParentForm);
+})(form);
 
 const selector = formValueSelector("updateUnitParent");
 UpdateParentForm = connect(
@@ -89,7 +139,10 @@ UpdateParentForm = connect(
     return { id, units };
   },
   (dispatch: Dispatch): IDispathProps => ({
-    lookupUnit: (q: string) => dispatch(lookupUnit(q))
+    closeModal: () => dispatch(closeModal()),
+    lookupUnit: (q: string) => dispatch(lookupUnit(q)),
+    removeParent: (parentId: number, unitId: any) => {}, // TODO: wire up store
+    setParent: (parentId: number, unitId: any) => {} // TODO: wire up store
   })
 )(UpdateParentForm);
 

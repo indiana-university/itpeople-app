@@ -1,3 +1,4 @@
+// TODO: deprecate
 import * as React from "react";
 import {
   reduxForm,
@@ -398,7 +399,7 @@ const renderParent = ({ input }: any) => {
             <Button
               className="rvt-button--plain"
               type="button"
-              title="Remove Member"
+              title="Remove Parent"
               onClick={() => input.onChange(null)}
             >
               <TrashCan />

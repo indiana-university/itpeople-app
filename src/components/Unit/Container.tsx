@@ -11,7 +11,7 @@ import Unit from "./Presentation";
 import * as unit from "./store";
 import * as auth from "../SignIn/store";
 import { Loader } from "../Loader";
-import EditForm from "./Forms/EditForm";
+import { Edit } from "./Presentation/Edit";
 
 interface IContainerProps {
   match: any;
@@ -44,7 +44,8 @@ class Container extends React.Component<
         {this.props.data &&
           <>
             {this.props.view == ViewStateType.Editing &&
-              <EditForm save={this.props.save} cancel={this.props.cancel} initialValues={this.props.data}/>
+              <Edit {...this.props.data} authenticatedUsername={authenticatedUsername} cancel={this.props.cancel} />
+              // <EditForm save={this.props.save} cancel={this.props.cancel} initialValues={this.props.data}/>
             }
 
             {this.props.view == ViewStateType.Viewing &&

@@ -157,7 +157,7 @@ function* handleFetch() {
 */
 
 function* handleSaveUnit(api: apiFn) {
-  const formValues = (yield select<IApplicationState>((s) => s.form.editUnit.values)) as IWebEntity
+  const formValues = (yield select<IApplicationState>((s) => s.form.updateUnitForm.values)) as IWebEntity
   if (formValues.id) {
     yield httpPut<IWebEntity, IUnitProfile>(api, `/units/${formValues.id}`, formValues, saveSuccess, saveError);
   } else {

@@ -34,7 +34,7 @@ interface IStateProps {
   users?: IUser[];
 }
 
-const AddMemberForm: React.SFC<IFormProps> = props => {
+const form: React.SFC<IFormProps> = props => {
   const handleSearch = (e: any) => {
     const q = e.target.value;
     props.lookupUser(q);
@@ -153,14 +153,14 @@ const AddMemberForm: React.SFC<IFormProps> = props => {
   );
 };
 
-let addMemberForm: any = reduxForm<IFormProps>({
+let AddMemberForm: any = reduxForm<IFormProps>({
   form: "addMemberForm",
   enableReinitialize: true
-})(AddMemberForm);
+})(form);
 
 // Decorate with connect to read form values
 const selector = formValueSelector("addMemberForm"); // <-- same as form name
-addMemberForm = connect(
+AddMemberForm = connect(
   (state: IApplicationState) => {
     const id = selector(state, "id");
     const name = selector(state, "name");
@@ -175,6 +175,6 @@ addMemberForm = connect(
       lookupUser: (q: string) => dispatch(lookupUser(q))
     };
   }
-)(addMemberForm);
+)(AddMemberForm);
 
-export default addMemberForm;
+export default AddMemberForm;
