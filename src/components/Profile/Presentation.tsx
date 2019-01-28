@@ -145,17 +145,18 @@ const Presentation: React.SFC<IUserProfile & IProps> = props => {
                       toggleUnit(m.id);
                     };
                     return (
+                      m.unit &&
                       <div key={i + "-profile-unit"}>
                         <Row>
                           <Col>
                             <a href={`/units/${m.id}`}>
                               <h2 className="rvt-ts-23 rvt-text-bold">
-                                {m.name}
+                                {m.unit.name}
                               </h2>
                             </a>
-                            {m.description && (
+                            {m.unit.description && (
                               <div className="rvt-m-bottom-sm">
-                                {m.description}
+                                {m.unit.description}
                               </div>
                             )}
                           </Col>

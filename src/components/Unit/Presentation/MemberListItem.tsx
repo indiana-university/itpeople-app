@@ -9,18 +9,17 @@ import { Row, Col } from "rivet-react";
 
 export const MemberListItem: React.SFC<IUnitMember & IProps> = ({
   id,
-  name,
+  person,
   title,
-  photoUrl,
   showImage
 }) => {
   return (
     <div>
       <Row>
-        {showImage && photoUrl && (
+        {showImage && person && person.photoUrl && (
           <Col sm={2}>
             <img
-              src={photoUrl}
+              src={person.photoUrl}
               width={"100%"}
               style={{
                 borderRadius: "100%",
@@ -36,7 +35,7 @@ export const MemberListItem: React.SFC<IUnitMember & IProps> = ({
             data-modal-trigger="modal-edit-person"
             className="rvt-m-bottom-remove person-list-item-new-name rvt-text-bold rvt-m-bottom-sm rvt-ts-18"
           > 
-            <span className="viewIcons delFaceName _delete fl">{name}</span>
+            <span className="viewIcons delFaceName _delete fl">{person && person.name}</span>
           </a>
           {title && (
             <p className="rvt-ts-14 rvt-m-top-remove rvt-m-bottom-remove">

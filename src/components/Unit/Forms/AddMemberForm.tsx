@@ -167,8 +167,7 @@ AddMemberForm = connect(
     const title = selector(state, "title");
     const role = selector(state, "role");
     const users = state.lookup.current;
-    const unitId = state.unit.data ? state.unit.data.id : undefined;
-    return { initialValues: { unitId }, id, name, title, role, users };
+    return { id, name, title, role, users };
   },
   (dispatch: Dispatch) => {
     return {

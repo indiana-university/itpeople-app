@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2018 The Trustees of Indiana University
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -10,7 +10,6 @@ import { IApplicationState, ViewStateType } from "../types";
 import Unit from "./Presentation";
 import * as unit from "./store";
 import * as auth from "../SignIn/store";
-import { Loader } from "../Loader";
 import { Edit } from "./Presentation/Edit";
 
 interface IContainerProps {
@@ -26,36 +25,43 @@ interface IDispatchProps {
 }
 
 interface ICurrentUser {
-  auth: auth.IState
+  auth: auth.IState;
 }
 
 // tslint:disable-next-line:max-classes-per-file
 class Container extends React.Component<
   unit.IState & ICurrentUser & IContainerProps & IDispatchProps
-  > {
+> {
   public componentDidMount() {
     this.props.fetchRequest(this.props.match.params);
   }
 
   public render() {
-    let authenticatedUsername = (this.props.auth && this.props.auth.data && this.props.auth.data.user_name) || "";
+    let authenticatedUsername =
+      (this.props.auth &&
+        this.props.auth.data &&
+        this.props.auth.data.user_name) ||
+      "";
+    const { view } = this.props;
     return (
-      <Loader {...this.props}>
-        {this.props.data &&
-          <>
-            {this.props.view == ViewStateType.Editing &&
-              <Edit {...this.props.data} authenticatedUsername={authenticatedUsername} cancel={this.props.cancel} />
-              // <EditForm save={this.props.save} cancel={this.props.cancel} initialValues={this.props.data}/>
-            }
+      <>
+        {view == ViewStateType.Editing && (
+          <Edit
+            {...this.props}
+            authenticatedUsername={authenticatedUsername}
+            cancel={this.props.cancel}
+          />
+        )}
 
-            {this.props.view == ViewStateType.Viewing &&
-              <Unit {...this.props.data} authenticatedUsername={authenticatedUsername} edit={this.props.edit} />
-            }
-          </>
-        }
-
-      </Loader>)
-
+        {view == ViewStateType.Viewing && (
+          <Unit
+            {...this.props}
+            authenticatedUsername={authenticatedUsername}
+            edit={this.props.edit}
+          />
+        )}
+      </>
+    );
   }
 }
 
@@ -69,7 +75,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
-  fetchRequest: (request: unit.IUnitRequest) => dispatch(unit.fetchRequest(request)),
+  fetchRequest: (request: unit.IUnitRequest) =>
+    dispatch(unit.fetchRequest(request)),
   edit: () => dispatch(unit.edit()),
   save: () => dispatch(unit.saveRequest()),
   cancel: () => dispatch(unit.cancel())

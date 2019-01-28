@@ -56,6 +56,8 @@ export interface IRole {
 
 import { AnyAction } from "redux";
 import { ILookupState } from "./lookup";
+
+
 export const FetchRequestReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => {
     return {
         ...state,

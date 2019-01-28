@@ -11,7 +11,6 @@ import {
   url
 } from "src/components/form";
 import { connect } from "react-redux";
-import { IApplicationState } from "src/components/types";
 import { Dispatch } from "redux";
 
 
@@ -72,10 +71,7 @@ UpdateUnitForm = reduxForm<unit.IUnitProfile, IDispatchActions>({
 })(UpdateUnitForm);
 
 UpdateUnitForm = connect(
-  (state: IApplicationState) => {
-    const unit = state.unit;
-    return { initialValues: unit.data };
-  },
+  undefined,
   (dispatch: Dispatch): IDispatchActions => ({
     save: () => dispatch(unit.saveRequest()),
     close: () => dispatch(unit.cancel())

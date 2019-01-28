@@ -5,7 +5,6 @@
 
 import * as React from "react";
 import { Col, Row, Section, Button } from "rivet-react";
-import { IUnitProfile } from "../index";
 import { Panel } from "../../Panel";
 import PageTitle from "../../layout/PageTitle";
 import { Breadcrumbs, Content } from "../../layout";
@@ -15,6 +14,7 @@ import UpdateMembersForm from "../Forms/UpdateMembersForm";
 import UpdateParentForm from "../Forms/UpdateParentForm";
 import UpdateChildrenForm from "../Forms/UpdateChildrenForm";
 import UpdateDepartmentsForm from "../Forms/UpdateDepartmentsForm";
+import { Loader } from "../../Loader";
 
 interface IAuthenticatedUsername {
   authenticatedUsername: string;
@@ -24,56 +24,67 @@ interface IProps {
 }
 
 export const Edit: React.SFC<
-  IUnitProfile & IAuthenticatedUsername & IProps
-> = props => (
-  <>
-    <Breadcrumbs
-      crumbs={[
-        { text: "Home", href: "/" },
-        { text: "Units", href: "/units" },
-        props.name
-      ]}
-    />
+  unit.IState & IAuthenticatedUsername & IProps
+> = props => {
+  const { profile, members, parent, unitChildren, departments, cancel } = props;
+  return (
+    <>
+      <Breadcrumbs
+        crumbs={[
+          { text: "Home", href: "/" },
+          { text: "Units", href: "/units" },
+          profile.data ? profile.data.name : "..."
+        ]}
+      />
 
-    <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
-      <Button
-        onClick={props.cancel}
-        type="button"
-        style={{ float: "right" }}
-        variant="plain"
-      >
-        Cancel
-      </Button>
-      <PageTitle>Edit</PageTitle>
-      <Section>
-        <UpdateUnitForm />
-      </Section>
-    </Content>
+      <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
+        <Button
+          onClick={cancel}
+          type="button"
+          style={{ float: "right" }}
+          variant="plain"
+        >
+          Cancel
+        </Button>
+        <PageTitle>Edit</PageTitle>
+        <Section>
+          <UpdateUnitForm />
+        </Section>
+      </Content>
 
-    <Content className="rvt-bg-white rvt-p-tb-xxl">
-      <Row>
-        <Col lg={6}>
-          <Section>
-            <UpdateMembersForm initialValues={props} />
-          </Section>
-        </Col>
-        <Col lg={5} last={true}>
-          <div className="rvt-m-all-md">
-            {(props.parent ||
-              (props.children && props.children.length > 0)) && (
+      <Content className="rvt-bg-white rvt-p-tb-xxl">
+        <Row>
+          <Col lg={6}>
+            <Section>
+              <Loader {...members}>
+                <UpdateMembersForm initialValues={members.data} {...members.data}/>
+              </Loader>
+            </Section>
+          </Col>
+          <Col lg={5} last={true}>
+            <div className="rvt-m-all-md">
               <div className="rvt-m-bottom-lg">
                 <Panel title="Parent and Children">
-                  <UpdateParentForm initialValues={props} {...props} />
-                  <UpdateChildrenForm initialValues={props} {...props} />
+                  <Loader {...parent}>
+                    <UpdateParentForm initialValues={parent.data} {...parent.data} />
+                  </Loader>
+                  <Loader {...unitChildren}>                  
+                  <UpdateChildrenForm initialValues={unitChildren.data} {...unitChildren.data} />
+                  </Loader>
                 </Panel>
               </div>
-            )}
-                <Panel title="Supported Departments">
-                  <UpdateDepartmentsForm initialValues={props} {...props} />
-                </Panel>
-          </div>
-        </Col>
-      </Row>
-    </Content>
-  </>
-);
+              <Panel title="Supported Departments">
+              <Loader {...departments}>
+                <UpdateDepartmentsForm
+                  initialValues={departments.data}
+                  {...departments.data}
+                />
+                </Loader>
+              </Panel>
+            </div>
+          </Col>
+        </Row>
+      </Content>
+    </>
+  );
+};

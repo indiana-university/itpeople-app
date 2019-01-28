@@ -33,7 +33,12 @@ export interface IUser extends IEntity {
   photoUrl?: string;
 }
 
-export interface IUnitMembership extends IEntity {
+export interface IUnitMembership {
+  id: number;
+  personId: number;
+  unitId: number;
+  person?: IUser;
+  unit?: IUnit;
   tools?: string[];
   title?: string;
   role?: string;
@@ -129,6 +134,7 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
 //#region SAGAS
 import { all, fork, select, takeEvery } from "redux-saga/effects";
 import { httpGet, httpPut, apiFn, callApiWithAuth } from "../effects";
+import { IUnit } from "../Unit";
 
 function* handleFetch() {
   const state = (yield select<IApplicationState>(

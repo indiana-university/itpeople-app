@@ -1,94 +1,60 @@
-/** 
+/**
  * Copyright (C) 2018 The Trustees of Indiana University
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 import * as React from "react";
-import { Col, List, Row, Section } from "rivet-react";
-import { ChildrenCard, IUnitProfile, MemberLists, ParentCard } from "../index";
+import { Col, Row } from "rivet-react";
 import { Panel } from "../../Panel";
-import PageTitle from "../../layout/PageTitle";
 import { Breadcrumbs, Content } from "../../layout";
-import { Pencil } from "src/components/icons";
-// import { Link } from "react-router-dom";
-function canEdit(currentUsername: string) {
-  return true;
-}
+// import { Pencil } from "src/components/icons";
+import { IState } from "../store";
+import Profile from "./Profile";
+import Members from "./Members";
+import Parent from "./Parent";
+import Children from "./Children";
+import { IEntity, IDefaultState } from "../../types";
+import Departments from "./Departments";
 
 interface IAuthenticatedUsername {
   authenticatedUsername: string;
 }
+
 interface IProps {
-  edit(): any
+  edit(): any;
+  unitChildren: IDefaultState<IEntity[]>;
 }
 
 const Presentation: React.SFC<
-  IUnitProfile & IAuthenticatedUsername & IProps
+  IState & IAuthenticatedUsername & IProps
 > = props => (
   <>
     <Breadcrumbs
       crumbs={[
         { text: "Home", href: "/" },
-        { text: "Units", href: "/units" },
-        props.name
+        { text: "Units", href: "/units" }
+        // props.profile.data ? props.profile.data.name : "..."
       ]}
     />
-
-    <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl" >
-      {canEdit(props.authenticatedUsername) && (
-        <div style={{ "position": "relative" }}>
-          <button
-            onClick={props.edit}
-            className="rvt-button"
-            style={{ position: "absolute", top: "10", right: "10px" }}
-            title="edit"> <span className="sr-only">Edit</span> <Pencil /> </button>
-        </div>
-      )}
-      <PageTitle>{props.name}</PageTitle>
-      <Section>
-        {props.description && (
-          <div className="group-describer rvt-m-bottom-md">
-            <span>{props.description}</span>
-          </div>
-        )}
-        {props.url && (
-          <a href={props.url} className="rvt-button rvt-button--secondary">
-            Unit Website
-          </a>
-        )}
-      </Section>
+    <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
+      <Profile {...props.profile} />
     </Content>
-
     <Content className="rvt-bg-white rvt-p-tb-xxl">
       <Row>
         <Col lg={6}>
-          <Section>
-            <MemberLists {...props} />
-          </Section>
+          <Members {...props.members} />
         </Col>
         <Col lg={5} last={true}>
           <div className="rvt-m-all-md">
-            {(props.parent ||
-              (props.children && props.children.length > 0)) && (
-                <div className="rvt-m-bottom-lg">
-                  <Panel title="Parent and Children">
-                    <ParentCard parent={props.parent} />
-                    <ChildrenCard children={props.children} />
-                  </Panel>
-                </div>
-              )}
-            {props.supportedDepartments && props.supportedDepartments.length > 0 && (
-              <Panel title="Supported Departments">
-                <List variant="plain">
-                  {props.supportedDepartments.map((r, i) => (
-                    <li key={i}>
-                      <a href={`/departments/${r.id}`}>{r.name}</a> <br />{" "}
-                      {r.description}
-                    </li>
-                  ))}
-                </List>
+            <div className="rvt-m-bottom-lg">
+              <Panel title="Parent and Children">
+                <Parent {...props.parent} />
+                <Children {...props.unitChildren} />
               </Panel>
-            )}
+            </div>
+            <Panel title="Supported Departments">
+              <Departments {...props.departments} />
+            </Panel>
           </div>
         </Col>
       </Row>
