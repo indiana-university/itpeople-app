@@ -224,7 +224,7 @@ function* handlePostUnitFetch() {
       data => action(UnitActionTypes.UNIT_FETCH_PARENT_SUCCESS, data),
       error => action(UnitActionTypes.UNIT_FETCH_PARENT_ERROR, error));
   } else {
-    put(action(UnitActionTypes.UNIT_FETCH_PARENT_SUCCESS, undefined));
+    yield put(action(UnitActionTypes.UNIT_FETCH_PARENT_SUCCESS, undefined));
   }
 }
 /*
