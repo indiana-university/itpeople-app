@@ -22,19 +22,18 @@ import { IApplicationState } from "src/components/types";
 import { Dispatch } from "redux";
 import AddMemberForm from "./AddMemberForm";
 import UpdateMemberForm from "./UpdateMemberForm";
-import { IUnitMembership } from "src/components/Profile/store";
 
 interface IFormProps
   extends InjectedFormProps<any>,
     IDispatchProps {
   onSubmit: (e?: any) => any;
   field: Field;
-  members: IUnitMember[]
+  members?: IUnitMember[]
 }
 
 interface IDispatchProps {
   closeModal: typeof closeModal;
-  removeMember(m: IUnitMembership): any; // <-- TODO: map redux action in store
+  removeMember(m: IUnitMember): any; // <-- TODO: map redux action in store
   editMember(memmber: any): any;
   save: typeof saveMemberRequest;
 }
@@ -45,7 +44,7 @@ const form: React.SFC<IFormProps> = props => {
     let members = fields.map(function(field: any, index: number) {
       let member = fields.get(index) as IUnitMember;
       return { ...member, index };
-    }) as IUnitMembership[];
+    }) as IUnitMember[];
     let leaders = members.filter(
       m => m.role == ItProRole.Admin || m.role == UitsRole.Leader
     );
@@ -89,7 +88,7 @@ const form: React.SFC<IFormProps> = props => {
         </Modal>
       </div>
     );
-    const renderMember = function(member: IUnitMembership) {
+    const renderMember = function(member: IUnitMember) {
       const remove = () => {
         removeMember(member);
       };
@@ -222,7 +221,7 @@ UpdateMembersForm = connect(
   (dispatch: Dispatch) => {
     return {
       closeModal: () => dispatch(closeModal()),
-      removeMember: (member:IUnitMembership) => {}, // <-- TODO: map redux action in store
+      removeMember: (member:IUnitMember) => {}, // <-- TODO: map redux action in store
       save: (member: IMembershipForm) => {
         dispatch(saveMemberRequest(member));
       },

@@ -23,11 +23,19 @@ interface IDispathProps {
   removeChild(unit: any): any; // <-- TODO: wire up store
 }
 interface IProps {
-  units: any;
+  units: IEntity[];
+  filteredUnits: IEntity[];
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const { closeModal, children, addChild, removeChild, lookupUnit } = props;
+  const {
+    closeModal,
+    units,
+    filteredUnits,
+    addChild,
+    removeChild,
+    lookupUnit
+  } = props;
   const addChildForm = (
     <>
       <form>
@@ -47,12 +55,12 @@ const form: React.SFC<IFormProps> = props => {
             }}
           />
         </div>
-        {props.units && props.units.length > 0 && (
+        {filteredUnits && filteredUnits.length > 0 && (
           <div
             className="rvt-dropdown__menu"
             style={{ position: "relative", padding: 0 }}
           >
-            {props.units.map((unit: any, i: number) => {
+            {filteredUnits.map((unit: any, i: number) => {
               // todo: circular reference check
               // todo: check if relationship already exists
               return (
@@ -95,8 +103,8 @@ const form: React.SFC<IFormProps> = props => {
         </ModalControls>
       </Modal>
       <List variant="plain">
-        {children &&
-          children.map((unit: IEntity, index: number) => {
+        {units &&
+          units.map((unit: IEntity, index: number) => {
             return (
               <li key={index}>
                 <Row>
@@ -142,8 +150,8 @@ const selector = formValueSelector("updateUnitChildren");
 UpdateChildrenForm = connect(
   (state: IApplicationState) => {
     const id = selector(state, "id");
-    const units = state.lookup.current;
-    return { id, units };
+    const filteredUnits = state.lookup.current;
+    return { id, filteredUnits };
   },
   (dispatch: Dispatch): IDispathProps => ({
     lookupUnit: (q: string) => dispatch(lookupUnit(q)),

@@ -18,7 +18,7 @@ interface IDispatchProps {
 }
 interface IProps {
   filtered: IEntity[];
-  departments: IEntity[];
+  departments: IEntity[];// <-- todo: type for department relationship
 }
 
 const form: React.SFC<IFormProps> = props => {
@@ -92,7 +92,8 @@ const form: React.SFC<IFormProps> = props => {
         </ModalControls>
       </Modal>
       <List variant="plain">
-        {departments.map((department: any, index: number) => {
+        {departments.map((relationship: any, index: number) => {
+          const department = relationship.department as IEntity;
           return (
             <li key={index}>
               <Row>

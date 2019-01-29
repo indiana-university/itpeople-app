@@ -63,8 +63,8 @@ export const Edit: React.SFC<
             <Section>
               <Loader {...members}>
                 <UpdateMembersForm
-                  initialValues={members.data}
-                  {...members.data}
+                  initialValues={{members:members.data}}
+                  members={members.data}
                 />
               </Loader>
             </Section>
@@ -76,13 +76,13 @@ export const Edit: React.SFC<
                   <Loader {...parent}>
                     <UpdateParentForm
                       initialValues={parent.data}
-                      {...parent.data}
+                      parent={parent.data}
                     />
                   </Loader>
                   <Loader {...unitChildren}>
                     <UpdateChildrenForm
                       initialValues={unitChildren.data}
-                      {...unitChildren.data}
+                      units={unitChildren.data}
                     />
                   </Loader>
                 </Panel>
