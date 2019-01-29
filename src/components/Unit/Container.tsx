@@ -62,6 +62,7 @@ class Container extends React.Component<
               {...this.props}
               authenticatedUsername={authenticatedUsername}
               cancel={this.props.cancel}
+              id={this.props.match.params.id}
             />
           </>
         )}

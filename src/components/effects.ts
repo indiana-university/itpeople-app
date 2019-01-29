@@ -23,10 +23,10 @@ const redirectToLogin = () =>
 const apiResources = {
     departments: (id?: number) => id ? "/departments" : `/departments/${id}`,
     units: {
-        root: (id?: number) => (id ? "/units" : `/units/${id}`),
-        members: (unitId: number, memberId?: number) => (memberId ? `/units/${unitId}/members` : `/units/${unitId}/members/${memberId}`),
-        children: (unitId: number, childId?: number) => (childId ? `/units/${unitId}/children` : `/units/${unitId}/children/${childId}`),
-        supportedDepartments: (unitId: number, departmentId?: number) => (departmentId ? `/units/${unitId}/supportedDepartments` : `/units/${unitId}/supportedDepartments/${departmentId}`),
+        root: (id?: number) => (id ? `/units/${id}` : "/units"),
+        members: (unitId: number, memberId?: number) => (memberId ? `/units/${unitId}/members/${memberId}` : `/units/${unitId}/members`),
+        children: (unitId: number, childId?: number) => (childId ? `/units/${unitId}/children/${childId}` : `/units/${unitId}/children`),
+        supportedDepartments: (unitId: number, departmentId?: number) => (departmentId ? `/units/${unitId}/supportedDepartments/${departmentId}` : `/units/${unitId}/supportedDepartments`),
     }
 };
 // GET /units/:id/memberships

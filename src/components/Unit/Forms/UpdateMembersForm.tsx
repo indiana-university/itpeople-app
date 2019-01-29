@@ -23,23 +23,25 @@ import { Dispatch } from "redux";
 import AddMemberForm from "./AddMemberForm";
 import UpdateMemberForm from "./UpdateMemberForm";
 
-interface IFormProps extends InjectedFormProps<IFormFields>, IDispatchProps {
+interface IFormProps extends InjectedFormProps<IFormFields>, IDispatchProps, IFormFields {
   onSubmit: (e?: any) => any;
   field: Field;
 }
 interface IFormFields {
-  members: IUnitMember[]
+  unitId: number;
+  members: IUnitMember[];
 }
 
 interface IDispatchProps {
   closeModal: typeof closeModal;
   removeMember(m: IUnitMember): any; // <-- TODO: map redux action in store
-  editMember(memmber: any): any;
+  editMember(member: any): any;
+  addMember(unitId: number): any;
   save: typeof saveMemberRequest;
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const { closeModal, editMember, removeMember, save } = props;
+  const { closeModal, editMember, removeMember, save, unitId } = props;
   const renderMembers = ({ fields, input }: any) => {
     let members = fields.map(function(field: any, index: number) {
       let member = fields.get(index) as IUnitMember;
@@ -57,7 +59,6 @@ const form: React.SFC<IFormProps> = props => {
     let others = members.filter(
       m => m.role == ItProRole.Aux || m.role == UitsRole.Related
     );
-
     const addMemberFrom = (
       <div>
         <Modal
@@ -68,11 +69,15 @@ const form: React.SFC<IFormProps> = props => {
               <AddUser /> Add member
             </span>
           }
+          onOpen={() => {
+            props.addMember(unitId);
+          }}
           variant="plain"
         >
           <ModalBody>
             <AddMemberForm
-              initialValues={}
+              unitId={unitId}
+              initialValues={unitId}
               onSubmit={(member: any) => {
                 save(member);
                 fields.push(member);
@@ -94,7 +99,7 @@ const form: React.SFC<IFormProps> = props => {
       };
       const person = member.person;
       return (
-        <li>
+        <li key={member.id}>
           <Row>
             <Col>
               <h3 className="rvt-ts-18 rvt-text-bold">
@@ -105,18 +110,17 @@ const form: React.SFC<IFormProps> = props => {
             <div style={{ textAlign: "right" }}>
               <span style={{ textAlign: "left" }}>
                 <Modal
-                  id={`Edit member: ${member.memberId}`}
+                  id={`Edit member: ${member.id}`}
                   buttonText={<Pencil />}
                   variant="plain"
-                  title={`Edit member: ${person ? person.name : "Vacancy" }`}
+                  title={`Edit member: ${person ? person.name : "Vacancy"}`}
                   onOpen={() => {
                     editMember(member);
                   }}
                 >
                   <ModalBody>
                     <UpdateMemberForm
-                      {...member}
-                      onSubmit={(m: any) => {
+                      onSubmit={(m: IUnitMember) => {
                         save(m);
                         closeModal();
                       }}
@@ -156,9 +160,7 @@ const form: React.SFC<IFormProps> = props => {
           variant="plain"
           className="list-dividers list-dividers--show-last"
         >
-          {leaders.map(member => {
-            return renderMember(member);
-          })}
+          {leaders.map(renderMember)}
         </List>
 
         <h2 className="rvt-ts-29 rvt-text-bold">Unit Members</h2>
@@ -172,9 +174,7 @@ const form: React.SFC<IFormProps> = props => {
           variant="plain"
           className="list-dividers list-dividers--show-last rvt-m-top-lg"
         >
-          {standardMember.map(member => {
-            return renderMember(member);
-          })}
+          {standardMember.map(renderMember)}
         </List>
 
         <h2 className="rvt-ts-29 rvt-text-bold">Related people</h2>
@@ -188,9 +188,7 @@ const form: React.SFC<IFormProps> = props => {
           variant="plain"
           className="list-dividers list-dividers--show-last"
         >
-          {others.map(member => {
-            return renderMember(member);
-          })}
+          {others.map(renderMember)}
         </List>
       </>
     );
@@ -210,8 +208,7 @@ const form: React.SFC<IFormProps> = props => {
 };
 
 let UpdateMembersForm: any = reduxForm<IFormFields>({
-  form: "updateMembersForm",
-  enableReinitialize: true
+  form: "updateMembersForm"
 })(form);
 
 let selector = formValueSelector("updateMembersForm");
@@ -223,19 +220,20 @@ UpdateMembersForm = connect(
   (dispatch: Dispatch) => {
     return {
       closeModal: () => dispatch(closeModal()),
-      removeMember: (member: IUnitMember) =>{
-        console.log("deleting member", member)
-        return dispatch(deleteMemberRequest(member)) 
-      }, // <-- TODO: map redux action in store
-      save: (member: IUnitMember) => {
-        console.log("saving member", member) 
-        return dispatch(saveMemberRequest(member))
-      },
+      removeMember: (member: IUnitMember) =>
+        dispatch(deleteMemberRequest(member)),
+      save: (member: IUnitMember) => dispatch(saveMemberRequest(member)),
       editMember: (member: IUnitMember) => {
-        console.log("editing` member", member)
-        // <-- loads member into edit form
+        dispatch(change("updateMemberForm", "id", member.id));
+        dispatch(change("updateMemberForm", "unitId", member.unitId));
+        dispatch(change("updateMemberForm", "personId", member.personId));
+        dispatch(change("updateMemberForm", "person", member.person));
         dispatch(change("updateMemberForm", "title", member.title));
         dispatch(change("updateMemberForm", "role", member.role));
+      },
+      addMember: (unitId: number, role?: UitsRole) => {
+        dispatch(change("updateMemberForm", "unitId", unitId));
+        dispatch(change("updateMemberForm", "role", role || UitsRole.Member));
       }
     };
   }

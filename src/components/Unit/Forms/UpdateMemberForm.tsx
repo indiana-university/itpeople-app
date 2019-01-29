@@ -2,7 +2,6 @@ import * as React from "react";
 import {
   reduxForm,
   InjectedFormProps,
-  Field,
   formValueSelector
 } from "redux-form";
 import { Button } from "rivet-react";
@@ -12,12 +11,11 @@ import {
   RivetSelect,
   RivetSelectField
 } from "src/components/form";
-import { UitsRole, ItProRole, IUnitMember } from "../store";
+import { UitsRole, IUnitMember } from "../store";
 import { connect } from "react-redux";
 
 interface IFormProps extends InjectedFormProps<IUnitMember>, IUnitMember {
   onSubmit: (e?: any) => any;
-  field: Field;
 }
 
 const form: React.SFC<IFormProps> = props => {
@@ -33,7 +31,6 @@ const form: React.SFC<IFormProps> = props => {
       >
         <div>
           <h1>{person && person.name}</h1>
-          <Field name="id" component="input" type="hidden" />
         </div>
         <div>
           <RivetInputField name="title" component={RivetInput} label="Title" />
@@ -62,6 +59,7 @@ let UpdateMemberForm: any = reduxForm<IUnitMember>({
 
 let selector = formValueSelector("updateMemberForm");
 UpdateMemberForm = connect(state => ({
+  person: selector(state, "person"),
   title: selector(state, "title"),
   role: selector(state, "role")
 }))(UpdateMemberForm);

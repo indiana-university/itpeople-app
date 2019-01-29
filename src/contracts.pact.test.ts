@@ -11,17 +11,6 @@ import * as path from 'path'
 import { Pact, Matchers } from '@pact-foundation/pact'
 import axios from 'axios'
 import * as traverse from 'traverse'
-import { expectSaga } from 'redux-saga-test-plan'
-import { ProfileActionTypes, saga as profileSaga } from './components/Profile/store'
-import { UnitActionTypes, saga as unitSaga, handleSaveUnit, handleSaveMember } from './components/Unit/store'
-import { DepartmentActionTypes, saga as departmentSaga } from './components/Department/store'
-import { SearchActionTypes, saga as searchSaga } from './components/Search/store'
-import { Reducer } from 'redux';
-import { Effect } from 'redux-saga';
-import { apiFn } from './components/effects';
-
-const lastSagaPutActionPayload = (ar: Array<Effect>) =>
-  ar[ar.length - 1]["PUT"]["action"]["payload"]
 
 const deepMatchify = (obj: Object) => traverse(obj).map(
   function (this: traverse.TraverseContext, x: any) {
@@ -204,7 +193,7 @@ describe('Contracts', () => {
     })
 
     describe('creating/updating a unit membership', () => {
-      const path = "/units/4/members/1";
+      // const path = "/units/4/members/1";
       // it('creates a membership', async () => {
       //   const fixtureUnit = (await getFixture(`/allUnits/4`)).data
       //   const { id, ...postBody } = fixtureUnit

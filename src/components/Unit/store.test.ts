@@ -7,13 +7,9 @@
 * SPDX-License-Identifier: BSD-3-Clause
 */
 
-import * as path from 'path'
 import { expectSaga } from 'redux-saga-test-plan'
-import { Reducer } from 'redux';
-import { Effect } from 'redux-saga';
-import { UnitActionTypes, saga as unitSaga, handleSaveUnit, handleSaveMember, IUnitMember, UnitPermissions, IUnitMemberRequest } from './store'
-import { apiFn, apiEndpoints as apiResources } from '../effects';
-
+import { UnitActionTypes, saga as  handleSaveMember, UnitPermissions, IUnitMemberRequest } from './store'
+import { apiFn, apiResources } from '../effects';
 
 const sagaApiHappyPath = async (saga: any, state: any, expectedMethod: string, expectedPath: string, expectedData: any, expectedDispatch: string) => {
     const api: apiFn = (m, u, p, d, h) => {
@@ -40,8 +36,8 @@ const sagaApiSadPath = async (saga: any, state: any, expectedDispatch: string) =
 describe('unit memberships', () => {
 
     const member: IUnitMemberRequest = { 
+        id: 0,
         unitId: 1, 
-        memberId: 2, 
         personId: 3, 
         title: "Mr Manager", 
         role: "Leader", 
@@ -51,7 +47,7 @@ describe('unit memberships', () => {
 
     describe ('creating', () => {
         const path = apiResources.units.members(member.unitId);
-        const state = { form: { addMemberForm: { values: {...member, memberId: undefined } } } };
+        const state = { form: { addMemberForm: { values: member } } };
         it("happy path", async () => {
             await sagaApiHappyPath(handleSaveMember, state, "post", path, member, UnitActionTypes.UNIT_SAVE_MEMBER_SUCCESS)
         });
@@ -61,8 +57,8 @@ describe('unit memberships', () => {
     });
 
     describe('updating', () => {
-        const path = apiResources.units.members(member.unitId, member.memberId);
-        const state = { form: { addMemberForm: { values: member } } };
+        const path = apiResources.units.members(member.unitId, member.id);
+        const state = { form: { addMemberForm: { values: { ...member, id:1 } } } };
         it("happy path", async () => {
             await sagaApiHappyPath(handleSaveMember, state, "put", path, member, UnitActionTypes.UNIT_SAVE_MEMBER_SUCCESS)
         });

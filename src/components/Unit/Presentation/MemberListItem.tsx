@@ -8,8 +8,8 @@ import { IUnitMember } from "../store";
 import { Row, Col } from "rivet-react";
 
 export const MemberListItem: React.SFC<IUnitMember & IProps> = ({
-  id,
   person,
+  personId,
   title,
   showImage
 }) => {
@@ -31,7 +31,7 @@ export const MemberListItem: React.SFC<IUnitMember & IProps> = ({
         )}
         <Col style={{ alignSelf: "center" }}>
           <a
-            href={"/people/" + id}
+            href={"/people/" + personId}
             data-modal-trigger="modal-edit-person"
             className="rvt-m-bottom-remove person-list-item-new-name rvt-text-bold rvt-m-bottom-sm rvt-ts-18"
           > 

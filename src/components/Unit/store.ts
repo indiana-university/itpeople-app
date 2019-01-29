@@ -53,8 +53,8 @@ export interface IUrl {
 }
 
 export interface IUnitMemberRequest {
+  id: number;
   unitId: number;
-  memberId?: number;
   personId?: number;
   title: string;
   role: ItProRole | UitsRole | string;
@@ -63,7 +63,7 @@ export interface IUnitMemberRequest {
 }
 
 export interface IUnitMember extends IUnitMemberRequest {
-  person?: IUser,
+  person?: IUser;
 }
 
 export enum ItProRole {
@@ -118,8 +118,6 @@ import { action } from 'typesafe-actions'
 
 const edit = () => action(UnitActionTypes.UNIT_EDIT, {})
 const saveRequest = () => action(UnitActionTypes.UNIT_SAVE_REQUEST, {})
-const saveSuccess = (unitData: IUnitProfile) => action(UnitActionTypes.UNIT_SAVE_SUCCESS, unitData)
-const saveError = (error: string) => action(UnitActionTypes.UNIT_SAVE_ERROR, error)
 const cancel = () => action(UnitActionTypes.UNIT_CANCEL, {})
 const fetchUnit = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request)
 const fetchUnitMembers = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, request)
@@ -127,11 +125,7 @@ const fetchUnitDepartments = (request: IUnitRequest) => action(UnitActionTypes.U
 const fetchUnitChildren = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, request)
 const fetchUnitParent = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, request)
 const saveMemberRequest = (member: IUnitMember) =>  action(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, member);
-const saveMemberSuccess = (request: IUnitMember) => action(UnitActionTypes.UNIT_SAVE_MEMBER_SUCCESS, request)
-const saveMemberError = (error: string) => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error)
-//TODO: @john delete member request/success/error
 const deleteMemberRequest = (member: IUnitMember) => action(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, member);
-
 
 const lookupUnit = (q: string) => lookup(q ? `/units?q=${q}` : '')
 const lookupDepartment = (q: string) => lookup(q ? `/departments?q=${q}` : '')
@@ -207,33 +201,33 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 import { all, fork, select, takeEvery, put } from 'redux-saga/effects'
-import { apiFn as apiFn, httpGet, httpPost, httpPut, callApiWithAuth, apiEndpoints } from '../effects'
+import { apiFn as apiFn, httpGet, httpPost, httpPut, callApiWithAuth, apiResources } from '../effects'
 import { IUnitMembership, IUser } from '../Profile/store';
 
 function* handleFetchUnit() {
   const state = (yield select<IApplicationState>((s) => s.unit.profile.request)) as IUnitRequest
-  yield httpGet<IUnitProfile>(apiEndpoints.units.root(state.id), 
+  yield httpGet<IUnitProfile>(apiResources.units.root(state.id), 
       data => action(UnitActionTypes.UNIT_FETCH_SUCCESS, data), 
       error => action(UnitActionTypes.UNIT_FETCH_ERROR, error));
 }
 
 function* handleFetchUnitMembers() {
   const state = (yield select<IApplicationState>((s) => s.unit.members.request)) as IUnitRequest
-  yield httpGet<IUnitMembership[]>(apiEndpoints.units.members(state.id),
+  yield httpGet<IUnitMembership[]>(apiResources.units.members(state.id),
     data => action(UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS, data),
     error => action(UnitActionTypes.UNIT_FETCH_MEMBERS_ERROR, error));
 }
 
 function* handleFetchUnitChildren() {
   const state = (yield select<IApplicationState>((s) => s.unit.unitChildren.request)) as IUnitRequest
-  yield httpGet<IUnit[]>(apiEndpoints.units.children(state.id),
+  yield httpGet<IUnit[]>(apiResources.units.children(state.id),
     data => action(UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS, data),
     error => action(UnitActionTypes.UNIT_FETCH_CHILDREN_ERROR, error));
 }
 
 function* handleFetchUnitDepartments() {
   const state = (yield select<IApplicationState>((s) => s.unit.departments.request)) as IUnitRequest
-  yield httpGet<IEntity[]>(apiEndpoints.units.supportedDepartments(state.id),
+  yield httpGet<IEntity[]>(apiResources.units.supportedDepartments(state.id),
     data => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS, data),
     error => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_ERROR, error));
 }
@@ -241,7 +235,7 @@ function* handleFetchUnitDepartments() {
 function* handleFetchUnitParent() {
   const state = (yield select<IApplicationState>(s => s.unit.profile.data)) as IUnit;
   if (state.parentId) {
-    yield httpGet<IUnit[]>(apiEndpoints.units.root(state.parentId),
+    yield httpGet<IUnit[]>(apiResources.units.root(state.parentId),
       data => action(UnitActionTypes.UNIT_FETCH_PARENT_SUCCESS, data),
       error => action(UnitActionTypes.UNIT_FETCH_PARENT_ERROR, error));
   } else {
@@ -258,20 +252,29 @@ GET/POST/DELETE /units/{unit_id}/supported_departments/{department_id}
 */
 
 function* handleSaveUnit(api: apiFn) {
-  const formValues = (yield select<IApplicationState>((s) => s.form.updateUnitForm.values)) as IUnit
-  if (formValues.id) {
-    yield httpPut<IUnit, IUnitProfile>(api, apiEndpoints.units.root(formValues.id), formValues, saveSuccess, saveError);
+  const requestBody = (yield select<IApplicationState>((s) => s.form.updateUnitForm.values)) as IUnit
+  if (requestBody.id) {
+    yield httpPut<IUnit, IUnitProfile>(api, apiResources.units.root(requestBody.id), requestBody, 
+      response => action(UnitActionTypes.UNIT_SAVE_SUCCESS, response), 
+      error => action(UnitActionTypes.UNIT_SAVE_ERROR, error));
   } else {
-    yield httpPost<IUnit, IUnitProfile>(api, apiEndpoints.units.root(), formValues, saveSuccess, saveError);
+    yield httpPost<IUnit, IUnitProfile>(api, apiResources.units.root(), requestBody,
+      response => action(UnitActionTypes.UNIT_SAVE_SUCCESS, response),
+      error => action(UnitActionTypes.UNIT_SAVE_ERROR, error));
   }
 }
 
 function* handleSaveMember(api: apiFn){
-  const formValues = (yield select<IApplicationState>(s => s.form.addMemberForm.values)) as IUnitMember;
-  if (formValues.memberId) {
-    yield httpPut<IUnitMember, IUnitMember>(api, apiEndpoints.units.members(formValues.unitId, formValues.memberId), formValues, saveMemberSuccess, saveMemberError);
+  const form = (yield select<IApplicationState>(s => s.form.updateMemberForm.values)) as IUnitMemberRequest;
+  const body: IUnitMemberRequest = { id: form.id, unitId: form.unitId, personId: form.personId, title: form.title, percentage: form.percentage, role: form.role, permissions: form.permissions };
+  if (body.id) {
+    yield httpPut<IUnitMemberRequest, IUnitRequest>(api, apiResources.units.members(body.unitId, body.id), body, 
+      response => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, {id: body.unitId}), 
+      error => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error));
   } else {
-    yield httpPost<IUnitMember, IUnitMember>(api, apiEndpoints.units.members(formValues.unitId), formValues, saveMemberSuccess, saveMemberError);
+    yield httpPost<IUnitMemberRequest, IUnitRequest>(api, apiResources.units.members(body.unitId), body, 
+      response => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, {id: body.unitId}), 
+      error => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error));
   }
 }
 
@@ -292,13 +295,13 @@ function* watchUnitSave() {
   yield takeEvery(UnitActionTypes.UNIT_SAVE_REQUEST, () => handleSaveUnit(callApiWithAuth));
 }
 
-function* watchUnitAddMember() {
+function* watchUnitSaveMember() {
   yield takeEvery(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, () => handleSaveMember(callApiWithAuth));
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.
 function* saga() {
-  yield all([fork(watchUnitFetch), fork(watchUnitSave), fork(watchUnitAddMember)])
+  yield all([fork(watchUnitFetch), fork(watchUnitSave), fork(watchUnitSaveMember)])
 }
 //#endregion
 
@@ -317,13 +320,11 @@ export {
   lookupDepartment,
   lookupUser,
   saveRequest,
-  saveSuccess,
-  saveError,
+  saveMemberRequest,
+  deleteMemberRequest,
   reducer,
   initialState,
   saga,
   handleSaveUnit,
-  handleSaveMember,
-  saveMemberRequest,
-  deleteMemberRequest
+  handleSaveMember
 };

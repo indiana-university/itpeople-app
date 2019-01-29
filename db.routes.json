@@ -2,6 +2,7 @@
   "/me": "/people/1",
   "/units/:id/members/:mid": "/memberships/:mid?_expand=person",
   "/units/:id/members": "/memberships?unitId=:id&_expand=person",
+  "/units/:id/children": "/units?parentId=:id",
   "/units/:id/supportedDepartments/:did": "/supportedDepartments/:did?_expand=department",
   "/units/:id/supportedDepartments": "/supportedDepartments?unitId=:id&_expand=department"
 }

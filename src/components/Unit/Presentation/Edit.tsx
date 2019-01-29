@@ -21,12 +21,13 @@ interface IAuthenticatedUsername {
 }
 interface IProps {
   cancel: typeof unit.cancel;
+  id: number
 }
 
 export const Edit: React.SFC<
   unit.IState & IAuthenticatedUsername & IProps
 > = props => {
-  const { profile, members, parent, unitChildren, departments, cancel } = props;
+  const { profile, members, parent, unitChildren, departments, cancel, id } = props;
   return (
     <>
       <Breadcrumbs
@@ -63,7 +64,8 @@ export const Edit: React.SFC<
             <Section>
               <Loader {...members}>
                 <UpdateMembersForm
-                  initialValues={{members:members.data}}
+                  unitId={id}
+                  initialValues={{members:members.data, unitId: id}}
                   members={members.data}
                 />
               </Loader>
