@@ -18,7 +18,11 @@ interface IContainerProps {
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface IDispatchProps {
-  fetchRequest: typeof unit.fetchRequest;
+  fetchUnit: typeof unit.fetchUnit;
+  fetchUnitMembers: typeof unit.fetchUnitMembers;
+  fetchUnitDepartments: typeof unit.fetchUnitDepartments;
+  fetchUnitChildren: typeof unit.fetchUnitChildren;
+  fetchUnitParent: typeof unit.fetchUnitParent;
   save: typeof unit.saveRequest;
   edit: typeof unit.edit;
   cancel: typeof unit.cancel;
@@ -33,7 +37,12 @@ class Container extends React.Component<
   unit.IState & ICurrentUser & IContainerProps & IDispatchProps
 > {
   public componentDidMount() {
-    this.props.fetchRequest(this.props.match.params);
+    const request = this.props.match.params;
+    this.props.fetchUnit(request);
+    this.props.fetchUnitMembers(request);
+    this.props.fetchUnitDepartments(request);
+    this.props.fetchUnitChildren(request);
+    this.props.fetchUnitParent(request);
   }
 
   public render() {
@@ -75,8 +84,11 @@ const mapStateToProps = (state: IApplicationState) => ({
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
-  fetchRequest: (request: unit.IUnitRequest) =>
-    dispatch(unit.fetchRequest(request)),
+  fetchUnit: request => dispatch(unit.fetchUnit(request)),
+  fetchUnitMembers: request => dispatch(unit.fetchUnitMembers(request)),
+  fetchUnitDepartments: request => dispatch(unit.fetchUnitDepartments(request)),
+  fetchUnitChildren: request => dispatch(unit.fetchUnitChildren(request)),
+  fetchUnitParent: request => dispatch(unit.fetchUnitParent(request)),
   edit: () => dispatch(unit.edit()),
   save: () => dispatch(unit.saveRequest()),
   cancel: () => dispatch(unit.cancel())

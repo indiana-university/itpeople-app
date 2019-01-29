@@ -119,7 +119,11 @@ const saveRequest = () => action(UnitActionTypes.UNIT_SAVE_REQUEST, {})
 const saveSuccess = (unitData: IUnitProfile) => action(UnitActionTypes.UNIT_SAVE_SUCCESS, unitData)
 const saveError = (error: string) => action(UnitActionTypes.UNIT_SAVE_ERROR, error)
 const cancel = () => action(UnitActionTypes.UNIT_CANCEL, {})
-const fetchRequest = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request)
+const fetchUnit = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request)
+const fetchUnitMembers = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, request)
+const fetchUnitDepartments = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, request)
+const fetchUnitChildren = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, request)
+const fetchUnitParent = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, request)
 const saveMemberRequest = (member: IMembershipForm) => action(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, member)
 const saveMemberSuccess = (request: IUnitMember) => action(UnitActionTypes.UNIT_SAVE_MEMBER_SUCCESS, request)
 const saveMemberError = (error: string) => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error)
@@ -201,23 +205,35 @@ import { all, fork, select, takeEvery, put } from 'redux-saga/effects'
 import { apiFn as apiFn, httpGet, httpPost, httpPut, callApiWithAuth } from '../effects'
 import { IUnitMembership, IUser } from '../Profile/store';
 
-function* handleFetch() {
+function* handleFetchUnit() {
   const state = (yield select<IApplicationState>((s) => s.unit.profile.request)) as IUnitRequest
   yield httpGet<IUnitProfile>(`/units/${state.id}`, 
       data => action(UnitActionTypes.UNIT_FETCH_SUCCESS, data), 
       error => action(UnitActionTypes.UNIT_FETCH_ERROR, error));
-  yield httpGet<IUnitMembership[]>(`/memberships?unitId=${state.id}&_expand=person`, 
-      data => action(UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS, data), 
-      error => action(UnitActionTypes.UNIT_FETCH_MEMBERS_ERROR, error));
-  yield httpGet<IUnit[]>(`/units?parentId=${state.id}`, 
-      data => action(UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS, data), 
-      error => action(UnitActionTypes.UNIT_FETCH_CHILDREN_ERROR, error));
-  yield httpGet<IEntity[]>(`/supportedDepartments?unitId=${state.id}&_expand=department`,
-      data => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS, data),
-      error => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_ERROR, error));
 }
 
-function* handlePostUnitFetch() {
+function* handleFetchUnitMembers() {
+  const state = (yield select<IApplicationState>((s) => s.unit.members.request)) as IUnitRequest
+  yield httpGet<IUnitMembership[]>(`/memberships?unitId=${state.id}&_expand=person`,
+    data => action(UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS, data),
+    error => action(UnitActionTypes.UNIT_FETCH_MEMBERS_ERROR, error));
+}
+
+function* handleFetchUnitChildren() {
+  const state = (yield select<IApplicationState>((s) => s.unit.unitChildren.request)) as IUnitRequest
+  yield httpGet<IUnit[]>(`/units?parentId=${state.id}`,
+    data => action(UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS, data),
+    error => action(UnitActionTypes.UNIT_FETCH_CHILDREN_ERROR, error));
+}
+
+function* handleFetchUnitDepartments() {
+  const state = (yield select<IApplicationState>((s) => s.unit.departments.request)) as IUnitRequest
+  yield httpGet<IEntity[]>(`/supportedDepartments?unitId=${state.id}&_expand=department`,
+    data => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS, data),
+    error => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_ERROR, error));
+}
+
+function* handleFetchUnitParent() {
   const state = (yield select<IApplicationState>(s => s.unit.profile.data)) as IUnit;
   if (state.parentId) {
     yield httpGet<IUnit[]>(`/units/${state.parentId}`,
@@ -276,8 +292,12 @@ function* handleSaveMember(api: apiFn){
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchUnitFetch() {
-  yield takeEvery(UnitActionTypes.UNIT_FETCH_REQUEST, handleFetch);
-  yield takeEvery(UnitActionTypes.UNIT_FETCH_SUCCESS, handlePostUnitFetch)
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_REQUEST, handleFetchUnit);
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, handleFetchUnitMembers);
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, handleFetchUnitChildren);
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, handleFetchUnitDepartments);
+  // The unit parent is defined by a parentId on the unit record, so we must await the unit record fetch.
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_SUCCESS, handleFetchUnitParent)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
@@ -302,7 +322,11 @@ function* saga() {
 export {
   edit,
   cancel,
-  fetchRequest,
+  fetchUnit,
+  fetchUnitMembers,
+  fetchUnitDepartments,
+  fetchUnitChildren,
+  fetchUnitParent,
   lookupUnit,
   lookupDepartment,
   lookupUser,
