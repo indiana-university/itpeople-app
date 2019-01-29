@@ -14,8 +14,7 @@ import {
   ItProRole,
   IUnitMember,
   saveMemberRequest,
-  IMembershipForm,
-  IUnitProfile
+  IMembershipForm
 } from "../store";
 import { connect } from "react-redux";
 import { AddUser, Pencil, TrashCan } from "src/components/icons";
@@ -23,20 +22,19 @@ import { IApplicationState } from "src/components/types";
 import { Dispatch } from "redux";
 import AddMemberForm from "./AddMemberForm";
 import UpdateMemberForm from "./UpdateMemberForm";
+import { IUnitMembership } from "src/components/Profile/store";
 
 interface IFormProps
   extends InjectedFormProps<any>,
-    IUnitProfile,
     IDispatchProps {
   onSubmit: (e?: any) => any;
   field: Field;
+  members: IUnitMember[]
 }
-interface IMemberField extends IUnitMember {
-  index: number;
-}
+
 interface IDispatchProps {
   closeModal: typeof closeModal;
-  removeMember(id: number, unitId: number): any; // <-- TODO: map redux action in store
+  removeMember(m: IUnitMembership): any; // <-- TODO: map redux action in store
   editMember(memmber: any): any;
   save: typeof saveMemberRequest;
 }
@@ -47,7 +45,7 @@ const form: React.SFC<IFormProps> = props => {
     let members = fields.map(function(field: any, index: number) {
       let member = fields.get(index) as IUnitMember;
       return { ...member, index };
-    }) as IMemberField[];
+    }) as IUnitMembership[];
     let leaders = members.filter(
       m => m.role == ItProRole.Admin || m.role == UitsRole.Leader
     );
@@ -91,16 +89,16 @@ const form: React.SFC<IFormProps> = props => {
         </Modal>
       </div>
     );
-    const renderMember = function(member: IMemberField) {
+    const renderMember = function(member: IUnitMembership) {
       const remove = () => {
-        fields.remove(member.index); // todo: remove when redux action is wired up
-        removeMember(member.id, props.id);
+        removeMember(member);
       };
+      const person = member.person;
       return (
-        <li key={member.index}>
+        <li>
           <Row>
             <Col>
-              <h3 className="rvt-ts-18 rvt-text-bold">{member.name}</h3>
+              <h3 className="rvt-ts-18 rvt-text-bold">{person && person.name}</h3>
               {member.title && <div>{member.title}</div>}
             </Col>
             <div style={{ textAlign: "right" }}>
@@ -109,7 +107,7 @@ const form: React.SFC<IFormProps> = props => {
                   id={`Edit member: ${member.id}`}
                   buttonText={<Pencil />}
                   variant="plain"
-                  title={`Edit member: ${member.name}`}
+                  title={`Edit member: ${person && person.name}`}
                   onOpen={() => {
                     editMember(member);
                   }}
@@ -224,7 +222,7 @@ UpdateMembersForm = connect(
   (dispatch: Dispatch) => {
     return {
       closeModal: () => dispatch(closeModal()),
-      removeMember: (id: number, unitId: number) => {}, // <-- TODO: map redux action in store
+      removeMember: (member:IUnitMembership) => {}, // <-- TODO: map redux action in store
       save: (member: IMembershipForm) => {
         dispatch(saveMemberRequest(member));
       },

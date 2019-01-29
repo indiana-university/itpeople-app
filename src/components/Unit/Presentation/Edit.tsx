@@ -33,7 +33,7 @@ export const Edit: React.SFC<
         crumbs={[
           { text: "Home", href: "/" },
           { text: "Units", href: "/units" },
-          profile.data ? profile.data.name : "..."
+          profile && profile.data ? profile.data.name : "..."
         ]}
       />
 
@@ -48,7 +48,12 @@ export const Edit: React.SFC<
         </Button>
         <PageTitle>Edit</PageTitle>
         <Section>
-          <UpdateUnitForm />
+          <Loader {...profile}>
+            <UpdateUnitForm
+              initialValues={profile.data}
+              {...props.profile.data}
+            />
+          </Loader>
         </Section>
       </Content>
 
@@ -57,7 +62,10 @@ export const Edit: React.SFC<
           <Col lg={6}>
             <Section>
               <Loader {...members}>
-                <UpdateMembersForm initialValues={members.data} {...members.data}/>
+                <UpdateMembersForm
+                  initialValues={members.data}
+                  {...members.data}
+                />
               </Loader>
             </Section>
           </Col>
@@ -66,19 +74,25 @@ export const Edit: React.SFC<
               <div className="rvt-m-bottom-lg">
                 <Panel title="Parent and Children">
                   <Loader {...parent}>
-                    <UpdateParentForm initialValues={parent.data} {...parent.data} />
+                    <UpdateParentForm
+                      initialValues={parent.data}
+                      {...parent.data}
+                    />
                   </Loader>
-                  <Loader {...unitChildren}>                  
-                  <UpdateChildrenForm initialValues={unitChildren.data} {...unitChildren.data} />
+                  <Loader {...unitChildren}>
+                    <UpdateChildrenForm
+                      initialValues={unitChildren.data}
+                      {...unitChildren.data}
+                    />
                   </Loader>
                 </Panel>
               </div>
               <Panel title="Supported Departments">
-              <Loader {...departments}>
-                <UpdateDepartmentsForm
-                  initialValues={departments.data}
-                  {...departments.data}
-                />
+                <Loader {...departments}>
+                  <UpdateDepartmentsForm
+                    initialValues={departments.data}
+                    departments={departments.data}
+                  />
                 </Loader>
               </Panel>
             </div>

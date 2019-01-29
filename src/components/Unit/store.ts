@@ -139,7 +139,6 @@ const initialState: IState = {
   unitChildren: {loading: false},
   parent: {loading: false},
   departments: {loading: false},
-  // todo: ask John: view state could go here instead of in the IApiState/IDefaultState 🤔
   view: ViewStateType.Viewing
 }
 

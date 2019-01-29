@@ -6,27 +6,31 @@ import { RivetInputField, RivetInput } from "../../form";
 import { IApplicationState, IEntity } from "../../types";
 import { Dispatch } from "redux";
 import { lookupDepartment } from "..";
-import { IUnitProfile } from "../store";
 import { Modal, closeModal } from "../../layout/Modal";
 import { TrashCan } from "../../icons";
 
-interface IFormProps
-  extends InjectedFormProps<any>,
-    IUnitProfile,
-    IDispatchProps,
-    IProps {}
+interface IFormProps extends InjectedFormProps<any>, IDispatchProps, IProps {}
 interface IDispatchProps {
   closeModal: typeof closeModal;
-  addDepartment: (d:any)=>any; // <-- todo: wire up redux store
-  removeDepartment: (d:any)=>any; // <-- todo: wire up redux store
+  addDepartment: (d: any) => any; // <-- todo: wire up redux store
+  removeDepartment: (d: any) => any; // <-- todo: wire up redux store
   lookupDepartment: typeof lookupDepartment;
 }
 interface IProps {
   filtered: IEntity[];
+  departments: IEntity[];
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const {addDepartment, removeDepartment, supportedDepartments, closeModal, filtered, reset, lookupDepartment} = props;
+  const {
+    addDepartment,
+    removeDepartment,
+    departments,
+    closeModal,
+    filtered,
+    reset,
+    lookupDepartment
+  } = props;
   const handleChange = (e: any) => {
     const q = e.target.value;
     lookupDepartment(q);
@@ -56,7 +60,7 @@ const form: React.SFC<IFormProps> = props => {
                   onClick={e => {
                     e.preventDefault();
                     e.stopPropagation();
-                    addDepartment(department)
+                    addDepartment(department);
                     closeModal();
                     reset();
                     lookupDepartment("");
@@ -80,9 +84,7 @@ const form: React.SFC<IFormProps> = props => {
         buttonText="+ add department"
         variant="plain"
       >
-        <ModalBody>
-          {addDepartmentForm}
-        </ModalBody>
+        <ModalBody>{addDepartmentForm}</ModalBody>
         <ModalControls>
           <Button type="button" onClick={closeModal} variant="plain">
             Cancel
@@ -90,7 +92,7 @@ const form: React.SFC<IFormProps> = props => {
         </ModalControls>
       </Modal>
       <List variant="plain">
-        {supportedDepartments.map((department: any, index: number) => {
+        {departments.map((department: any, index: number) => {
           return (
             <li key={index}>
               <Row>
@@ -136,10 +138,10 @@ UpdateDepartmentsForm = connect(
       lookupDepartment: (q: string) => {
         return dispatch(lookupDepartment(q));
       },
-      closeModal: ()=> dispatch(closeModal()),
-      addDepartment: (a)=>{}, // <-- todo: wire to redux actions
-      removeDepartment: (a)=>{}, // <-- todo: wire to redux actions
-    }
+      closeModal: () => dispatch(closeModal()),
+      addDepartment: a => {}, // <-- todo: wire to redux actions
+      removeDepartment: a => {} // <-- todo: wire to redux actions
+    };
   }
 )(UpdateDepartmentsForm);
 
