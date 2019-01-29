@@ -1,5 +1,10 @@
 import * as React from "react";
-import { reduxForm, InjectedFormProps, formValueSelector, Field } from "redux-form";
+import {
+  reduxForm,
+  InjectedFormProps,
+  formValueSelector,
+  Field
+} from "redux-form";
 import { Button } from "rivet-react";
 import {
   RivetInputField,
@@ -9,29 +14,23 @@ import {
 } from "src/components/form";
 import { connect } from "react-redux";
 import { IApplicationState } from "src/components/types";
-import { UitsRole, ItProRole, lookupUser } from "../store";
+import { UitsRole, ItProRole, lookupUser, IUnitMember } from "../store";
 import { Dispatch } from "redux";
 import { IUser } from "src/components/Profile/store";
 
 interface IFormProps
-  extends InjectedFormProps<any>,
-    IMemberFields,
+  extends InjectedFormProps<IUnitMember>,
+    IUnitMember,
     IDispatchProps,
     IStateProps {
-  onSubmit: (e?: any) => any;
+  onSubmit: (member:IUnitMember) => any;
 }
-interface IMemberFields {
-  id: number;
-  unitId: number;
-  name: string;
-  title: string;
-  role: UitsRole | ItProRole;
-}
+
 interface IDispatchProps {
   lookupUser: typeof lookupUser;
 }
 interface IStateProps {
-  users?: IUser[];
+  filteredUsers?: IUser[];
 }
 
 const form: React.SFC<IFormProps> = props => {
@@ -40,28 +39,22 @@ const form: React.SFC<IFormProps> = props => {
     props.lookupUser(q);
   };
   const {
-    id,
-    unitId,
-    name,
-    title,
-    role,
-    users,
+    person,
+    filteredUsers,
     lookupUser,
     change,
+    reset,
     invalid
   } = props;
-  const hasUser = !!id;
+  const hasUser = !!person;
   return (
     <>
       <form
         onSubmit={e => {
           e.preventDefault();
           e.stopPropagation();
-
-          // TODO: dispatch add member action
-
-          props.onSubmit({ id, unitId, name, title, role });
-          props.reset();
+          props.onSubmit(props as IUnitMember);
+          reset();
         }}
       >
         <Field name="unitId" component="input" type="hidden" />
@@ -77,12 +70,12 @@ const form: React.SFC<IFormProps> = props => {
                 onLoad={handleSearch}
               />
             </div>
-            {users && users.length > 0 && (
+            {filteredUsers && filteredUsers.length > 0 && (
               <div
                 className="rvt-dropdown__menu"
                 style={{ position: "relative", padding: 0 }}
               >
-                {users.map((user: any, i: number) => {
+                {filteredUsers.map((user: any, i: number) => {
                   // todo: check if relationship already exists
                   return (
                     <div key={i}>
@@ -92,10 +85,10 @@ const form: React.SFC<IFormProps> = props => {
                           e.preventDefault();
                           e.stopPropagation();
                           lookupUser("");
-                          change("name", user.name);
-                          change("id", user.id);
+                          change("person", user);
+                          change("personId", user.id);
                           change("search", "");
-                          // todo: set selecdted user
+                          // todo: set selected user
                         }}
                       >
                         {user && user.name}
@@ -109,7 +102,9 @@ const form: React.SFC<IFormProps> = props => {
         )}
         {hasUser && (
           <>
-            <div className="rvt-ts-23 rvt-text-bold">{name}</div>
+            <div className="rvt-ts-23 rvt-text-bold">
+              {person ? person.name : "vacant"}
+            </div>
             <hr />
             <div>
               <RivetInputField
@@ -135,14 +130,7 @@ const form: React.SFC<IFormProps> = props => {
               <Button type="submit" disabled={invalid && hasUser}>
                 Add member
               </Button>
-              <Button
-                type="button"
-                variant="plain"
-                onClick={() => {
-                  change("name", null);
-                  change("id", null);
-                }}
-              >
+              <Button type="button" variant="plain" onClick={reset}>
                 Reset
               </Button>
             </div>
@@ -153,7 +141,7 @@ const form: React.SFC<IFormProps> = props => {
   );
 };
 
-let AddMemberForm: any = reduxForm<IFormProps>({
+let AddMemberForm: any = reduxForm<IUnitMember>({
   form: "addMemberForm",
   enableReinitialize: true
 })(form);
@@ -162,12 +150,8 @@ let AddMemberForm: any = reduxForm<IFormProps>({
 const selector = formValueSelector("addMemberForm"); // <-- same as form name
 AddMemberForm = connect(
   (state: IApplicationState) => {
-    const id = selector(state, "id");
-    const name = selector(state, "name");
-    const title = selector(state, "title");
-    const role = selector(state, "role");
-    const users = state.lookup.current;
-    return { id, name, title, role, users };
+    const filteredUsers = state.lookup.current;
+    return { filteredUsers };
   },
   (dispatch: Dispatch) => {
     return {

@@ -20,6 +20,18 @@ const setAuthToken = (token: string) =>
 const redirectToLogin = () =>
     window.location.assign(`${process.env.REACT_APP_OAUTH2_AUTH_URL}?response_type=code&client_id=${process.env.REACT_APP_OAUTH2_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_WEB_URL}/signin`)
 
+const apiResources = {
+    departments: (id?: number) => id ? "/departments" : `/departments/${id}`,
+    units: {
+        root: (id?: number) => (id ? "/units" : `/units/${id}`),
+        members: (unitId: number, memberId?: number) => (memberId ? `/units/${unitId}/members` : `/units/${unitId}/members/${memberId}`),
+        children: (unitId: number, childId?: number) => (childId ? `/units/${unitId}/children` : `/units/${unitId}/children/${childId}`),
+        supportedDepartments: (unitId: number, departmentId?: number) => (departmentId ? `/units/${unitId}/supportedDepartments` : `/units/${unitId}/supportedDepartments/${departmentId}`),
+    }
+};
+// GET /units/:id/memberships
+// POST /memberships or POST /units/:id
+// DELETE /memberships/:id
 type apiFn = (method: string, url: string, path: string, data?: any, headers?: any) => Promise<any>
 
 const callApi : apiFn = (method: string, url: string, path: string, data?: any, headers?: any) => {
@@ -147,6 +159,7 @@ function* httpPut<TRequest, TResponse>(
 
 export { 
     apiFn,
+    apiResources,
     callApi,
     callApiWithAuth,
     clearAuthToken,

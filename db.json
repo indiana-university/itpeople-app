@@ -85,16 +85,16 @@
   ],
   "units": [
     {
-      "id": 2,
-      "name": "City of Pawnee",
-      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
-    },
-    {
       "id": 1,
       "name": "Parks and Recreation IT",
       "description": "This page is under construction",
       "url": "http://pawneeindiana.com/information-technology/",
       "parentId": 2
+    },
+    {
+      "id": 2,
+      "name": "City of Pawnee",
+      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
     },
     {
       "id": 4,

@@ -30,6 +30,8 @@ export const enum UnitActionTypes {
   UNIT_SAVE_MEMBER_REQUEST = "@@unit/SAVE_MEMBER_REQUEST",
   UNIT_SAVE_MEMBER_SUCCESS = "@@unit/SAVE_MEMBER_SUCCESS",
   UNIT_SAVE_MEMBER_ERROR = "@@unit/SAVE_MEMBER_ERROR",
+  UNIT_DELETE_MEMBER_REQUEST = "@@unit/UNIT_DELETE_MEMBER_REQUEST", 
+  // TODO: UNIT_DELETE_MEMBER_SUCCESS & UNIT_DELETE_MEMBER_ERROR
   UNIT_SAVE_CHILD_REQUEST = "@@unit/SAVE_CHILD_REQUEST",
   UNIT_SAVE_CHILD_SUCCESS = "@@unit/SAVE_CHILD_SUCCESS",
   UNIT_SAVE_CHILD_ERROR = "@@unit/SAVE_CHILD_ERROR",
@@ -43,25 +45,25 @@ export const enum UnitActionTypes {
 }
 
 export interface IUnitRequest {
-  id: string
+  id: number
 }
 
 export interface IUrl {
   url: string
 }
 
-export interface IUnitMember extends IEntity {
-  title: string,
-  role: ItProRole | UitsRole | string,
-  permissions: UnitPermissions,
-  percentage: number,
-  photoUrl?: string,
-  person?: IUser,
-  personId?: number
+export interface IUnitMemberRequest {
+  unitId: number;
+  memberId?: number;
+  personId?: number;
+  title: string;
+  role: ItProRole | UitsRole | string;
+  permissions: UnitPermissions;
+  percentage: number;
 }
 
-export interface IMembershipForm extends IUnitMember {
-  unitId: number
+export interface IUnitMember extends IUnitMemberRequest {
+  person?: IUser,
 }
 
 export enum ItProRole {
@@ -124,9 +126,13 @@ const fetchUnitMembers = (request: IUnitRequest) => action(UnitActionTypes.UNIT_
 const fetchUnitDepartments = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, request)
 const fetchUnitChildren = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, request)
 const fetchUnitParent = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, request)
-const saveMemberRequest = (member: IMembershipForm) => action(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, member)
+const saveMemberRequest = (member: IUnitMember) =>  action(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, member);
 const saveMemberSuccess = (request: IUnitMember) => action(UnitActionTypes.UNIT_SAVE_MEMBER_SUCCESS, request)
 const saveMemberError = (error: string) => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error)
+//TODO: @john delete member request/success/error
+const deleteMemberRequest = (member: IUnitMember) => action(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, member);
+
+
 const lookupUnit = (q: string) => lookup(q ? `/units?q=${q}` : '')
 const lookupDepartment = (q: string) => lookup(q ? `/departments?q=${q}` : '')
 const lookupUser = (q: string) => lookup(q ? `/people?q=${q}` : '')
@@ -201,33 +207,33 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 import { all, fork, select, takeEvery, put } from 'redux-saga/effects'
-import { apiFn as apiFn, httpGet, httpPost, httpPut, callApiWithAuth } from '../effects'
+import { apiFn as apiFn, httpGet, httpPost, httpPut, callApiWithAuth, apiEndpoints } from '../effects'
 import { IUnitMembership, IUser } from '../Profile/store';
 
 function* handleFetchUnit() {
   const state = (yield select<IApplicationState>((s) => s.unit.profile.request)) as IUnitRequest
-  yield httpGet<IUnitProfile>(`/units/${state.id}`, 
+  yield httpGet<IUnitProfile>(apiEndpoints.units.root(state.id), 
       data => action(UnitActionTypes.UNIT_FETCH_SUCCESS, data), 
       error => action(UnitActionTypes.UNIT_FETCH_ERROR, error));
 }
 
 function* handleFetchUnitMembers() {
   const state = (yield select<IApplicationState>((s) => s.unit.members.request)) as IUnitRequest
-  yield httpGet<IUnitMembership[]>(`/memberships?unitId=${state.id}&_expand=person`,
+  yield httpGet<IUnitMembership[]>(apiEndpoints.units.members(state.id),
     data => action(UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS, data),
     error => action(UnitActionTypes.UNIT_FETCH_MEMBERS_ERROR, error));
 }
 
 function* handleFetchUnitChildren() {
   const state = (yield select<IApplicationState>((s) => s.unit.unitChildren.request)) as IUnitRequest
-  yield httpGet<IUnit[]>(`/units?parentId=${state.id}`,
+  yield httpGet<IUnit[]>(apiEndpoints.units.children(state.id),
     data => action(UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS, data),
     error => action(UnitActionTypes.UNIT_FETCH_CHILDREN_ERROR, error));
 }
 
 function* handleFetchUnitDepartments() {
   const state = (yield select<IApplicationState>((s) => s.unit.departments.request)) as IUnitRequest
-  yield httpGet<IEntity[]>(`/supportedDepartments?unitId=${state.id}&_expand=department`,
+  yield httpGet<IEntity[]>(apiEndpoints.units.supportedDepartments(state.id),
     data => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS, data),
     error => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_ERROR, error));
 }
@@ -235,57 +241,38 @@ function* handleFetchUnitDepartments() {
 function* handleFetchUnitParent() {
   const state = (yield select<IApplicationState>(s => s.unit.profile.data)) as IUnit;
   if (state.parentId) {
-    yield httpGet<IUnit[]>(`/units/${state.parentId}`,
+    yield httpGet<IUnit[]>(apiEndpoints.units.root(state.parentId),
       data => action(UnitActionTypes.UNIT_FETCH_PARENT_SUCCESS, data),
       error => action(UnitActionTypes.UNIT_FETCH_PARENT_ERROR, error));
   } else {
     yield put(action(UnitActionTypes.UNIT_FETCH_PARENT_SUCCESS, undefined));
   }
 }
-/*
- ✓  GET units/1 (unit, member, department, parent/child) -> IUnitProfile
- ✓  POST units
- ✓  PUT units/1
- ▢  DELETE units/1
- ▢  POST units/{uid}/members
- ▢  PUT units/{uid}/members/{mid}
- ▢  DELETE units/{uid}/members/{mid}
- ▢  POST/DELETE units/{uid}/departments/{did}
- ▢  POST/DELETE units/{uid}/parent
- ▢  POST/DELETE units/{uid}/children/{cid}
-*/
 
 /* 
 GET/POST/PUT/DELETE /units/{unit_id}
-GET/POST/PUT/DELETE /units/{unit_id}/members/{person_id}
+GET/POST/PUT/DELETE /units/{unit_id}/members/{membership_id} = {personId:null, title:"...", role:"..."}
 GET/POST/DELETE /units/{unit_id}/children/{child_unit_id}
 GET/POST/DELETE /units/{unit_id}/parent/{parent_unit_id}
 GET/POST/DELETE /units/{unit_id}/supported_departments/{department_id}
 */
 
-
 function* handleSaveUnit(api: apiFn) {
   const formValues = (yield select<IApplicationState>((s) => s.form.updateUnitForm.values)) as IUnit
   if (formValues.id) {
-    yield httpPut<IUnit, IUnitProfile>(api, `/units/${formValues.id}`, formValues, saveSuccess, saveError);
+    yield httpPut<IUnit, IUnitProfile>(api, apiEndpoints.units.root(formValues.id), formValues, saveSuccess, saveError);
   } else {
-    yield httpPost<IUnit, IUnitProfile>(api, "/units", formValues, saveSuccess, saveError);
+    yield httpPost<IUnit, IUnitProfile>(api, apiEndpoints.units.root(), formValues, saveSuccess, saveError);
   }
 }
 
 function* handleSaveMember(api: apiFn){
-  const formValues = (yield select<IApplicationState>((s) => s.form.addMemberForm.values)) as IMembershipForm
-  // const unit = (yield select<IApplicationState>((s) => s.unit.data)) as IUnitProfile
-  // let members = unit.members;
-  // if(unit.members.find(m=>m.id==formValues.id)){
-  //   members = unit.members.map((member)=> (member.id == formValues.id) ? {...member, ...formValues} : member);
-  // } else {
-  //   members = [...unit.members, formValues];
-  // }
-  // const data = {members}
- // yield httpPatch<IUnitMember, IUnitMember>(api, `/units/${formValues.unitId}`, data, saveMemberSuccess, saveMemberError);
-  
- yield httpPut<IUnitMember, IUnitMember>(api, `/units/${formValues.unitId}/members/${formValues.id}`, formValues, saveMemberSuccess, saveMemberError);
+  const formValues = (yield select<IApplicationState>(s => s.form.addMemberForm.values)) as IUnitMember;
+  if (formValues.memberId) {
+    yield httpPut<IUnitMember, IUnitMember>(api, apiEndpoints.units.members(formValues.unitId, formValues.memberId), formValues, saveMemberSuccess, saveMemberError);
+  } else {
+    yield httpPost<IUnitMember, IUnitMember>(api, apiEndpoints.units.members(formValues.unitId), formValues, saveMemberSuccess, saveMemberError);
+  }
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
@@ -337,5 +324,6 @@ export {
   saga,
   handleSaveUnit,
   handleSaveMember,
-  saveMemberRequest
+  saveMemberRequest,
+  deleteMemberRequest
 };

@@ -71,37 +71,6 @@ const postPact = (path: string, data: Object) => axiosRequest('POST', PACT_SERVE
 const deletePact = (path: string) => axiosRequest('DELETE', PACT_SERVER, path)
 
 
-const sagaApiHappyPath = async (saga: any, state: any, expectedMethod: string, expectedPath: string, expectedData: any, expectedDispatch: string) => {
-  const api: apiFn = (m, u, p, d, h) => {
-    expect(m).toEqual(expectedMethod);
-    expect(p).toEqual(expectedPath);
-    expect(d).toEqual(expectedData);
-    return Promise.resolve({});
-  }
-  await expectSaga(saga, api)
-    .withState(state)
-    .put({
-      type: expectedDispatch,
-      payload: {},
-      meta: undefined
-    })
-    .run();
-}
-
-const sagaApiSadPath = async (saga: any, state: any, expectedDispatch: string) => {
-  const api: apiFn = (m, u, p, d, h) =>
-    Promise.resolve({
-      errors: ["Error"]
-    });
-  await expectSaga(saga, api)
-    .withState(state)
-    .put({
-      type: expectedDispatch,
-      payload: ["Error"],
-      meta: undefined
-    })
-    .run();
-};
 
 
 
@@ -157,31 +126,6 @@ describe('Contracts', () => {
         expect(pactResponseBody).not.toEqual({})
       })
 
-      it('works through app saga', async () => {
-        const resource = (await getFixture(path)).data
-        const reducer: Reducer = () => ({ unit: { request: { id: recordId } } })
-        const { allEffects } = await expectSaga(unitSaga)
-          .withReducer(reducer)
-          .dispatch({ type: UnitActionTypes.UNIT_FETCH_REQUEST })
-          .put.actionType(
-            UnitActionTypes.UNIT_FETCH_SUCCESS
-          )
-          .silentRun(50)
-
-        const sagaPayload = lastSagaPutActionPayload(allEffects)
-        expect(sagaPayload).toEqual(resource)
-      })
-
-      it('fails with bad id via saga', async () => {
-        const reducer: Reducer = () => ({ unit: { request: { id: 10000 } } })
-        await expectSaga(unitSaga)
-          .withReducer(reducer)
-          .dispatch({ type: UnitActionTypes.UNIT_FETCH_REQUEST })
-          .put.actionType(
-            UnitActionTypes.UNIT_FETCH_ERROR
-          )
-          .silentRun(50)
-      })
     })
     describe('retrieving all units', () => {
       const path = unitsResource
@@ -206,25 +150,6 @@ describe('Contracts', () => {
         expect(pactResponseBody).not.toEqual({})
       })
 
-      it('works through app saga', async () => {
-        const resource = (await getFixture(path)).data
-        const reducer: Reducer = () =>
-          ({
-            unit: {
-              request: { id: '' }
-            }
-          })
-        const { allEffects } = await expectSaga(unitSaga)
-          .withReducer(reducer)
-          .dispatch({ type: UnitActionTypes.UNIT_FETCH_REQUEST })
-          .put.actionType(
-            UnitActionTypes.UNIT_FETCH_SUCCESS
-          )
-          .silentRun(50)
-
-        const sagaPayload = lastSagaPutActionPayload(allEffects)
-        expect(sagaPayload).toEqual(resource)
-      })
     })
 
     describe('updating attributes of an existing unit', () => {
@@ -250,40 +175,6 @@ describe('Contracts', () => {
         const pactResponseStatus = (await putPact(path, putBody)).status
         expect(pactResponseStatus).toEqual(200)
       })
-
-      it("works through app saga", async () => {
-        const successPayload = { result: "success!" }
-        const formValues = { id: recordId, name: "foo", description: "bar", url: "baz" }
-        const api: apiFn = (m, u, p, d, h) => {
-          expect(m).toEqual('put');
-          expect(p).toEqual(path);
-          expect(d).toEqual(formValues);
-          return Promise.resolve(successPayload);
-        }
-        await expectSaga(handleSaveUnit, api)
-          .withState({ form: { editUnit: { values: formValues } } })
-          .put({
-            type: UnitActionTypes.UNIT_SAVE_SUCCESS,
-            payload: successPayload,
-            meta: undefined
-          })
-          .silentRun(50);
-        });
-
-      it("fails through app saga", async () => {
-        const formValues = { id: recordId, name: "foo", description: "bar", url: "baz" }
-        const api: apiFn = (m, u, p, d, h) =>
-          Promise.resolve({errors: ["Error"]});
-
-        await expectSaga(handleSaveUnit, api)
-          .withState({ form: { editUnit: { values: formValues } } })
-          .put({
-            type: UnitActionTypes.UNIT_SAVE_ERROR,
-            payload: ["Error"],
-            meta: undefined
-          })
-          .silentRun(50);
-      });
     })
 
     describe('creating a new unit', () => {
@@ -310,46 +201,11 @@ describe('Contracts', () => {
         const pactResponseStatus = (await postPact(path, postBody)).status
         expect(pactResponseStatus).toEqual(201)
       })
-
-      it("works through app saga", async () => {
-        const successPayload = { result: "success!" }
-        const formValues = { id: 0, name: "foo", description: "bar", url: "baz" }
-        const api: apiFn = (m, u, p, d, h) => {
-          expect(m).toEqual("post");
-          expect(p).toEqual(path);
-          expect(d).toEqual(formValues);
-          return Promise.resolve(successPayload);
-        }
-        await expectSaga(handleSaveUnit, api)
-          .withState({ form: { editUnit: { values: formValues } } })
-          .put({
-            type: UnitActionTypes.UNIT_SAVE_SUCCESS,
-            payload: successPayload,
-            meta: undefined
-          })
-          .silentRun(50);
-      });
-
-      it("fails through app saga", async () => {
-        const formValues = { id: 0, name: "foo", description: "bar", url: "baz" }
-        const api: apiFn = (m, u, p, d, h) =>
-          Promise.resolve({ errors: ["Error"] });
-
-        await expectSaga(handleSaveUnit, api)
-          .withState({ form: { editUnit: { values: formValues } } })
-          .put({
-            type: UnitActionTypes.UNIT_SAVE_ERROR,
-            payload: ["Error"],
-            meta: undefined
-          })
-          .silentRun(50);
-      });
-
     })
 
     describe('creating/updating a unit membership', () => {
       const path = "/units/4/members/1";
-      // it('works', async () => {
+      // it('creates a membership', async () => {
       //   const fixtureUnit = (await getFixture(`/allUnits/4`)).data
       //   const { id, ...postBody } = fixtureUnit
       //   await pactServer.addInteraction({
@@ -370,17 +226,6 @@ describe('Contracts', () => {
       //   const pactResponseStatus = (await postPact(path, postBody)).status
       //   expect(pactResponseStatus).toEqual(201)
       // })
-
-      const formValues = { unitId: 4, id: 1, name: "gmichael", title: "Mr Manager", role: "Leader" }; 
-      const state = { form: { addMemberForm: { values: formValues } } };
-
-      it("works through app saga", async () => 
-        await sagaApiHappyPath(handleSaveMember, state, "put", path, formValues, UnitActionTypes.UNIT_SAVE_MEMBER_SUCCESS)
-      );
-
-      it("fails through app saga", async () => 
-        await sagaApiSadPath(handleSaveMember, state, UnitActionTypes.UNIT_SAVE_MEMBER_ERROR));
-
     })
 
     describe('deleting a unit', () => {
@@ -434,36 +279,6 @@ describe('Contracts', () => {
         const pactResponseBody = (await getPact(path)).data
         expect(pactResponseBody).not.toEqual({})
       })
-
-      it('works through app saga', async () => {
-        const resource = (await getFixture(path)).data
-        await expectSaga(profileSaga)
-          .withState({ profile: { request: { id: recordId } } })
-          .dispatch({ type: ProfileActionTypes.PROFILE_FETCH_REQUEST })
-          .put({
-            type: ProfileActionTypes.PROFILE_FETCH_SUCCESS,
-            payload: resource,
-            meta: undefined
-          })
-          .silentRun(50);
-      })
-
-      it('fails with bad id via saga', async () => {
-        const reducer: Reducer = () =>
-          ({
-            profile: {
-              request: { id: 100000 }
-            }
-          })
-
-        await expectSaga(profileSaga)
-          .withReducer(reducer)
-          .dispatch({ type: ProfileActionTypes.PROFILE_FETCH_REQUEST })
-          .put.actionType(
-            ProfileActionTypes.PROFILE_FETCH_ERROR
-          )
-          .silentRun(50)
-      })
     })
 
     describe('retrieving the current user profile', () => {
@@ -489,28 +304,6 @@ describe('Contracts', () => {
         })
         const pactResponseBody = (await getPact(path)).data
         expect(pactResponseBody).not.toEqual({})
-      })
-
-      it('works through app saga', async () => {
-
-        const resource = (await getFixture(path)).data
-        const reducer: Reducer = () =>
-          ({
-            profile: {
-              request: { id: 0 }
-            }
-          })
-
-        const { allEffects } = await expectSaga(profileSaga)
-          .withReducer(reducer)
-          .dispatch({ type: ProfileActionTypes.PROFILE_FETCH_REQUEST })
-          .put.actionType(
-            ProfileActionTypes.PROFILE_FETCH_SUCCESS
-          )
-          .silentRun(50)
-
-        const sagaPayload = lastSagaPutActionPayload(allEffects)
-        expect(sagaPayload).toEqual(resource)
       })
     })
 
@@ -569,45 +362,6 @@ describe('Contracts', () => {
         const pactResponseBody = (await getPact(path)).data
         expect(pactResponseBody).not.toEqual({})
       })
-      
-      it('works through app saga', async () => {
-        const resource = (await getFixture(path)).data
-        const reducer: Reducer = () =>
-          ({
-            department: {
-              request: { id: recordId }
-            }
-          })
-
-        const { allEffects } = await expectSaga(departmentSaga)
-          .withReducer(reducer)
-          .dispatch({ type: DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST })
-          .put.actionType(
-            DepartmentActionTypes.DEPARTMENT_FETCH_SUCCESS
-          )
-          .silentRun(50)
-
-        const sagaPayload = lastSagaPutActionPayload(allEffects)
-        expect(sagaPayload).toEqual(resource)
-      })
-
-      it('fails with bad id via saga', async () => {
-        const reducer: Reducer = () =>
-          ({
-            department: {
-              request: { id: 10000 }
-            }
-          })
-
-        await expectSaga(departmentSaga)
-          .withReducer(reducer)
-          .dispatch({ type: DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST })
-          .put.actionType(
-            DepartmentActionTypes.DEPARTMENT_FETCH_ERROR
-          )
-          .silentRun(50)
-
-      })
     })
     describe('retrieving all departments', () => {
 
@@ -633,26 +387,6 @@ describe('Contracts', () => {
         expect(pactResponseBody).not.toEqual({})
       })
 
-      it('works through app saga', async () => {
-        const resource = (await getFixture(path)).data
-        const reducer: Reducer = () =>
-          ({
-            department: {
-              request: { id: '' }
-            }
-          })
-
-        const { allEffects } = await expectSaga(departmentSaga)
-          .withReducer(reducer)
-          .dispatch({ type: DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST })
-          .put.actionType(
-            DepartmentActionTypes.DEPARTMENT_FETCH_SUCCESS
-          )
-          .silentRun(50)
-
-        const sagaPayload = lastSagaPutActionPayload(allEffects)
-        expect(sagaPayload).toEqual(resource)
-      })
     })
 
     describe('updating attributes of a department', () => {
@@ -761,26 +495,5 @@ describe('searching for "park"', () => {
     })
     const pactResponseBody = (await getPact(path + queryParam)).data
     expect(pactResponseBody).not.toEqual({})
-  })
-
-  it('works through app saga', async () => {
-    const resource = (await getFixture(path + queryParam)).data
-    const reducer: Reducer = () =>
-      ({
-        searchSimple: {
-          request: { term: searchTerm }
-        }
-      })
-
-    const { allEffects } = await expectSaga(searchSaga)
-      .withReducer(reducer)
-      .dispatch({ type: SearchActionTypes.SEARCH_SIMPLE_FETCH_REQUEST })
-      .put.actionType(
-        SearchActionTypes.SEARCH_SIMPLE_FETCH_SUCCESS
-      )
-      .silentRun(50)
-
-    const sagaPayload = lastSagaPutActionPayload(allEffects)
-    expect(sagaPayload).toEqual(resource)
   })
 })

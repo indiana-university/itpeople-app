@@ -12,36 +12,27 @@ import {
   RivetSelect,
   RivetSelectField
 } from "src/components/form";
-import { UitsRole, ItProRole } from "../store";
+import { UitsRole, ItProRole, IUnitMember } from "../store";
 import { connect } from "react-redux";
 
-interface IFormProps extends InjectedFormProps<any>, IMemberFields {
+interface IFormProps extends InjectedFormProps<IUnitMember>, IUnitMember {
   onSubmit: (e?: any) => any;
   field: Field;
 }
-interface IMemberFields {
-  name: string;
-  title: string;
-  role: UitsRole | ItProRole | string;
-  set: (f: string, v: string | any) => any;
-}
 
 const form: React.SFC<IFormProps> = props => {
+  const { person } = props;
   return (
     <>
       <form
         onSubmit={e => {
           e.preventDefault();
           e.stopPropagation();
-          props.onSubmit({
-            name: props.name,
-            title: props.title,
-            role: props.role
-          });
+          props.onSubmit(props as IUnitMember);
         }}
       >
         <div>
-          <h1>{props.name}</h1>
+          <h1>{person && person.name}</h1>
           <Field name="id" component="input" type="hidden" />
         </div>
         <div>
@@ -64,7 +55,7 @@ const form: React.SFC<IFormProps> = props => {
   );
 };
 
-let UpdateMemberForm: any = reduxForm<IFormProps>({
+let UpdateMemberForm: any = reduxForm<IUnitMember>({
   form: "updateMemberForm",
   enableReinitialize: true
 })(form);
