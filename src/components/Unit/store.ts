@@ -359,5 +359,6 @@ export {
   initialState,
   saga,
   handleSaveUnit,
-  handleSaveMember
+  handleSaveMember,
+  handleDeleteMember
 };

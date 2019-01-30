@@ -8,63 +8,73 @@
 */
 
 import { expectSaga } from 'redux-saga-test-plan'
-import { UnitActionTypes, saga as  handleSaveMember, UnitPermissions, IUnitMemberRequest } from './store'
+import * as unit from './store'
 import { apiFn, apiResources } from '../effects';
 
-const sagaApiHappyPath = async (saga: any, state: any, expectedMethod: string, expectedPath: string, expectedData: any, expectedDispatch: string) => {
+const sagaApiHappyPath = async (saga: any, request: any, expectedMethod: string, expectedPath: string, expectedDispatch: string, expectedPayload: any) => {
     const api: apiFn = (m, u, p, d, h) => {
         expect(m).toEqual(expectedMethod);
         expect(p).toEqual(expectedPath);
-        expect(d).toEqual(expectedData);
         return Promise.resolve({});
     }
-    await expectSaga(saga, api)
-      .withState(state)
-      .put({ type: expectedDispatch, payload: {}, meta: undefined })
+    await expectSaga(saga, api, request)
+      .put({ type: expectedDispatch, payload: expectedPayload, meta: undefined })
       .silentRun(50);
 }
 
-const sagaApiSadPath = async (saga: any, state: any, expectedDispatch: string) => {
+const sagaApiSadPath = async (saga: any, request: any, expectedDispatch: string) => {
     const api: apiFn = (m, u, p, d, h) =>
         Promise.resolve({ errors: ["Error"] });
-    await expectSaga(saga, api)
-        .withState(state)
+    await expectSaga(saga, api, request)
         .put({ type: expectedDispatch, payload: ["Error"], meta: undefined })
         .silentRun(50);
 };
 
 describe('unit memberships', () => {
 
-    const member: IUnitMemberRequest = { 
-        id: 0,
+    const member: unit.IUnitMemberRequest = { 
         unitId: 1, 
         personId: 3, 
         title: "Mr Manager", 
         role: "Leader", 
-        permissions: UnitPermissions.Viewer, 
+        permissions: unit.UnitPermissions.Viewer, 
         percentage: 100 
     };
 
+    const expectedSuccessDispatch = unit.UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST;
+    const expectedSuccessPayload = { id: member.unitId };
+
     describe ('creating', () => {
-        const path = apiResources.units.members(member.unitId);
-        const state = { form: { addMemberForm: { values: member } } };
+        const request = {...member, id: undefined }
+        const expectedPath = apiResources.units.members(member.unitId);
         it("happy path", async () => {
-            await sagaApiHappyPath(handleSaveMember, state, "post", path, member, UnitActionTypes.UNIT_SAVE_MEMBER_SUCCESS)
+            await sagaApiHappyPath(unit.handleSaveMember, request, "post", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
         it("sad path", async () =>
-            await sagaApiSadPath(handleSaveMember, state, UnitActionTypes.UNIT_SAVE_MEMBER_ERROR)
+            await sagaApiSadPath(unit.handleSaveMember, request, unit.UnitActionTypes.UNIT_SAVE_MEMBER_ERROR)
         );
     });
 
     describe('updating', () => {
-        const path = apiResources.units.members(member.unitId, member.id);
-        const state = { form: { addMemberForm: { values: { ...member, id:1 } } } };
+        const request = { ...member, id: 1 }
+        const expectedPath = apiResources.units.members(member.unitId, request.id);
         it("happy path", async () => {
-            await sagaApiHappyPath(handleSaveMember, state, "put", path, member, UnitActionTypes.UNIT_SAVE_MEMBER_SUCCESS)
+            await sagaApiHappyPath(unit.handleSaveMember, request, "put", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
-        it("sad path", async () =>
-            await sagaApiSadPath(handleSaveMember, state, UnitActionTypes.UNIT_SAVE_MEMBER_ERROR)
-        );
+        it("sad path", async () => {
+            await sagaApiSadPath(unit.handleSaveMember, request, unit.UnitActionTypes.UNIT_SAVE_MEMBER_ERROR);
+        });
     });
-    
+
+    describe('deleting', () => {
+        const request = { ...member, id: 1 }
+        const expectedPath = apiResources.units.members(member.unitId, request.id);
+        it("happy path", async () => {
+            await sagaApiHappyPath(unit.handleDeleteMember, request, "delete", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
+        });
+        it("sad path", async () => {
+            await sagaApiSadPath(unit.handleDeleteMember, request, unit.UnitActionTypes.UNIT_DELETE_MEMBER_ERROR);
+        });
+    });
+
 });
