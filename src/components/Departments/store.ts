@@ -26,7 +26,7 @@ export const fetchError = (error: string) => action(DepartmentsActionTypes.DEPAR
 
 //#region REDUCER
 import { Reducer } from 'redux'
-import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../types'
+import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from '../types'
 
 // Type-safe initialState!
 export const initialState: IState = {
@@ -40,9 +40,9 @@ export const initialState: IState = {
 // everything will remain type-safe.
 export const reducer: Reducer<IState> = (state = initialState, act) => {
   switch (act.type) {
-    case DepartmentsActionTypes.DEPARTMENTS_FETCH_REQUEST: return FetchRequestReducer(state, act)
-    case DepartmentsActionTypes.DEPARTMENTS_FETCH_SUCCESS: return FetchSuccessReducer(state, act)
-    case DepartmentsActionTypes.DEPARTMENTS_FETCH_ERROR: return FetchErrorReducer(state, act)
+    case DepartmentsActionTypes.DEPARTMENTS_FETCH_REQUEST: return TaskStartReducer(state, act)
+    case DepartmentsActionTypes.DEPARTMENTS_FETCH_SUCCESS: return TaskSuccessReducer(state, act)
+    case DepartmentsActionTypes.DEPARTMENTS_FETCH_ERROR: return TaskErrorReducer(state, act)
     default: return state
   }
 }

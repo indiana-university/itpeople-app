@@ -7,7 +7,7 @@ import { Reducer  } from 'redux'
 import { all, fork, select, takeEvery } from 'redux-saga/effects'
 import { action } from 'typesafe-actions'
 import { httpGet } from '../effects'
-import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../types'
+import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from '../types'
 import { IApiState, IApplicationState, IEntity } from '../types'
 
 //#region TYPES
@@ -49,9 +49,9 @@ export const initialState: IState = {
 
 export const reducer: Reducer<IState> = (state = initialState, act) => {
   switch (act.type) {
-    case DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST: return FetchRequestReducer(state, act)
-    case DepartmentActionTypes.DEPARTMENT_FETCH_SUCCESS: return FetchSuccessReducer(state, act)
-    case DepartmentActionTypes.DEPARTMENT_FETCH_ERROR: return FetchErrorReducer(state, act)
+    case DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST: return TaskStartReducer(state, act)
+    case DepartmentActionTypes.DEPARTMENT_FETCH_SUCCESS: return TaskSuccessReducer(state, act)
+    case DepartmentActionTypes.DEPARTMENT_FETCH_ERROR: return TaskErrorReducer(state, act)
     default: return state
   }
 }

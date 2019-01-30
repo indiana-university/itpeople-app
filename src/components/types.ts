@@ -57,16 +57,15 @@ export interface IRole {
 import { AnyAction } from "redux";
 import { ILookupState } from "./lookup";
 
-export const FetchRequestReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
+export const TaskStartReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
   ...state,
-  data: undefined,
   error: undefined,
   loading: true,
   request: action.payload,
   view: ViewStateType.Loading
 });
 
-export const FetchSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
+export const TaskSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
   ...state,
   data: action.payload,
   error: undefined,
@@ -75,60 +74,7 @@ export const FetchSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, ac
   view: ViewStateType.Viewing
 });
 
-export const FetchErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
-  ...state,
-  data: undefined,
-  error: action.payload,
-  loading: false,
-  request: undefined,
-  view: ViewStateType.Error
-});
-
-export const SaveRequestReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
-  ...state,
-  // data: undefined,
-  error: undefined,
-  loading: true,
-  request: action.payload,
-  view: ViewStateType.Saving
-});
-
-export const SaveSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
-  ...state,
-  data: action.payload,
-  error: undefined,
-  loading: false,
-  request: undefined,
-  view: ViewStateType.Viewing
-});
-
-export const SaveErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
-  ...state,
-  data: undefined,
-  error: action.payload,
-  loading: false,
-  request: undefined,
-  view: ViewStateType.Error
-});
-
-export const DeleteRequestReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
-  ...state,
-  error: undefined,
-  loading: true,
-  request: action.payload,
-  view: ViewStateType.Saving
-});
-
-export const DeleteSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
-  ...state,
-  data: action.payload,
-  error: undefined,
-  loading: false,
-  request: undefined,
-  view: ViewStateType.Viewing
-});
-
-export const DeleteErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
+export const TaskErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
   ...state,
   data: undefined,
   error: action.payload,

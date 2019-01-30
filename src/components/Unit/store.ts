@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { IApiState, IApplicationState, IEntity, ViewStateType, DeleteRequestReducer, DeleteSuccessReducer, DeleteErrorReducer } from '../types'
+import { IApiState, IApplicationState, IEntity, ViewStateType } from '../types'
 import { lookup } from '../lookup';
 
 //#region TYPES
@@ -137,8 +137,8 @@ const lookupUser = (q: string) => lookup(q ? `/people?q=${q}` : '')
 //#endregion
 
 //#region REDUCER
-import { Reducer, AnyAction } from 'redux'
-import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer, SaveErrorReducer, SaveRequestReducer, SaveSuccessReducer } from '../types'
+import { Reducer } from 'redux'
+import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from '../types'
 
 // Type-safe initialState!
 const initialState: IState = {
@@ -163,41 +163,41 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_EDIT: return { ...state, view: ViewStateType.Editing }
     case UnitActionTypes.UNIT_CANCEL: return { ...state, view: ViewStateType.Viewing }
     //
-    case UnitActionTypes.UNIT_FETCH_REQUEST: return { ...state, profile: FetchRequestReducer(state.profile, act) }
-    case UnitActionTypes.UNIT_FETCH_SUCCESS: return { ...state, profile: FetchSuccessReducer(state.profile, act) }
-    case UnitActionTypes.UNIT_FETCH_ERROR: return { ...state, profile: FetchErrorReducer(state.profile, act) }
-    case UnitActionTypes.UNIT_SAVE_REQUEST: return {...state, profile: SaveRequestReducer(state.profile, act)}
-    case UnitActionTypes.UNIT_SAVE_SUCCESS: return {...state, profile:SaveSuccessReducer(state.profile, act)}
-    case UnitActionTypes.UNIT_SAVE_ERROR: return {...state, profile: SaveErrorReducer(state.profile, act)}
+    case UnitActionTypes.UNIT_FETCH_REQUEST: return { ...state, profile: TaskStartReducer(state.profile, act) }
+    case UnitActionTypes.UNIT_FETCH_SUCCESS: return { ...state, profile: TaskSuccessReducer(state.profile, act) }
+    case UnitActionTypes.UNIT_FETCH_ERROR: return { ...state, profile: TaskErrorReducer(state.profile, act) }
+    case UnitActionTypes.UNIT_SAVE_REQUEST: return {...state, profile: TaskStartReducer(state.profile, act)}
+    case UnitActionTypes.UNIT_SAVE_SUCCESS: return {...state, profile:TaskSuccessReducer(state.profile, act)}
+    case UnitActionTypes.UNIT_SAVE_ERROR: return {...state, profile: TaskErrorReducer(state.profile, act)}
     //
-    case UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST: return { ...state, members: FetchRequestReducer(state.members, act) };
-    case UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS: return { ...state, members: FetchSuccessReducer(state.members, act) };
-    case UnitActionTypes.UNIT_FETCH_MEMBERS_ERROR: return { ...state, members: FetchErrorReducer(state.members, act) };
-    case UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST: return { ...state, members: SaveRequestReducer(state.members, act) };
-    case UnitActionTypes.UNIT_SAVE_MEMBER_ERROR: return { ...state, members: SaveErrorReducer(state.members, act) };
-    case UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST: return { ...state, members: SaveRequestReducer(state.members, act) };
-    case UnitActionTypes.UNIT_DELETE_MEMBER_ERROR: return { ...state, members: SaveErrorReducer(state.members, act) };
+    case UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
+    case UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS: return { ...state, members: TaskSuccessReducer(state.members, act) };
+    case UnitActionTypes.UNIT_FETCH_MEMBERS_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
+    case UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
+    case UnitActionTypes.UNIT_SAVE_MEMBER_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
+    case UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
+    case UnitActionTypes.UNIT_DELETE_MEMBER_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
     //
-    case UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST: return { ...state, unitChildren: FetchRequestReducer(state.unitChildren, act) };
-    case UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS: return { ...state, unitChildren: FetchSuccessReducer(state.unitChildren, act) };
-    case UnitActionTypes.UNIT_FETCH_CHILDREN_ERROR: return { ...state, unitChildren: FetchErrorReducer(state.unitChildren, act) };
-    case UnitActionTypes.UNIT_SAVE_CHILD_REQUEST: return { ...state, unitChildren: SaveRequestReducer(state.unitChildren, act) };
-    case UnitActionTypes.UNIT_SAVE_CHILD_SUCCESS: return { ...state, unitChildren: SaveSuccessReducer(state.unitChildren, act) };
-    case UnitActionTypes.UNIT_SAVE_CHILD_ERROR: return { ...state, unitChildren: SaveErrorReducer(state.unitChildren, act) };
+    case UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST: return { ...state, unitChildren: TaskStartReducer(state.unitChildren, act) };
+    case UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS: return { ...state, unitChildren: TaskSuccessReducer(state.unitChildren, act) };
+    case UnitActionTypes.UNIT_FETCH_CHILDREN_ERROR: return { ...state, unitChildren: TaskErrorReducer(state.unitChildren, act) };
+    case UnitActionTypes.UNIT_SAVE_CHILD_REQUEST: return { ...state, unitChildren: TaskStartReducer(state.unitChildren, act) };
+    case UnitActionTypes.UNIT_SAVE_CHILD_SUCCESS: return { ...state, unitChildren: TaskSuccessReducer(state.unitChildren, act) };
+    case UnitActionTypes.UNIT_SAVE_CHILD_ERROR: return { ...state, unitChildren: TaskErrorReducer(state.unitChildren, act) };
     //
-    case UnitActionTypes.UNIT_FETCH_PARENT_REQUEST: return { ...state, parent: FetchRequestReducer(state.parent, act) };
-    case UnitActionTypes.UNIT_FETCH_PARENT_SUCCESS: return { ...state, parent: FetchSuccessReducer(state.parent, act) };
-    case UnitActionTypes.UNIT_FETCH_PARENT_ERROR: return { ...state, parent: FetchErrorReducer(state.parent, act) };
-    case UnitActionTypes.UNIT_SAVE_PARENT_REQUEST: return { ...state, parent: SaveRequestReducer(state.parent, act) };
-    case UnitActionTypes.UNIT_SAVE_PARENT_SUCCESS: return { ...state, parent: SaveSuccessReducer(state.parent, act) };
-    case UnitActionTypes.UNIT_SAVE_PARENT_ERROR: return { ...state, parent: SaveErrorReducer(state.parent, act) };
+    case UnitActionTypes.UNIT_FETCH_PARENT_REQUEST: return { ...state, parent: TaskStartReducer(state.parent, act) };
+    case UnitActionTypes.UNIT_FETCH_PARENT_SUCCESS: return { ...state, parent: TaskSuccessReducer(state.parent, act) };
+    case UnitActionTypes.UNIT_FETCH_PARENT_ERROR: return { ...state, parent: TaskErrorReducer(state.parent, act) };
+    case UnitActionTypes.UNIT_SAVE_PARENT_REQUEST: return { ...state, parent: TaskStartReducer(state.parent, act) };
+    case UnitActionTypes.UNIT_SAVE_PARENT_SUCCESS: return { ...state, parent: TaskSuccessReducer(state.parent, act) };
+    case UnitActionTypes.UNIT_SAVE_PARENT_ERROR: return { ...state, parent: TaskErrorReducer(state.parent, act) };
     //
-    case UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST: return { ...state, departments: FetchRequestReducer(state.departments, act) };
-    case UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS: return { ...state, departments: FetchSuccessReducer(state.departments, act) };
-    case UnitActionTypes.UNIT_FETCH_DEPARTMENTS_ERROR: return { ...state, departments: FetchErrorReducer(state.departments, act) };
-    case UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST: return { ...state, departments: SaveRequestReducer(state.departments, act) };
-    case UnitActionTypes.UNIT_SAVE_DEPARTMENT_SUCCESS: return { ...state, departments: SaveSuccessReducer(state.departments, act) };
-    case UnitActionTypes.UNIT_SAVE_DEPARTMENT_ERROR: return { ...state, departments: SaveErrorReducer(state.departments, act) };
+    case UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST: return { ...state, departments: TaskStartReducer(state.departments, act) };
+    case UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS: return { ...state, departments: TaskSuccessReducer(state.departments, act) };
+    case UnitActionTypes.UNIT_FETCH_DEPARTMENTS_ERROR: return { ...state, departments: TaskErrorReducer(state.departments, act) };
+    case UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST: return { ...state, departments: TaskStartReducer(state.departments, act) };
+    case UnitActionTypes.UNIT_SAVE_DEPARTMENT_SUCCESS: return { ...state, departments: TaskSuccessReducer(state.departments, act) };
+    case UnitActionTypes.UNIT_SAVE_DEPARTMENT_ERROR: return { ...state, departments: TaskErrorReducer(state.departments, act) };
 
     default: return state
   }

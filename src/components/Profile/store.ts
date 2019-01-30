@@ -73,14 +73,7 @@ export const toggleUnit = (id: number) =>
 
 //#region REDUCER
 import { Reducer } from "redux";
-import {
-  FetchErrorReducer,
-  FetchRequestReducer,
-  FetchSuccessReducer,
-  SaveErrorReducer,
-  SaveRequestReducer,
-  SaveSuccessReducer
-} from "../types";
+import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from "../types";
 
 // Type-safe initialState!
 export const initialState: IState = {
@@ -94,18 +87,12 @@ export const initialState: IState = {
 // everything will remain type-safe.
 export const reducer: Reducer<IState> = (state = initialState, act) => {
   switch (act.type) {
-    case ProfileActionTypes.PROFILE_FETCH_REQUEST:
-      return FetchRequestReducer(state, act);
-    case ProfileActionTypes.PROFILE_FETCH_SUCCESS:
-      return FetchSuccessReducer(state, act);
-    case ProfileActionTypes.PROFILE_FETCH_ERROR:
-      return FetchErrorReducer(state, act);
-    case ProfileActionTypes.PROFILE_UPDATE_REQUEST:
-      return SaveRequestReducer(state, act);
-    case ProfileActionTypes.PROFILE_UPDATE_SUCCESS:
-      return SaveSuccessReducer(state, act);
-    case ProfileActionTypes.PROFILE_UPDATE_ERROR:
-      return SaveErrorReducer(state, act);
+    case ProfileActionTypes.PROFILE_FETCH_REQUEST: return TaskStartReducer(state, act);
+    case ProfileActionTypes.PROFILE_FETCH_SUCCESS: return TaskSuccessReducer(state, act);
+    case ProfileActionTypes.PROFILE_FETCH_ERROR: return TaskErrorReducer(state, act);
+    case ProfileActionTypes.PROFILE_UPDATE_REQUEST: return TaskStartReducer(state, act);
+    case ProfileActionTypes.PROFILE_UPDATE_SUCCESS: return TaskSuccessReducer(state, act);
+    case ProfileActionTypes.PROFILE_UPDATE_ERROR: return TaskErrorReducer(state, act);
     case ProfileActionTypes.PROFILE_TOGGLE_UNIT:
       if (
         state &&

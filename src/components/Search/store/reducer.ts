@@ -11,9 +11,9 @@ import {
 import { Reducer } from "redux";
 import {
   IApiState,
-  FetchErrorReducer,
-  FetchRequestReducer,
-  FetchSuccessReducer
+  TaskErrorReducer,
+  TaskStartReducer,
+  TaskSuccessReducer
 } from "../../types";
 import { SearchLists } from "../Results";
 
@@ -30,7 +30,7 @@ export const initialState: IState = {
 export const reducer: Reducer<IState> = (state = initialState, act) => {
   switch (act.type) {
     case SearchActionTypes.SEARCH_SIMPLE_FETCH_REQUEST:
-      return FetchRequestReducer(state, act);
+      return TaskStartReducer(state, act);
     case SearchActionTypes.SEARCH_SIMPLE_FETCH_SUCCESS:
       if (act.payload) {
         if (act.payload.users && act.payload.users.length) {
@@ -41,9 +41,9 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
           act.payload.selectedList = SearchLists.Departments;
         }
       }
-      return FetchSuccessReducer(state, act);
+      return TaskSuccessReducer(state, act);
     case SearchActionTypes.SEARCH_SIMPLE_FETCH_ERROR:
-      return FetchErrorReducer(state, act);
+      return TaskErrorReducer(state, act);
     case SearchActionTypes.SEARCH_SET_CURRENT_LIST:
       if (state.data) {
         return {

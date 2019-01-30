@@ -39,7 +39,7 @@ const signOutRequest = () => action(AuthActionTypes.SIGN_OUT)
 
 //#region REDUCERS
 import { Reducer } from 'redux'
-import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../types'
+import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from '../types'
 
 // Type-safe initialState!
 const initialState: IState = {
@@ -60,9 +60,9 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
         loading: false,
         request: undefined,
       }  
-    case AuthActionTypes.POST_SIGN_IN_REQUEST: return FetchRequestReducer(state, act)
-    case AuthActionTypes.POST_SIGN_IN_SUCCESS: return FetchSuccessReducer(state, act)
-    case AuthActionTypes.POST_SIGN_IN_ERROR: return FetchErrorReducer(state, act)
+    case AuthActionTypes.POST_SIGN_IN_REQUEST: return TaskStartReducer(state, act)
+    case AuthActionTypes.POST_SIGN_IN_SUCCESS: return TaskSuccessReducer(state, act)
+    case AuthActionTypes.POST_SIGN_IN_ERROR: return TaskErrorReducer(state, act)
     case AuthActionTypes.SIGN_OUT:
       return { ...state, 
           data: undefined,
