@@ -78,3 +78,38 @@ describe('unit memberships', () => {
     });
 
 });
+
+
+describe('supported departments', () => {
+
+    const department: unit.ISupportedDepartmentRequest = {
+        unitId: 1,
+        departmentId: 2
+    };
+
+    const expectedSuccessDispatch = unit.UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST;
+    const expectedSuccessPayload = { id: department.unitId };
+
+    describe('creating', () => {
+        const request = { ...department, id: undefined }
+        const expectedPath = apiResources.units.supportedDepartments(department.unitId);
+        it("happy path", async () => {
+            await sagaApiHappyPath(unit.handleSaveDepartment, request, "post", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
+        });
+        it("sad path", async () =>
+            await sagaApiSadPath(unit.handleSaveDepartment, request, unit.UnitActionTypes.UNIT_SAVE_DEPARTMENT_ERROR)
+        );
+    });
+
+    describe('deleting', () => {
+        const request = { ...department, id: 1 }
+        const expectedPath = apiResources.units.supportedDepartments(department.unitId, request.id);
+        it("happy path", async () => {
+            await sagaApiHappyPath(unit.handleDeleteDepartment, request, "delete", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
+        });
+        it("sad path", async () => {
+            await sagaApiSadPath(unit.handleDeleteDepartment, request, unit.UnitActionTypes.UNIT_DELETE_DEPARTMENT_ERROR);
+        });
+    });
+
+});

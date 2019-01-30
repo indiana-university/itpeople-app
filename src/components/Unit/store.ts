@@ -110,10 +110,13 @@ export interface IUnitProfile extends IUnit {
   children?: IEntity[];
 }
 
-export interface ISupportedDepartment {
+export interface ISupportedDepartmentRequest {
   id?: number;
   unitId: number;
   departmentId: number;
+}
+
+export interface ISupportedDepartment extends ISupportedDepartmentRequest {
   department?: IEntity;
 }
 
@@ -367,8 +370,8 @@ function* handleDeleteMember(api: apiFn, member: IUnitMember) {
   );
 }
 
-function* handleSaveDepartment(api: apiFn, department: ISupportedDepartment) {
-  yield httpPost<ISupportedDepartment, IUnitRequest>(
+function* handleSaveDepartment(api: apiFn, department: ISupportedDepartmentRequest) {
+  yield httpPost<ISupportedDepartmentRequest, IUnitRequest>(
     api,
     apiResources.units.supportedDepartments(department.unitId),
     department,
@@ -377,7 +380,7 @@ function* handleSaveDepartment(api: apiFn, department: ISupportedDepartment) {
   );
 }
 
-function* handleDeleteDepartment(api: apiFn, department: ISupportedDepartment) {
+function* handleDeleteDepartment(api: apiFn, department: ISupportedDepartmentRequest) {
   yield httpDelete(
     api,
     apiResources.units.supportedDepartments(department.unitId, department.id),
@@ -443,5 +446,7 @@ export {
   saga,
   handleSaveUnit,
   handleSaveMember,
-  handleDeleteMember
+  handleDeleteMember,
+  handleSaveDepartment,
+  handleDeleteDepartment
 };
