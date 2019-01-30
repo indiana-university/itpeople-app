@@ -157,6 +157,22 @@ function* httpPut<TRequest, TResponse>(
         yield handleResponse(response, success, error)
 }
 
+/**
+ * Asynchronously issue an HTTP DELETE and resolve the response.
+ *
+ * @param {string} path The absolute path from the API root
+ * @param {() => PayloadMetaAction<string,any,any>} success A request success action generator
+ * @param {(r:string) => PayloadMetaAction<string,string,any>} error A request failure action generator
+ */
+function* httpDelete(
+    api: apiFn,
+    path: string,
+    success: () => PayloadMetaAction<string, any, any>,
+    error: (r: string) => PayloadMetaAction<string, string, any>) {
+    const response = yield call(api, 'delete', API_ENDPOINT, path)
+    yield handleResponse(response, success, error)
+}
+
 export { 
     apiFn,
     apiResources,
@@ -166,6 +182,7 @@ export {
     httpGet,
     httpPost,
     httpPut,
+    httpDelete,
     handleError,
     getAuthToken,
     setAuthToken,

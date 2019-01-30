@@ -30,8 +30,9 @@ export const enum UnitActionTypes {
   UNIT_SAVE_MEMBER_REQUEST = "@@unit/SAVE_MEMBER_REQUEST",
   UNIT_SAVE_MEMBER_SUCCESS = "@@unit/SAVE_MEMBER_SUCCESS",
   UNIT_SAVE_MEMBER_ERROR = "@@unit/SAVE_MEMBER_ERROR",
-  UNIT_DELETE_MEMBER_REQUEST = "@@unit/UNIT_DELETE_MEMBER_REQUEST", 
-  // TODO: UNIT_DELETE_MEMBER_SUCCESS & UNIT_DELETE_MEMBER_ERROR
+  UNIT_DELETE_MEMBER_REQUEST = "@@unit/UNIT_DELETE_MEMBER_REQUEST",
+  UNIT_DELETE_MEMBER_SUCCESS = "@@unit/UNIT_DELETE_MEMBER_SUCCESS",
+  UNIT_DELETE_MEMBER_ERROR = "@@unit/UNIT_DELETE_MEMBER_ERROR",
   UNIT_SAVE_CHILD_REQUEST = "@@unit/SAVE_CHILD_REQUEST",
   UNIT_SAVE_CHILD_SUCCESS = "@@unit/SAVE_CHILD_SUCCESS",
   UNIT_SAVE_CHILD_ERROR = "@@unit/SAVE_CHILD_ERROR",
@@ -46,6 +47,10 @@ export const enum UnitActionTypes {
 
 export interface IUnitRequest {
   id: number
+}
+
+export interface IDeleteRequest extends IUnitRequest{
+  unitId: number
 }
 
 export interface IUrl {
@@ -170,8 +175,9 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS: return { ...state, members: FetchSuccessReducer(state.members, act) };
     case UnitActionTypes.UNIT_FETCH_MEMBERS_ERROR: return { ...state, members: FetchErrorReducer(state.members, act) };
     case UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST: return { ...state, members: SaveRequestReducer(state.members, act) };
-    case UnitActionTypes.UNIT_SAVE_MEMBER_SUCCESS: return { ...state, members: SaveSuccessReducer(state.members, act) };
     case UnitActionTypes.UNIT_SAVE_MEMBER_ERROR: return { ...state, members: SaveErrorReducer(state.members, act) };
+    case UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST: return { ...state, members: SaveRequestReducer(state.members, act) };
+    case UnitActionTypes.UNIT_DELETE_MEMBER_ERROR: return { ...state, members: SaveErrorReducer(state.members, act) };
     //
     case UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST: return { ...state, unitChildren: FetchRequestReducer(state.unitChildren, act) };
     case UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS: return { ...state, unitChildren: FetchSuccessReducer(state.unitChildren, act) };
@@ -201,7 +207,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 import { all, fork, select, takeEvery, put } from 'redux-saga/effects'
-import { apiFn as apiFn, httpGet, httpPost, httpPut, callApiWithAuth, apiResources } from '../effects'
+import { apiFn as apiFn, httpGet, httpPost, httpPut, httpDelete, callApiWithAuth, apiResources } from '../effects'
 import { IUnitMembership, IUser } from '../Profile/store';
 
 function* handleFetchUnit() {
@@ -269,13 +275,20 @@ function* handleSaveMember(api: apiFn){
   const body: IUnitMemberRequest = { id: form.id, unitId: form.unitId, personId: form.personId, title: form.title, percentage: form.percentage, role: form.role, permissions: form.permissions };
   if (body.id) {
     yield httpPut<IUnitMemberRequest, IUnitRequest>(api, apiResources.units.members(body.unitId, body.id), body, 
-      response => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, {id: body.unitId}), 
+      _ => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, {id: body.unitId}), 
       error => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error));
   } else {
     yield httpPost<IUnitMemberRequest, IUnitRequest>(api, apiResources.units.members(body.unitId), body, 
-      response => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, {id: body.unitId}), 
+      _ => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, {id: body.unitId}), 
       error => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error));
   }
+}
+
+function* handleDeleteMember(api: apiFn){
+  const state = (yield select<IApplicationState>(s => s.unit.members.request)) as IDeleteRequest;
+  yield httpDelete(api, apiResources.units.members(state.unitId, state.id),
+    () => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, { id: state.unitId }),
+    error => action(UnitActionTypes.UNIT_DELETE_MEMBER_ERROR, error));
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
@@ -293,15 +306,17 @@ function* watchUnitFetch() {
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchUnitSave() {
   yield takeEvery(UnitActionTypes.UNIT_SAVE_REQUEST, () => handleSaveUnit(callApiWithAuth));
-}
-
-function* watchUnitSaveMember() {
   yield takeEvery(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, () => handleSaveMember(callApiWithAuth));
 }
 
+function* watchUnitDelete() {
+  yield takeEvery(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, () => handleDeleteMember(callApiWithAuth));
+}
+
+
 // We can also use `fork()` here to split our saga into multiple watchers.
 function* saga() {
-  yield all([fork(watchUnitFetch), fork(watchUnitSave), fork(watchUnitSaveMember)])
+  yield all([fork(watchUnitFetch), fork(watchUnitSave), fork(watchUnitDelete)])
 }
 //#endregion
 
