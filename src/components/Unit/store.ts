@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { IApiState, IApplicationState, IEntity, ViewStateType } from '../types'
+import { IApiState, IApplicationState, IEntity, ViewStateType, DeleteRequestReducer, DeleteSuccessReducer, DeleteErrorReducer } from '../types'
 import { lookup } from '../lookup';
 
 //#region TYPES
@@ -131,14 +131,13 @@ const fetchUnitChildren = (request: IUnitRequest) => action(UnitActionTypes.UNIT
 const fetchUnitParent = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, request)
 const saveMemberRequest = (member: IUnitMember) =>  action(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, member);
 const deleteMemberRequest = (member: IUnitMember) => action(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, member);
-
 const lookupUnit = (q: string) => lookup(q ? `/units?q=${q}` : '')
 const lookupDepartment = (q: string) => lookup(q ? `/departments?q=${q}` : '')
 const lookupUser = (q: string) => lookup(q ? `/people?q=${q}` : '')
 //#endregion
 
 //#region REDUCER
-import { Reducer } from 'redux'
+import { Reducer, AnyAction } from 'redux'
 import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer, SaveErrorReducer, SaveRequestReducer, SaveSuccessReducer } from '../types'
 
 // Type-safe initialState!
