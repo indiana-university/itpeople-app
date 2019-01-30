@@ -5,28 +5,27 @@ import { Button, ModalBody, ModalControls, Row, Col } from "rivet-react";
 import { RivetInputField, RivetInput, required } from "../../form";
 import { IApplicationState } from "../../types";
 import { Dispatch } from "redux";
-import { lookupUnit, IUnitProfile } from "../store";
-import { Modal, closeModal } from "../../layout/Modal"
+import { lookupUnit, saveUnitRequest, IUnit } from "../store";
+import { Modal, closeModal } from "../../layout/Modal";
 import { ParentUnitIcon, TrashCan } from "../../icons";
 
-interface IFormProps
-  extends InjectedFormProps<any>,
-    IDispathProps,
-    IUnitProfile,
-    IProps {}
+interface IFormProps extends InjectedFormProps<IFields>, IFields, IDispathProps, IProps {}
 
 interface IDispathProps {
   closeModal: typeof closeModal;
   lookupUnit: typeof lookupUnit;
-  removeParent(parentId: number, unitId: any): any; // TODO: wire up store
-  setParent(parentId: number, unitId: any): any; // TODO: wire up store
+  save: typeof saveUnitRequest;
+}
+interface IFields {
+  unit: IUnit;
+  parent: IUnit;
 }
 interface IProps {
   units: any;
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const { id, closeModal, lookupUnit, removeParent, setParent, parent } = props;
+  const { closeModal, lookupUnit, save, unit, parent } = props;
 
   const EditParentForm = (
     <>
@@ -49,11 +48,8 @@ const form: React.SFC<IFormProps> = props => {
         </div>
 
         {props.units && props.units.length > 0 && (
-          <div
-            className="rvt-dropdown__menu"
-            style={{ position: "relative", padding: 0 }}
-          >
-            {props.units.map((unit: any, i: number) => {
+          <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
+            {props.units.map((u: any, i: number) => {
               // todo: circular reference check
               return (
                 <div key={i}>
@@ -63,12 +59,12 @@ const form: React.SFC<IFormProps> = props => {
                       e.preventDefault();
                       e.stopPropagation();
                       closeModal();
-                      setParent(unit.id, id);
+                      save({ ...unit, parentId: u.id });
                       props.reset();
                       props.lookupUnit("");
                     }}
                   >
-                    {unit && unit.name}
+                    {u && u.name}
                   </Button>
                 </div>
               );
@@ -80,12 +76,7 @@ const form: React.SFC<IFormProps> = props => {
   );
   return (
     <>
-      <Modal
-        id="update unit parents"
-        title="Update Parent"
-        buttonText="+ Add new parent"
-        variant="plain"
-      >
+      <Modal id="update unit parents" title="Update Parent" buttonText="+ Add new parent" variant="plain">
         <ModalBody>{EditParentForm}</ModalBody>
         <ModalControls>
           <Button type="button" onClick={closeModal} variant="plain">
@@ -108,7 +99,7 @@ const form: React.SFC<IFormProps> = props => {
                 className="rvt-button--plain"
                 type="button"
                 title="Remove Parent"
-                onClick={() => removeParent(parent.id, id)}
+                onClick={() => save({ ...unit, parentId: undefined })}
               >
                 <TrashCan />
               </Button>
@@ -126,7 +117,7 @@ const form: React.SFC<IFormProps> = props => {
   );
 };
 
-let UpdateParentForm: any = reduxForm<IFormProps>({
+let UpdateParentForm: any = reduxForm<IFields>({
   form: "updateUnitParent",
   enableReinitialize: true
 })(form);
@@ -141,8 +132,7 @@ UpdateParentForm = connect(
   (dispatch: Dispatch): IDispathProps => ({
     closeModal: () => dispatch(closeModal()),
     lookupUnit: (q: string) => dispatch(lookupUnit(q)),
-    removeParent: (parentId: number, unitId: any) => {}, // TODO: wire up store
-    setParent: (parentId: number, unitId: any) => {} // TODO: wire up store
+    save: unit => dispatch(saveUnitRequest(unit))
   })
 )(UpdateParentForm);
 

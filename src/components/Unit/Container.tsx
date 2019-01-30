@@ -24,7 +24,7 @@ interface IDispatchProps {
   fetchUnitDepartments: typeof unit.fetchUnitDepartments;
   fetchUnitChildren: typeof unit.fetchUnitChildren;
   fetchUnitParent: typeof unit.fetchUnitParent;
-  save: typeof unit.saveRequest;
+  save: typeof unit.saveUnitRequest;
   edit: typeof unit.edit;
   cancel: typeof unit.cancel;
 }
@@ -97,7 +97,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
   fetchUnitChildren: request => dispatch(unit.fetchUnitChildren(request)),
   fetchUnitParent: request => dispatch(unit.fetchUnitParent(request)),
   edit: () => dispatch(unit.edit()),
-  save: (updated:unit.IUnit) => dispatch(unit.saveRequest(updated)),
+  save: (updated:unit.IUnit) => dispatch(unit.saveUnitRequest(updated)),
   cancel: () => dispatch(unit.cancel())
 });
 

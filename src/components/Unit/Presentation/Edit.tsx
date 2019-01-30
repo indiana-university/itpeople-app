@@ -21,39 +21,25 @@ interface IAuthenticatedUsername {
 }
 interface IProps {
   cancel: typeof unit.cancel;
-  id: number
+  id: number;
 }
 
-export const Edit: React.SFC<
-  unit.IState & IAuthenticatedUsername & IProps
-> = props => {
+export const Edit: React.SFC<unit.IState & IAuthenticatedUsername & IProps> = props => {
   const { profile, members, parent, unitChildren, departments, cancel, id } = props;
   return (
     <>
       <Breadcrumbs
-        crumbs={[
-          { text: "Home", href: "/" },
-          { text: "Units", href: "/units" },
-          profile && profile.data ? profile.data.name : "..."
-        ]}
+        crumbs={[{ text: "Home", href: "/" }, { text: "Units", href: "/units" }, profile && profile.data ? profile.data.name : "..."]}
       />
 
       <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
-        <Button
-          onClick={cancel}
-          type="button"
-          style={{ float: "right" }}
-          variant="plain"
-        >
+        <Button onClick={cancel} type="button" style={{ float: "right" }} variant="plain">
           Cancel
         </Button>
         <PageTitle>Edit</PageTitle>
         <Section>
           <Loader {...profile}>
-            <UpdateUnitForm
-              initialValues={profile.data}
-              {...props.profile.data}
-            />
+            <UpdateUnitForm initialValues={profile.data} {...props.profile.data} />
           </Loader>
         </Section>
       </Content>
@@ -63,11 +49,7 @@ export const Edit: React.SFC<
           <Col lg={6}>
             <Section>
               <Loader {...members}>
-                <UpdateMembersForm
-                  unitId={id}
-                  initialValues={{members:members.data, unitId: id}}
-                  members={members.data}
-                />
+                <UpdateMembersForm unitId={id} initialValues={{ members: members.data, unitId: id }} members={members.data} />
               </Loader>
             </Section>
           </Col>
@@ -75,27 +57,17 @@ export const Edit: React.SFC<
             <div className="rvt-m-all-md">
               <div className="rvt-m-bottom-lg">
                 <Panel title="Parent and Children">
-                  <Loader {...parent}>
-                    <UpdateParentForm
-                      initialValues={parent.data}
-                      parent={parent.data}
-                    />
+                  <Loader {...profile}>
+                    <UpdateParentForm initialValues={parent.data} unit={profile.data} unitId={id} parent={parent.data} />
                   </Loader>
                   <Loader {...unitChildren}>
-                    <UpdateChildrenForm
-                      initialValues={unitChildren.data}
-                      units={unitChildren.data}
-                    />
+                    <UpdateChildrenForm initialValues={unitChildren.data} unitId={id} units={unitChildren.data} />
                   </Loader>
                 </Panel>
               </div>
               <Panel title="Supported Departments">
                 <Loader {...departments}>
-                  <UpdateDepartmentsForm
-                    unitId={id}
-                    initialValues={{...departments.data, unitId:id}}
-                    departments={departments.data}
-                  />
+                  <UpdateDepartmentsForm unitId={id} initialValues={{ ...departments.data, unitId: id }} departments={departments.data} />
                 </Loader>
               </Panel>
             </div>
