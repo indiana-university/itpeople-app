@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { IApiState, IApplicationState, IEntity, ViewStateType } from '../types'
+import { IApiState, IApplicationState, IEntity, ViewStateType, DeleteRequestReducer, DeleteSuccessReducer, DeleteErrorReducer } from '../types'
 import { lookup } from '../lookup';
 
 //#region TYPES
@@ -30,8 +30,9 @@ export const enum UnitActionTypes {
   UNIT_SAVE_MEMBER_REQUEST = "@@unit/SAVE_MEMBER_REQUEST",
   UNIT_SAVE_MEMBER_SUCCESS = "@@unit/SAVE_MEMBER_SUCCESS",
   UNIT_SAVE_MEMBER_ERROR = "@@unit/SAVE_MEMBER_ERROR",
-  UNIT_DELETE_MEMBER_REQUEST = "@@unit/UNIT_DELETE_MEMBER_REQUEST", 
-  // TODO: UNIT_DELETE_MEMBER_SUCCESS & UNIT_DELETE_MEMBER_ERROR
+  UNIT_DELETE_MEMBER_REQUEST = "@@unit/UNIT_DELETE_MEMBER_REQUEST",
+  UNIT_DELETE_MEMBER_SUCCESS = "UNIT_DELETE_MEMBER_SUCCESS",
+  UNIT_DELETE_MEMBER_ERROR = "UNIT_DELETE_MEMBER_ERROR",
   UNIT_SAVE_CHILD_REQUEST = "@@unit/SAVE_CHILD_REQUEST",
   UNIT_SAVE_CHILD_SUCCESS = "@@unit/SAVE_CHILD_SUCCESS",
   UNIT_SAVE_CHILD_ERROR = "@@unit/SAVE_CHILD_ERROR",
@@ -126,14 +127,13 @@ const fetchUnitChildren = (request: IUnitRequest) => action(UnitActionTypes.UNIT
 const fetchUnitParent = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, request)
 const saveMemberRequest = (member: IUnitMember) =>  action(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, member);
 const deleteMemberRequest = (member: IUnitMember) => action(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, member);
-
 const lookupUnit = (q: string) => lookup(q ? `/units?q=${q}` : '')
 const lookupDepartment = (q: string) => lookup(q ? `/departments?q=${q}` : '')
 const lookupUser = (q: string) => lookup(q ? `/people?q=${q}` : '')
 //#endregion
 
 //#region REDUCER
-import { Reducer } from 'redux'
+import { Reducer, AnyAction } from 'redux'
 import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer, SaveErrorReducer, SaveRequestReducer, SaveSuccessReducer } from '../types'
 
 // Type-safe initialState!
@@ -172,6 +172,9 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST: return { ...state, members: SaveRequestReducer(state.members, act) };
     case UnitActionTypes.UNIT_SAVE_MEMBER_SUCCESS: return { ...state, members: SaveSuccessReducer(state.members, act) };
     case UnitActionTypes.UNIT_SAVE_MEMBER_ERROR: return { ...state, members: SaveErrorReducer(state.members, act) };
+    case UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST: return {...state, members: DeleteRequestReducer(state.members, act)}
+    case UnitActionTypes.UNIT_DELETE_MEMBER_SUCCESS: return {...state, members: DeleteSuccessReducer(state.members, act)}
+    case UnitActionTypes.UNIT_DELETE_MEMBER_ERROR: return {...state, members: DeleteErrorReducer(state.members, act)}
     //
     case UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST: return { ...state, unitChildren: FetchRequestReducer(state.unitChildren, act) };
     case UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS: return { ...state, unitChildren: FetchSuccessReducer(state.unitChildren, act) };
@@ -278,6 +281,12 @@ function* handleSaveMember(api: apiFn){
   }
 }
 
+function* handleDeleteMember(api: apiFn, membership:IUnitMembership){
+  console.log("*** DELETE member", membership);
+  // todo: HTTP delete
+  yield "delete";
+}
+
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchUnitFetch() {
@@ -299,9 +308,14 @@ function* watchUnitSaveMember() {
   yield takeEvery(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, () => handleSaveMember(callApiWithAuth));
 }
 
+function* watchUnitDeleteMember() {
+  // todo: ask John - Would it be easier to use action payload, instead of redux forms?
+  yield takeEvery(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, (action:AnyAction) => handleDeleteMember(callApiWithAuth, action.payload));
+}
+
 // We can also use `fork()` here to split our saga into multiple watchers.
 function* saga() {
-  yield all([fork(watchUnitFetch), fork(watchUnitSave), fork(watchUnitSaveMember)])
+  yield all([fork(watchUnitFetch), fork(watchUnitSave), fork(watchUnitSaveMember), fork(watchUnitDeleteMember)])
 }
 //#endregion
 

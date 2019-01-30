@@ -1,21 +1,8 @@
 import * as React from "react";
-import {
-  reduxForm,
-  InjectedFormProps,
-  Field,
-  formValueSelector,
-  FieldArray,
-  change
-} from "redux-form";
+import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, change } from "redux-form";
 import { Button, ModalBody, ModalControls, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
-import {
-  UitsRole,
-  ItProRole,
-  IUnitMember,
-  saveMemberRequest,
-  deleteMemberRequest
-} from "../store";
+import { UitsRole, ItProRole, IUnitMember, saveMemberRequest, deleteMemberRequest } from "../store";
 import { connect } from "react-redux";
 import { AddUser, Pencil, TrashCan } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
@@ -47,18 +34,11 @@ const form: React.SFC<IFormProps> = props => {
       let member = fields.get(index) as IUnitMember;
       return { ...member, index };
     }) as IUnitMember[];
-    let leaders = members.filter(
-      m => m.role == ItProRole.Admin || m.role == UitsRole.Leader
-    );
+    let leaders = members.filter(m => m.role == ItProRole.Admin || m.role == UitsRole.Leader);
     let standardMember = members.filter(
-      m =>
-        m.role == ItProRole.Pro ||
-        m.role == UitsRole.Member ||
-        m.role == UitsRole.Sublead
+      m => m.role == ItProRole.Pro || m.role == UitsRole.Member || m.role == UitsRole.Sublead
     );
-    let others = members.filter(
-      m => m.role == ItProRole.Aux || m.role == UitsRole.Related
-    );
+    let others = members.filter(m => m.role == ItProRole.Aux || m.role == UitsRole.Related);
     const addMemberFrom = (
       <div>
         <Modal
@@ -102,9 +82,7 @@ const form: React.SFC<IFormProps> = props => {
         <li key={member.id}>
           <Row>
             <Col>
-              <h3 className="rvt-ts-18 rvt-text-bold">
-                {person && person.name}
-              </h3>
+              <h3 className="rvt-ts-18 rvt-text-bold">{person && person.name}</h3>
               {member.title && <div>{member.title}</div>}
             </Col>
             <div style={{ textAlign: "right" }}>
@@ -133,12 +111,7 @@ const form: React.SFC<IFormProps> = props => {
                   </ModalControls>
                 </Modal>
               </span>
-              <Button
-                className="rvt-button--plain"
-                type="button"
-                title="Remove Member"
-                onClick={remove}
-              >
+              <Button className="rvt-button--plain" type="button" title="Remove Member" onClick={remove}>
                 <TrashCan />
               </Button>
             </div>
@@ -151,43 +124,31 @@ const form: React.SFC<IFormProps> = props => {
       <>
         <h2 className="rvt-ts-29 rvt-text-bold">Unit Leadership</h2>
         <p>
-          Use Leadership for VPs directors and managers. Click on the person’s
-          name to edit more detailed information about their role within this
-          unit.
+          Use Leadership for VPs directors and managers. Click on the person’s name to edit more detailed information
+          about their role within this unit.
         </p>
         {addMemberFrom}
-        <List
-          variant="plain"
-          className="list-dividers list-dividers--show-last"
-        >
+        <List variant="plain" className="list-dividers list-dividers--show-last">
           {leaders.map(renderMember)}
         </List>
 
         <h2 className="rvt-ts-29 rvt-text-bold">Unit Members</h2>
         <p>
-          Use Related People for admins and others who are do not solely report
-          to this unit. Click on the person’s name to edit more detailed
-          information about their role within this unit.
+          Use Related People for admins and others who are do not solely report to this unit. Click on the person’s name
+          to edit more detailed information about their role within this unit.
         </p>
         {addMemberFrom}
-        <List
-          variant="plain"
-          className="list-dividers list-dividers--show-last rvt-m-top-lg"
-        >
+        <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
           {standardMember.map(renderMember)}
         </List>
 
         <h2 className="rvt-ts-29 rvt-text-bold">Related people</h2>
         <p>
-          Use Related People for admins and others who are do not solely report
-          to this unit. Click on the person’s name to edit more detailed
-          information about their role within this unit.
+          Use Related People for admins and others who are do not solely report to this unit. Click on the person’s name
+          to edit more detailed information about their role within this unit.
         </p>
         {addMemberFrom}
-        <List
-          variant="plain"
-          className="list-dividers list-dividers--show-last"
-        >
+        <List variant="plain" className="list-dividers list-dividers--show-last">
           {others.map(renderMember)}
         </List>
       </>
@@ -197,11 +158,7 @@ const form: React.SFC<IFormProps> = props => {
   return (
     <>
       <div>
-        <FieldArray
-          name="members"
-          component={renderMembers}
-          rerenderOnEveryChange={true}
-        />
+        <FieldArray name="members" component={renderMembers} rerenderOnEveryChange={true} />
       </div>
     </>
   );
@@ -220,8 +177,7 @@ UpdateMembersForm = connect(
   (dispatch: Dispatch) => {
     return {
       closeModal: () => dispatch(closeModal()),
-      removeMember: (member: IUnitMember) =>
-        dispatch(deleteMemberRequest(member)),
+      removeMember: (member: IUnitMember) => dispatch(deleteMemberRequest(member)),
       save: (member: IUnitMember) => dispatch(saveMemberRequest(member)),
       editMember: (member: IUnitMember) => {
         dispatch(change("updateMemberForm", "id", member.id));
