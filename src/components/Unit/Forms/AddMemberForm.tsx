@@ -46,7 +46,6 @@ const form: React.SFC<IFormProps> = props => {
                           e.stopPropagation();
                           lookupUser("");
                           setPerson(user);
-                          // todo: set selected user
                         }}
                       >
                         {user && user.name}

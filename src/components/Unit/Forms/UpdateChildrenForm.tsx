@@ -8,34 +8,24 @@ import { lookupUnit } from "..";
 import { Dispatch } from "redux";
 import { closeModal, Modal } from "../../layout/Modal";
 import { ChildrenUnitsIcon, TrashCan } from "src/components/icons";
-import { IUnitProfile } from "../store";
+import { IUnitProfile, deleteUnitChild, saveUnitChild } from "../store";
 
-interface IFormProps
-  extends InjectedFormProps<any>,
-    IUnitProfile,
-    IDispathProps,
-    IProps {}
+interface IFormProps extends InjectedFormProps<any>, IUnitProfile, IDispathProps, IProps {}
 
 interface IDispathProps {
   lookupUnit: typeof lookupUnit;
   closeModal: typeof closeModal;
-  addChild(unit: any): any; // <-- TODO: wire up store
-  removeChild(unit: any): any; // <-- TODO: wire up store
+  addChild: typeof saveUnitChild;
+  removeChild: typeof deleteUnitChild;
 }
 interface IProps {
   units: IEntity[];
+  unitId: number;
   filteredUnits: IEntity[];
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const {
-    closeModal,
-    units,
-    filteredUnits,
-    addChild,
-    removeChild,
-    lookupUnit
-  } = props;
+  const { closeModal, units, filteredUnits, addChild, removeChild, lookupUnit, unitId } = props;
   const addChildForm = (
     <>
       <form>
@@ -56,10 +46,7 @@ const form: React.SFC<IFormProps> = props => {
           />
         </div>
         {filteredUnits && filteredUnits.length > 0 && (
-          <div
-            className="rvt-dropdown__menu"
-            style={{ position: "relative", padding: 0 }}
-          >
+          <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
             {filteredUnits.map((unit: any, i: number) => {
               // todo: circular reference check
               // todo: check if relationship already exists
@@ -70,7 +57,7 @@ const form: React.SFC<IFormProps> = props => {
                     onClick={e => {
                       e.preventDefault();
                       e.stopPropagation();
-                      addChild(unit);
+                      addChild({ ...unit, parentId: unitId });
                       closeModal();
                       props.reset();
                       lookupUnit("");
@@ -89,12 +76,7 @@ const form: React.SFC<IFormProps> = props => {
 
   return (
     <>
-      <Modal
-        title="Add child unit"
-        id="+ add child unit"
-        buttonText="+ Add new child"
-        variant="plain"
-      >
+      <Modal title="Add child unit" id="+ add child unit" buttonText="+ Add new child" variant="plain">
         <ModalBody>{addChildForm}</ModalBody>
         <ModalControls>
           <Button type="button" onClick={closeModal} variant="plain">
@@ -114,15 +96,8 @@ const form: React.SFC<IFormProps> = props => {
                   <Col>
                     <h4>{unit.name}</h4>
                   </Col>
-                  <Col
-                    style={{ minWidth: 150, flexGrow: 0, textAlign: "right" }}
-                  >
-                    <Button
-                      variant="plain"
-                      type="button"
-                      title="Remove Unit"
-                      onClick={() => removeChild(unit)}
-                    >
+                  <Col style={{ minWidth: 150, flexGrow: 0, textAlign: "right" }}>
+                    <Button variant="plain" type="button" title="Remove Unit" onClick={() => removeChild(unit)}>
                       <TrashCan />
                     </Button>
                   </Col>
@@ -156,8 +131,8 @@ UpdateChildrenForm = connect(
   (dispatch: Dispatch): IDispathProps => ({
     lookupUnit: (q: string) => dispatch(lookupUnit(q)),
     closeModal: () => dispatch(closeModal()),
-    addChild: (unit: any) => {}, // <-- TODO: wire up store
-    removeChild: (unit: any) => {} // <-- TODO: wire up store
+    addChild: unit => dispatch(saveUnitChild(unit)),
+    removeChild: (unit: any) => dispatch(deleteUnitChild(unit))
   })
 )(UpdateChildrenForm);
 

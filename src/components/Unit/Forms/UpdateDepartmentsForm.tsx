@@ -13,8 +13,8 @@ import { deleteUnitDepartment, saveUnitDepartment } from "../store";
 interface IFormProps extends InjectedFormProps<any>, IDispatchProps, IProps {}
 interface IDispatchProps {
   closeModal: typeof closeModal;
-  addDepartment: (d: any) => any; // <-- todo: wire up redux store
-  removeDepartment: (d: any) => any; // <-- todo: wire up redux store
+  addDepartment: typeof saveUnitDepartment;
+  removeDepartment: typeof deleteUnitDepartment;
   lookupDepartment: typeof lookupDepartment;
 }
 interface IProps {
@@ -121,8 +121,8 @@ UpdateDepartmentsForm = connect(
         return dispatch(lookupDepartment(q));
       },
       closeModal: () => dispatch(closeModal()),
-      addDepartment: department => dispatch(saveUnitDepartment(department)), // <-- todo: wire to redux actions
-      removeDepartment: department => dispatch(deleteUnitDepartment(department)) // <-- todo: wire to redux actions
+      addDepartment: department => dispatch(saveUnitDepartment(department)), 
+      removeDepartment: department => dispatch(deleteUnitDepartment(department))
     };
   }
 )(UpdateDepartmentsForm);

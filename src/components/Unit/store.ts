@@ -367,6 +367,31 @@ function* handleDeleteMember(api: apiFn, member: IUnitMember) {
   );
 }
 
+function* handleAddChild(api: apiFn, child: IUnit) {
+    yield httpPut<IUnit, IUnitRequest>(
+      api,
+      apiResources.units.root(child.id),
+      child,
+      _ => action(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, { id: child.parentId as number }),
+      error => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error)
+    );
+}
+
+function* handleRemoveChild(api: apiFn, child: IUnit) {
+  if(child.parentId){
+    const parentId = child.parentId;
+    child.parentId = undefined;
+
+  yield httpPut<IUnit, IUnitRequest>(
+    api,
+    apiResources.units.root(child.id),
+    child,
+    _ => action(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, { id: parentId }),
+    error => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error)
+  );
+  }
+}
+
 function* handleSaveDepartment(api: apiFn, department: ISupportedDepartment) {
   yield httpPost<ISupportedDepartment, IUnitRequest>(
     api,
@@ -403,11 +428,13 @@ function* watchUnitSave() {
   yield takeEvery(UnitActionTypes.UNIT_SAVE_REQUEST, (a: AnyAction) => handleSaveUnit(callApiWithAuth, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, (a: AnyAction) => handleSaveMember(callApiWithAuth, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, (a: AnyAction) => handleSaveDepartment(callApiWithAuth, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_SAVE_CHILD_REQUEST, (a: AnyAction) => handleAddChild(callApiWithAuth, a.payload));
 }
 
 function* watchUnitDelete() {
   yield takeEvery(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, (a: AnyAction) => handleDeleteMember(callApiWithAuth, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, (a: AnyAction) => handleDeleteDepartment(callApiWithAuth, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_DELETE_CHILD_REQUEST, (a: AnyAction) => handleRemoveChild(callApiWithAuth, a.payload));
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.

@@ -21,10 +21,10 @@ interface IFormFields {
 
 interface IDispatchProps {
   closeModal: typeof closeModal;
-  removeMember(m: IUnitMember): any; // <-- TODO: map redux action in store
+  removeMember: typeof deleteMemberRequest;
+  save: typeof saveMemberRequest;
   editMember(member: any): any;
   addMember(unitId: number): any;
-  save: typeof saveMemberRequest;
 }
 
 const form: React.SFC<IFormProps> = props => {
@@ -35,9 +35,7 @@ const form: React.SFC<IFormProps> = props => {
       return { ...member, index };
     }) as IUnitMember[];
     let leaders = members.filter(m => m.role == ItProRole.Admin || m.role == UitsRole.Leader);
-    let standardMember = members.filter(
-      m => m.role == ItProRole.Pro || m.role == UitsRole.Member || m.role == UitsRole.Sublead
-    );
+    let standardMember = members.filter(m => m.role == ItProRole.Pro || m.role == UitsRole.Member || m.role == UitsRole.Sublead);
     let others = members.filter(m => m.role == ItProRole.Aux || m.role == UitsRole.Related);
     const addMemberFrom = (
       <div>
@@ -57,8 +55,8 @@ const form: React.SFC<IFormProps> = props => {
           <ModalBody>
             <AddMemberForm
               unitId={unitId}
-              initialValues={{unitId}}
-              onSubmit={(values:IUnitMember) => {
+              initialValues={{ unitId }}
+              onSubmit={(values: IUnitMember) => {
                 const { unitId, personId, title, role, permissions, percentage } = values;
                 save({ unitId, personId, title, role, permissions, percentage });
                 closeModal();
@@ -98,7 +96,7 @@ const form: React.SFC<IFormProps> = props => {
                 >
                   <ModalBody>
                     <UpdateMemberForm
-                      onSubmit={(values:IUnitMember) => {
+                      onSubmit={(values: IUnitMember) => {
                         const { id, unitId, personId, title, role, permissions, percentage } = values;
                         save({ id, unitId, personId, title, role, permissions, percentage });
                         closeModal();
@@ -124,9 +122,7 @@ const form: React.SFC<IFormProps> = props => {
     return (
       <>
         <h2 className="rvt-ts-29 rvt-text-bold">Unit Leadership</h2>
-        <p>
-          Use Leadership for VPs, directors, managers.
-        </p>
+        <p>Use Leadership for VPs, directors, managers.</p>
         {addMemberFrom}
         <List variant="plain" className="list-dividers list-dividers--show-last">
           {leaders.map(renderMember)}
@@ -134,8 +130,8 @@ const form: React.SFC<IFormProps> = props => {
 
         <h2 className="rvt-ts-29 rvt-text-bold">Unit Members</h2>
         <p>
-          Use Related People for admins and others who are do not solely report to this unit. Click on the person’s name
-          to edit more detailed information about their role within this unit.
+          Use Related People for admins and others who are do not solely report to this unit. Click on the person’s name to edit more
+          detailed information about their role within this unit.
         </p>
         {addMemberFrom}
         <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
@@ -144,8 +140,8 @@ const form: React.SFC<IFormProps> = props => {
 
         <h2 className="rvt-ts-29 rvt-text-bold">Related people</h2>
         <p>
-          Use Related People for admins and others who are do not solely report to this unit. Click on the person’s name
-          to edit more detailed information about their role within this unit.
+          Use Related People for admins and others who are do not solely report to this unit. Click on the person’s name to edit more
+          detailed information about their role within this unit.
         </p>
         {addMemberFrom}
         <List variant="plain" className="list-dividers list-dividers--show-last">
