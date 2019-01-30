@@ -32,7 +32,7 @@ const sagaApiSadPath = async (saga: any, request: any, expectedDispatch: string)
 
 describe('unit memberships', () => {
 
-    const member: unit.IUnitMemberRequest = { 
+    const model: unit.IUnitMemberRequest = { 
         unitId: 1, 
         personId: 3, 
         title: "Mr Manager", 
@@ -42,11 +42,11 @@ describe('unit memberships', () => {
     };
 
     const expectedSuccessDispatch = unit.UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST;
-    const expectedSuccessPayload = { id: member.unitId };
+    const expectedSuccessPayload = { id: model.unitId };
 
     describe ('creating', () => {
-        const request = {...member, id: undefined }
-        const expectedPath = apiResources.units.members(member.unitId);
+        const request = {...model, id: undefined }
+        const expectedPath = apiResources.units.members(model.unitId);
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleSaveMember, request, "post", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
@@ -56,8 +56,8 @@ describe('unit memberships', () => {
     });
 
     describe('updating', () => {
-        const request = { ...member, id: 1 }
-        const expectedPath = apiResources.units.members(member.unitId, request.id);
+        const request = { ...model, id: 1 }
+        const expectedPath = apiResources.units.members(model.unitId, request.id);
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleSaveMember, request, "put", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
@@ -67,8 +67,8 @@ describe('unit memberships', () => {
     });
 
     describe('deleting', () => {
-        const request = { ...member, id: 1 }
-        const expectedPath = apiResources.units.members(member.unitId, request.id);
+        const request = { ...model, id: 1 }
+        const expectedPath = apiResources.units.members(model.unitId, request.id);
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleDeleteMember, request, "delete", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
@@ -82,17 +82,17 @@ describe('unit memberships', () => {
 
 describe('supported departments', () => {
 
-    const department: unit.ISupportedDepartmentRequest = {
+    const model: unit.ISupportedDepartmentRequest = {
         unitId: 1,
         departmentId: 2
     };
 
     const expectedSuccessDispatch = unit.UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST;
-    const expectedSuccessPayload = { id: department.unitId };
+    const expectedSuccessPayload = { id: model.unitId };
 
     describe('creating', () => {
-        const request = { ...department, id: undefined }
-        const expectedPath = apiResources.units.supportedDepartments(department.unitId);
+        const request = { ...model, id: undefined }
+        const expectedPath = apiResources.units.supportedDepartments(model.unitId);
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleSaveDepartment, request, "post", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
@@ -102,8 +102,8 @@ describe('supported departments', () => {
     });
 
     describe('deleting', () => {
-        const request = { ...department, id: 1 }
-        const expectedPath = apiResources.units.supportedDepartments(department.unitId, request.id);
+        const request = { ...model, id: 1 }
+        const expectedPath = apiResources.units.supportedDepartments(model.unitId, request.id);
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleDeleteDepartment, request, "delete", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
@@ -112,4 +112,29 @@ describe('supported departments', () => {
         });
     });
 
+});
+
+describe('unit profile', () => {
+
+    const model: unit.IUnit = {
+        id: 1,
+        name: "unit",
+        description: "description",
+        url: "http://example.com",
+        parentId: undefined,
+    };
+
+    const expectedSuccessDispatch = unit.UnitActionTypes.UNIT_FETCH_REQUEST;
+    const expectedSuccessPayload = { id: model.id };
+
+    describe('updating', () => {
+        const request = model
+        const expectedPath = apiResources.units.root(model.id);
+        it("happy path", async () => {
+            await sagaApiHappyPath(unit.handleSaveUnit, request, "put", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
+        });
+        it("sad path", async () =>
+            await sagaApiSadPath(unit.handleSaveUnit, request, unit.UnitActionTypes.UNIT_SAVE_ERROR)
+        );
+    });
 });

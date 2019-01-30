@@ -323,11 +323,11 @@ GET/POST/DELETE /units/{unit_id}/supported_departments/{department_id}
 
 function* handleSaveUnit(api: apiFn, unit: IUnit) {
   if (unit.id) {
-    yield httpPut<IUnit, IUnitProfile>(
+    yield httpPut<IUnit, IUnitRequest>(
       api,
       apiResources.units.root(unit.id),
       unit,
-      response => action(UnitActionTypes.UNIT_FETCH_REQUEST, response),
+      response => action(UnitActionTypes.UNIT_FETCH_REQUEST, {id: unit.id}),
       error => action(UnitActionTypes.UNIT_SAVE_ERROR, error)
     );
   } else {
