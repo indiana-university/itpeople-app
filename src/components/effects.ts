@@ -81,27 +81,6 @@ function* handleError(
 }
 
 /**
- * Handle a request that resulted in a response
- *
- * @template TResponse The expected response type
- * @param {*} response The response data
- * @param {(r:TResponse) => PayloadMetaAction<string,TResponse,any>} success A request success action generator
- * @param {(r:string) => PayloadMetaAction<string,string,any>} error A request failure action generator
- */
-function* handleResponse<TResponse>(
-    response: any,
-    success: (r:TResponse) => PayloadMetaAction<string,TResponse,any>, 
-    error: (r:string) => PayloadMetaAction<string,string,any>){
-    if (response.unauthorized) {
-        yield put(signInRequest())
-    } else if (response.errors) {
-        yield put(error(response.errors))
-    } else {
-        yield put(success(response))
-    }      
-}
-
-/**
  * Asynchronously issue an HTTP GET request and resolve the response.
  *
  * @template TResponse The expected response type
@@ -114,7 +93,9 @@ function* httpGet<TResponse>(
     success: (r:TResponse) => PayloadMetaAction<string,TResponse,any>, 
     error: (r:string) => PayloadMetaAction<string,string,any>) {
         const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
-        yield handleResponse(response, success, error)
+        if (response.unauthorized) { yield put(signInRequest()); } 
+        else if (response.errors) { yield put(error(response.errors)); } 
+        else { yield put(success(response)); }      
 }
 
 /**
@@ -133,8 +114,10 @@ function* httpPost<TRequest, TResponse>(
     data: TRequest,
     success: (r: TResponse) => PayloadMetaAction<string, TResponse, any>,
     error: (r: string) => PayloadMetaAction<string, string, any>) {
-    const response = yield call(api, 'post', API_ENDPOINT, path, data)
-    yield handleResponse(response, success, error)
+        const response = yield call(api, 'post', API_ENDPOINT, path, data)
+        if (response.unauthorized) { yield put(signInRequest()); }
+        else if (response.errors) { yield put(error(response.errors)); }
+        else { yield put(success(response)); }      
 }
 
 /**
@@ -154,7 +137,9 @@ function* httpPut<TRequest, TResponse>(
     success: (r:TResponse) => PayloadMetaAction<string,TResponse,any>, 
     error: (r:string) => PayloadMetaAction<string,string,any>) {
         const response = yield call(api, 'put', API_ENDPOINT, path, data)
-        yield handleResponse(response, success, error)
+        if (response.unauthorized) { yield put(signInRequest()); }
+        else if (response.errors) { yield put(error(response.errors)); }
+        else { yield put(success(response)); }      
 }
 
 /**
@@ -170,7 +155,9 @@ function* httpDelete(
     success: () => PayloadMetaAction<string, any, any>,
     error: (r: string) => PayloadMetaAction<string, string, any>) {
     const response = yield call(api, 'delete', API_ENDPOINT, path)
-    yield handleResponse(response, success, error)
+        if (response.unauthorized) { yield put(signInRequest()); }
+        else if (response.errors) { yield put(error(response.errors)); }
+        else { yield put(success()); }      
 }
 
 export { 
