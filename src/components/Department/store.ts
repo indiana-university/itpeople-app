@@ -6,7 +6,7 @@
 import { Reducer  } from 'redux'
 import { all, fork, select, takeEvery } from 'redux-saga/effects'
 import { action } from 'typesafe-actions'
-import { httpGet } from '../effects'
+import { httpGet, callApiWithAuth } from '../effects'
 import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from '../types'
 import { IApiState, IApplicationState, IEntity } from '../types'
 
@@ -62,7 +62,7 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
 function* handleFetch() {
     const state = (yield select<IApplicationState>((s) => s.department.request)) as IDepartmentRequest
     const path = `/departments/${state.id}`
-    yield httpGet<IDepartmentProfile>(path, fetchSuccess, fetchError)
+    yield httpGet<IDepartmentProfile>(callApiWithAuth, path, fetchSuccess, fetchError)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action

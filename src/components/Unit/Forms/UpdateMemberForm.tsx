@@ -1,34 +1,17 @@
 import * as React from "react";
-import {
-  reduxForm,
-  InjectedFormProps,
-  formValueSelector
-} from "redux-form";
+import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { Button } from "rivet-react";
-import {
-  RivetInputField,
-  RivetInput,
-  RivetSelect,
-  RivetSelectField
-} from "src/components/form";
+import { RivetInputField, RivetInput, RivetSelect, RivetSelectField } from "src/components/form";
 import { UitsRole, IUnitMember } from "../store";
 import { connect } from "react-redux";
 
-interface IFormProps extends InjectedFormProps<IUnitMember>, IUnitMember {
-  onSubmit: (e?: any) => any;
-}
+interface IFormProps extends InjectedFormProps<IUnitMember>, IUnitMember {}
 
 const form: React.SFC<IFormProps> = props => {
   const { person } = props;
   return (
     <>
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          e.stopPropagation();
-          props.onSubmit(props as IUnitMember);
-        }}
-      >
+      <form onSubmit={props.handleSubmit}>
         <div>
           <h1>{person && person.name}</h1>
         </div>

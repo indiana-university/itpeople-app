@@ -51,10 +51,10 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 import { all, fork, takeEvery } from 'redux-saga/effects'
-import { httpGet } from '../effects'
+import { httpGet, callApiWithAuth } from '../effects'
 
 function* handleFetch() {
-    yield httpGet<IEntity[]>('/units', fetchSuccess, fetchError)
+    yield httpGet<IEntity[]>(callApiWithAuth, '/units', fetchSuccess, fetchError)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action

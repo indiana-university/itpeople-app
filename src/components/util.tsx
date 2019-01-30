@@ -25,3 +25,13 @@ export const withLoading = <PData, PProps>(Component: React.SFC<PData & PProps>)
             );
     }
 };
+
+export function limitedAssign<S, T extends S>(source: T): S {
+    let destination: S = {} as S;
+    for (let prop in destination) {
+        if (source[prop] && destination.hasOwnProperty(prop)) {
+            destination[prop] = source[prop];
+        }
+    }
+    return destination;
+}

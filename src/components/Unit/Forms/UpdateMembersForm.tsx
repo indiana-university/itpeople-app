@@ -2,7 +2,7 @@ import * as React from "react";
 import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, change } from "redux-form";
 import { Button, ModalBody, ModalControls, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
-import { UitsRole, ItProRole, IUnitMember, saveMemberRequest, deleteMemberRequest } from "../store";
+import { UitsRole, ItProRole, IUnitMember, saveMemberRequest, deleteMemberRequest, IUnitMemberRequest } from "../store";
 import { connect } from "react-redux";
 import { AddUser, Pencil, TrashCan } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
@@ -57,10 +57,10 @@ const form: React.SFC<IFormProps> = props => {
           <ModalBody>
             <AddMemberForm
               unitId={unitId}
-              initialValues={unitId}
-              onSubmit={(member: any) => {
-                save(member);
-                fields.push(member);
+              initialValues={{unitId}}
+              onSubmit={(values:IUnitMember) => {
+                const { unitId, personId, title, role, permissions, percentage } = values;
+                save({ unitId, personId, title, role, permissions, percentage });
                 closeModal();
               }}
             />
@@ -98,8 +98,9 @@ const form: React.SFC<IFormProps> = props => {
                 >
                   <ModalBody>
                     <UpdateMemberForm
-                      onSubmit={(m: IUnitMember) => {
-                        save(m);
+                      onSubmit={(values:IUnitMember) => {
+                        const { id, unitId, personId, title, role, permissions, percentage } = values;
+                        save({ id, unitId, personId, title, role, permissions, percentage });
                         closeModal();
                       }}
                     />
@@ -124,8 +125,7 @@ const form: React.SFC<IFormProps> = props => {
       <>
         <h2 className="rvt-ts-29 rvt-text-bold">Unit Leadership</h2>
         <p>
-          Use Leadership for VPs directors and managers. Click on the person’s name to edit more detailed information
-          about their role within this unit.
+          Use Leadership for VPs, directors, managers.
         </p>
         {addMemberFrom}
         <List variant="plain" className="list-dividers list-dividers--show-last">
@@ -172,13 +172,14 @@ let selector = formValueSelector("updateMembersForm");
 UpdateMembersForm = connect(
   (state: IApplicationState) => ({
     title: selector(state, "title"),
-    role: selector(state, "role")
+    role: selector(state, "role"),
+    unitId: selector(state, "unitId")
   }),
   (dispatch: Dispatch) => {
     return {
       closeModal: () => dispatch(closeModal()),
       removeMember: (member: IUnitMember) => dispatch(deleteMemberRequest(member)),
-      save: (member: IUnitMember) => dispatch(saveMemberRequest(member)),
+      save: (member: IUnitMemberRequest) => dispatch(saveMemberRequest(member)),
       editMember: (member: IUnitMember) => {
         dispatch(change("updateMemberForm", "id", member.id));
         dispatch(change("updateMemberForm", "unitId", member.unitId));
@@ -188,8 +189,8 @@ UpdateMembersForm = connect(
         dispatch(change("updateMemberForm", "role", member.role));
       },
       addMember: (unitId: number, role?: UitsRole) => {
-        dispatch(change("updateMemberForm", "unitId", unitId));
-        dispatch(change("updateMemberForm", "role", role || UitsRole.Member));
+        dispatch(change("addMemberForm", "unitId", unitId));
+        dispatch(change("addMemberForm", "role", role || UitsRole.Member));
       }
     };
   }

@@ -97,7 +97,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
   fetchUnitChildren: request => dispatch(unit.fetchUnitChildren(request)),
   fetchUnitParent: request => dispatch(unit.fetchUnitParent(request)),
   edit: () => dispatch(unit.edit()),
-  save: () => dispatch(unit.saveRequest()),
+  save: (updated:unit.IUnit) => dispatch(unit.saveRequest(updated)),
   cancel: () => dispatch(unit.cancel())
 });
 

@@ -128,7 +128,7 @@ function* handleFetch() {
     s => s.profile.request
   )) as IUserRequest;
   const path = state.id === 0 ? "/me" : `/people/${state.id}`;
-  yield httpGet<IUserProfile>(path, fetchSuccess, fetchError);
+  yield httpGet<IUserProfile>(callApiWithAuth, path, fetchSuccess, fetchError);
 }
 
 function* handleUpdate(api: apiFn) {

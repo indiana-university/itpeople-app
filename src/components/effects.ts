@@ -89,10 +89,11 @@ function* handleError(
  * @param {(r:string) => PayloadMetaAction<string,string,any>} error A request failure action generator
  */
 function* httpGet<TResponse>(
+    api: apiFn,
     path: string, 
     success: (r:TResponse) => PayloadMetaAction<string,TResponse,any>, 
     error: (r:string) => PayloadMetaAction<string,string,any>) {
-        const response = yield call(callApiWithAuth, 'get', API_ENDPOINT, path)
+        const response = yield call(api, 'get', API_ENDPOINT, path)
         if (response.unauthorized) { yield put(signInRequest()); } 
         else if (response.errors) { yield put(error(response.errors)); } 
         else { yield put(success(response)); }      
