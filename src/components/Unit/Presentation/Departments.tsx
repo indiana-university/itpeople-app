@@ -16,10 +16,9 @@ const Departments: React.SFC<IDefaultState<ISupportedDepartment[]>> = props => {
       <Loader {...props}>
         {departments && (
           <List variant="plain">
-            {departments.map((r, i) => (
+            {departments.map(({ id, department }, i) => (
               <li key={i}>
-                <a href={`/departments/${r.id}`}>{r.department.name}</a> <br />{" "}
-                {r.department.description}
+                <a href={`/departments/${id}`}>{department && department.name}</a> <br /> {department && department.description}
               </li>
             ))}
           </List>

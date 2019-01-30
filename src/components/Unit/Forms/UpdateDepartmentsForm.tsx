@@ -8,6 +8,7 @@ import { Dispatch } from "redux";
 import { lookupDepartment } from "..";
 import { Modal, closeModal } from "../../layout/Modal";
 import { TrashCan } from "../../icons";
+import { deleteUnitDepartment, saveUnitDepartment } from "../store";
 
 interface IFormProps extends InjectedFormProps<any>, IDispatchProps, IProps {}
 interface IDispatchProps {
@@ -18,19 +19,12 @@ interface IDispatchProps {
 }
 interface IProps {
   filtered: IEntity[];
-  departments: IEntity[];// <-- todo: type for department relationship
+  departments: IEntity[];
+  unitId: number;
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const {
-    addDepartment,
-    removeDepartment,
-    departments,
-    closeModal,
-    filtered,
-    reset,
-    lookupDepartment
-  } = props;
+  const { addDepartment, removeDepartment, departments, closeModal, filtered, reset, lookupDepartment, unitId } = props;
   const handleChange = (e: any) => {
     const q = e.target.value;
     lookupDepartment(q);
@@ -48,10 +42,7 @@ const form: React.SFC<IFormProps> = props => {
       </div>
 
       {filtered && filtered.length > 0 && (
-        <div
-          className="rvt-dropdown__menu"
-          style={{ position: "relative", padding: 0 }}
-        >
+        <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
           {filtered.map((department: any, i: number) => {
             return (
               <div key={i}>
@@ -60,7 +51,7 @@ const form: React.SFC<IFormProps> = props => {
                   onClick={e => {
                     e.preventDefault();
                     e.stopPropagation();
-                    addDepartment(department);
+                    addDepartment({ departmentId: department.id, unitId: unitId });
                     closeModal();
                     reset();
                     lookupDepartment("");
@@ -78,12 +69,7 @@ const form: React.SFC<IFormProps> = props => {
 
   return (
     <>
-      <Modal
-        id="add department to unit"
-        title="+ add department"
-        buttonText="+ add department"
-        variant="plain"
-      >
+      <Modal id="add department to unit" title="+ add department" buttonText="+ add department" variant="plain">
         <ModalBody>{addDepartmentForm}</ModalBody>
         <ModalControls>
           <Button type="button" onClick={closeModal} variant="plain">
@@ -101,12 +87,7 @@ const form: React.SFC<IFormProps> = props => {
                   <h4 className="rvt-text-bold">{department.name}</h4>
                 </Col>
                 <Col style={{ flexGrow: 0, minWidth: 150, textAlign: "right" }}>
-                  <Button
-                    variant="plain"
-                    type="button"
-                    title="Remove Department"
-                    onClick={() => removeDepartment(department)}
-                  >
+                  <Button variant="plain" type="button" title="Remove Department" onClick={() => removeDepartment(relationship)}>
                     <TrashCan />
                   </Button>
                 </Col>
@@ -140,8 +121,8 @@ UpdateDepartmentsForm = connect(
         return dispatch(lookupDepartment(q));
       },
       closeModal: () => dispatch(closeModal()),
-      addDepartment: a => {}, // <-- todo: wire to redux actions
-      removeDepartment: a => {} // <-- todo: wire to redux actions
+      addDepartment: department => dispatch(saveUnitDepartment(department)), // <-- todo: wire to redux actions
+      removeDepartment: department => dispatch(deleteUnitDepartment(department)) // <-- todo: wire to redux actions
     };
   }
 )(UpdateDepartmentsForm);

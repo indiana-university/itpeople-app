@@ -92,7 +92,8 @@ export const Edit: React.SFC<
               <Panel title="Supported Departments">
                 <Loader {...departments}>
                   <UpdateDepartmentsForm
-                    initialValues={departments.data}
+                    unitId={id}
+                    initialValues={{...departments.data, unitId:id}}
                     departments={departments.data}
                   />
                 </Loader>

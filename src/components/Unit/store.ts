@@ -42,6 +42,9 @@ export const enum UnitActionTypes {
   UNIT_SAVE_DEPARTMENT_REQUEST = "@@unit/SAVE_DEPARTMENT_REQUEST",
   UNIT_SAVE_DEPARTMENT_SUCCESS = "@@unit/SAVE_DEPARTMENT_SUCCESS",
   UNIT_SAVE_DEPARTMENT_ERROR = "@@unit/SAVE_DEPARTMENT_ERROR",
+  UNIT_DELETE_DEPARTMENT_REQUEST = "@@unit/DELETE_DEPARTMENT_REQUEST",
+  UNIT_DELETE_DEPARTMENT_SUCCESS = "@@unit/DELETE_DEPARTMENT_SUCCESS",
+  UNIT_DELETE_DEPARTMENT_ERROR = "@@unit/DELETE_DEPARTMENT_ERROR",
   UNIT_CANCEL = "@@unit/UNIT_CANCEL"
 }
 
@@ -102,10 +105,10 @@ export interface IUnitProfile extends IUnit {
 }
 
 export interface ISupportedDepartment {
-  id: number;
+  id?: number;
   unitId: number;
   departmentId: number;
-  department: IEntity;
+  department?: IEntity;
 }
 
 export interface IState {
@@ -127,6 +130,9 @@ const cancel = () => action(UnitActionTypes.UNIT_CANCEL, {})
 const fetchUnit = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request)
 const fetchUnitMembers = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, request)
 const fetchUnitDepartments = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, request)
+const saveUnitDepartment = (request: ISupportedDepartment) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, request)
+const deleteUnitDepartment = (request: ISupportedDepartment) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, request)
+
 const fetchUnitChildren = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, request)
 const fetchUnitParent = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, request)
 const saveMemberRequest = (member: IUnitMemberRequest) =>  action(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, member);
@@ -198,6 +204,8 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST: return { ...state, departments: TaskStartReducer(state.departments, act) };
     case UnitActionTypes.UNIT_SAVE_DEPARTMENT_SUCCESS: return { ...state, departments: TaskSuccessReducer(state.departments, act) };
     case UnitActionTypes.UNIT_SAVE_DEPARTMENT_ERROR: return { ...state, departments: TaskErrorReducer(state.departments, act) };
+    case UnitActionTypes.UNIT_DELETE_DEPARTMENT_SUCCESS: return { ...state, departments: TaskSuccessReducer(state.departments, act) };
+    case UnitActionTypes.UNIT_DELETE_DEPARTMENT_ERROR: return { ...state, departments: TaskErrorReducer(state.departments, act) };
 
     default: return state
   }
@@ -281,13 +289,25 @@ function* handleDeleteMember(api: apiFn, member: IUnitMember){
     error => action(UnitActionTypes.UNIT_DELETE_MEMBER_ERROR, error));
 }
 
+function* handleSaveDepartment(api: apiFn, department: ISupportedDepartment){
+    yield httpPost<ISupportedDepartment, IUnitRequest>(api, apiResources.units.supportedDepartments(department.unitId), department, 
+      _ => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, {id: department.unitId}), 
+      error => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_ERROR, error));
+}
+
+function* handleDeleteDepartment(api: apiFn, department: ISupportedDepartment){
+  yield httpDelete(api, apiResources.units.supportedDepartments(department.unitId, department.id),
+    () => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, { id: department.unitId }),
+    error => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_ERROR, error));
+}
+
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchUnitFetch() {
   yield takeEvery(UnitActionTypes.UNIT_FETCH_REQUEST, (a: AnyAction) => handleFetchUnit(callApiWithAuth, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, (a: AnyAction) => handleFetchUnitMembers(callApiWithAuth, a.payload));
-  yield takeEvery(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, (a: AnyAction) => handleFetchUnitChildren(callApiWithAuth, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, (a: AnyAction) => handleFetchUnitDepartments(callApiWithAuth, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, (a: AnyAction) => handleFetchUnitChildren(callApiWithAuth, a.payload));
   // The unit parent is defined by a parentId on the unit record, so we must await the unit record fetch.
   yield takeEvery(UnitActionTypes.UNIT_FETCH_SUCCESS, (a: AnyAction) => handleFetchUnitParent(callApiWithAuth, a.payload));
 }
@@ -297,16 +317,22 @@ function* watchUnitFetch() {
 function* watchUnitSave() {
   yield takeEvery(UnitActionTypes.UNIT_SAVE_REQUEST, (a: AnyAction) => handleSaveUnit(callApiWithAuth, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, (a:AnyAction) => handleSaveMember(callApiWithAuth, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, (a:AnyAction) => handleSaveDepartment(callApiWithAuth, a.payload));
 }
 
 function* watchUnitDelete() {
   yield takeEvery(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, (a:AnyAction) => handleDeleteMember(callApiWithAuth, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, (a:AnyAction) => handleDeleteDepartment(callApiWithAuth, a.payload));
 }
-
 
 // We can also use `fork()` here to split our saga into multiple watchers.
 function* saga() {
-  yield all([fork(watchUnitFetch), fork(watchUnitSave), fork(watchUnitDelete)])
+  yield all([
+    fork(watchUnitFetch), 
+    fork(watchUnitSave), 
+    fork(watchUnitDelete)
+    
+  ])
 }
 //#endregion
 
@@ -327,6 +353,8 @@ export {
   saveRequest,
   saveMemberRequest,
   deleteMemberRequest,
+  saveUnitDepartment,
+  deleteUnitDepartment,
   reducer,
   initialState,
   saga,
