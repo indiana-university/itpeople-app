@@ -56,9 +56,15 @@ const axiosRequest =
       data: data
     })
 
+const getFromPactServer = (path: string) => (_:any) => axiosRequest('GET', PACT_SERVER, path)
+const putToPactServer = (path: string, data: Object) => (_: any) => axiosRequest('PUT', PACT_SERVER, path, data)
+const postToPactServer = (path: string, data: Object) => (_: any) => axiosRequest('POST', PACT_SERVER, path, data)
+const deleteFromPactServer = (path: string) => (_: any) => axiosRequest('DELETE', PACT_SERVER, path)
+
 const expectStatus = (resp: AxiosResponse, status: number) => expect(resp.status).toEqual(status);
 const expectOK = (resp: AxiosResponse) => expectStatus(resp, 200);
 const expectNoContent = (resp: AxiosResponse) => expectStatus(resp, 204);
+
 
 /************************
  * Standard Pact Creators
@@ -80,7 +86,7 @@ const getAll = (name: string, path: string, body: any) =>
         body: deepMatchify([body])
       }
     })
-    .then(_ => axiosRequest('GET', PACT_SERVER, path))
+    .then(getFromPactServer(path))
     .then(expectOK);
 
 const getOne = (name: string, path: string, body: any) =>
@@ -99,7 +105,7 @@ const getOne = (name: string, path: string, body: any) =>
         body: deepMatchify(body)
       }
     })
-    .then(_ => axiosRequest("GET", PACT_SERVER, path))
+    .then(getFromPactServer(path))
     .then(expectOK);
 
 const create = (name: string, path: string, body: any) =>
@@ -117,7 +123,7 @@ const create = (name: string, path: string, body: any) =>
         status: 200
       }
     })
-    .then(_ => axiosRequest("POST", PACT_SERVER, path, body))
+    .then(postToPactServer(path, body))
     .then(expectOK);
 
 const update = (name: string, path: string, body: any) =>
@@ -135,7 +141,7 @@ const update = (name: string, path: string, body: any) =>
         status: 200
       }
     })
-    .then(_ => axiosRequest("PUT", PACT_SERVER, path, body))
+    .then(putToPactServer(path, body))
     .then(expectOK);
 
 
@@ -153,7 +159,7 @@ const delete_ = (name: string, path: string) =>
         status: 204
       }
     })
-    .then(_ => axiosRequest("DELETE", PACT_SERVER, path))
+    .then(deleteFromPactServer(path))
     .then(expectNoContent);
 
 
