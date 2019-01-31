@@ -60,7 +60,6 @@ const form: React.SFC<IFormProps> = props => {
         <form onSubmit={handleSubmit}>
           <Field name="unitId" component="input" type="hidden" />
           <div className="rvt-ts-23 rvt-text-bold">{person ? person.name : "vacant"}</div>
-          <hr />
           <div>
             <RivetSelectField name="role" component={RivetSelect} label="Role">
               <option value={UitsRole.Member}>Member</option>
@@ -83,7 +82,6 @@ const form: React.SFC<IFormProps> = props => {
               <RivetCheckboxField name="showPercentage" component={RivetCheckbox} label="Yes" />
             </label>
           </div>
-          <hr />
           <div>
             <Button type="submit" disabled={invalid && hasUser}>
               Add member

@@ -47,6 +47,7 @@ const form: React.SFC<IFormProps> = props => {
               <AddUser /> Add member
             </span>
           }
+          buttonStyle={{ marginLeft: -14 }}
           onOpen={() => addMember(unitId, role)}
           variant="plain"
         >
@@ -138,16 +139,19 @@ const form: React.SFC<IFormProps> = props => {
     return (
       <>
         <h2 className="rvt-ts-29 rvt-text-bold">Unit Leadership</h2>
-        <p>Use Leadership for VPs, directors, managers.</p>
+        <p>
+          Use Leadership for VPs directors and managers. Click on the pencil icon to edit more detailed information about their role within
+          this unit.
+        </p>
         {renderAddMemberForm(save, "Leader", UitsRole.Leader)}
-        <List variant="plain" className="list-dividers list-dividers--show-last">
+        <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
           {leaders.map(renderMember)}
         </List>
 
         <h2 className="rvt-ts-29 rvt-text-bold">Unit Members</h2>
         <p>
-          Use Related People for admins and others who are do not solely report to this unit. Click on the person’s name to edit more
-          detailed information about their role within this unit.
+          Use Related People for admins and others who are do not solely report to this unit. Click on the pencil icon to edit more detailed
+          information about their role within this unit.
         </p>
         {renderAddMemberForm(save, "Members", UitsRole.Member)}
         <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
@@ -156,11 +160,11 @@ const form: React.SFC<IFormProps> = props => {
 
         <h2 className="rvt-ts-29 rvt-text-bold">Related people</h2>
         <p>
-          Use Related People for admins and others who are do not solely report to this unit. Click on the person’s name to edit more
-          detailed information about their role within this unit.
+          Use Related People for admins and others who are do not solely report to this unit. Click on the pencil icon to edit more detailed
+          information about their role within this unit.
         </p>
         {renderAddMemberForm(save, "Others", UitsRole.Related)}
-        <List variant="plain" className="list-dividers list-dividers--show-last">
+        <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
           {others.map(renderMember)}
         </List>
       </>
