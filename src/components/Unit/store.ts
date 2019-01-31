@@ -72,7 +72,7 @@ export interface IUnitMemberRequest {
   personId?: number;
   title: string;
   role: ItProRole | UitsRole | string;
-  permissions: UnitPermissions;
+  permissions: UnitPermissions | string;
   percentage: number;
 }
 

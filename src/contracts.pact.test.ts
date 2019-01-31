@@ -8,11 +8,13 @@
 */
 
 import * as path from 'path'
-import { Pact, Matchers } from '@pact-foundation/pact'
+import { Pact, Matchers, InteractionObject } from '@pact-foundation/pact'
 import axios, { AxiosResponse } from 'axios'
 import * as traverse from 'traverse'
 import { apiResources } from './components/effects';
 import * as unit from "./components/Unit";
+import { IUser } from "./components/Profile/store"
+import { IEntity } from './components/types'
 
 const deepMatchify = (obj: Object) => traverse(obj).map(
   function (this: traverse.TraverseContext, x: any) {
@@ -26,7 +28,7 @@ const deepMatchify = (obj: Object) => traverse(obj).map(
 
 const PACT_PORT = 6123
 const PACT_SERVER = `http://localhost:${PACT_PORT}`
-const JSON_SERVER = 'http://localhost:3001'
+//const JSON_SERVER = 'http://localhost:3001'
 
 const pactServer = new Pact({
   port: PACT_PORT,
@@ -54,19 +56,169 @@ const axiosRequest =
       data: data
     })
 
-const getFixture = (path: string) => axiosRequest('GET', JSON_SERVER, path)
-
-const getPact = (path: string) => axiosRequest('GET', PACT_SERVER, path)
-const putPact = (path: string, data: Object) => axiosRequest('PUT', PACT_SERVER, path, data)
-const postPact = (path: string, data: Object) => axiosRequest('POST', PACT_SERVER, path, data)
-const deletePact = (path: string) => axiosRequest('DELETE', PACT_SERVER, path)
-
 const expectStatus = (resp: AxiosResponse, status: number) => expect(resp.status).toEqual(status);
 const expectOK = (resp: AxiosResponse) => expectStatus(resp, 200);
-const expectCreated = (resp: AxiosResponse) => expectStatus(resp, 201);
 const expectNoContent = (resp: AxiosResponse) => expectStatus(resp, 204);
-const expectUnauthorized = (resp: AxiosResponse) => expectStatus(resp, 401);
-const expectNotFound = (resp: AxiosResponse) => expectStatus(resp, 404);
+
+/************************
+ * Standard Pact Creators
+ ************************/
+
+const getAll = (name: string, path: string, body: any) =>
+  pactServer
+    .addInteraction({
+      state: `at least one ${name} exists`,
+      uponReceiving: `a GET request for all ${name}s`,
+      withRequest: {
+        method: 'GET',
+        headers: authHeader,
+        path: path
+      },
+      willRespondWith: {
+        status: 200,
+        headers: contentTypeHeader,
+        body: deepMatchify([body])
+      }
+    })
+    .then(_ => axiosRequest('GET', PACT_SERVER, path))
+    .then(expectOK);
+
+const getOne = (name: string, path: string, body: any) =>
+  pactServer
+    .addInteraction({
+      state: `${name} exists`,
+      uponReceiving: `a GET request for one ${name}`,
+      withRequest: {
+        method: "GET",
+        headers: authHeader,
+        path: path
+      },
+      willRespondWith: {
+        status: 200,
+        headers: contentTypeHeader,
+        body: deepMatchify(body)
+      }
+    })
+    .then(_ => axiosRequest("GET", PACT_SERVER, path))
+    .then(expectOK);
+
+const create = (name: string, path: string, body: any) =>
+  pactServer
+    .addInteraction({
+      state: `${name} may be created`,
+      uponReceiving: `a POST request to create a ${name}`,
+      withRequest: {
+        method: "POST",
+        headers: { ...authHeader, ...contentTypeHeader },
+        path: path,
+        body: body
+      },
+      willRespondWith: {
+        status: 200
+      }
+    })
+    .then(_ => axiosRequest("POST", PACT_SERVER, path, body))
+    .then(expectOK);
+
+const update = (name: string, path: string, body: any) =>
+  pactServer
+    .addInteraction({
+      state: `${name} exists`,
+      uponReceiving: `a PUT request to update a ${name}`,
+      withRequest: {
+        method: "PUT",
+        headers: { ...authHeader, ...contentTypeHeader },
+        path: path,
+        body: body
+      },
+      willRespondWith: {
+        status: 200
+      }
+    })
+    .then(_ => axiosRequest("PUT", PACT_SERVER, path, body))
+    .then(expectOK);
+
+
+const delete_ = (name: string, path: string) =>
+  pactServer
+    .addInteraction({
+      state: `${name} exists`,
+      uponReceiving: `a DELETE request to delete a ${name}`,
+      withRequest: {
+        method: "DELETE",
+        headers: { ...authHeader, ...contentTypeHeader },
+        path: path
+      },
+      willRespondWith: {
+        status: 204
+      }
+    })
+    .then(_ => axiosRequest("DELETE", PACT_SERVER, path))
+    .then(expectNoContent);
+
+
+/************************
+ * Reference Objects
+ ************************/
+
+const referenceUnit: unit.IUnit = {
+  id: 1,
+  name: "name",
+  description: "description",
+  parentId: 2,
+  url: "url"
+};
+
+const referenceDepartment: IEntity = {
+  id: 1,
+  name: "name",
+  description: "description"
+};
+
+const referencePerson: IUser = {
+  id: 1,
+  name: "name",
+  description: "description",
+  netId: "netid",
+  campus: "campus",
+  campusEmail: "campus@email.com",
+  campusPhone: "812/856-1234",
+  position: "position",
+  tools: ["tool1", "tool2"],
+  responsibilities: ["rep1", "rep2"],
+  location: "location",
+  expertise: ["exp1", "exp2"],
+  photoUrl: "http://photo.url"
+};
+
+const referenceUnitMemberRequest: unit.IUnitMemberRequest = {
+  id: 1,
+  unitId: referenceUnit.id,
+  personId: referencePerson.id,
+  title: "title",
+  role: "Leader",
+  percentage: 100,
+  permissions: "Viewer"
+};
+const referenceUnitMember: unit.IUnitMember = {
+  ...referenceUnitMemberRequest,
+  person: referencePerson
+};
+
+const referenceSupportedDepartmentRequest: unit.ISupportedDepartmentRequest = {
+  id: 1,
+  unitId: referenceUnit.id,
+  departmentId: referenceDepartment.id
+};
+
+const referenceSupportedDepartment: unit.ISupportedDepartment = {
+  ...referenceSupportedDepartmentRequest,
+  department: referenceDepartment
+};
+
+/************************
+ * Tests
+ ************************/
 
 beforeAll(async () => pactServer.setup())
 
@@ -75,120 +227,75 @@ afterAll(() => pactServer.finalize())
 describe('Contracts', () => {
 
   describe('Units', () => {
-
-    const referenceUnit: unit.IUnit = { id: 1, name: "name", description: "description", parentId: 2, url: "url" };
-
-    /*
-    it('requires authentication to view a unit', async () => {
-      await pactServer.addInteraction({
-        state: 'the server requires authorization for GET /units/*',
-        uponReceiving: 'an unauthorized GET request for unit 401',
-        withRequest: {
-          method: 'GET',
-          path: apiResources.units.root()
-        },
-        willRespondWith: {
-          status: 401
-        }
-      })
-      expect.assertions(1)
-      await expect(axios.get(`${PACT_SERVER}${path}`)).rejects.toEqual(
-        new Error('Request failed with status code 401'))
-    })
-    */
+    const resource = "unit"
+    const setPath = apiResources.units.root();
+    const itemPath = apiResources.units.root(referenceUnit.id);
+    
     it('gets all units', async () => {
-      const path = apiResources.units.root()
-      await pactServer.addInteraction({
-        state: 'at least one unit exists',
-        uponReceiving: 'a GET request to list units',
-        withRequest: {
-          method: 'GET',
-          headers: authHeader,
-          path: path
-        },
-        willRespondWith: {
-          status: 200,
-          headers: contentTypeHeader,
-          body: deepMatchify([referenceUnit])
-        }
-      })
-        .then(_ => getPact(path))
-        .then(expectOK);
+      await getAll(resource, setPath, referenceUnit);
     })
     it('gets a single unit', async () => {
-      const path = apiResources.units.root(referenceUnit.id);
-      await pactServer.addInteraction({
-        state: `unit ${referenceUnit.id} exists`,
-        uponReceiving: `a GET request for unit ${referenceUnit.id}`,
-        withRequest: {
-          method: "GET",
-          headers: authHeader,
-          path: path
-        },
-        willRespondWith: {
-          status: 200,
-          headers: contentTypeHeader,
-          body: deepMatchify(referenceUnit)
-        }
-      })
-      .then(_ => getPact(path))
-      .then(expectOK);
+      await getOne(resource, itemPath, referenceUnit);
     })
     it('creates a new unit', async () => {
-      const postBody = { ...referenceUnit, id:0, parentId:1 }
-      const path = apiResources.units.root()
-      await pactServer.addInteraction({
-        state: 'units may be created',
-        uponReceiving: 'a POST request to create a unit',
-        withRequest: {
-          method: 'POST',
-          headers: { ...authHeader, ...contentTypeHeader },
-          path: path,
-          body: postBody
-        },
-        willRespondWith: {
-          status: 200,
-        }
-      })
-      .then(_ => postPact(path, postBody))
-      .then(expectOK)
+      await create(resource, setPath, { ...referenceUnit, id: 0, parentId: 1 })
     })
     it('updates an existing unit', async () => {
-      const path = apiResources.units.root(referenceUnit.id)
-      await pactServer.addInteraction({
-        state: `unit ${referenceUnit.id} exists`,
-        uponReceiving: `a PUT request to update attributes for unit ${referenceUnit.id}`,
-        withRequest: {
-          method: 'PUT',
-          headers: { ...authHeader, ...contentTypeHeader },
-          path: path,
-          body: referenceUnit
-        },
-        willRespondWith: {
-          status: 200,
-        }
-      })
-      .then(_ => putPact(path, referenceUnit))
-      .then(expectOK)
+      await update(resource, itemPath, referenceUnit)
     })
     it('deletes an existing unit', async () => {
-      const path = apiResources.units.root(referenceUnit.id)
-      await pactServer.addInteraction({
-        state: `unit ${referenceUnit.id} exists`,
-        uponReceiving: `a DELETE request for ${path}`,
-        withRequest: {
-          method: 'DELETE',
-          headers: { ...authHeader, ...contentTypeHeader },
-          path: path,
-        },
-        willRespondWith: {
-          status: 204,
-        }
-      })
-      .then(_ => deletePact(path))
-      .then(expectNoContent)
+      await delete_(resource, itemPath)
     })
-/*
+  })
+
+  describe('Unit Memberships', () => {
+    const resource = "unit member"
+    const setPath = apiResources.units.members(referenceUnitMember.unitId)
+    const itemPath = apiResources.units.members(referenceUnitMember.unitId, referenceUnitMember.id)
+    
+    it('gets all unit memberships', async () => {
+      await getAll(resource, setPath, referenceUnitMember);
+    })
+    it('gets a single unit member', async () => {
+      await getOne(resource, itemPath, referenceUnitMember);
+    })
+    it('creates a new unit', async () => {
+      await create(resource, setPath, { ...referenceUnitMemberRequest, id: 0 })
+    })
+    it('updates an existing unit member', async () => {
+      await update(resource, itemPath, referenceUnitMemberRequest)
+    })
+    it('deletes an existing unit member', async () => {
+      await delete_(resource, itemPath)
+    })
+  })
+
+  describe('Supported Departments', () => {
+    const resource = "supported department"
+    const setPath = apiResources.units.supportedDepartments(referenceSupportedDepartment.unitId)
+    const itemPath = apiResources.units.supportedDepartments(referenceSupportedDepartment.unitId, referenceSupportedDepartment.id)
+    
+    it('gets all supported departments', async () => {
+      await getAll(resource, setPath, referenceSupportedDepartment);
+    })
+    it('gets a single unit member', async () => {
+      await getOne(resource, itemPath, referenceSupportedDepartment);
+    })
+    it('creates a new unit', async () => {
+      await create(resource, setPath, { ...referenceSupportedDepartmentRequest, id: 0 })
+    })
+    it('updates an existing unit member', async () => {
+      await update(resource, itemPath, referenceSupportedDepartmentRequest)
+    })
+    it('deletes an existing unit member', async () => {
+      await delete_(resource, itemPath)
+    })
+  })
+
+
+});
+
+  /*
 
 
     describe('creating/updating a unit membership', () => {
@@ -239,7 +346,6 @@ describe('Contracts', () => {
       })
     });
     */
-  })
   /*
   describe('for people', () => {
 
@@ -486,5 +592,5 @@ describe('searching for "park"', () => {
     const pactResponseBody = (await getPact(path + queryParam)).data
     expect(pactResponseBody).not.toEqual({})
   })
-  */
 })
+  */
