@@ -4,7 +4,7 @@ import { Button, ModalBody, ModalControls, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
 import { UitsRole, ItProRole, IUnitMember, saveMemberRequest, deleteMemberRequest, IUnitMemberRequest } from "../store";
 import { connect } from "react-redux";
-import { AddUser, Pencil, TrashCan } from "src/components/icons";
+import { AddUser, Pencil, TrashCan, Eye } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
 import { Dispatch } from "redux";
 import AddMemberForm from "./AddMemberForm";
@@ -70,9 +70,41 @@ const form: React.SFC<IFormProps> = props => {
       return (
         <li key={member.id}>
           <Row>
+            {person && person.photoUrl && (
+              <Col sm={2}>
+                <img
+                  src={person.photoUrl}
+                  width={"100%"}
+                  style={{
+                    borderRadius: "100%",
+                    overflow: "hidden",
+                    objectFit: "cover"
+                  }}
+                />
+              </Col>
+            )}
             <Col>
               <h3 className="rvt-ts-18 rvt-text-bold">{person && person.name}</h3>
-              {member.title && <div>{member.title}</div>}
+              {member.title && (
+                <div>
+                  {member.showTitle && (
+                    <span title="Visible on orgchart">
+                      <Eye width={20} />{" "}
+                    </span>
+                  )}
+                  {member.title}
+                </div>
+              )}
+              {member.percentage && (
+                <div>
+                  {member.showPercentage && (
+                    <span title="Visible on orgchart">
+                      <Eye width={20} />{" "}
+                    </span>
+                  )}
+                  {member.percentage}%
+                </div>
+              )}
             </Col>
             <div style={{ textAlign: "right" }}>
               <span style={{ textAlign: "left" }}>
