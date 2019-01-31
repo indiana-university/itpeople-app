@@ -1,4 +1,4 @@
-fetch = require('node-fetch')
+var fetch = require('node-fetch')
 
 var Storage = require('dom-storage')
 localStorage = new Storage('./localStorage.json', { strict: false, ws: '  ' })
