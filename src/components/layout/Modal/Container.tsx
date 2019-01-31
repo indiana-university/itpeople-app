@@ -13,22 +13,20 @@ import { ModalProps } from "rivet-react/build/dist/components/Modal/Modal";
 import { ButtonProps } from "rivet-react/build/dist/components/Button/Button";
 
 const Container: React.SFC<IElementProps> = (props: IProps) => {
-  const { id, variant, size, modifier, innerRef, title } = props;
-  const buttonProps = { variant, size, modifier, innerRef, title } ;
-  const handeOnClick = () => props.openModal(id);
-  let button = (
-    <Button type="button" {...buttonProps} onClick={handeOnClick}>
-      {props.buttonText}
-    </Button>
-  );
+  const { id, variant, size, modifier, innerRef, title, children, buttonText, closeModal, current, onOpen, openModal } = props;
   const isOpen = id == props.current;
+  const buttonProps = { variant, size, modifier, innerRef, title, onClick: () => props.openModal(id) };
+  const modalProps = { title, children, buttonText, closeModal, current, onOpen, openModal, isOpen, onDismiss: closeModal };
+
   if (isOpen && props.onOpen) {
     props.onOpen();
   }
   return (
     <>
-      {button}
-      <RivetModal {...props} isOpen={isOpen} onDismiss={props.closeModal} />
+      <Button type="button" {...buttonProps}>
+        {props.buttonText}
+      </Button>
+      <RivetModal {...modalProps} />
     </>
   );
 };
