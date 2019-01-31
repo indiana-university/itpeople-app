@@ -13,15 +13,15 @@ interface IDispatchActions {
 
 interface IFormProps extends unit.IUnitProfile, IDispatchActions, InjectedFormProps<unit.IUnitProfile, IDispatchActions> {}
 
-let UpdateUnitForm: React.SFC<IFormProps> | any = (props: IFormProps) => {
+let UpdateUnitForm: React.SFC<IFormProps> | any = ({close,save,handleSubmit}: IFormProps) => {
   const doHandle = (values: unit.IUnit) => {
-    props.save(values);
-    props.close();
+    save(values);
+    close();
   };
   
   return (
-    <form onSubmit={props.handleSubmit(doHandle)} >
-      <Section>
+    <form onSubmit={handleSubmit(doHandle)} >
+      <Section className="rvt-p-bottom-sm">
         <div>
           <RivetInputField name="name" component={RivetInput} label="Name" validate={[required]} />
         </div>

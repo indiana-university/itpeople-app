@@ -19,19 +19,16 @@ import { Loader } from "../../Loader";
 interface IAuthenticatedUsername {
   authenticatedUsername: string;
 }
-interface IProps {
+interface IProps extends unit.IState, IAuthenticatedUsername {
   cancel: typeof unit.cancel;
   id: number;
 }
 
-export const Edit: React.SFC<unit.IState & IAuthenticatedUsername & IProps> = props => {
-  const { profile, members, parent, unitChildren, departments, cancel, id } = props;
+export const Edit: React.SFC<IProps> = ({ profile, members, parent, unitChildren, departments, cancel, id }) => {
+  const pageName = profile && profile.data ? profile.data.name : "...";
   return (
     <>
-      <Breadcrumbs
-        crumbs={[{ text: "Home", href: "/" }, { text: "Units", href: "/units" }, profile && profile.data ? profile.data.name : "..."]}
-      />
-
+      <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, { text: "Units", href: "/units" }, pageName, "Edit"]} />
       <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
         <Button onClick={cancel} type="button" style={{ float: "right" }} variant="plain">
           Cancel
@@ -39,11 +36,10 @@ export const Edit: React.SFC<unit.IState & IAuthenticatedUsername & IProps> = pr
         <PageTitle>Edit</PageTitle>
         <Section>
           <Loader {...profile}>
-            <UpdateUnitForm initialValues={profile.data} {...props.profile.data} />
+            <UpdateUnitForm initialValues={profile.data} {...profile.data} />
           </Loader>
         </Section>
       </Content>
-
       <Content className="rvt-bg-white rvt-p-tb-xxl">
         <Row>
           <Col lg={6}>
