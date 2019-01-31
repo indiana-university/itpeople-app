@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import { Col, Row } from "rivet-react";
+import { Col, Row, Button } from "rivet-react";
 import { Panel } from "../../Panel";
 import { Breadcrumbs, Content } from "../../layout";
 // import { Pencil } from "src/components/icons";
@@ -15,6 +15,7 @@ import Parent from "./Parent";
 import Children from "./Children";
 import { IEntity, IDefaultState } from "../../types";
 import Departments from "./Departments";
+import { Pencil } from "src/components/icons";
 
 interface IAuthenticatedUsername {
   authenticatedUsername: string;
@@ -25,41 +26,40 @@ interface IProps {
   unitChildren: IDefaultState<IEntity[]>;
 }
 
-const Presentation: React.SFC<
-  IState & IAuthenticatedUsername & IProps
-> = props => (
-  <>
-    <Breadcrumbs
-      crumbs={[
-        { text: "Home", href: "/" },
-        { text: "Units", href: "/units" }
-        // props.profile.data ? props.profile.data.name : "..."
-      ]}
-    />
-    <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
-      <Profile {...props.profile} />
-    </Content>
-    <Content className="rvt-bg-white rvt-p-tb-xxl">
-      <Row>
-        <Col lg={6}>
-          <Members {...props.members} />
-        </Col>
-        <Col lg={5} last={true}>
-          <div className="rvt-m-all-md">
-            <div className="rvt-m-bottom-lg">
-              <Panel title="Parent and Children">
-                <Parent {...props.parent} />
-                <Children {...props.unitChildren} />
+const Presentation: React.SFC<IState & IAuthenticatedUsername & IProps> = props => {
+  const { edit, profile, members, parent, unitChildren, departments } = props;
+  const name = profile.data ? profile.data.name : "...";
+  return (
+    <>
+      <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, { text: "Units", href: "/units" }, name]} />
+      <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
+        <Button onClick={edit} style={{ float: "right" }} title={`Edit: ${name}`}>
+          <Pencil />
+        </Button>
+        <Profile {...profile} />
+      </Content>
+      <Content className="rvt-bg-white rvt-p-tb-xxl">
+        <Row>
+          <Col lg={6}>
+            <Members {...members} />
+          </Col>
+          <Col lg={5} last={true}>
+            <div className="rvt-m-all-md">
+              <div className="rvt-m-bottom-lg">
+                <Panel title="Parent and Children">
+                  <Parent {...parent} />
+                  <Children {...unitChildren} />
+                </Panel>
+              </div>
+              <Panel title="Supported Departments">
+                <Departments {...departments} />
               </Panel>
             </div>
-            <Panel title="Supported Departments">
-              <Departments {...props.departments} />
-            </Panel>
-          </div>
-        </Col>
-      </Row>
-    </Content>
-  </>
-);
+          </Col>
+        </Row>
+      </Content>
+    </>
+  );
+};
 
 export default Presentation;

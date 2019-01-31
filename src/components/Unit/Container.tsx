@@ -11,7 +11,6 @@ import Unit from "./Presentation";
 import * as unit from "./store";
 import * as auth from "../SignIn/store";
 import { Edit } from "./Presentation/Edit";
-import { Button } from "rivet-react";
 
 interface IContainerProps {
   match: any;
@@ -52,27 +51,25 @@ class Container extends React.Component<
         this.props.auth.data &&
         this.props.auth.data.user_name) ||
       "";
-    const { view, edit, cancel } = this.props;
+    const { view, edit, cancel, match } = this.props;
     return (
       <>
         {view == ViewStateType.Editing && (
           <>
-            <Button onClick={cancel}>Cancel</Button>
             <Edit
               {...this.props}
               authenticatedUsername={authenticatedUsername}
-              cancel={this.props.cancel}
-              id={this.props.match.params.id}
+              cancel={cancel}
+              id={match.params.id}
             />
           </>
         )}
         {view == ViewStateType.Viewing && (
           <>
-            <Button onClick={edit}>Edit</Button>
             <Unit
               {...this.props}
               authenticatedUsername={authenticatedUsername}
-              edit={this.props.edit}
+              edit={edit}
             />
           </>
         )}
