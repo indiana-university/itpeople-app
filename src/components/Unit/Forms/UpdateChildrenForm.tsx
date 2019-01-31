@@ -1,7 +1,7 @@
 import * as React from "react";
 import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { Button, ModalBody, ModalControls, List, Row, Col } from "rivet-react";
+import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { RivetInputField, RivetInput, required } from "../../form";
 import { IApplicationState, IEntity } from "../../types";
 import { lookupUnit } from "..";
@@ -78,11 +78,6 @@ const form: React.SFC<IFormProps> = props => {
     <>
       <Modal title="Add child unit" id="+ add child unit" buttonText="+ Add new child" variant="plain">
         <ModalBody>{addChildForm}</ModalBody>
-        <ModalControls>
-          <Button type="button" onClick={closeModal} variant="plain">
-            Cancel
-          </Button>
-        </ModalControls>
       </Modal>
       <List variant="plain">
         {units &&

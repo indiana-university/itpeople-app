@@ -1,6 +1,6 @@
 import * as React from "react";
 import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, change } from "redux-form";
-import { Button, ModalBody, ModalControls, List, Row, Col } from "rivet-react";
+import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
 import { UitsRole, ItProRole, IUnitMember, saveMemberRequest, deleteMemberRequest, IUnitMemberRequest } from "../store";
 import { connect } from "react-redux";
@@ -124,11 +124,6 @@ const form: React.SFC<IFormProps> = props => {
                       }}
                     />
                   </ModalBody>
-                  <ModalControls>
-                    <Button type="button" onClick={closeModal} variant="plain">
-                      Cancel
-                    </Button>
-                  </ModalControls>
                 </Modal>
               </span>
               <Button variant="plain" type="button" title="Remove member" onClick={remove}>

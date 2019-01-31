@@ -1,7 +1,7 @@
 import * as React from "react";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import { connect } from "react-redux";
-import { Button, ModalBody, ModalControls, List, Row, Col } from "rivet-react";
+import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { RivetInputField, RivetInput } from "../../form";
 import { IApplicationState, IEntity } from "../../types";
 import { Dispatch } from "redux";
@@ -71,11 +71,6 @@ const form: React.SFC<IFormProps> = props => {
     <>
       <Modal id="add department to unit" title="+ add department" buttonText="+ add department" variant="plain">
         <ModalBody>{addDepartmentForm}</ModalBody>
-        <ModalControls>
-          <Button type="button" onClick={closeModal} variant="plain">
-            Cancel
-          </Button>
-        </ModalControls>
       </Modal>
       <List variant="plain">
         {departments.map((relationship: any, index: number) => {
