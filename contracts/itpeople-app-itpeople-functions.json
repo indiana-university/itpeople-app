@@ -102,6 +102,30 @@
       "response": {
         "status": 200,
         "headers": {
+        },
+        "body": {
+          "id": 0,
+          "name": "name",
+          "description": "description",
+          "parentId": 1,
+          "url": "url"
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.name": {
+            "match": "type"
+          },
+          "$.body.description": {
+            "match": "type"
+          },
+          "$.body.parentId": {
+            "match": "type"
+          },
+          "$.body.url": {
+            "match": "type"
+          }
         }
       }
     },
@@ -126,6 +150,30 @@
       "response": {
         "status": 200,
         "headers": {
+        },
+        "body": {
+          "id": 1,
+          "name": "name",
+          "description": "description",
+          "parentId": 2,
+          "url": "url"
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.name": {
+            "match": "type"
+          },
+          "$.body.description": {
+            "match": "type"
+          },
+          "$.body.parentId": {
+            "match": "type"
+          },
+          "$.body.url": {
+            "match": "type"
+          }
         }
       }
     },
@@ -347,6 +395,38 @@
       "response": {
         "status": 200,
         "headers": {
+        },
+        "body": {
+          "id": 0,
+          "unitId": 1,
+          "personId": 1,
+          "title": "title",
+          "role": "Leader",
+          "percentage": 100,
+          "permissions": "Viewer"
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.unitId": {
+            "match": "type"
+          },
+          "$.body.personId": {
+            "match": "type"
+          },
+          "$.body.title": {
+            "match": "type"
+          },
+          "$.body.role": {
+            "match": "type"
+          },
+          "$.body.percentage": {
+            "match": "type"
+          },
+          "$.body.permissions": {
+            "match": "type"
+          }
         }
       }
     },
@@ -373,6 +453,38 @@
       "response": {
         "status": 200,
         "headers": {
+        },
+        "body": {
+          "id": 1,
+          "unitId": 1,
+          "personId": 1,
+          "title": "title",
+          "role": "Leader",
+          "percentage": 100,
+          "permissions": "Viewer"
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.unitId": {
+            "match": "type"
+          },
+          "$.body.personId": {
+            "match": "type"
+          },
+          "$.body.title": {
+            "match": "type"
+          },
+          "$.body.role": {
+            "match": "type"
+          },
+          "$.body.percentage": {
+            "match": "type"
+          },
+          "$.body.permissions": {
+            "match": "type"
+          }
         }
       }
     },
@@ -496,6 +608,22 @@
       "response": {
         "status": 200,
         "headers": {
+        },
+        "body": {
+          "id": 0,
+          "unitId": 1,
+          "departmentId": 1
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.unitId": {
+            "match": "type"
+          },
+          "$.body.departmentId": {
+            "match": "type"
+          }
         }
       }
     },
@@ -518,6 +646,22 @@
       "response": {
         "status": 200,
         "headers": {
+        },
+        "body": {
+          "id": 1,
+          "unitId": 1,
+          "departmentId": 1
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.unitId": {
+            "match": "type"
+          },
+          "$.body.departmentId": {
+            "match": "type"
+          }
         }
       }
     },

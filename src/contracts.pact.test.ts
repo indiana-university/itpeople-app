@@ -120,7 +120,8 @@ const create = (name: string, path: string, body: any) =>
         body: body
       },
       willRespondWith: {
-        status: 200
+        status: 200,
+        body: deepMatchify(body)
       }
     })
     .then(postToPactServer(path, body))
@@ -138,7 +139,8 @@ const update = (name: string, path: string, body: any) =>
         body: body
       },
       willRespondWith: {
-        status: 200
+        status: 200,
+        body: deepMatchify(body)
       }
     })
     .then(putToPactServer(path, body))
