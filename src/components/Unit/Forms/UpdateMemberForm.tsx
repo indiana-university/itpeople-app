@@ -1,7 +1,7 @@
 import * as React from "react";
 import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { Button } from "rivet-react";
-import { RivetInputField, RivetInput, RivetSelect, RivetSelectField } from "src/components/form";
+import { RivetInputField, RivetInput, RivetSelect, RivetSelectField, RivetCheckboxField, RivetCheckbox } from "src/components/form";
 import { UitsRole, IUnitMember } from "../store";
 import { connect } from "react-redux";
 
@@ -12,12 +12,8 @@ const form: React.SFC<IFormProps> = props => {
   return (
     <>
       <form onSubmit={props.handleSubmit}>
-        <div>
-          <h1>{person && person.name}</h1>
-        </div>
-        <div>
-          <RivetInputField name="title" component={RivetInput} label="Title" />
-        </div>
+        <div className="rvt-ts-23 rvt-text-bold">{person ? person.name : "vacant"}</div>
+        <hr />
         <div>
           <RivetSelectField name="role" component={RivetSelect} label="Role">
             <option value={UitsRole.Member}>Member</option>
@@ -25,6 +21,20 @@ const form: React.SFC<IFormProps> = props => {
             <option value={UitsRole.Sublead}>Sublead</option>
             <option value={UitsRole.Related}>Related</option>
           </RivetSelectField>
+        </div>
+        <div>
+          <RivetInputField name="title" component={RivetInput} label="Title" />
+          <label>
+            <p>Display title in orgchart?</p>
+            <RivetCheckboxField name="showTitle" component={RivetCheckbox} label="Yes" />
+          </label>
+        </div>
+        <div>
+          <RivetInputField name="percentage" component={RivetInput} label="Percentage" type="number" min="0" max="100" />
+          <label>
+            <p>Display percentage in orgchart? {props.showPercentage}</p>
+            <RivetCheckboxField name="showPercentage" component={RivetCheckbox} label="Yes" />
+          </label>
         </div>
         <hr />
         <div>

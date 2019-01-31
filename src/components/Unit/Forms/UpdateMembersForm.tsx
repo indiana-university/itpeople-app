@@ -24,11 +24,11 @@ interface IDispatchProps {
   removeMember: typeof deleteMemberRequest;
   save: typeof saveMemberRequest;
   editMember(member: any): any;
-  addMember(unitId: number): any;
+  addMember(unitId: number, role?: UitsRole): any;
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const { closeModal, editMember, removeMember, save, unitId } = props;
+  const { closeModal, editMember, addMember, removeMember, save, unitId } = props;
   const renderMembers = ({ fields, input }: any) => {
     let members = fields.map(function(field: any, index: number) {
       let member = fields.get(index) as IUnitMember;
@@ -37,19 +37,17 @@ const form: React.SFC<IFormProps> = props => {
     let leaders = members.filter(m => m.role == ItProRole.Admin || m.role == UitsRole.Leader);
     let standardMember = members.filter(m => m.role == ItProRole.Pro || m.role == UitsRole.Member || m.role == UitsRole.Sublead);
     let others = members.filter(m => m.role == ItProRole.Aux || m.role == UitsRole.Related);
-    const addMemberFrom = (
+    const renderAddMemberForm = (save: typeof saveMemberRequest, id: string, role?: UitsRole) => (
       <div>
         <Modal
-          id="Add member to unit"
-          title="Add member"
+          id={"Add member to unit:" + id}
+          title={"Add " + (id ? id : "member")}
           buttonText={
-            <span style={{ color: "#006298" }}>
+            <span>
               <AddUser /> Add member
             </span>
           }
-          onOpen={() => {
-            props.addMember(unitId);
-          }}
+          onOpen={() => addMember(unitId, role)}
           variant="plain"
         >
           <ModalBody>
@@ -57,24 +55,17 @@ const form: React.SFC<IFormProps> = props => {
               unitId={unitId}
               initialValues={{ unitId }}
               onSubmit={(values: IUnitMember) => {
-                const { unitId, personId, title, role, permissions, percentage } = values;
-                save({ unitId, personId, title, role, permissions, percentage });
+                const { unitId, personId, title, showTitle, role, permissions, percentage, showPercentage } = values;
+                save({ unitId, personId, title, showTitle, role, permissions, percentage, showPercentage });
                 closeModal();
               }}
             />
           </ModalBody>
-          <ModalControls>
-            <Button type="button" onClick={closeModal} variant="plain">
-              Cancel
-            </Button>
-          </ModalControls>
         </Modal>
       </div>
     );
     const renderMember = function(member: IUnitMember) {
-      const remove = () => {
-        removeMember(member);
-      };
+      const remove = () => removeMember(member);
       const person = member.person;
       return (
         <li key={member.id}>
@@ -90,15 +81,13 @@ const form: React.SFC<IFormProps> = props => {
                   buttonText={<Pencil />}
                   variant="plain"
                   title={`Edit member: ${person ? person.name : "Vacancy"}`}
-                  onOpen={() => {
-                    editMember(member);
-                  }}
+                  onOpen={() => editMember(member)}
                 >
                   <ModalBody>
                     <UpdateMemberForm
                       onSubmit={(values: IUnitMember) => {
-                        const { id, unitId, personId, title, role, permissions, percentage } = values;
-                        save({ id, unitId, personId, title, role, permissions, percentage });
+                        const { id, unitId, personId, title, showTitle, role, permissions, percentage, showPercentage } = values;
+                        save({ id, unitId, personId, title, showTitle, role, permissions, percentage, showPercentage });
                         closeModal();
                       }}
                     />
@@ -110,7 +99,7 @@ const form: React.SFC<IFormProps> = props => {
                   </ModalControls>
                 </Modal>
               </span>
-              <Button className="rvt-button--plain" type="button" title="Remove Member" onClick={remove}>
+              <Button variant="plain" type="button" title="Remove member" onClick={remove}>
                 <TrashCan />
               </Button>
             </div>
@@ -123,7 +112,7 @@ const form: React.SFC<IFormProps> = props => {
       <>
         <h2 className="rvt-ts-29 rvt-text-bold">Unit Leadership</h2>
         <p>Use Leadership for VPs, directors, managers.</p>
-        {addMemberFrom}
+        {renderAddMemberForm(save, "Leader", UitsRole.Leader)}
         <List variant="plain" className="list-dividers list-dividers--show-last">
           {leaders.map(renderMember)}
         </List>
@@ -133,7 +122,7 @@ const form: React.SFC<IFormProps> = props => {
           Use Related People for admins and others who are do not solely report to this unit. Click on the person’s name to edit more
           detailed information about their role within this unit.
         </p>
-        {addMemberFrom}
+        {renderAddMemberForm(save, "Members", UitsRole.Member)}
         <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
           {standardMember.map(renderMember)}
         </List>
@@ -143,7 +132,7 @@ const form: React.SFC<IFormProps> = props => {
           Use Related People for admins and others who are do not solely report to this unit. Click on the person’s name to edit more
           detailed information about their role within this unit.
         </p>
-        {addMemberFrom}
+        {renderAddMemberForm(save, "Others", UitsRole.Related)}
         <List variant="plain" className="list-dividers list-dividers--show-last">
           {others.map(renderMember)}
         </List>
@@ -177,12 +166,9 @@ UpdateMembersForm = connect(
       removeMember: (member: IUnitMember) => dispatch(deleteMemberRequest(member)),
       save: (member: IUnitMemberRequest) => dispatch(saveMemberRequest(member)),
       editMember: (member: IUnitMember) => {
-        dispatch(change("updateMemberForm", "id", member.id));
-        dispatch(change("updateMemberForm", "unitId", member.unitId));
-        dispatch(change("updateMemberForm", "personId", member.personId));
-        dispatch(change("updateMemberForm", "person", member.person));
-        dispatch(change("updateMemberForm", "title", member.title));
-        dispatch(change("updateMemberForm", "role", member.role));
+        for (const key in member) {
+          dispatch(change("updateMemberForm", key, member[key]));
+        }
       },
       addMember: (unitId: number, role?: UitsRole) => {
         dispatch(change("addMemberForm", "unitId", unitId));

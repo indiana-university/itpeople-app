@@ -71,9 +71,11 @@ export interface IUnitMemberRequest {
   unitId: number;
   personId?: number;
   title: string;
+  showTitle?: boolean;
   role: ItProRole | UitsRole | string;
   permissions: UnitPermissions;
   percentage: number;
+  showPercentage?: boolean;
 }
 
 export interface IUnitMember extends IUnitMemberRequest {
