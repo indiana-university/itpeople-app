@@ -8,7 +8,7 @@
 */
 
 import * as path from 'path'
-import { Pact, Matchers, InteractionObject } from '@pact-foundation/pact'
+import { Pact, Matchers } from '@pact-foundation/pact'
 import axios, { AxiosResponse } from 'axios'
 import * as traverse from 'traverse'
 import { apiResources } from './components/effects';
