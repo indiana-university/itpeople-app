@@ -298,6 +298,14 @@ describe('Contracts', () => {
     })
   })
 
+  describe('Unit Children', () => {
+    const resource = "unit child"
+    const setPath = apiResources.units.children(referenceUnit.id)
+
+    it('gets all unit children', async () => {
+      await getAll(resource, setPath, referenceUnit);
+    })
+  })
 
 });
 
