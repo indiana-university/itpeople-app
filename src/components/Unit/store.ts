@@ -73,7 +73,7 @@ export interface IUnitMemberRequest {
   title: string;
   showTitle?: boolean;
   role: ItProRole | UitsRole | string;
-  permissions: UnitPermissions;
+  permissions: UnitPermissions | string;
   percentage: number;
   showPercentage?: boolean;
 }
@@ -112,10 +112,13 @@ export interface IUnitProfile extends IUnit {
   children?: IEntity[];
 }
 
-export interface ISupportedDepartment {
+export interface ISupportedDepartmentRequest {
   id?: number;
   unitId: number;
   departmentId: number;
+}
+
+export interface ISupportedDepartment extends ISupportedDepartmentRequest {
   department?: IEntity;
 }
 
@@ -322,11 +325,11 @@ GET/POST/DELETE /units/{unit_id}/supported_departments/{department_id}
 
 function* handleSaveUnit(api: apiFn, unit: IUnit) {
   if (unit.id) {
-    yield httpPut<IUnit, IUnitProfile>(
+    yield httpPut<IUnit, IUnitRequest>(
       api,
       apiResources.units.root(unit.id),
       unit,
-      response => action(UnitActionTypes.UNIT_FETCH_REQUEST, response),
+      response => action(UnitActionTypes.UNIT_FETCH_REQUEST, {id: unit.id}),
       error => action(UnitActionTypes.UNIT_SAVE_ERROR, error)
     );
   } else {
@@ -394,8 +397,8 @@ function* handleRemoveChild(api: apiFn, child: IUnit) {
   }
 }
 
-function* handleSaveDepartment(api: apiFn, department: ISupportedDepartment) {
-  yield httpPost<ISupportedDepartment, IUnitRequest>(
+function* handleSaveDepartment(api: apiFn, department: ISupportedDepartmentRequest) {
+  yield httpPost<ISupportedDepartmentRequest, IUnitRequest>(
     api,
     apiResources.units.supportedDepartments(department.unitId),
     department,
@@ -404,7 +407,7 @@ function* handleSaveDepartment(api: apiFn, department: ISupportedDepartment) {
   );
 }
 
-function* handleDeleteDepartment(api: apiFn, department: ISupportedDepartment) {
+function* handleDeleteDepartment(api: apiFn, department: ISupportedDepartmentRequest) {
   yield httpDelete(
     api,
     apiResources.units.supportedDepartments(department.unitId, department.id),
@@ -471,5 +474,8 @@ export {
   initialState,
   saga,
   handleSaveUnit,
-  handleSaveMember
+  handleSaveMember,
+  handleDeleteMember,
+  handleSaveDepartment,
+  handleDeleteDepartment
 };
