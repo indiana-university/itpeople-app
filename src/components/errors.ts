@@ -9,3 +9,9 @@ export class NotAuthorizedError extends Error {
         Object.setPrototypeOf(this, NotAuthorizedError.prototype)
     }
 }
+export class ForbiddenError extends Error {
+    constructor(m:string){
+        super(m);
+        Object.setPrototypeOf(this, ForbiddenError.prototype)
+    }
+}
