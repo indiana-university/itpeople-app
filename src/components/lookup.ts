@@ -2,10 +2,10 @@ import { action } from "typesafe-actions";
 import { Reducer } from "redux";
 import { select, takeEvery, all, fork, put } from "redux-saga/effects";
 import { IApplicationState } from "./types";
-import { createApi, callApiWithAuth, IApiResponse, IApi } from "./api";
+import { createApi, IApiResponse, IApi } from "./api";
 import { PayloadAction } from "typesafe-actions/dist/types";
 
-const api = createApi(callApiWithAuth);
+const api = createApi();
 
 export const enum LookupActionTypes {
   LOOKUP = "LOOKUP",
