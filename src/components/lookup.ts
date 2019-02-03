@@ -18,7 +18,7 @@ export const enum LookupActionTypes {
 const lookup = (url: string) => action(LookupActionTypes.LOOKUP, url.trim());
 const lookupSuccess = (response: IApiResponse<any>) => action(LookupActionTypes.LOOKUP_FETCH_SUCCESS, response);
 const lookupFromCacheSuccess = (data: any) => action(LookupActionTypes.LOOKUP_GET_CACHED_SUCCESS, data);
-const lookupError = (error: string) => action(LookupActionTypes.LOOKUP_FETCH_ERROR, error);
+const lookupError = (error: Error) => action(LookupActionTypes.LOOKUP_FETCH_ERROR, error);
 
 interface ILookupState {
   cache: {};
@@ -42,12 +42,14 @@ const reducer: Reducer = (state = initialState, action) => {
     case LookupActionTypes.LOOKUP_FETCH_REQUESTED:
       return state;
     case LookupActionTypes.LOOKUP_FETCH_SUCCESS:
-      const data = action.payload.data;
+      let {data, url} = action.payload;
+      url = new URL(url);
+      const path = url.pathname + decodeURI(url.search);
       let s = { ...state, current: data, cache: state.cache || {} };
-      s.cache[action.payload.url] = data;
+      s.cache[path] = data;
       return s;
     case LookupActionTypes.LOOKUP_FETCH_ERROR:
-      // todo:
+      // todo: action.payload is a caught exception Error object
       return state;
     case LookupActionTypes.LOOKUP_GET_CACHED_SUCCESS:
       return { ...state, current: action.payload };
@@ -59,7 +61,7 @@ const reducer: Reducer = (state = initialState, action) => {
 
 function* handleLookup(api: IApi, q: string) {
   const state = (yield select<IApplicationState>(s => s.lookup)) as ILookupState;
-  console.log("***state",state);
+  console.log("***state", state.cache, state.cache[q]);
   if (state.cache && state.cache[q]) {
     yield put(lookupFromCacheSuccess(state.cache[q]));
   } else {
