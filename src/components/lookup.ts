@@ -53,7 +53,6 @@ const reducer: Reducer = (state = initialState, action) => {
       return state;
     case LookupActionTypes.LOOKUP_GET_CACHED_SUCCESS:
       return { ...state, current: action.payload };
-
     default:
       return state;
   }
@@ -61,7 +60,6 @@ const reducer: Reducer = (state = initialState, action) => {
 
 function* handleLookup(api: IApi, q: string) {
   const state = (yield select<IApplicationState>(s => s.lookup)) as ILookupState;
-  console.log("***state", state.cache, state.cache[q]);
   if (state.cache && state.cache[q]) {
     yield put(lookupFromCacheSuccess(state.cache[q]));
   } else {
