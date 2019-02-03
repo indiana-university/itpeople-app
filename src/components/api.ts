@@ -4,7 +4,7 @@
  */
 
 import { put } from "redux-saga/effects";
-import { NotAuthorizedError } from "./errors";
+import { NotAuthorizedError, ForbiddenError } from "./errors";
 import { signInRequest } from "./SignIn/store";
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || "";
@@ -34,9 +34,11 @@ export const call: IApiCall = async function<TData>(method: string, apiUrl: stri
   });
 
   if (!response.ok) {
-    throw response.status === 401
-      ? new NotAuthorizedError("user not authorized")
-      : new Error(`Unable to complete request. The server returned ${response.statusText} (${response.status})`);
+    switch (response.status){
+      case 401: throw new NotAuthorizedError("User authentication is invalid or missing");
+      case 403: throw new ForbiddenError("User does not have access to requested resource");
+      default: throw new Error(`Unable to complete request. The server returned ${response.statusText} (${response.status})`);
+    }
   }
 
   let jsonData = (await response.json()) as TData;
@@ -54,9 +56,35 @@ export const createApi = (caller: IApiCall = callApiWithAuth, apiUrl = API_ENDPO
 };
 
 export interface IApi {
+  /**
+   * Asynchronously issue an HTTP GET request.
+   *
+   * @param {string} path The absolute path from the API root
+   * @returns {Promise<IApiResponse<any>>} GET resposne
+   */
   get(path: string): Promise<IApiResponse<any>>;
+  /**
+   * Asynchronously issue an HTTP PUT request.
+   *
+   * @param {string} path The absolute path from the API root
+   * @param {any} data The request payload
+   * @returns {Promise<IApiResponse<any>>} PUT resposne
+   */
   put(path: string, data: any): Promise<IApiResponse<any>>;
+  /**
+   * Asynchronously issue an HTTP POST request.
+   *
+   * @param {string} path The absolute path from the API root
+   * @param {any} data The request payload
+   * @returns post
+   */
   post(path: string, data: any): Promise<IApiResponse<any>>;
+  /**
+   * Asynchronously issue an HTTP DELETE request.
+   *
+   * @param path
+   * @returns {Promise<IApiResponse<any>>} DELETE resposne
+   */
   delete(path: string): Promise<IApiResponse<any>>;
 }
 
