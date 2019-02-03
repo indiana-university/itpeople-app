@@ -3,31 +3,31 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { call, put } from "redux-saga/effects";
-import { PayloadMetaAction } from "typesafe-actions/dist/types";
+import { put } from "redux-saga/effects";
 import { NotAuthorizedError } from "./errors";
 import { signInRequest } from "./SignIn/store";
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || "";
 
-export interface ApiResponse<TData> {
-  data?: TData;
-  response: Response;
-}
+export const callApiWithAuth: IApiCall = (method: string, url: string, path: string, data?: any) => {
+  const authToken = getAuthToken();
+  const authHeader = authToken ? { Authorization: `Bearer ${authToken}` } : {};
+  try {
+    return call(method, url, path, data, authHeader);
+  } catch (ex) {
+    checkLogin(ex);
+    throw ex;
+  }
+};
 
-export interface ApiError {
-  errors: string;
-}
-
-const getAuthToken = () => localStorage.getItem("authToken");
-
-const callApi = async function<TData>(method: string, url: string, path: string, data?: any, headers?: any) {
+export const call: IApiCall = async function<TData>(method: string, apiUrl: string, path: string, data?: any, headers?: any) {
+  const url = apiUrl + path;
   const combinedHeaders = {
     Accept: "application/json",
     "Content-Type": "application/json",
     ...headers
   };
-  const response = await fetch(url + path, {
+  const response = await fetch(url, {
     body: JSON.stringify(data),
     headers: combinedHeaders,
     method
@@ -39,50 +39,49 @@ const callApi = async function<TData>(method: string, url: string, path: string,
       : new Error(`Unable to complete request. The server returned ${response.statusText} (${response.status})`);
   }
 
-  let jsonData = await response.json();
+  let jsonData = (await response.json()) as TData;
 
-  return { response, data: jsonData };
+  return { permissions: getPermissions(response.headers), data: jsonData, url };
 };
 
-const callApiWithAuth = (method: string, url: string, path: string, data?: any) => {
-  const authToken = getAuthToken();
-  const authHeader = authToken ? { Authorization: `Bearer ${authToken}` } : {};
-  return callApi(method, url, path, data, authHeader);
+export const createApi = (caller: IApiCall = callApiWithAuth, apiUrl = API_ENDPOINT): IApi => {
+  return {
+    get: (path: string) => caller("get", apiUrl, path),
+    put: (path: string, data: any) => caller("get", apiUrl, path, data),
+    post: (path: string, data: any) => caller("post", apiUrl, path, data),
+    delete: (path: string) => caller("delete", apiUrl, path)
+  };
 };
 
-function* handleError(err: any, error: (r: string) => PayloadMetaAction<string, string, any>) {
-  if (err instanceof NotAuthorizedError) {
+export interface IApi {
+  get(path: string): Promise<IApiResponse<any>>;
+  put(path: string, data: any): Promise<IApiResponse<any>>;
+  post(path: string, data: any): Promise<IApiResponse<any>>;
+  delete(path: string): Promise<IApiResponse<any>>;
+}
+
+export interface IApiResponse<TData> {
+  readonly data: TData;
+  readonly url: string;
+  readonly permissions?: string[];
+  readonly loading?: boolean;
+}
+
+function* checkLogin(exception: any) {
+  if (exception instanceof NotAuthorizedError) {
     return put(signInRequest());
   }
-
-  if (err instanceof Error) {
-    return put(error(err.stack!));
-  }
-
-  return put(error("An unknown error occured."));
 }
 
-function* handleResponse<TData>(
-  response: ApiResponse<TData> | ApiError,
-  success: (r: ApiResponse<TData>) => PayloadMetaAction<string, ApiResponse<TData>, any>,
-  error: (r: string) => PayloadMetaAction<string, string, any>
-) {
-  if ((<ApiError>response).errors) {
-    yield put(error((<ApiError>response).errors));
-  } else {
-    yield put(success(<ApiResponse<TData>>response));
-  }
+interface IApiCall {
+  (method: string, url: string, path: string, data?: any, headers?: any): Promise<IApiResponse<any>>;
 }
 
-export function* get<TData>(
-  path: string,
-  success: (r: ApiResponse<TData>) => PayloadMetaAction<string, ApiResponse<TData>, any>,
-  error: (r: string) => PayloadMetaAction<string, string, any>
-) {
-  try {
-    const response = yield call(callApiWithAuth, "get", API_ENDPOINT, path);
-    yield handleResponse(response, success, error);
-  } catch (err) {
-    yield handleError(err, error);
+const getAuthToken = () => localStorage.getItem("authToken");
+
+const getPermissions = (headers: Headers): string[] => {
+  if (!headers.has("X-User-Permissions")) {
+    return [];
   }
-}
+  return (headers.get("X-User-Permissions") + "").split(",").map(v => v.trim());
+};
