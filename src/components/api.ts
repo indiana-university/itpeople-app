@@ -3,89 +3,89 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { put } from "redux-saga/effects";
 import { NotAuthorizedError, ForbiddenError } from "./errors";
-import { signInRequest } from "./SignIn/store";
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || "";
 
-export const callApiWithAuth: IApiCall = (method: string, url: string, path: string, data?: any) => {
+export const callApiWithAuth: IApiCall = <T>(method: string, url: string, path: string, data?: any) => {
   const authToken = getAuthToken();
   const authHeader = authToken ? { Authorization: `Bearer ${authToken}` } : {};
-  try {
-    return call(method, url, path, data, authHeader);
-  } catch (ex) {
-    checkLogin(ex);
-    throw ex;
-  }
+  return call<T>(method, url, path, data, authHeader);
 };
 
-export const call: IApiCall = async function<TData>(method: string, apiUrl: string, path: string, data?: any, headers?: any) {
-  const url = apiUrl + path;
-  const combinedHeaders = {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    ...headers
-  };
-  const response = await fetch(url, {
+export const call: IApiCall = async <T>(method: string, apiUrl: string, path: string, data?: any, headers?: any) =>
+  fetch(apiUrl + path, {
     body: JSON.stringify(data),
-    headers: combinedHeaders,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      ...headers
+    },
     method
-  });
+  })
+    .then(resp => {
+      if (!resp.ok) {
+        switch (resp.status) {
+          case 401:
+            throw new NotAuthorizedError("User authentication is invalid or missing");
+          case 403:
+            throw new ForbiddenError("User does not have access to requested resource");
+          default:
+            throw new Error(`Unable to complete request. The server returned ${resp.statusText} (${resp.status})`);
+        }
+      }
+      return resp.json().then(json => ({ permissions: getPermissions(resp.headers), data: json, url: apiUrl + path } as IApiResponse<T>));
+    })
+    .catch((err: Error) => {
+      throw { ...err, errors: err.stack };
+    });
 
-  if (!response.ok) {
-    switch (response.status){
-      case 401: throw new NotAuthorizedError("User authentication is invalid or missing");
-      case 403: throw new ForbiddenError("User does not have access to requested resource");
-      default: throw new Error(`Unable to complete request. The server returned ${response.statusText} (${response.status})`);
-    }
-  }
+export const createApi = <T>(caller: IApiCall = callApiWithAuth, apiUrl = API_ENDPOINT): IApi<T> => ({
+  getOne: (path: string) => caller<T>("get", apiUrl, path),
+  getAll: (path: string) => caller<T[]>("get", apiUrl, path),
+  put: (path: string, data: T) => caller<T>("get", apiUrl, path, data),
+  post: (path: string, data: T) => caller<T>("post", apiUrl, path, data),
+  delete: (path: string) => caller<T>("delete", apiUrl, path)
+});
 
-  let jsonData = (await response.json()) as TData;
-
-  return { permissions: getPermissions(response.headers), data: jsonData, url };
-};
-
-export const createApi = (caller: IApiCall = callApiWithAuth, apiUrl = API_ENDPOINT): IApi => {
-  return {
-    get: (path: string) => caller("get", apiUrl, path),
-    put: (path: string, data: any) => caller("get", apiUrl, path, data),
-    post: (path: string, data: any) => caller("post", apiUrl, path, data),
-    delete: (path: string) => caller("delete", apiUrl, path)
-  };
-};
-
-export interface IApi {
+export interface IApi<T> {
   /**
    * Asynchronously issue an HTTP GET request.
    *
    * @param {string} path The absolute path from the API root
-   * @returns {Promise<IApiResponse<any>>} GET resposne
+   * @returns {Promise<IApiResponse<T>>} GET resposne
    */
-  get(path: string): Promise<IApiResponse<any>>;
+  getOne(path: string): Promise<IApiResponse<T>>;
+  /**
+   * Asynchronously issue an HTTP GET request.
+   *
+   * @param {string} path The absolute path from the API root
+   * @returns {Promise<IApiResponse<T>>} GET resposne
+   */
+  getAll(path: string): Promise<IApiResponse<T[]>>;
   /**
    * Asynchronously issue an HTTP PUT request.
    *
    * @param {string} path The absolute path from the API root
    * @param {any} data The request payload
-   * @returns {Promise<IApiResponse<any>>} PUT resposne
+   * @returns {Promise<IApiResponse<T>>} PUT resposne
    */
-  put(path: string, data: any): Promise<IApiResponse<any>>;
+  put(path: string, data: T): Promise<IApiResponse<T>>;
   /**
    * Asynchronously issue an HTTP POST request.
    *
    * @param {string} path The absolute path from the API root
    * @param {any} data The request payload
-   * @returns post
+   * @returns {Promise<IApiResponse<T>>} POST response
    */
-  post(path: string, data: any): Promise<IApiResponse<any>>;
+  post(path: string, data: T): Promise<IApiResponse<T>>;
   /**
    * Asynchronously issue an HTTP DELETE request.
    *
    * @param path
    * @returns {Promise<IApiResponse<any>>} DELETE resposne
    */
-  delete(path: string): Promise<IApiResponse<any>>;
+  delete(path: string): Promise<IApiResponse<T>>;
 }
 
 export interface IApiResponse<TData> {
@@ -95,14 +95,8 @@ export interface IApiResponse<TData> {
   readonly loading?: boolean;
 }
 
-function* checkLogin(exception: any) {
-  if (exception instanceof NotAuthorizedError) {
-    return put(signInRequest());
-  }
-}
-
 interface IApiCall {
-  (method: string, url: string, path: string, data?: any, headers?: any): Promise<IApiResponse<any>>;
+  <T>(method: string, url: string, path: string, data?: T, headers?: any): Promise<IApiResponse<T>>;
 }
 
 const getAuthToken = () => localStorage.getItem("authToken");

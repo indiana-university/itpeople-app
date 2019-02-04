@@ -1,11 +1,11 @@
 import { action } from "typesafe-actions";
 import { Reducer } from "redux";
-import { select, takeEvery, all, fork, put } from "redux-saga/effects";
-import { IApplicationState } from "./types";
+import { takeEvery, all, fork, put, select } from "redux-saga/effects";
 import { createApi, IApiResponse, IApi } from "./api";
 import { PayloadAction } from "typesafe-actions/dist/types";
+import { IApplicationState } from "./types";
 
-const api = createApi();
+const api = createApi<any>();
 
 export const enum LookupActionTypes {
   LOOKUP = "LOOKUP",
@@ -42,7 +42,7 @@ const reducer: Reducer = (state = initialState, action) => {
     case LookupActionTypes.LOOKUP_FETCH_REQUESTED:
       return state;
     case LookupActionTypes.LOOKUP_FETCH_SUCCESS:
-      let {data, url} = action.payload;
+      let { data, url } = action.payload;
       url = new URL(url);
       const path = url.pathname + decodeURI(url.search);
       let s = { ...state, current: data, cache: state.cache || {} };
@@ -58,23 +58,27 @@ const reducer: Reducer = (state = initialState, action) => {
   }
 };
 
-function* handleLookup(api: IApi, q: string) {
+function* handleLookup(api: IApi<any>, q: string) {
   const state = (yield select<IApplicationState>(s => s.lookup)) as ILookupState;
-  if (state.cache && state.cache[q]) {
-    yield put(lookupFromCacheSuccess(state.cache[q]));
-  } else {
-    try {
-      const respsonse = yield api.get(q);
-      yield put(lookupSuccess(respsonse));
-    } catch (exception) {
-      yield put(lookupError(exception));
-    }
-  }
+  const action = isCached(state.cache, q)
+      ? lookupFromCacheSuccess(state.cache[q])
+      : yield lookupFromApi(q);
+  yield put(action);
+}
+
+const isCached = (cache : any, q: string) => cache && cache[q];
+
+function* lookupFromApi (q: string) {
+  return yield api
+    .getAll(q)
+    .then(lookupSuccess)
+    .catch(lookupError)
 }
 
 function* watchLookupFetch() {
   yield takeEvery(LookupActionTypes.LOOKUP, (action: PayloadAction<string, string>) => handleLookup(api, action.payload));
 }
+
 function* saga() {
   yield all([fork(watchLookupFetch)]);
 }
