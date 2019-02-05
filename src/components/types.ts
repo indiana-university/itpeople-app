@@ -36,7 +36,6 @@ export interface IDefaultState<TData> {
   readonly data?: TData;
   readonly error?: string;
   readonly loading: boolean;
-  readonly view?: ViewStateType;
 }
 // Declare state types with `readonly` modifier to get compile time immutability.
 // https://github.com/piotrwitek/react-redux-typescript-guide#state-with-type-level-immutability
@@ -51,8 +50,7 @@ export const TaskStartReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, actio
   ...state,
   error: undefined,
   loading: true,
-  request: action.payload,
-  view: ViewStateType.Loading
+  request: action.payload
 });
 
 export const TaskSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
@@ -60,8 +58,7 @@ export const TaskSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, act
   data: action.payload,
   error: undefined,
   loading: false,
-  request: undefined,
-  view: ViewStateType.Viewing
+  request: undefined
 });
 
 export const TaskErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
@@ -69,8 +66,7 @@ export const TaskErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, actio
   data: undefined,
   error: action.payload,
   loading: false,
-  request: undefined,
-  view: ViewStateType.Error
+  request: undefined
 });
 
 
@@ -100,19 +96,6 @@ export interface IUnit extends IEntity, IUrl {
 }
 
 export interface IDepartment extends IEntity {
-}
-
-export interface IDepartmentProfile extends IEntity {
-  members: IPerson[],
-  units: IUnit[],
-  supportingUnits: IUnit[],
-}
-
-export interface IUnitProfile extends IUnit {
-  members: IUnitMember[];
-  supportedDepartments: IEntity[];
-  parent?: IEntity;
-  children?: IEntity[];
 }
 
 export enum ItProRole {

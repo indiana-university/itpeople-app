@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { IApiState, IEntity, ViewStateType, IEntityRequest, IUnit, IUnitMember, ISupportedDepartment, IUnitMemberRequest, IUnitProfile, IUnitMembership, ISupportedDepartmentRequest } from "../types";
+import { IApiState, IEntity, ViewStateType, IEntityRequest, IUnit, IUnitMember, ISupportedDepartment, IUnitMemberRequest, IUnitMembership, ISupportedDepartmentRequest } from "../types";
 import { lookup } from "../lookup";
 
 //#region TYPES
@@ -229,7 +229,7 @@ function* handleSaveUnit(api: apiFn, unit: IUnit) {
       error => action(UnitActionTypes.UNIT_SAVE_ERROR, error)
     );
   } else {
-    yield httpPost<IUnit, IUnitProfile>(
+    yield httpPost<IUnit, IUnit>(
       api,
       apiEndpoints.units.root(),
       unit,

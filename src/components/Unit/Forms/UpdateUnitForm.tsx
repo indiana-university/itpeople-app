@@ -5,14 +5,14 @@ import { Section, Button } from "rivet-react";
 import { RivetInputField, RivetInput, RivetTextarea, RivetTextareaField, required, url } from "src/components/form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { IUnitProfile, IUnit } from "src/components/types";
+import { IUnit } from "src/components/types";
 
 interface IDispatchActions {
   save: typeof unit.saveUnitRequest;
   close: typeof unit.cancel;
 }
 
-interface IFormProps extends IUnitProfile, IDispatchActions, InjectedFormProps<IUnitProfile, IDispatchActions> {}
+interface IFormProps extends IUnit, IDispatchActions, InjectedFormProps<IUnit, IDispatchActions> {}
 
 let UpdateUnitForm: React.SFC<IFormProps> | any = ({close,save,handleSubmit}: IFormProps) => {
   const doHandle = (values: IUnit) => {
@@ -38,7 +38,7 @@ let UpdateUnitForm: React.SFC<IFormProps> | any = ({close,save,handleSubmit}: IF
   );
 };
 
-UpdateUnitForm = reduxForm<IUnitProfile, IDispatchActions>({
+UpdateUnitForm = reduxForm<IUnit, IDispatchActions>({
   form: "updateUnitForm",
   enableReinitialize: true
 })(UpdateUnitForm);
