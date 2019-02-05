@@ -13,7 +13,7 @@ import axios, { AxiosResponse } from 'axios'
 import * as traverse from 'traverse'
 import { apiEndpoints } from './components/effects';
 import * as unit from "./components/Unit";
-import { IUser } from "./components/Profile/store"
+import { IPerson } from "./components/Profile/store"
 import { IEntity } from './components/types'
 
 const deepMatchify = (obj: Object) => traverse(obj).map(
@@ -183,7 +183,7 @@ const referenceDepartment: IEntity = {
   description: "description"
 };
 
-const referencePerson: IUser = {
+const referencePerson: IPerson = {
   id: 1,
   name: "name",
   description: "description",
@@ -233,27 +233,38 @@ beforeAll(() => pactServer.setup())
 afterAll(() => pactServer.finalize())
 
 describe('Contracts', () => {
-  /* GET /departments/:id
+  /* 
   GET /departments/:id/supportingUnits
   GET /departments/:id/memberUnits
-  GET /people/:id
-  GET /people/:id/memberships */
+  */
 
   describe('People', () => {
     const resource = 'person'
-    const setPath = apiEndpoints.people()
-    const itemPath = apiEndpoints.people(referencePerson.id)
+    const setPath = apiEndpoints.people.root()
+    const itemPath = apiEndpoints.people.root(referencePerson.id)
 
     it('gets all people', async () => await getAll(resource, setPath, referencePerson))
     it('gets a single person', async () => await getOne(resource, itemPath, referencePerson))
 
-    describe('People memberships', () => {
-      // const resource = "membership"
-      // const setPath = apiEndpoints.units.members(referenceUnitMember.unitId)
-      // const itemPath = apiEndpoints.units.members(referenceUnitMember.unitId, referenceUnitMember.id)
-  
-    })
   })
+
+  describe('Unit memberships for a person', () => {
+    const resource = 'membership'
+    const setPath = apiEndpoints.people.memberships(referencePerson.id)
+    const itemPath = apiEndpoints.people.memberships(referencePerson.id, referenceUnitMember.id)
+
+    it('gets all unit memberships for a person', async () => await getAll(resource, setPath, referencePerson))
+    it('gets a single unit membership for a person', async () => await getOne(resource, itemPath, referencePerson))
+  })
+
+  describe('Departments', () => {
+    const resource = 'department'
+    const setPath = apiEndpoints.departments(referenceDepartment.id)
+
+    it('gets a single department', async () => await getOne(resource, setPath, referenceDepartment))
+
+  })
+
   describe('Units', () => {
     const resource = "unit"
     const setPath = apiEndpoints.units.root();

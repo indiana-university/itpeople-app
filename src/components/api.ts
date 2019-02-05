@@ -41,7 +41,7 @@ export const call: IApiCall = async <T>(method: string, apiUrl: string, path: st
       throw { ...err, errors: err.stack };
     });
 
-export const createApi = <T>(caller: IApiCall = callApiWithAuth, apiUrl = API_ENDPOINT): IApi<T> => ({
+export const restApi = <T>(caller: IApiCall = callApiWithAuth, apiUrl = API_ENDPOINT): IApi<T> => ({
   getOne: (path: string) => caller<T>("get", apiUrl, path),
   getList: (path: string) => caller<T[]>("get", apiUrl, path),
   put: (path: string, data: T) => caller<T>("get", apiUrl, path, data),

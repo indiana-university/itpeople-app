@@ -4,5 +4,8 @@
   "/units/:id/members": "/memberships?unitId=:id&_expand=person",
   "/units/:id/children": "/units?parentId=:id",
   "/units/:id/supportedDepartments/:did": "/supportedDepartments/:did?_expand=department",
-  "/units/:id/supportedDepartments": "/supportedDepartments?unitId=:id&_expand=department"
+  "/units/:id/supportedDepartments": "/supportedDepartments?unitId=:id&_expand=department",
+  "/people/:id/memberships/:mid": "/memberships/:mid?_expand=unit",
+  "/people/:id/memberships": "/memberships?personId=:id&_expand=unit",
+  "/people/:id": "/people/:id?_expand=department"
 }

@@ -7,16 +7,14 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { IApplicationState } from "../types";
-import Profile from "./Presentation";
+import {View} from "./Presentation";
 import {
   fetchRequest,
+  fetchMembershipsRequest,
   IState,
-  IUserRequest,
-  updateRequest,
+  IPersonRequest,
   toggleUnit
 } from "./store";
-import { Loader } from "../Loader";
-// import { Content } from "../layout/Content";
 
 interface IProfileProps {
   match: any;
@@ -24,7 +22,8 @@ interface IProfileProps {
 }
 interface IPropsFromDispatch {
   profileFetchRequest: typeof fetchRequest;
-  profileUpdateRequest: typeof updateRequest;
+  fetchMembershipsRequest: typeof fetchMembershipsRequest;
+  // profileUpdateRequest: typeof updateRequest;
   toggleUnit: typeof toggleUnit;
 }
 
@@ -38,13 +37,14 @@ class Container extends React.Component<
   public componentDidMount() {
     const id = this.isMyProfile() ? 0 : Number(this.props.match.params.id);
     this.props.profileFetchRequest({ id });
+    this.props.fetchMembershipsRequest({ id });
   }
 
   public render() {
     return (
-      <Loader {...this.props}>
-        {this.props.data && <Profile {...this.props.data} toggleUnit={this.props.toggleUnit} />}
-      </Loader>
+      <>
+      <View {...this.props} />
+      </>
     );
   }
 }
@@ -52,10 +52,8 @@ class Container extends React.Component<
 const mapStateToProps = (state: IApplicationState) => state.profile;
 
 const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
-  profileFetchRequest: (request: IUserRequest) =>
-    dispatch(fetchRequest(request)),
-  profileUpdateRequest: (request: IUserRequest) =>
-    dispatch(updateRequest(request)),
+  profileFetchRequest: (request: IPersonRequest) => dispatch(fetchRequest(request)),
+  fetchMembershipsRequest: (request: IPersonRequest) => dispatch(fetchMembershipsRequest(request)),
   toggleUnit: (id: number) => dispatch(toggleUnit(id))
 });
 

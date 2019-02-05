@@ -6,16 +6,16 @@ import { connect } from "react-redux";
 import { IApplicationState } from "src/components/types";
 import { UitsRole, lookupUser, IUnitMember, IUnitMemberRequest } from "../store";
 import { Dispatch } from "redux";
-import { IUser } from "src/components/Profile/store";
+import { IPerson } from "src/components/Profile/store";
 
 interface IFormProps extends InjectedFormProps<IUnitMemberRequest>, IUnitMember, IDispatchProps, IStateProps {}
 
 interface IDispatchProps {
   lookupUser: typeof lookupUser;
-  setPerson(person: IUser): any;
+  setPerson(person: IPerson): any;
 }
 interface IStateProps {
-  filteredUsers?: IUser[];
+  filteredUsers?: IPerson[];
 }
 
 const form: React.SFC<IFormProps> = props => {
@@ -112,7 +112,7 @@ AddMemberForm = connect(
   (dispatch: Dispatch) => {
     return {
       lookupUser: (q: string) => dispatch(lookupUser(q)),
-      setPerson: (person: IUser) => {
+      setPerson: (person: IPerson) => {
         dispatch(change("addMemberForm", "id", undefined));
         dispatch(change("addMemberForm", "person", person));
         dispatch(change("addMemberForm", "personId", person.id));
