@@ -44,16 +44,6 @@ export interface IApiState<TRequest, TResponse> extends IDefaultState<TResponse>
   readonly request?: TRequest;
 }
 
-export interface IEntity {
-  id: number;
-  name: string;
-  description?: string;
-}
-
-export interface IRole {
-  role: string;
-}
-
 import { AnyAction } from "redux";
 import { ILookupState } from "./lookup";
 
@@ -82,3 +72,119 @@ export const TaskErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, actio
   request: undefined,
   view: ViewStateType.Error
 });
+
+
+export interface IEntityRequest {
+  id: number;
+}
+
+export interface IEntity extends IEntityRequest {
+  name: string;
+  description?: string;
+}
+
+export interface IRole {
+  role: string;
+}
+
+export interface ICollectionRequest extends IEntityRequest {
+  unitId: number;
+}
+
+export interface IUrl {
+  url: string;
+}
+
+export interface IUnit extends IEntity, IUrl {
+  parentId?: number;
+}
+
+export interface IDepartment extends IEntity {
+}
+
+export interface IDepartmentProfile extends IEntity {
+  members: IPerson[],
+  units: IUnit[],
+  supportingUnits: IUnit[],
+}
+
+export interface IUnitProfile extends IUnit {
+  members: IUnitMember[];
+  supportedDepartments: IEntity[];
+  parent?: IEntity;
+  children?: IEntity[];
+}
+
+export enum ItProRole {
+  Admin = "Admin",
+  CoAdmin = "CoAdmin",
+  Pro = "Pro",
+  Aux = "Aux"
+}
+
+export enum UitsRole {
+  Leader = "Leader",
+  Sublead = "Sublead",
+  Member = "Member",
+  Related = "Related"
+}
+
+export enum UnitPermissions {
+  Editor = "Editor",
+  Viewer = "Viewer"
+}
+
+export interface IUnitMemberRequest {
+  id?: number;
+  unitId: number;
+  personId?: number;
+  title: string;
+  showTitle?: boolean;
+  role: ItProRole | UitsRole | string;
+  permissions: UnitPermissions | string;
+  percentage: number;
+  showPercentage?: boolean;
+}
+
+export interface IUnitMember extends IUnitMemberRequest {
+  person?: IPerson;
+}
+
+export interface IUnitMembership extends IUnitMemberRequest {
+  unit?: IUnit;
+}
+
+export interface ISupportedDepartmentRequest {
+  id?: number;
+  unitId: number;
+  departmentId: number;
+}
+
+export interface ISupportedDepartment extends ISupportedDepartmentRequest {
+  department?: IEntity;
+}
+
+export interface IPerson extends IEntity {
+  netId: string;
+  position: string;
+  location: string;
+  campusPhone: string;
+  campusEmail: string;
+  campus: string;
+  departmentId?: number;
+  department?: IDepartment;
+  // vvv none of this matters yet vvv
+  tools: string[];
+  expertise: string[];
+  responsibilities: string[];
+  photoUrl?: string;
+}
+
+export interface IAuthRequest {
+  code: string
+}
+
+export interface IAuthUser {
+  user_name: string,
+  user_role: string
+}

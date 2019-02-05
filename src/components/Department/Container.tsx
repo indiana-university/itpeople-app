@@ -6,9 +6,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { IApplicationState } from "../types";
+import { IApplicationState, IEntityRequest } from "../types";
 import Department from "./Presentation";
-import { fetchRequest, IDepartmentRequest, IState } from "./store";
+import { fetchRequest, IState } from "./store";
+
 import { Loader } from "../Loader";
 
 interface IContainerProps {
@@ -37,7 +38,7 @@ class Container extends React.Component<
 export const mapStateToProps = (state: IApplicationState) => state.department;
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
-  fetchRequest: (request: IDepartmentRequest) => dispatch(fetchRequest(request))
+  fetchRequest: (request: IEntityRequest) => dispatch(fetchRequest(request))
 });
 
 export default connect(

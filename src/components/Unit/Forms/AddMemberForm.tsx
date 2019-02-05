@@ -4,9 +4,9 @@ import { Button } from "rivet-react";
 import { RivetInputField, RivetInput, RivetSelect, RivetSelectField, RivetCheckboxField, RivetCheckbox } from "src/components/form";
 import { connect } from "react-redux";
 import { IApplicationState } from "src/components/types";
-import { UitsRole, lookupUser, IUnitMember, IUnitMemberRequest } from "../store";
+import { lookupUser } from "../store";
 import { Dispatch } from "redux";
-import { IPerson } from "src/components/Profile/store";
+import { UitsRole, IPerson, IUnitMember, IUnitMemberRequest } from "../../types";
 
 interface IFormProps extends InjectedFormProps<IUnitMemberRequest>, IUnitMember, IDispatchProps, IStateProps {}
 

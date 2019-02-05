@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import { Section } from "rivet-react";
-import { IUnitMember } from "../store";
+import { IUnitMember } from "../../types";
 import { IDefaultState } from "src/components/types";
 import { Loader } from "src/components/Loader";
 import { MemberLists } from "..";

@@ -3,12 +3,13 @@ import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { RivetInputField, RivetInput, required } from "../../form";
-import { IApplicationState, IEntity } from "../../types";
+import { IApplicationState, IEntity, IUnitProfile } from "../../types";
 import { lookupUnit } from "..";
 import { Dispatch } from "redux";
 import { closeModal, Modal } from "../../layout/Modal";
 import { ChildrenUnitsIcon, TrashCan } from "src/components/icons";
-import { IUnitProfile, deleteUnitChild, saveUnitChild } from "../store";
+import { deleteUnitChild, saveUnitChild } from "../store";
+
 
 interface IFormProps extends InjectedFormProps<any>, IUnitProfile, IDispathProps, IProps {}
 

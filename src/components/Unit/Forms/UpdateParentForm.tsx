@@ -3,9 +3,9 @@ import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Button, ModalBody, Row, Col } from "rivet-react";
 import { RivetInputField, RivetInput, required } from "../../form";
-import { IApplicationState } from "../../types";
+import { IApplicationState, IUnit } from "../../types";
 import { Dispatch } from "redux";
-import { lookupUnit, saveUnitRequest, IUnit } from "../store";
+import { lookupUnit, saveUnitRequest } from "../store";
 import { Modal, closeModal } from "../../layout/Modal";
 import { ParentUnitIcon, TrashCan } from "../../icons";
 

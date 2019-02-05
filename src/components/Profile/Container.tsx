@@ -6,13 +6,12 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { IApplicationState } from "../types";
+import { IApplicationState, IEntityRequest } from "../types";
 import {View} from "./Presentation";
 import {
   fetchRequest,
   fetchMembershipsRequest,
   IState,
-  IPersonRequest,
   toggleUnit
 } from "./store";
 
@@ -42,9 +41,7 @@ class Container extends React.Component<
 
   public render() {
     return (
-      <>
       <View {...this.props} />
-      </>
     );
   }
 }
@@ -52,8 +49,8 @@ class Container extends React.Component<
 const mapStateToProps = (state: IApplicationState) => state.profile;
 
 const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
-  profileFetchRequest: (request: IPersonRequest) => dispatch(fetchRequest(request)),
-  fetchMembershipsRequest: (request: IPersonRequest) => dispatch(fetchMembershipsRequest(request)),
+  profileFetchRequest: (request: IEntityRequest) => dispatch(fetchRequest(request)),
+  fetchMembershipsRequest: (request: IEntityRequest) => dispatch(fetchMembershipsRequest(request)),
   toggleUnit: (id: number) => dispatch(toggleUnit(id))
 });
 

@@ -8,7 +8,7 @@ import * as queryString from 'query-string'
 import * as React from 'react';
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { IApplicationState } from '../types';
+import { IApplicationState, IAuthRequest } from '../types';
 import * as Auth from './store'
 
 interface ILocationProps {
@@ -46,7 +46,7 @@ const mapStateToProps = (state: IApplicationState) =>
     state.auth
   
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    postSignInRequest: (request:Auth.IAuthRequest) => dispatch(Auth.postSignInRequest(request))
+    postSignInRequest: (request:IAuthRequest) => dispatch(Auth.postSignInRequest(request))
 })
   
 export default connect<Auth.IState, IDispatchProps>(

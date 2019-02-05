@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { IApiState, IEntity, ViewStateType } from "../types";
+import { IApiState, IEntity, ViewStateType, IEntityRequest, IUnit, IUnitMember, ISupportedDepartment, IUnitMemberRequest, IUnitProfile, IUnitMembership, ISupportedDepartmentRequest } from "../types";
 import { lookup } from "../lookup";
 
 //#region TYPES
@@ -54,80 +54,12 @@ export const enum UnitActionTypes {
   UNIT_CANCEL = "@@unit/UNIT_CANCEL"
 }
 
-export interface IUnitRequest {
-  id: number;
-}
-
-export interface ICollectionRequest extends IUnitRequest {
-  unitId: number;
-}
-
-export interface IUrl {
-  url: string;
-}
-
-export interface IUnitMemberRequest {
-  id?: number;
-  unitId: number;
-  personId?: number;
-  title: string;
-  showTitle?: boolean;
-  role: ItProRole | UitsRole | string;
-  permissions: UnitPermissions | string;
-  percentage: number;
-  showPercentage?: boolean;
-}
-
-export interface IUnitMember extends IUnitMemberRequest {
-  person?: IPerson;
-}
-
-export enum ItProRole {
-  Admin = "Admin",
-  CoAdmin = "CoAdmin",
-  Pro = "Pro",
-  Aux = "Aux"
-}
-
-export enum UitsRole {
-  Leader = "Leader",
-  Sublead = "Sublead",
-  Member = "Member",
-  Related = "Related"
-}
-
-export enum UnitPermissions {
-  Editor = "Editor",
-  Viewer = "Viewer"
-}
-
-export interface IUnit extends IEntity, IUrl {
-  parentId?: number;
-}
-
-export interface IUnitProfile extends IUnit {
-  members: IUnitMember[];
-  supportedDepartments: IEntity[];
-  parent?: IEntity;
-  children?: IEntity[];
-}
-
-export interface ISupportedDepartmentRequest {
-  id?: number;
-  unitId: number;
-  departmentId: number;
-}
-
-export interface ISupportedDepartment extends ISupportedDepartmentRequest {
-  department?: IEntity;
-}
-
 export interface IState {
-  profile: IApiState<IUnitRequest, IUnit>;
-  members: IApiState<IUnitRequest, IUnitMember[]>;
-  unitChildren: IApiState<IUnitRequest, IEntity[]>; // children conflicts with react props 😟
-  parent: IApiState<IUnitRequest, IEntity>;
-  departments: IApiState<IUnitRequest, ISupportedDepartment[]>;
+  profile: IApiState<IEntityRequest, IUnit>;
+  members: IApiState<IEntityRequest, IUnitMember[]>;
+  unitChildren: IApiState<IEntityRequest, IEntity[]>; // children conflicts with react props 😟
+  parent: IApiState<IEntityRequest, IEntity>;
+  departments: IApiState<IEntityRequest, ISupportedDepartment[]>;
   view: ViewStateType;
 }
 //#endregion
@@ -138,17 +70,17 @@ import { action } from "typesafe-actions";
 const edit = () => action(UnitActionTypes.UNIT_EDIT, {});
 const saveUnitRequest = (request: IUnit) => action(UnitActionTypes.UNIT_SAVE_REQUEST, request);
 const cancel = () => action(UnitActionTypes.UNIT_CANCEL, {});
-const fetchUnit = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request);
-const fetchUnitMembers = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, request);
-const fetchUnitDepartments = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, request);
+const fetchUnit = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request);
+const fetchUnitMembers = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, request);
+const fetchUnitDepartments = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, request);
 const saveUnitDepartment = (request: ISupportedDepartment) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, request);
 const deleteUnitDepartment = (request: ISupportedDepartment) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, request);
-const fetchUnitChildren = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, request);
-const saveUnitChild = (request: IUnitRequest) => action(UnitActionTypes.UNIT_SAVE_CHILD_REQUEST, request);
-const deleteUnitChild = (request: IUnitRequest) => action(UnitActionTypes.UNIT_DELETE_CHILD_REQUEST, request);
-const fetchUnitParent = (request: IUnitRequest) => action(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, request);
-const saveUnitParent = (request: IUnitRequest) => action(UnitActionTypes.UNIT_SAVE_PARENT_REQUEST, request);
-const deleteUnitParent = (request: IUnitRequest) => action(UnitActionTypes.UNIT_DELETE_PARENT_REQUEST, request);
+const fetchUnitChildren = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, request);
+const saveUnitChild = (request: IEntityRequest) => action(UnitActionTypes.UNIT_SAVE_CHILD_REQUEST, request);
+const deleteUnitChild = (request: IEntityRequest) => action(UnitActionTypes.UNIT_DELETE_CHILD_REQUEST, request);
+const fetchUnitParent = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, request);
+const saveUnitParent = (request: IEntityRequest) => action(UnitActionTypes.UNIT_SAVE_PARENT_REQUEST, request);
+const deleteUnitParent = (request: IEntityRequest) => action(UnitActionTypes.UNIT_DELETE_PARENT_REQUEST, request);
 const saveMemberRequest = (member: IUnitMemberRequest) => action(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, member);
 const deleteMemberRequest = (member: IUnitMember) => action(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, member);
 const lookupUnit = (q: string) => lookup(q ? `/units?q=${q}` : "");
@@ -230,9 +162,8 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 //#region SAGA
 import { all, fork, takeEvery, put } from "redux-saga/effects";
 import { apiFn, httpGet, httpPost, httpPut, httpDelete, callApiWithAuth, apiEndpoints } from "../effects";
-import { IUnitMembership, IPerson } from "../Profile/store";
 
-function* handleFetchUnit(api: apiFn, request: IUnitRequest) {
+function* handleFetchUnit(api: apiFn, request: IEntityRequest) {
   yield httpGet<IUnitProfile>(
     api,
     apiEndpoints.units.root(request.id),
@@ -241,7 +172,7 @@ function* handleFetchUnit(api: apiFn, request: IUnitRequest) {
   );
 }
 
-function* handleFetchUnitMembers(api: apiFn, request: IUnitRequest) {
+function* handleFetchUnitMembers(api: apiFn, request: IEntityRequest) {
   yield httpGet<IUnitMembership[]>(
     api,
     apiEndpoints.units.members(request.id),
@@ -250,7 +181,7 @@ function* handleFetchUnitMembers(api: apiFn, request: IUnitRequest) {
   );
 }
 
-function* handleFetchUnitChildren(api: apiFn, request: IUnitRequest) {
+function* handleFetchUnitChildren(api: apiFn, request: IEntityRequest) {
   yield httpGet<IUnit[]>(
     api,
     apiEndpoints.units.children(request.id),
@@ -259,7 +190,7 @@ function* handleFetchUnitChildren(api: apiFn, request: IUnitRequest) {
   );
 }
 
-function* handleFetchUnitDepartments(api: apiFn, request: IUnitRequest) {
+function* handleFetchUnitDepartments(api: apiFn, request: IEntityRequest) {
   yield httpGet<IEntity[]>(
     api,
     apiEndpoints.units.supportedDepartments(request.id),
@@ -291,7 +222,7 @@ GET/POST/DELETE /units/{unit_id}/supported_departments/{department_id}
 
 function* handleSaveUnit(api: apiFn, unit: IUnit) {
   if (unit.id) {
-    yield httpPut<IUnit, IUnitRequest>(
+    yield httpPut<IUnit, IEntityRequest>(
       api,
       apiEndpoints.units.root(unit.id),
       unit,
@@ -311,7 +242,7 @@ function* handleSaveUnit(api: apiFn, unit: IUnit) {
 
 function* handleSaveMember(api: apiFn, member: IUnitMemberRequest) {
   if (member.id) {
-    yield httpPut<IUnitMemberRequest, IUnitRequest>(
+    yield httpPut<IUnitMemberRequest, IEntityRequest>(
       api,
       apiEndpoints.units.members(member.unitId, member.id),
       member,
@@ -319,7 +250,7 @@ function* handleSaveMember(api: apiFn, member: IUnitMemberRequest) {
       error => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error)
     );
   } else {
-    yield httpPost<IUnitMemberRequest, IUnitRequest>(
+    yield httpPost<IUnitMemberRequest, IEntityRequest>(
       api,
       apiEndpoints.units.members(member.unitId),
       member,
@@ -339,7 +270,7 @@ function* handleDeleteMember(api: apiFn, member: IUnitMember) {
 }
 
 function* handleAddChild(api: apiFn, child: IUnit) {
-    yield httpPut<IUnit, IUnitRequest>(
+    yield httpPut<IUnit, IEntityRequest>(
       api,
       apiEndpoints.units.root(child.id),
       child,
@@ -353,7 +284,7 @@ function* handleRemoveChild(api: apiFn, child: IUnit) {
     const parentId = child.parentId;
     child.parentId = undefined;
 
-  yield httpPut<IUnit, IUnitRequest>(
+  yield httpPut<IUnit, IEntityRequest>(
     api,
     apiEndpoints.units.root(child.id),
     child,
@@ -364,7 +295,7 @@ function* handleRemoveChild(api: apiFn, child: IUnit) {
 }
 
 function* handleSaveDepartment(api: apiFn, department: ISupportedDepartmentRequest) {
-  yield httpPost<ISupportedDepartmentRequest, IUnitRequest>(
+  yield httpPost<ISupportedDepartmentRequest, IEntityRequest>(
     api,
     apiEndpoints.units.supportedDepartments(department.unitId),
     department,

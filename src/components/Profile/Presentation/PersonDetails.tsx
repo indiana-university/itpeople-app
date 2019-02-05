@@ -1,6 +1,6 @@
 import * as React from "react";
-import { IPerson } from "../store";
 import { Panel } from "../../Panel";
+import { IPerson } from "../../types";
 
 export const PersonDetails: React.SFC<IPerson> = ({location, campus, campusEmail, campusPhone, department}) => 
     <>

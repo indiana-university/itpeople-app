@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Col, Row } from "rivet-react";
-import { IPerson } from "../store";
+import { IPerson } from "../../types";
 import PageTitle from "../../layout/PageTitle";
 import { Breadcrumbs, Content } from "../../layout";
 

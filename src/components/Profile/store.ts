@@ -4,7 +4,7 @@
  */
 
 //#region TYPES
-import { IApiState, IEntity } from "../types";
+import { IApiState, IEntityRequest, IPerson, IUnitMembership } from "../types";
 
 export const enum ProfileActionTypes {
   PROFILE_FETCH_REQUEST = "@@profile/PROFILE_FETCH_REQUEST",
@@ -19,40 +19,12 @@ export const enum ProfileActionTypes {
   PROFILE_MEMBERSHIPS_FETCH_ERROR = "@@profile/PROFILE_MEMBERSHIPS_FETCH_ERROR"
 }
 
-export interface IPersonRequest {
-  id: number;
-}
 
-export interface IPerson extends IEntity {
-  netId: string;
-  position: string;
-  location: string;
-  campusPhone: string;
-  campusEmail: string;
-  campus: string;
-  departmentId?: number;
-  department?: IEntity;
-  // vvv none of this matters yet vvv
-  tools: string[];
-  expertise: string[];
-  responsibilities: string[];
-  photoUrl?: string;
-}
 
-export interface IUnitMembership {
-  id: number;
-  personId: number;
-  unitId: number;
-  person?: IPerson;
-  unit?: IUnit;
-  tools?: string[];
-  title?: string;
-  role?: string;
-}
 
 export interface IState {
-  person: IApiState<IPersonRequest, IPerson>;
-  memberships: IApiState<IPersonRequest, IUnitMembership[]>;
+  person: IApiState<IEntityRequest, IPerson>;
+  memberships: IApiState<IEntityRequest, IUnitMembership[]>;
   visuallyExpandedUnits: number[];
 }
 
@@ -60,7 +32,7 @@ export interface IState {
 
 //#region ACTIONS
 import { action } from "typesafe-actions";
-export const fetchRequest = (request: IPersonRequest) => action(ProfileActionTypes.PROFILE_FETCH_REQUEST, request);
+export const fetchRequest = (request: IEntityRequest) => action(ProfileActionTypes.PROFILE_FETCH_REQUEST, request);
 const fetchSuccess = (response: IApiResponse<IPerson>) => action(ProfileActionTypes.PROFILE_FETCH_SUCCESS, response.data);
 const fetchError = (error: string) => action(ProfileActionTypes.PROFILE_FETCH_ERROR, error);
 // export const updateRequest = (request: IPersonRequest) => action(ProfileActionTypes.PROFILE_UPDATE_REQUEST, request);
@@ -69,7 +41,7 @@ const fetchError = (error: string) => action(ProfileActionTypes.PROFILE_FETCH_ER
 export const toggleUnit = (id: number) => action(ProfileActionTypes.PROFILE_TOGGLE_UNIT, id);
 
   // MEMBERSHIPS
-export const fetchMembershipsRequest = (request: IPersonRequest) => action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_REQUEST, request);
+export const fetchMembershipsRequest = (request: IEntityRequest) => action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_REQUEST, request);
 const fetchMembershipsSuccess = (response: IApiResponse<IUnitMembership[]>) => action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_SUCCESS, response.data);
 const fetchMembershipsError = (error: string) => action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_ERROR, error);
 //#endregion
@@ -116,13 +88,12 @@ export const reducer: Reducer<IState> = (state = initialState, act): IState => {
 
 //#region SAGAS
 import { all, fork, takeEvery, put } from "redux-saga/effects";
-import { IUnit } from "../Unit";
 import { restApi, IApiResponse, signinIfUnauthorized, IApi } from "../api";
 
 const peopleApi= restApi<IPerson>();
 const membershipApi= restApi<IUnitMembership>();
 
-function* handleFetchPerson(api:IApi<IPerson>, person:IPersonRequest) {
+function* handleFetchPerson(api:IApi<IPerson>, person:IEntityRequest) {
   const nextAction = yield api
     .getOne(`/people/${person.id}`)
     .then(fetchSuccess)
@@ -131,7 +102,7 @@ function* handleFetchPerson(api:IApi<IPerson>, person:IPersonRequest) {
   yield put(nextAction)
 }
 
-function* handleFetchMemberships(api: IApi<IUnitMembership>, person: IPersonRequest) {
+function* handleFetchMemberships(api: IApi<IUnitMembership>, person: IEntityRequest) {
   const nextAction = yield api
     .getList(`/people/${person.id}/memberships`)
     .then(fetchMembershipsSuccess)

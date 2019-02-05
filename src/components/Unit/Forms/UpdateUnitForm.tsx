@@ -5,16 +5,17 @@ import { Section, Button } from "rivet-react";
 import { RivetInputField, RivetInput, RivetTextarea, RivetTextareaField, required, url } from "src/components/form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { IUnitProfile, IUnit } from "src/components/types";
 
 interface IDispatchActions {
   save: typeof unit.saveUnitRequest;
   close: typeof unit.cancel;
 }
 
-interface IFormProps extends unit.IUnitProfile, IDispatchActions, InjectedFormProps<unit.IUnitProfile, IDispatchActions> {}
+interface IFormProps extends IUnitProfile, IDispatchActions, InjectedFormProps<IUnitProfile, IDispatchActions> {}
 
 let UpdateUnitForm: React.SFC<IFormProps> | any = ({close,save,handleSubmit}: IFormProps) => {
-  const doHandle = (values: unit.IUnit) => {
+  const doHandle = (values: IUnit) => {
     save(values);
     close();
   };
@@ -37,7 +38,7 @@ let UpdateUnitForm: React.SFC<IFormProps> | any = ({close,save,handleSubmit}: IF
   );
 };
 
-UpdateUnitForm = reduxForm<unit.IUnitProfile, IDispatchActions>({
+UpdateUnitForm = reduxForm<IUnitProfile, IDispatchActions>({
   form: "updateUnitForm",
   enableReinitialize: true
 })(UpdateUnitForm);
@@ -45,7 +46,7 @@ UpdateUnitForm = reduxForm<unit.IUnitProfile, IDispatchActions>({
 UpdateUnitForm = connect(
   undefined,
   (dispatch: Dispatch): IDispatchActions => ({
-    save: (updated: unit.IUnit) => dispatch(unit.saveUnitRequest(updated)),
+    save: (updated: IUnit) => dispatch(unit.saveUnitRequest(updated)),
     close: () => dispatch(unit.cancel())
   })
 )(UpdateUnitForm);

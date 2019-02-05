@@ -7,7 +7,7 @@ import * as React from "react";
 import { Section } from "rivet-react";
 import PageTitle from "../../layout/PageTitle";
 // import { Pencil } from "src/components/icons";
-import { IUnit } from "../store";
+import { IUnit } from "../../types";
 import { IDefaultState } from "../../types";
 import { Loader } from "../../Loader";
 

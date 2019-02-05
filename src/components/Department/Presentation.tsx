@@ -5,12 +5,12 @@
 
 import * as React from "react";
 import { Row, Col } from "rivet-react";
-import { IDepartmentProfile } from "./store";
 import PageTitle from "../layout/PageTitle";
 import { Panel } from "../Panel";
 import { MemberList } from "./MemberList";
 import { List } from "rivet-react/build/dist/components/List/List";
 import { Breadcrumbs, Content } from "../layout";
+import { IDepartmentProfile } from "../types";
 
 const Presentation: React.SFC<IDepartmentProfile> = props => {
   const name = props.name;

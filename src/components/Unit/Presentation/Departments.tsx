@@ -7,7 +7,7 @@ import * as React from "react";
 import { IDefaultState } from "src/components/types";
 import { Loader } from "src/components/Loader";
 import { List } from "rivet-react";
-import { ISupportedDepartment } from "../store";
+import { ISupportedDepartment } from "../../types";
 
 const Departments: React.SFC<IDefaultState<ISupportedDepartment[]>> = props => {
   const { data: departments } = props;

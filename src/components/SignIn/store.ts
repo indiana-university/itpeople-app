@@ -4,7 +4,7 @@
  */
 
 //#region TYPES
-import { IApiState, IApplicationState } from '../types'
+import { IApiState, IApplicationState, IAuthRequest, IAuthUser } from '../types'
 
 export const enum AuthActionTypes {
     SIGN_IN_REQUEST = '@@auth/SIGN_IN',
@@ -14,14 +14,7 @@ export const enum AuthActionTypes {
     SIGN_OUT = '@@auth/SIGN_OUT',
 }
 
-export interface IAuthRequest {
-    code: string
-}
 
-export interface IAuthUser {
-    user_name: string,
-    user_role: string
-}
 
 // The name of the authorized user
 export interface IState extends IApiState<IAuthRequest, IAuthUser> { }

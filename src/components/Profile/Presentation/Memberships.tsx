@@ -1,8 +1,8 @@
-import { IUnitMembership } from "../store";
 import { Panel } from "../../Panel";
 import * as React from "react";
 import { Row, Col } from "rivet-react";
 import { Chevron } from "src/components/icons";
+import { IUnitMembership } from "src/components/types";
 
 interface IProps {
     memberships: IUnitMembership[],
@@ -15,9 +15,9 @@ export const Memberships: React.SFC<IProps> = ({memberships, visuallyExpandedUni
             <div className="list-dividers profile-units">
                 {memberships && memberships.map((m, i) => {
 
-                    const isExpanded = visuallyExpandedUnits.indexOf(m.id) > -1;
+                    const isExpanded = visuallyExpandedUnits.indexOf(m.unitId) > -1;
                     const toggle = () => {
-                        toggleUnit(m.id);
+                        toggleUnit(m.unitId);
                     };
                     return (
                         m.unit &&

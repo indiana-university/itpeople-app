@@ -9,12 +9,12 @@ import { Dispatch } from 'redux'
 import { Footer, Header, HeaderIdentity, HeaderNavigation } from 'rivet-react';
 import * as Search from '../Search/store'
 import * as Auth from '../SignIn/store'
-import { IApplicationState  } from '../types'
+import { IApplicationState, IAuthUser  } from '../types'
 import SearchForm from './SearchForm';
 
 export interface IPageProps {
     children?: React.ReactNode
-    user?: Auth.IAuthUser
+    user?: IAuthUser
 }
 
 const fixNavLinkAlignment = {

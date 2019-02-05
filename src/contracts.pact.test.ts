@@ -12,9 +12,7 @@ import { Pact, Matchers } from '@pact-foundation/pact'
 import axios, { AxiosResponse } from 'axios'
 import * as traverse from 'traverse'
 import { apiEndpoints } from './components/effects';
-import * as unit from "./components/Unit";
-import { IPerson } from "./components/Profile/store"
-import { IEntity } from './components/types'
+import { IEntity, ISupportedDepartment, ISupportedDepartmentRequest, IUnitMember, IUnitMemberRequest, IUnit, IPerson, IUnitMembership } from './components/types'
 
 const deepMatchify = (obj: Object) => traverse(obj).map(
   function (this: traverse.TraverseContext, x: any) {
@@ -169,7 +167,7 @@ const delete_ = (name: string, path: string) =>
  * Reference Objects
  ************************/
 
-const referenceUnit: unit.IUnit = {
+const referenceUnit: IUnit = {
   id: 1,
   name: "name",
   description: "description",
@@ -199,7 +197,7 @@ const referencePerson: IPerson = {
   photoUrl: "http://photo.url"
 };
 
-const referenceUnitMemberRequest: unit.IUnitMemberRequest = {
+const referenceUnitMemberRequest: IUnitMemberRequest = {
   id: 1,
   unitId: referenceUnit.id,
   personId: referencePerson.id,
@@ -208,18 +206,22 @@ const referenceUnitMemberRequest: unit.IUnitMemberRequest = {
   percentage: 100,
   permissions: "Viewer"
 };
-const referenceUnitMember: unit.IUnitMember = {
+const referenceUnitMember: IUnitMember = {
   ...referenceUnitMemberRequest,
   person: referencePerson
 };
+const referenceUnitMembership: IUnitMembership = {
+  ...referenceUnitMemberRequest,
+  unit: referenceUnit
+};
 
-const referenceSupportedDepartmentRequest: unit.ISupportedDepartmentRequest = {
+const referenceSupportedDepartmentRequest: ISupportedDepartmentRequest = {
   id: 1,
   unitId: referenceUnit.id,
   departmentId: referenceDepartment.id
 };
 
-const referenceSupportedDepartment: unit.ISupportedDepartment = {
+const referenceSupportedDepartment: ISupportedDepartment = {
   ...referenceSupportedDepartmentRequest,
   department: referenceDepartment
 };
@@ -240,12 +242,9 @@ describe('Contracts', () => {
 
   describe('People', () => {
     const resource = 'person'
-    const setPath = apiEndpoints.people.root()
     const itemPath = apiEndpoints.people.root(referencePerson.id)
 
-    it('gets all people', async () => await getAll(resource, setPath, referencePerson))
     it('gets a single person', async () => await getOne(resource, itemPath, referencePerson))
-
   })
 
   describe('Unit memberships for a person', () => {
@@ -253,8 +252,8 @@ describe('Contracts', () => {
     const setPath = apiEndpoints.people.memberships(referencePerson.id)
     const itemPath = apiEndpoints.people.memberships(referencePerson.id, referenceUnitMember.id)
 
-    it('gets all unit memberships for a person', async () => await getAll(resource, setPath, referencePerson))
-    it('gets a single unit membership for a person', async () => await getOne(resource, itemPath, referencePerson))
+    it('gets all unit memberships for a person', async () => await getAll(resource, setPath, [referenceUnitMembership]))
+    it('gets a single unit membership for a person', async () => await getOne(resource, itemPath, referenceUnitMembership))
   })
 
   describe('Departments', () => {
@@ -262,7 +261,6 @@ describe('Contracts', () => {
     const setPath = apiEndpoints.departments(referenceDepartment.id)
 
     it('gets a single department', async () => await getOne(resource, setPath, referenceDepartment))
-
   })
 
   describe('Units', () => {

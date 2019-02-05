@@ -2,7 +2,7 @@ import * as React from "react";
 import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { Button } from "rivet-react";
 import { RivetInputField, RivetInput, RivetSelect, RivetSelectField, RivetCheckboxField, RivetCheckbox } from "src/components/form";
-import { UitsRole, IUnitMember } from "../store";
+import { UitsRole, IUnitMember } from "../../types";
 import { connect } from "react-redux";
 
 interface IFormProps extends InjectedFormProps<IUnitMember>, IUnitMember {}

@@ -6,7 +6,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { IApplicationState, ViewStateType } from "../types";
+import { IApplicationState, ViewStateType, IUnit } from "../types";
 import Unit from "./Presentation";
 import * as unit from "./store";
 import * as auth from "../SignIn/store";
@@ -94,7 +94,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
   fetchUnitChildren: request => dispatch(unit.fetchUnitChildren(request)),
   fetchUnitParent: request => dispatch(unit.fetchUnitParent(request)),
   edit: () => dispatch(unit.edit()),
-  save: (updated:unit.IUnit) => dispatch(unit.saveUnitRequest(updated)),
+  save: (updated:IUnit) => dispatch(unit.saveUnitRequest(updated)),
   cancel: () => dispatch(unit.cancel())
 });
 

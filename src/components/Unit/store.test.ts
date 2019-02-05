@@ -10,6 +10,7 @@
 import { expectSaga } from 'redux-saga-test-plan'
 import * as unit from './store'
 import { apiFn, apiEndpoints } from '../effects';
+import { UnitPermissions, IUnitMemberRequest, ISupportedDepartmentRequest, IUnit } from '../types';
 
 const sagaApiHappyPath = async (saga: any, request: any, expectedMethod: string, expectedPath: string, expectedDispatch: string, expectedPayload: any) => {
     const api: apiFn = (m, u, p, d, h) => {
@@ -32,12 +33,12 @@ const sagaApiSadPath = async (saga: any, request: any, expectedDispatch: string)
 
 describe('unit memberships', () => {
 
-    const model: unit.IUnitMemberRequest = { 
+    const model: IUnitMemberRequest = { 
         unitId: 1, 
         personId: 3, 
         title: "Mr Manager", 
         role: "Leader", 
-        permissions: unit.UnitPermissions.Viewer, 
+        permissions: UnitPermissions.Viewer, 
         percentage: 100 
     };
 
@@ -82,7 +83,7 @@ describe('unit memberships', () => {
 
 describe('supported departments', () => {
 
-    const model: unit.ISupportedDepartmentRequest = {
+    const model: ISupportedDepartmentRequest = {
         unitId: 1,
         departmentId: 2
     };
@@ -116,7 +117,7 @@ describe('supported departments', () => {
 
 describe('unit profile', () => {
 
-    const model: unit.IUnit = {
+    const model: IUnit = {
         id: 1,
         name: "unit",
         description: "description",

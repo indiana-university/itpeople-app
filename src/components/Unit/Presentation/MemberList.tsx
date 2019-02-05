@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import { MemberListItem } from "./MemberListItem";
-import { IUnitMember } from "../store";
+import { IUnitMember } from "../../types";
 import { Section } from "rivet-react";
 
 export const MemberList: React.SFC<IProps> = ({

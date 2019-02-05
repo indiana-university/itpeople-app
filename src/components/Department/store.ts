@@ -7,8 +7,7 @@ import { Reducer  } from 'redux'
 import { all, fork, select, takeEvery } from 'redux-saga/effects'
 import { action } from 'typesafe-actions'
 import { httpGet, callApiWithAuth } from '../effects'
-import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from '../types'
-import { IApiState, IApplicationState, IEntity } from '../types'
+import { IApiState, IApplicationState, TaskErrorReducer, TaskStartReducer, TaskSuccessReducer, IEntityRequest, IDepartmentProfile } from '../types'
 
 //#region TYPES
 export const enum DepartmentActionTypes {
@@ -17,23 +16,13 @@ export const enum DepartmentActionTypes {
     DEPARTMENT_FETCH_ERROR = '@@department/FETCH_ERROR',
 }
 
-export interface IDepartmentRequest {
-    id: string
-}
-
-export interface IDepartmentProfile extends IEntity {
-  members: IEntity[],
-  units: IEntity[],
-  supportingUnits: IEntity[],
-}
-
-export interface IState extends IApiState<IDepartmentRequest, IDepartmentProfile> { 
+export interface IState extends IApiState<IEntityRequest, IDepartmentProfile> { 
 }
 //#endregion
 
 
 //#region ACTIONS
-export const fetchRequest = (request: IDepartmentRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST, request)
+export const fetchRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST, request)
 export const fetchSuccess = (data: IDepartmentProfile) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUCCESS, data)
 export const fetchError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_ERROR, error)
 //#endregion
@@ -60,7 +49,7 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 function* handleFetch() {
-    const state = (yield select<IApplicationState>((s) => s.department.request)) as IDepartmentRequest
+    const state = (yield select<IApplicationState>((s) => s.department.request)) as IEntityRequest
     const path = `/departments/${state.id}`
     yield httpGet<IDepartmentProfile>(callApiWithAuth, path, fetchSuccess, fetchError)
 }
