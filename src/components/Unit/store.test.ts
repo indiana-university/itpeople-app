@@ -9,7 +9,7 @@
 
 import { expectSaga } from 'redux-saga-test-plan'
 import * as unit from './store'
-import { apiFn, apiResources } from '../effects';
+import { apiFn, apiEndpoints } from '../effects';
 
 const sagaApiHappyPath = async (saga: any, request: any, expectedMethod: string, expectedPath: string, expectedDispatch: string, expectedPayload: any) => {
     const api: apiFn = (m, u, p, d, h) => {
@@ -46,7 +46,7 @@ describe('unit memberships', () => {
 
     describe ('creating', () => {
         const request = {...model, id: undefined }
-        const expectedPath = apiResources.units.members(model.unitId);
+        const expectedPath = apiEndpoints.units.members(model.unitId);
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleSaveMember, request, "post", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
@@ -57,7 +57,7 @@ describe('unit memberships', () => {
 
     describe('updating', () => {
         const request = { ...model, id: 1 }
-        const expectedPath = apiResources.units.members(model.unitId, request.id);
+        const expectedPath = apiEndpoints.units.members(model.unitId, request.id);
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleSaveMember, request, "put", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
@@ -68,7 +68,7 @@ describe('unit memberships', () => {
 
     describe('deleting', () => {
         const request = { ...model, id: 1 }
-        const expectedPath = apiResources.units.members(model.unitId, request.id);
+        const expectedPath = apiEndpoints.units.members(model.unitId, request.id);
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleDeleteMember, request, "delete", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
@@ -92,7 +92,7 @@ describe('supported departments', () => {
 
     describe('creating', () => {
         const request = { ...model, id: undefined }
-        const expectedPath = apiResources.units.supportedDepartments(model.unitId);
+        const expectedPath = apiEndpoints.units.supportedDepartments(model.unitId);
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleSaveDepartment, request, "post", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
@@ -103,7 +103,7 @@ describe('supported departments', () => {
 
     describe('deleting', () => {
         const request = { ...model, id: 1 }
-        const expectedPath = apiResources.units.supportedDepartments(model.unitId, request.id);
+        const expectedPath = apiEndpoints.units.supportedDepartments(model.unitId, request.id);
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleDeleteDepartment, request, "delete", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
@@ -129,7 +129,7 @@ describe('unit profile', () => {
 
     describe('updating', () => {
         const request = model
-        const expectedPath = apiResources.units.root(model.id);
+        const expectedPath = apiEndpoints.units.root(model.id);
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleSaveUnit, request, "put", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });

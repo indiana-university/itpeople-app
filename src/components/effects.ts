@@ -20,14 +20,15 @@ const setAuthToken = (token: string) =>
 const redirectToLogin = () =>
     window.location.assign(`${process.env.REACT_APP_OAUTH2_AUTH_URL}?response_type=code&client_id=${process.env.REACT_APP_OAUTH2_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_WEB_URL}/signin`)
 
-const apiResources = {
+const apiEndpoints = {
     departments: (id?: number) => id ? "/departments" : `/departments/${id}`,
     units: {
         root: (id?: number) => (id ? `/units/${id}` : "/units"),
         members: (unitId: number, memberId?: number) => (memberId ? `/units/${unitId}/members/${memberId}` : `/units/${unitId}/members`),
         children: (unitId: number, childId?: number) => (childId ? `/units/${unitId}/children/${childId}` : `/units/${unitId}/children`),
         supportedDepartments: (unitId: number, departmentId?: number) => (departmentId ? `/units/${unitId}/supportedDepartments/${departmentId}` : `/units/${unitId}/supportedDepartments`),
-    }
+    },
+    people: (id?: number) => id ? "/people" : `/people/${id}`
 };
 // GET /units/:id/memberships
 // POST /memberships or POST /units/:id
@@ -163,7 +164,7 @@ function* httpDelete(
 
 export { 
     apiFn,
-    apiResources,
+    apiEndpoints,
     callApi,
     callApiWithAuth,
     clearAuthToken,

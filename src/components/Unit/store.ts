@@ -263,13 +263,13 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 import { all, fork, takeEvery, put } from "redux-saga/effects";
-import { apiFn, httpGet, httpPost, httpPut, httpDelete, callApiWithAuth, apiResources } from "../effects";
+import { apiFn, httpGet, httpPost, httpPut, httpDelete, callApiWithAuth, apiEndpoints } from "../effects";
 import { IUnitMembership, IUser } from "../Profile/store";
 
 function* handleFetchUnit(api: apiFn, request: IUnitRequest) {
   yield httpGet<IUnitProfile>(
     api,
-    apiResources.units.root(request.id),
+    apiEndpoints.units.root(request.id),
     data => action(UnitActionTypes.UNIT_FETCH_SUCCESS, data),
     error => action(UnitActionTypes.UNIT_FETCH_ERROR, error)
   );
@@ -278,7 +278,7 @@ function* handleFetchUnit(api: apiFn, request: IUnitRequest) {
 function* handleFetchUnitMembers(api: apiFn, request: IUnitRequest) {
   yield httpGet<IUnitMembership[]>(
     api,
-    apiResources.units.members(request.id),
+    apiEndpoints.units.members(request.id),
     data => action(UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS, data),
     error => action(UnitActionTypes.UNIT_FETCH_MEMBERS_ERROR, error)
   );
@@ -287,7 +287,7 @@ function* handleFetchUnitMembers(api: apiFn, request: IUnitRequest) {
 function* handleFetchUnitChildren(api: apiFn, request: IUnitRequest) {
   yield httpGet<IUnit[]>(
     api,
-    apiResources.units.children(request.id),
+    apiEndpoints.units.children(request.id),
     data => action(UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS, data),
     error => action(UnitActionTypes.UNIT_FETCH_CHILDREN_ERROR, error)
   );
@@ -296,7 +296,7 @@ function* handleFetchUnitChildren(api: apiFn, request: IUnitRequest) {
 function* handleFetchUnitDepartments(api: apiFn, request: IUnitRequest) {
   yield httpGet<IEntity[]>(
     api,
-    apiResources.units.supportedDepartments(request.id),
+    apiEndpoints.units.supportedDepartments(request.id),
     data => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS, data),
     error => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_ERROR, error)
   );
@@ -306,7 +306,7 @@ function* handleFetchUnitParent(api: apiFn, unit: IUnit) {
   if (unit.parentId) {
     yield httpGet<IUnit[]>(
       api,
-      apiResources.units.root(unit.parentId),
+      apiEndpoints.units.root(unit.parentId),
       data => action(UnitActionTypes.UNIT_FETCH_PARENT_SUCCESS, data),
       error => action(UnitActionTypes.UNIT_FETCH_PARENT_ERROR, error)
     );
@@ -327,7 +327,7 @@ function* handleSaveUnit(api: apiFn, unit: IUnit) {
   if (unit.id) {
     yield httpPut<IUnit, IUnitRequest>(
       api,
-      apiResources.units.root(unit.id),
+      apiEndpoints.units.root(unit.id),
       unit,
       response => action(UnitActionTypes.UNIT_FETCH_REQUEST, {id: unit.id}),
       error => action(UnitActionTypes.UNIT_SAVE_ERROR, error)
@@ -335,7 +335,7 @@ function* handleSaveUnit(api: apiFn, unit: IUnit) {
   } else {
     yield httpPost<IUnit, IUnitProfile>(
       api,
-      apiResources.units.root(),
+      apiEndpoints.units.root(),
       unit,
       response => action(UnitActionTypes.UNIT_SAVE_SUCCESS, response),
       error => action(UnitActionTypes.UNIT_SAVE_ERROR, error)
@@ -347,7 +347,7 @@ function* handleSaveMember(api: apiFn, member: IUnitMemberRequest) {
   if (member.id) {
     yield httpPut<IUnitMemberRequest, IUnitRequest>(
       api,
-      apiResources.units.members(member.unitId, member.id),
+      apiEndpoints.units.members(member.unitId, member.id),
       member,
       _ => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, { id: member.unitId }),
       error => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error)
@@ -355,7 +355,7 @@ function* handleSaveMember(api: apiFn, member: IUnitMemberRequest) {
   } else {
     yield httpPost<IUnitMemberRequest, IUnitRequest>(
       api,
-      apiResources.units.members(member.unitId),
+      apiEndpoints.units.members(member.unitId),
       member,
       _ => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, { id: member.unitId }),
       error => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error)
@@ -366,7 +366,7 @@ function* handleSaveMember(api: apiFn, member: IUnitMemberRequest) {
 function* handleDeleteMember(api: apiFn, member: IUnitMember) {
   yield httpDelete(
     api,
-    apiResources.units.members(member.unitId, member.id),
+    apiEndpoints.units.members(member.unitId, member.id),
     () => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, { id: member.unitId }),
     error => action(UnitActionTypes.UNIT_DELETE_MEMBER_ERROR, error)
   );
@@ -375,7 +375,7 @@ function* handleDeleteMember(api: apiFn, member: IUnitMember) {
 function* handleAddChild(api: apiFn, child: IUnit) {
     yield httpPut<IUnit, IUnitRequest>(
       api,
-      apiResources.units.root(child.id),
+      apiEndpoints.units.root(child.id),
       child,
       _ => action(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, { id: child.parentId as number }),
       error => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error)
@@ -389,7 +389,7 @@ function* handleRemoveChild(api: apiFn, child: IUnit) {
 
   yield httpPut<IUnit, IUnitRequest>(
     api,
-    apiResources.units.root(child.id),
+    apiEndpoints.units.root(child.id),
     child,
     _ => action(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, { id: parentId }),
     error => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error)
@@ -400,7 +400,7 @@ function* handleRemoveChild(api: apiFn, child: IUnit) {
 function* handleSaveDepartment(api: apiFn, department: ISupportedDepartmentRequest) {
   yield httpPost<ISupportedDepartmentRequest, IUnitRequest>(
     api,
-    apiResources.units.supportedDepartments(department.unitId),
+    apiEndpoints.units.supportedDepartments(department.unitId),
     department,
     _ => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, { id: department.unitId }),
     error => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_ERROR, error)
@@ -410,7 +410,7 @@ function* handleSaveDepartment(api: apiFn, department: ISupportedDepartmentReque
 function* handleDeleteDepartment(api: apiFn, department: ISupportedDepartmentRequest) {
   yield httpDelete(
     api,
-    apiResources.units.supportedDepartments(department.unitId, department.id),
+    apiEndpoints.units.supportedDepartments(department.unitId, department.id),
     () => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, { id: department.unitId }),
     error => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_ERROR, error)
   );
