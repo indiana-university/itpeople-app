@@ -252,7 +252,6 @@ describe('Contracts', () => {
       const setPath = apiEndpoints.units.members(referenceUnitMember.unitId)
       const itemPath = apiEndpoints.units.members(referenceUnitMember.unitId, referenceUnitMember.id)
   
-      it('gets all memberships for a person', async () => await )
     })
   })
   describe('Units', () => {
