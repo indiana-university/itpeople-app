@@ -41,12 +41,11 @@ export const call: IApiCall = async <T>(method: string, apiUrl: string, path: st
       throw { ...err, errors: err.stack };
     });
 
-export const restApi = <T>(caller: IApiCall = callApiWithAuth, apiUrl = API_ENDPOINT): IApi<T> => ({
-  getOne: (path: string) => caller<T>("get", apiUrl, path),
-  getList: (path: string) => caller<T[]>("get", apiUrl, path),
-  put: (path: string, data: T) => caller<T>("get", apiUrl, path, data),
-  post: (path: string, data: T) => caller<T>("post", apiUrl, path, data),
-  delete: (path: string) => caller<T>("delete", apiUrl, path)
+export const restApi = (caller: IApiCall = callApiWithAuth, apiUrl = API_ENDPOINT): IApi => ({
+  get: <T>(path: string) => caller<T>("get", apiUrl, path),
+  put: <T>(path: string, data: T) => caller<T>("get", apiUrl, path, data),
+  post: <T>(path: string, data: T) => caller<T>("post", apiUrl, path, data),
+  delete: <T>(path: string) => caller<T>("delete", apiUrl, path)
 });
 
 /**
@@ -63,21 +62,14 @@ export function signinIfUnauthorized(err: Error) {
   throw err;
 }
 
-export interface IApi<T> {
+export interface IApi {
   /**
    * Asynchronously issue an HTTP GET request.
    *
    * @param {string} path The absolute path from the API root
    * @returns {Promise<IApiResponse<T>>} GET resposne
    */
-  getOne(path: string): Promise<IApiResponse<T>>;
-  /**
-   * Asynchronously issue an HTTP GET request.
-   *
-   * @param {string} path The absolute path from the API root
-   * @returns {Promise<IApiResponse<T>>} GET resposne
-   */
-  getList(path: string): Promise<IApiResponse<T[]>>;
+  get<T>(path: string): Promise<IApiResponse<T>>;
   /**
    * Asynchronously issue an HTTP PUT request.
    *
@@ -85,7 +77,7 @@ export interface IApi<T> {
    * @param {any} data The request payload
    * @returns {Promise<IApiResponse<T>>} PUT resposne
    */
-  put(path: string, data: T): Promise<IApiResponse<T>>;
+  put<T>(path: string, data: T): Promise<IApiResponse<T>>;
   /**
    * Asynchronously issue an HTTP POST request.
    *
@@ -93,14 +85,14 @@ export interface IApi<T> {
    * @param {any} data The request payload
    * @returns {Promise<IApiResponse<T>>} POST response
    */
-  post(path: string, data: T): Promise<IApiResponse<T>>;
+  post<T>(path: string, data: T): Promise<IApiResponse<T>>;
   /**
    * Asynchronously issue an HTTP DELETE request.
    *
    * @param path
    * @returns {Promise<IApiResponse<any>>} DELETE resposne
    */
-  delete(path: string): Promise<IApiResponse<T>>;
+  delete(path: string): Promise<IApiResponse<void>>;
 }
 
 export interface IApiResponse<TData> {

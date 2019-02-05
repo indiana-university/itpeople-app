@@ -71,39 +71,38 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
 }
 //#endregion
 
-const departmentApi = restApi<IDepartment>();
-const unitsApi = restApi<IUnit>();
+const api = restApi();
 
 //#region SAGA
-function* handleFetch(api: IApi<IDepartment>, req: IEntityRequest) {
+function* handleFetch(req: IEntityRequest) {
   yield put(fetchProfileRequest(req))
   yield put(fetchConstituentUnitsRequest(req))
   yield put(fetchSupportingUnitsRequest(req))
 }
 
-function* handleFetchProfile(api:IApi<IDepartment>,req:IEntityRequest){
+function* handleFetchProfile(api:IApi,req:IEntityRequest){
   const action = 
-  yield api.getOne(apiEndpoints.departments.root(req.id))
+  yield api.get<IDepartment>(apiEndpoints.departments.root(req.id))
     .then(fetchProfileSuccess)
     .catch(signinIfUnauthorized)
     .catch(fetchProfileError)
 yield put (action);
 }
 
-function* handleConstituentUnitsFetch(api: IApi<IUnit>, req: IEntityRequest) {
+function* handleConstituentUnitsFetch(api: IApi, req: IEntityRequest) {
   const action = 
     yield api
-      .getList(apiEndpoints.departments.constituentUnits(req.id))
+      .get<IUnit[]>(apiEndpoints.departments.constituentUnits(req.id))
       .then(fetchConstituentUnitsSuccess)
       .catch(signinIfUnauthorized)
       .catch(fetchConstituentUnitsError);
   yield put(action);
 }
 
-function* handleSupportingUnitsFetch(api: IApi<IUnit>, req: IEntityRequest) {
+function* handleSupportingUnitsFetch(api: IApi, req: IEntityRequest) {
   const action = 
     yield api
-      .getList(apiEndpoints.departments.supportingUnits(req.id))
+      .get<IUnit[]>(apiEndpoints.departments.supportingUnits(req.id))
       .then(fetchSupportingUnitsSuccess)
       .catch(signinIfUnauthorized)
       .catch(fetchSupportingUnitsError);
@@ -113,10 +112,10 @@ function* handleSupportingUnitsFetch(api: IApi<IUnit>, req: IEntityRequest) {
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchDepartmentFetch() {
-  yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST, (a: AnyAction) => handleFetch(departmentApi, a.payload))
-  yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_REQUEST, (a: AnyAction) => handleFetchProfile(departmentApi, a.payload))
-  yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_CONSTITUENT_UNITS_REQUEST, (a: AnyAction) => handleConstituentUnitsFetch(unitsApi, a.payload))
-  yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_REQUEST, (a: AnyAction) => handleSupportingUnitsFetch(unitsApi, a.payload))
+  yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST, (a: AnyAction) => handleFetch(a.payload))
+  yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_REQUEST, (a: AnyAction) => handleFetchProfile(api, a.payload))
+  yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_CONSTITUENT_UNITS_REQUEST, (a: AnyAction) => handleConstituentUnitsFetch(api, a.payload))
+  yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_REQUEST, (a: AnyAction) => handleSupportingUnitsFetch(api, a.payload))
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.

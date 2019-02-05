@@ -4,7 +4,7 @@
  */
 
 //#region TYPES
-import { IApiState, IEntityRequest, IPerson, IUnitMembership } from "../types";
+import { IApiState, IEntityRequest, IPerson, IUnitMembership, IUnitMember } from "../types";
 
 export const enum ProfileActionTypes {
   PROFILE_FETCH_REQUEST = "@@profile/PROFILE_FETCH_REQUEST",
@@ -90,32 +90,33 @@ export const reducer: Reducer<IState> = (state = initialState, act): IState => {
 import { all, fork, takeEvery, put } from "redux-saga/effects";
 import { restApi, IApiResponse, signinIfUnauthorized, IApi } from "../api";
 
-const peopleApi= restApi<IPerson>();
-const membershipApi= restApi<IUnitMembership>();
+const api= restApi();
 
-function* handleFetchPerson(api:IApi<IPerson>, person:IEntityRequest) {
-  const nextAction = yield api
-    .getOne(`/people/${person.id}`)
-    .then(fetchSuccess)
-    .catch(signinIfUnauthorized)
-    .catch(fetchError);
+function* handleFetchPerson(api:IApi, person:IEntityRequest) {
+  const nextAction = 
+    yield api
+      .get<IPerson>(`/people/${person.id}`)
+      .then(fetchSuccess)
+      .catch(signinIfUnauthorized)
+      .catch(fetchError);
   yield put(nextAction)
 }
 
-function* handleFetchMemberships(api: IApi<IUnitMembership>, person: IEntityRequest) {
-  const nextAction = yield api
-    .getList(`/people/${person.id}/memberships`)
-    .then(fetchMembershipsSuccess)
-    .catch(signinIfUnauthorized)
-    .catch(fetchMembershipsError);
+function* handleFetchMemberships(api: IApi, person: IEntityRequest) {
+  const nextAction = 
+    yield api
+      .get<IUnitMembership[]>(`/people/${person.id}/memberships`)
+      .then(fetchMembershipsSuccess)
+      .catch(signinIfUnauthorized)
+      .catch(fetchMembershipsError);
   yield put(nextAction)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchProfileFetch() {
-  yield takeEvery(ProfileActionTypes.PROFILE_FETCH_REQUEST, (a: AnyAction) => handleFetchPerson(peopleApi, a.payload));
-  yield takeEvery(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_REQUEST, (a: AnyAction)=>handleFetchMemberships(membershipApi, a.payload));
+  yield takeEvery(ProfileActionTypes.PROFILE_FETCH_REQUEST, (a: AnyAction) => handleFetchPerson(api, a.payload));
+  yield takeEvery(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_REQUEST, (a: AnyAction)=>handleFetchMemberships(api, a.payload));
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.

@@ -5,7 +5,7 @@ import { restApi, IApiResponse, IApi, signinIfUnauthorized } from "./api";
 import { PayloadAction } from "typesafe-actions/dist/types";
 import { IApplicationState } from "./types";
 
-const api = restApi<any>();
+const api = restApi();
 
 export const enum LookupActionTypes {
   LOOKUP = "LOOKUP",
@@ -58,7 +58,7 @@ const reducer: Reducer = (state = initialState, action) => {
   }
 };
 
-function* handleLookup(api: IApi<any>, q: string) {
+function* handleLookup(api: IApi, q: string) {
   const state = (yield select<IApplicationState>(s => s.lookup)) as ILookupState;
   const action = isCached(state.cache, q)
       ? lookupFromCacheSuccess(state.cache[q])
@@ -70,7 +70,7 @@ const isCached = (cache : any, q: string) => cache && cache[q];
 
 function* lookupFromApi (q: string) {
   return yield api
-    .getList(q)
+    .get<any>(q)
     .then(lookupSuccess)
     .catch(signinIfUnauthorized)
     .catch(lookupError);
