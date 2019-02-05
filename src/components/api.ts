@@ -4,6 +4,7 @@
  */
 
 import { NotAuthorizedError, ForbiddenError } from "./errors";
+import { signInRequest } from "./SignIn/store";
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || "";
 
@@ -47,6 +48,20 @@ export const createApi = <T>(caller: IApiCall = callApiWithAuth, apiUrl = API_EN
   post: (path: string, data: T) => caller<T>("post", apiUrl, path, data),
   delete: (path: string) => caller<T>("delete", apiUrl, path)
 });
+
+/**
+ * Handle a request that results in an exception.
+ *
+ * @param {*} err The error object
+ * @param {(r:string) => PayloadMetaAction<string,string,any>} error A request failure action generator
+ */
+export function signinIfUnauthorized(err: Error) {
+  if (err instanceof NotAuthorizedError) {
+    return signInRequest();
+  }
+
+  throw err;
+}
 
 export interface IApi<T> {
   /**

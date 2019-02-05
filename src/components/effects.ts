@@ -63,7 +63,7 @@ const callApiWithAuth = (method: string, url: string, path: string, data?: any) 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
 /**
- * Handle a request that result in an exception.
+ * Handle a request that results in an exception.
  *
  * @param {*} err The error object
  * @param {(r:string) => PayloadMetaAction<string,string,any>} error A request failure action generator

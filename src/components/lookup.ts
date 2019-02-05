@@ -1,7 +1,7 @@
 import { action } from "typesafe-actions";
 import { Reducer } from "redux";
 import { takeEvery, all, fork, put, select } from "redux-saga/effects";
-import { createApi, IApiResponse, IApi } from "./api";
+import { createApi, IApiResponse, IApi, signinIfUnauthorized } from "./api";
 import { PayloadAction } from "typesafe-actions/dist/types";
 import { IApplicationState } from "./types";
 
@@ -72,7 +72,8 @@ function* lookupFromApi (q: string) {
   return yield api
     .getList(q)
     .then(lookupSuccess)
-    .catch(lookupError)
+    .catch(signinIfUnauthorized)
+    .catch(lookupError);
 }
 
 function* watchLookupFetch() {
