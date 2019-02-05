@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2018 The Trustees of Indiana University
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -7,10 +7,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { IApplicationState, IEntityRequest } from "../types";
-import Department from "./Presentation";
 import { fetchRequest, IState } from "./store";
-
-import { Loader } from "../Loader";
+import { View } from "./Presentation";
 
 interface IContainerProps {
   match: any;
@@ -27,11 +25,7 @@ class Container extends React.Component<
     this.props.fetchRequest(this.props.match.params);
   }
   public render() {
-    return (
-      <Loader {...this.props}>
-        {this.props.data && <Department {...this.props.data} />}
-      </Loader>
-    );
+    return <View {...this.props} />;
   }
 }
 

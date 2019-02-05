@@ -21,8 +21,16 @@ const redirectToLogin = () =>
     window.location.assign(`${process.env.REACT_APP_OAUTH2_AUTH_URL}?response_type=code&client_id=${process.env.REACT_APP_OAUTH2_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_WEB_URL}/signin`)
 
 const apiEndpoints = {
-  departments: (id?: number) => 
-        id ? "/departments" : `/departments/${id}`,
+  departments: {
+    root: (id?: number) => 
+        id ? `/departments/${id}` : "/departments",
+    members: (deptId: number, memberId?: number) =>
+        memberId ? `/departments/${deptId}/members/${memberId}` : `/departments/${deptId}/members`,
+    constituentUnits: (deptId: number, memberId?: number) =>
+        memberId ? `/departments/${deptId}/constituentUnits/${memberId}` : `/departments/${deptId}/constituentUnits`,
+    supportingUnits: (deptId: number, memberId?: number) =>
+        memberId ? `/departments/${deptId}/supportingUnits/${memberId}` : `/departments/${deptId}/supportingUnits`
+  },
   units: {
     root: (id?: number) => 
         id ? `/units/${id}` : "/units",

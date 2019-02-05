@@ -252,15 +252,33 @@ describe('Contracts', () => {
     const setPath = apiEndpoints.people.memberships(referencePerson.id)
     const itemPath = apiEndpoints.people.memberships(referencePerson.id, referenceUnitMember.id)
 
-    it('gets all unit memberships for a person', async () => await getAll(resource, setPath, [referenceUnitMembership]))
-    it('gets a single unit membership for a person', async () => await getOne(resource, itemPath, referenceUnitMembership))
+    it('gets all unit memberships for a person', async () => {
+      await getAll(resource, setPath, [referenceUnitMembership])
+    })
+    it('gets a single unit membership for a person', async () => {
+      await getOne(resource, itemPath, referenceUnitMembership)
+    })
   })
 
   describe('Departments', () => {
     const resource = 'department'
-    const setPath = apiEndpoints.departments(referenceDepartment.id)
+    it('gets a single department', async () => {
+      await getOne(resource, apiEndpoints.departments.root(referenceDepartment.id), referenceDepartment)
+    })
+  })
 
-    it('gets a single department', async () => await getOne(resource, setPath, referenceDepartment))
+  describe('Units in a Department', () => {
+    const resource = 'constituentUnits'
+    it('gets units in a department', async () => {
+      await getOne(resource, apiEndpoints.departments.constituentUnits(referenceDepartment.id), [referenceUnit])
+    })
+  })
+
+  describe('Units supporting a Department', () => {
+    const resource = 'supportingUnits'
+    it('gets units supporting a department', async () => {
+      await getOne(resource, apiEndpoints.departments.supportingUnits(referenceDepartment.id), [referenceUnit])
+    })
   })
 
   describe('Units', () => {

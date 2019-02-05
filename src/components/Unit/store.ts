@@ -111,10 +111,8 @@ const initialState: IState = {
 // state.unit.parent.data
 const reducer: Reducer<IState> = (state = initialState, act) => {
   switch (act.type) {
-    case UnitActionTypes.UNIT_EDIT:
-      return { ...state, view: ViewStateType.Editing };
-    case UnitActionTypes.UNIT_CANCEL:
-      return { ...state, view: ViewStateType.Viewing };
+    case UnitActionTypes.UNIT_EDIT: return { ...state, view: ViewStateType.Editing };
+    case UnitActionTypes.UNIT_CANCEL: return { ...state, view: ViewStateType.Viewing };
     //
     case UnitActionTypes.UNIT_FETCH_REQUEST: return { ...state, profile: TaskStartReducer(state.profile, act) };
     case UnitActionTypes.UNIT_FETCH_SUCCESS: return { ...state, profile: TaskSuccessReducer(state.profile, act) };
@@ -163,8 +161,9 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 import { all, fork, takeEvery, put } from "redux-saga/effects";
 import { apiFn, httpGet, httpPost, httpPut, httpDelete, callApiWithAuth, apiEndpoints } from "../effects";
 
+
 function* handleFetchUnit(api: apiFn, request: IEntityRequest) {
-  yield httpGet<IUnitProfile>(
+  yield httpGet<IUnit>(
     api,
     apiEndpoints.units.root(request.id),
     data => action(UnitActionTypes.UNIT_FETCH_SUCCESS, data),
