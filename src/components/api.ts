@@ -42,7 +42,7 @@ export const call: IApiCall = async <T>(method: string, apiUrl: string, path: st
 
 export const createApi = <T>(caller: IApiCall = callApiWithAuth, apiUrl = API_ENDPOINT): IApi<T> => ({
   getOne: (path: string) => caller<T>("get", apiUrl, path),
-  getAll: (path: string) => caller<T[]>("get", apiUrl, path),
+  getList: (path: string) => caller<T[]>("get", apiUrl, path),
   put: (path: string, data: T) => caller<T>("get", apiUrl, path, data),
   post: (path: string, data: T) => caller<T>("post", apiUrl, path, data),
   delete: (path: string) => caller<T>("delete", apiUrl, path)
@@ -62,7 +62,7 @@ export interface IApi<T> {
    * @param {string} path The absolute path from the API root
    * @returns {Promise<IApiResponse<T>>} GET resposne
    */
-  getAll(path: string): Promise<IApiResponse<T[]>>;
+  getList(path: string): Promise<IApiResponse<T[]>>;
   /**
    * Asynchronously issue an HTTP PUT request.
    *

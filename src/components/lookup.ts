@@ -70,7 +70,7 @@ const isCached = (cache : any, q: string) => cache && cache[q];
 
 function* lookupFromApi (q: string) {
   return yield api
-    .getAll(q)
+    .getList(q)
     .then(lookupSuccess)
     .catch(lookupError)
 }

@@ -248,9 +248,9 @@ describe('Contracts', () => {
     it('gets a single person', async () => await getOne(resource, itemPath, referencePerson))
 
     describe('People memberships', () => {
-      const resource = "membership"
-      const setPath = apiEndpoints.units.members(referenceUnitMember.unitId)
-      const itemPath = apiEndpoints.units.members(referenceUnitMember.unitId, referenceUnitMember.id)
+      // const resource = "membership"
+      // const setPath = apiEndpoints.units.members(referenceUnitMember.unitId)
+      // const itemPath = apiEndpoints.units.members(referenceUnitMember.unitId, referenceUnitMember.id)
   
     })
   })
