@@ -40,11 +40,11 @@ export enum Permissions {
   Delete = "DELETE"
 }
 export namespace Permissions {
-  export const canGet = (permissions: Permissions[]) => Permissions.Get in permissions;
-  export const canPost = (permissions: Permissions[]) => Permissions.Post in permissions;
-  export const canPut = (permissions: Permissions[]) => Permissions.Put in permissions;
-  export const canDelete = (permissions: Permissions[]) => Permissions.Delete in permissions;
-  export const parse = (s:string) => Permissions[s];
+  export const canGet = (permissions: Permissions[]) => permissions.indexOf(Permissions.Get) > -1;
+  export const canPost = (permissions: Permissions[]) =>  permissions.indexOf(Permissions.Post) > -1;
+  export const canPut = (permissions: Permissions[]) => permissions.indexOf(Permissions.Put) > -1;
+  export const canDelete = (permissions: Permissions[]) => permissions.indexOf(Permissions.Delete) > -1;
+  export const parse = (s:string) => s as Permissions;
 }
 
 // action = {type; payload: IApiResponse}
@@ -61,14 +61,15 @@ export interface IApiState<TRequest, TResponse> extends IDefaultState<TResponse>
   readonly request?: TRequest;
 }
 
-export const defaultState = {
-  permissions: [],
-  data: undefined,
-  error: undefined,
-  loading: false,
-  request: undefined
+export const defaultState = () => {
+  return {
+    permissions: [],
+    data: undefined,
+    error: undefined,
+    loading: false,
+    request: undefined
+  }
 };
-
 
 import { AnyAction } from "redux";
 import { ILookupState } from "./lookup";
