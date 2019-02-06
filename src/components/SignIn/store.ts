@@ -39,7 +39,7 @@ import { Reducer, AnyAction } from 'redux'
 import { restApi, IApiResponse, IApi } from '../api';
 
 // Type-safe initialState!
-const initialState: IState = defaultState
+const initialState: IState = defaultState()
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
 // everything will remain type-safe.

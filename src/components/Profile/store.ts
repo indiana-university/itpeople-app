@@ -56,8 +56,8 @@ import {
 
 // Type-safe initialState!
 export const initialState: IState =  {
-  person: defaultState,
-  memberships: defaultState,
+  person: defaultState(),
+  memberships: defaultState(),
   visuallyExpandedUnits: []
 };
 

@@ -50,9 +50,9 @@ const fetchSupportingUnitsError = (error: string) => action(DepartmentActionType
 
 //#region REDUCER
 export const initialState: IState = {
-  profile: defaultState,
-  constituentUnits: defaultState,
-  supportingUnits: defaultState,
+  profile: defaultState(),
+  constituentUnits: defaultState(),
+  supportingUnits: defaultState(),
 }
 
 export const reducer: Reducer<IState> = (state = initialState, act) => {

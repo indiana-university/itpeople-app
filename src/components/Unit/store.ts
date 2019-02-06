@@ -91,11 +91,11 @@ import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from "../types
 
 // Type-safe initialState!
 const initialState: IState = {
-  profile: defaultState,
-  members: defaultState,
-  unitChildren: defaultState,
-  parent: defaultState,
-  departments: defaultState,
+  profile: defaultState(),
+  members: defaultState(),
+  unitChildren: defaultState(),
+  parent: defaultState(),
+  departments: defaultState(),
   view: ViewStateType.Viewing
 };
 
@@ -172,7 +172,7 @@ function* handleFetchUnit(api: IApi, request: IEntityRequest) {
 
 const fetchUnitProfile = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_PROFILE_REQUEST, request);
 const fetchUnitProfileSuccess = (response: IApiResponse<IUnit>) => action(UnitActionTypes.UNIT_FETCH_PROFILE_SUCCESS, response);
-const fetchUnitProfileError = (error: string|Error) => action(UnitActionTypes.UNIT_FETCH_PROFILE_ERROR, error.toString())
+const fetchUnitProfileError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_PROFILE_ERROR, error)
 function* handleFetchUnitProfile(api: IApi, request: IEntityRequest) {
   const action = yield api
       .get<IUnit>(apiEndpoints.units.root(request.id))
@@ -184,7 +184,7 @@ function* handleFetchUnitProfile(api: IApi, request: IEntityRequest) {
 
 const fetchUnitMembers = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, request);
 const fetchUnitMembersSuccess = (response: IApiResponse<IUnitMember[]>) => action(UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS, response);
-const fetchUnitMembersError = (error: string|Error) => action(UnitActionTypes.UNIT_DELETE_MEMBER_ERROR, error.toString())
+const fetchUnitMembersError = (error: Error) => action(UnitActionTypes.UNIT_DELETE_MEMBER_ERROR, error)
 function* handleFetchUnitMembers(api: IApi, request: IEntityRequest) {
   const action = yield api
       .get<IUnitMember[]>(apiEndpoints.units.members(request.id))
@@ -196,7 +196,7 @@ function* handleFetchUnitMembers(api: IApi, request: IEntityRequest) {
 
 const fetchUnitChildren = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, request);
 const fetchUnitChildrenSuccess = (response: IApiResponse<IEntityRequest[]>) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS, response);
-const fetchUnitChildrenError = (error: string|Error) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_ERROR, error.toString());
+const fetchUnitChildrenError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_ERROR, error);
 function* handleFetchUnitChildren(api: IApi, request: IEntityRequest) {
   const action = yield api.get<IUnit[]>(apiEndpoints.units.children(request.id))
     .then(fetchUnitChildrenSuccess)
@@ -207,7 +207,7 @@ function* handleFetchUnitChildren(api: IApi, request: IEntityRequest) {
 
 const fetchUnitDepartments = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, request);
 const fetchUnitDepartmentsSuccess = (response: IApiResponse<IEntity[]>) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS, response)
-const fetchUnitDepartmentsError = (error: string|Error) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_ERROR, error.toString())
+const fetchUnitDepartmentsError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_ERROR, error)
 function* handleFetchUnitDepartments(api: IApi, request: IEntityRequest) {
   const action = yield api.get<IEntity[]>(apiEndpoints.units.supportedDepartments(request.id))
     .then(fetchUnitDepartmentsSuccess)
@@ -217,7 +217,7 @@ function* handleFetchUnitDepartments(api: IApi, request: IEntityRequest) {
 }
 
 const fetchUnitParentSuccess = (response: IApiResponse<IUnit>) => action(UnitActionTypes.UNIT_FETCH_PARENT_SUCCESS, response);
-const fetchUnitParentError = (error: string|Error) => action(UnitActionTypes.UNIT_FETCH_PARENT_ERROR, error.toString());
+const fetchUnitParentError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_PARENT_ERROR, error);
 function* handleFetchUnitParent(api: IApi, unit: IUnit) {
   if (unit.parentId) {
     const action = yield api
@@ -283,7 +283,7 @@ function* handleAddChild(api: IApi, child: IUnit) {
   yield put(action)
 }
 
-const deleteChildError = (error:string|Error) => action(UnitActionTypes.UNIT_DELETE_CHILD_ERROR, error.toString())
+const deleteChildError = (error:Error) => action(UnitActionTypes.UNIT_DELETE_CHILD_ERROR, error)
 function* handleRemoveChild(api: IApi, child: IUnit) {
   if (!child.parentId) return;
 
@@ -298,7 +298,7 @@ function* handleRemoveChild(api: IApi, child: IUnit) {
   yield put(action)
 }
 
-const saveDepartmentError = (error: string|Error) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_ERROR, error.toString())
+const saveDepartmentError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_ERROR, error)
 function* handleSaveDepartment(api: IApi, department: ISupportedDepartmentRequest) {
   const action = yield api
     .post<ISupportedDepartmentRequest>(apiEndpoints.units.supportedDepartments(department.unitId), department)
@@ -308,7 +308,7 @@ function* handleSaveDepartment(api: IApi, department: ISupportedDepartmentReques
   yield put(action)
 }
 
-const deleteDepartmentError = (error: string|Error) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_ERROR, error.toString())
+const deleteDepartmentError = (error: Error) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_ERROR, error)
 function* handleDeleteDepartment(api: IApi, department: ISupportedDepartmentRequest) {
   const action = yield api
     .delete(apiEndpoints.units.supportedDepartments(department.unitId, department.id))

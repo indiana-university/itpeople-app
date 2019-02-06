@@ -49,7 +49,7 @@ import { Reducer, AnyAction } from "redux";
 export interface IState
     extends IApiState<ISimpleSearchRequest, ISimpleSearchResult> { }
 
-export const initialState: IState = defaultState
+export const initialState: IState = defaultState()
 
 export const reducer: Reducer<IState> = (state = initialState, act) => {
     switch (act.type) {

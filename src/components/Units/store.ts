@@ -29,7 +29,7 @@ import { Reducer } from 'redux'
 import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from '../types'
 
 // Type-safe initialState!
-const initialState: IState = defaultState;
+const initialState: IState = defaultState();
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
 // everything will remain type-safe.
