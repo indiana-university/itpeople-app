@@ -64,7 +64,7 @@ export const TaskSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, act
 export const TaskErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
   ...state,
   data: undefined,
-  error: action.payload,
+  error: action.payload && action.payload.toString(),
   loading: false,
   request: undefined
 });
