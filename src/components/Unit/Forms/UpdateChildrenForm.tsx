@@ -87,7 +87,7 @@ const form: React.SFC<IFormProps> = props => {
               <li key={index}>
                 <Row>
                   <Col style={{ minWidth: 60, flexGrow: 0 }}>
-                    <ChildrenUnitsIcon width="100%" height="auto" />
+                    <ChildrenUnitsIcon width="100%" />
                   </Col>
                   <Col>
                     <h4>{unit.name}</h4>
