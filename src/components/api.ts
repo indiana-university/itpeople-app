@@ -43,7 +43,7 @@ export const call: IApiCall = async <T>(method: string, apiUrl: string, path: st
 
 export const restApi = (caller: IApiCall = callApiWithAuth, apiUrl = API_ENDPOINT): IApi => ({
   get: <T>(path: string) => caller<T>("get", apiUrl, path),
-  put: <T>(path: string, data: T) => caller<T>("get", apiUrl, path, data),
+  put: <T>(path: string, data: T) => caller<T>("put", apiUrl, path, data),
   post: <T>(path: string, data: T) => caller<T>("post", apiUrl, path, data),
   delete: <T>(path: string) => caller<T>("delete", apiUrl, path)
 });
