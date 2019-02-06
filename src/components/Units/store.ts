@@ -20,7 +20,7 @@ export interface IState extends IApiState<{}, IEntity[]> {
 import { action } from 'typesafe-actions'
 
 const fetchRequest = () => action(UnitsActionTypes.UNITS_FETCH_REQUEST)
-const fetchSuccess = (response: IApiResponse< IEntity[]>) => action(UnitsActionTypes.UNITS_FETCH_SUCCESS, response.data)
+const fetchSuccess = (response: IApiResponse< IEntity[]>) => action(UnitsActionTypes.UNITS_FETCH_SUCCESS, response)
 const fetchError = (error: string) => action(UnitsActionTypes.UNITS_FETCH_ERROR, error)
 //#endregion
 
@@ -30,6 +30,7 @@ import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from '../types
 
 // Type-safe initialState!
 const initialState: IState = {
+    permissions: [],
     data: undefined,
     error: undefined,
     loading: false,

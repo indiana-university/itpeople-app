@@ -40,6 +40,7 @@ import { restApi, IApiResponse, IApi } from '../api';
 
 // Type-safe initialState!
 const initialState: IState = {
+    permissions: [],
     data: undefined,
     error: undefined,
     loading: false,

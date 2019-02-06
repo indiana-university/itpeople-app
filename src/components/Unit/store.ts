@@ -171,7 +171,7 @@ function* handleFetchUnit(api: IApi, request: IEntityRequest) {
 }
 
 const fetchUnitProfile = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_PROFILE_REQUEST, request);
-const fetchUnitProfileSuccess = (response: IApiResponse<IUnit>) => action(UnitActionTypes.UNIT_FETCH_PROFILE_SUCCESS, response.data);
+const fetchUnitProfileSuccess = (response: IApiResponse<IUnit>) => action(UnitActionTypes.UNIT_FETCH_PROFILE_SUCCESS, response);
 const fetchUnitProfileError = (error: string|Error) => action(UnitActionTypes.UNIT_FETCH_PROFILE_ERROR, error.toString())
 function* handleFetchUnitProfile(api: IApi, request: IEntityRequest) {
   const action = yield api
@@ -183,7 +183,7 @@ function* handleFetchUnitProfile(api: IApi, request: IEntityRequest) {
 }
 
 const fetchUnitMembers = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, request);
-const fetchUnitMembersSuccess = (response: IApiResponse<IUnitMember[]>) => action(UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS, response.data);
+const fetchUnitMembersSuccess = (response: IApiResponse<IUnitMember[]>) => action(UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS, response);
 const fetchUnitMembersError = (error: string|Error) => action(UnitActionTypes.UNIT_DELETE_MEMBER_ERROR, error.toString())
 function* handleFetchUnitMembers(api: IApi, request: IEntityRequest) {
   const action = yield api
@@ -195,7 +195,7 @@ function* handleFetchUnitMembers(api: IApi, request: IEntityRequest) {
 }
 
 const fetchUnitChildren = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, request);
-const fetchUnitChildrenSuccess = (response: IApiResponse<IEntityRequest[]>) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS, response.data);
+const fetchUnitChildrenSuccess = (response: IApiResponse<IEntityRequest[]>) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS, response);
 const fetchUnitChildrenError = (error: string|Error) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_ERROR, error.toString());
 function* handleFetchUnitChildren(api: IApi, request: IEntityRequest) {
   const action = yield api.get<IUnit[]>(apiEndpoints.units.children(request.id))
@@ -206,7 +206,7 @@ function* handleFetchUnitChildren(api: IApi, request: IEntityRequest) {
 }
 
 const fetchUnitDepartments = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, request);
-const fetchUnitDepartmentsSuccess = (response: IApiResponse<IEntity[]>) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS, response.data)
+const fetchUnitDepartmentsSuccess = (response: IApiResponse<IEntity[]>) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS, response)
 const fetchUnitDepartmentsError = (error: string|Error) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_ERROR, error.toString())
 function* handleFetchUnitDepartments(api: IApi, request: IEntityRequest) {
   const action = yield api.get<IEntity[]>(apiEndpoints.units.supportedDepartments(request.id))
@@ -216,7 +216,7 @@ function* handleFetchUnitDepartments(api: IApi, request: IEntityRequest) {
   yield put(action);
 }
 
-const fetchUnitParentSuccess = (response: IApiResponse<IUnit>) => action(UnitActionTypes.UNIT_FETCH_PARENT_SUCCESS, response.data);
+const fetchUnitParentSuccess = (response: IApiResponse<IUnit>) => action(UnitActionTypes.UNIT_FETCH_PARENT_SUCCESS, response);
 const fetchUnitParentError = (error: string|Error) => action(UnitActionTypes.UNIT_FETCH_PARENT_ERROR, error.toString());
 function* handleFetchUnitParent(api: IApi, unit: IUnit) {
   if (unit.parentId) {
@@ -227,7 +227,7 @@ function* handleFetchUnitParent(api: IApi, unit: IUnit) {
       .catch(fetchUnitParentError)
     yield put(action)
   } else {
-    yield put(fetchUnitParentSuccess({data: undefined, url:""}));
+    yield put(fetchUnitParentSuccess({data: undefined, url:"", permissions:[]}));
   }
 }
 

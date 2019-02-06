@@ -37,13 +37,13 @@ export interface IState {
 //#region ACTIONS
 export const fetchRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST, request)
 const fetchProfileRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_REQUEST, request)
-const fetchProfileSuccess = (resposne: IApiResponse<IDepartment>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_SUCCESS, resposne.data)
+const fetchProfileSuccess = (response: IApiResponse<IDepartment>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_SUCCESS, response)
 const fetchProfileError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_ERROR, error)
 const fetchConstituentUnitsRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_CONSTITUENT_UNITS_REQUEST, request)
-const fetchConstituentUnitsSuccess = (resposne: IApiResponse<IUnit[]>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_CONSTITUENT_UNITS_SUCCESS, resposne.data)
+const fetchConstituentUnitsSuccess = (response: IApiResponse<IUnit[]>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_CONSTITUENT_UNITS_SUCCESS, response)
 const fetchConstituentUnitsError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_CONSTITUENT_UNITS_ERROR, error)
 const fetchSupportingUnitsRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_REQUEST, request)
-const fetchSupportingUnitsSuccess = (response: IApiResponse< IUnit[]>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_SUCCESS, response.data)
+const fetchSupportingUnitsSuccess = (response: IApiResponse< IUnit[]>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_SUCCESS, response)
 const fetchSupportingUnitsError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_ERROR, error)
 //#endregion
 
