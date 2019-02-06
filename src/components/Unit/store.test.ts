@@ -11,24 +11,27 @@ import { expectSaga } from 'redux-saga-test-plan'
 import * as unit from './store'
 import { apiEndpoints } from '../effects';
 import { UnitPermissions, IUnitMemberRequest, ISupportedDepartmentRequest, IUnit } from '../types';
-import { IApiCall } from '../api';
+import { IApiCall, restApi } from '../api';
 
 const sagaApiHappyPath = async (saga: any, request: any, expectedMethod: string, expectedPath: string, expectedDispatch: string, expectedPayload: any) => {
-    const api: IApiCall = (m, u, p, d, h): Promise<any> => {
+    const apiCaller: IApiCall = (m, u, p, d, h): Promise<any> => {
         expect(m).toEqual(expectedMethod);
         expect(p).toEqual(expectedPath);
         return Promise.resolve({});
     }
+    const api = restApi("", apiCaller);
     await expectSaga(saga, api, request)
       .put({ type: expectedDispatch, payload: expectedPayload, meta: undefined })
       .silentRun(50);
 }
 
 const sagaApiSadPath = async (saga: any, request: any, expectedDispatch: string) => {
-    const api: IApiCall = (m, u, p, d, h): Promise<any>=>
-        Promise.resolve({ errors: ["Error"] });
+    const errors = { errors: ["Error"] };
+    const apiCaller: IApiCall = (m, u, p, d, h): Promise<any>=>
+        Promise.reject(errors);
+    const api = restApi("", apiCaller);
     await expectSaga(saga, api, request)
-        .put({ type: expectedDispatch, payload: ["Error"], meta: undefined })
+        .put({ type: expectedDispatch, payload: errors, meta: undefined })
         .silentRun(50);
 };
 
