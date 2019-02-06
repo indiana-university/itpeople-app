@@ -16,10 +16,7 @@ import UpdateChildrenForm from "../Forms/UpdateChildrenForm";
 import UpdateDepartmentsForm from "../Forms/UpdateDepartmentsForm";
 import { Loader } from "../../Loader";
 
-interface IAuthenticatedUsername {
-  authenticatedUsername: string;
-}
-interface IProps extends unit.IState, IAuthenticatedUsername {
+interface IProps extends unit.IState {
   cancel: typeof unit.cancel;
   id: number;
 }

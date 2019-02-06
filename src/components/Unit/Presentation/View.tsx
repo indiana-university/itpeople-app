@@ -17,16 +17,12 @@ import { IEntity, IDefaultState } from "../../types";
 import Departments from "./Departments";
 import { Pencil } from "src/components/icons";
 
-interface IAuthenticatedUsername {
-  authenticatedUsername: string;
-}
-
 interface IProps {
   edit(): any;
   unitChildren: IDefaultState<IEntity[]>;
 }
 
-const Presentation: React.SFC<IState & IAuthenticatedUsername & IProps> = props => {
+const Presentation: React.SFC<IState & IProps> = props => {
   const { edit, profile, members, parent, unitChildren, departments } = props;
   const name = profile.data ? profile.data.name : "...";
   return (

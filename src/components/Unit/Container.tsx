@@ -38,11 +38,6 @@ class Container extends React.Component<
   }
 
   public render() {
-    let authenticatedUsername =
-      (this.props.auth &&
-        this.props.auth.data &&
-        this.props.auth.data.user_name) ||
-      "";
     const { view, edit, cancel, match } = this.props;
     return (
       <>
@@ -50,7 +45,6 @@ class Container extends React.Component<
           <>
             <Edit
               {...this.props}
-              authenticatedUsername={authenticatedUsername}
               cancel={cancel}
               id={match.params.id}
             />
@@ -60,7 +54,6 @@ class Container extends React.Component<
           <>
             <Unit
               {...this.props}
-              authenticatedUsername={authenticatedUsername}
               edit={edit}
             />
           </>
