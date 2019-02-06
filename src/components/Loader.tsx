@@ -5,7 +5,6 @@
 
 import * as React from "react";
 import { IDefaultState } from "./types";
-import NotFound from "./Errors/404";
 
 export const Loader = ({ loading, loadingMessage, data, error, children }: IDefaultState<any> & IProps) => (
   <>
