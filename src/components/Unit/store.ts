@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { IApiState, IEntity, ViewStateType, IEntityRequest, IUnit, IUnitMember, ISupportedDepartment, IUnitMemberRequest, ISupportedDepartmentRequest } from "../types";
+import { IApiState, IEntity, ViewStateType, IEntityRequest, IUnit, IUnitMember, ISupportedDepartment, IUnitMemberRequest, ISupportedDepartmentRequest, defaultState } from "../types";
 import { lookup } from "../lookup";
 
 //#region TYPES
@@ -91,11 +91,11 @@ import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from "../types
 
 // Type-safe initialState!
 const initialState: IState = {
-  profile: { loading: false },
-  members: { loading: false },
-  unitChildren: { loading: false },
-  parent: { loading: false },
-  departments: { loading: false },
+  profile: defaultState,
+  members: defaultState,
+  unitChildren: defaultState,
+  parent: defaultState,
+  departments: defaultState,
   view: ViewStateType.Viewing
 };
 

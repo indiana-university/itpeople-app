@@ -9,7 +9,8 @@ import {
     IApiState,
     TaskErrorReducer,
     TaskStartReducer,
-    TaskSuccessReducer
+    TaskSuccessReducer,
+    defaultState
 } from "../types";
 import { SearchLists } from "./Results";
 
@@ -48,12 +49,7 @@ import { Reducer, AnyAction } from "redux";
 export interface IState
     extends IApiState<ISimpleSearchRequest, ISimpleSearchResult> { }
 
-export const initialState: IState = {
-    data: undefined,
-    error: undefined,
-    loading: false,
-    request: undefined
-};
+export const initialState: IState = defaultState
 
 export const reducer: Reducer<IState> = (state = initialState, act) => {
     switch (act.type) {

@@ -7,7 +7,7 @@ import { Reducer, AnyAction  } from 'redux'
 import { all, fork, takeEvery, put } from 'redux-saga/effects'
 import { action } from 'typesafe-actions'
 import { apiEndpoints, signinIfUnauthorized } from '../effects'
-import { IApiState, TaskErrorReducer, TaskStartReducer, TaskSuccessReducer, IEntityRequest, IDepartment, IUnit } from '../types'
+import { IApiState, TaskErrorReducer, TaskStartReducer, TaskSuccessReducer, IEntityRequest, IDepartment, IUnit, defaultState } from '../types'
 import { restApi, IApi, IApiResponse } from '../api';
 
 //#region TYPES
@@ -50,9 +50,9 @@ const fetchSupportingUnitsError = (error: string) => action(DepartmentActionType
 
 //#region REDUCER
 export const initialState: IState = {
-  profile: { loading: false },
-  constituentUnits: { loading: false },
-  supportingUnits: {loading: false},
+  profile: defaultState,
+  constituentUnits: defaultState,
+  supportingUnits: defaultState,
 }
 
 export const reducer: Reducer<IState> = (state = initialState, act) => {

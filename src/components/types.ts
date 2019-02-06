@@ -49,11 +49,19 @@ export namespace Permissions {
 
 // action = {type; payload: IApiResponse}
 export interface IDefaultState<TData> {
-  readonly permissions?: Permissions[];
+  readonly permissions: Permissions[];
   readonly data?: TData;
   readonly error?: string;
   readonly loading: boolean;
 }
+
+export const defaultState = { 
+  permissions: [], 
+  data: undefined, 
+  error: undefined,
+  loading: false
+};
+
 // Declare state types with `readonly` modifier to get compile time immutability.
 // https://github.com/piotrwitek/react-redux-typescript-guide#state-with-type-level-immutability
 export interface IApiState<TRequest, TResponse> extends IDefaultState<TResponse> {

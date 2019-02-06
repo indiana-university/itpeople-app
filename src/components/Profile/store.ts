@@ -4,7 +4,7 @@
  */
 
 //#region TYPES
-import { IApiState, IEntityRequest, IPerson, IUnitMembership } from "../types";
+import { IApiState, IEntityRequest, IPerson, IUnitMembership, defaultState } from "../types";
 
 export const enum ProfileActionTypes {
   PROFILE_FETCH_REQUEST = "@@profile/PROFILE_FETCH_REQUEST",
@@ -56,8 +56,8 @@ import {
 
 // Type-safe initialState!
 export const initialState: IState =  {
-  person: { loading: false },
-  memberships: { loading: false },
+  person: defaultState,
+  memberships: defaultState,
   visuallyExpandedUnits: []
 };
 
