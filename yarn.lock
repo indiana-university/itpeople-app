@@ -6832,10 +6832,10 @@ react-display-name@0.2.4:
   resolved "https://registry.yarnpkg.com/react-display-name/-/react-display-name-0.2.4.tgz#e2a670b81d79a2204335510c01246f4c92ff12cf"
   integrity sha512-zvU6iouW+SWwHTyThwxGICjJYCMZFk/6r/+jmOdC7ntQoPlS/Pqb81MkxaMf2bHTSq9TN3K3zX2/ayMW/jCtyA==
 
-react-dom@16.4.1:
-  version "16.4.1"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.1.tgz#7f8b0223b3a5fbe205116c56deb85de32685dad6"
-  integrity sha512-1Gin+wghF/7gl4Cqcvr1DxFX2Osz7ugxSwl6gBqCMpdrxHjIFUS7GYxrFftZ9Ln44FHw0JxCFD9YtZsrbR5/4A==
+react-dom@16.4.2:
+  version "16.4.2"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.2.tgz#4afed569689f2c561d2b8da0b819669c38a0bda4"
+  integrity sha512-Usl73nQqzvmJN+89r97zmeUpQDKDlh58eX6Hbs/ERdDHzeBzWy+ENk7fsGQ+5KxArV1iOFPT46/VneklK9zoWw==
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -6970,10 +6970,10 @@ react-test-renderer@^16.0.0-0:
     react-is "^16.5.0"
     schedule "^0.3.0"
 
-react@16.4.1:
-  version "16.4.1"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.4.1.tgz#de51ba5764b5dbcd1f9079037b862bd26b82fe32"
-  integrity sha512-3GEs0giKp6E0Oh/Y9ZC60CmYgUPnp7voH9fbjWsvXtYFb4EWtgQub0ADSq0sJR0BbHc4FThLLtzlcFaFXIorwg==
+react@16.4.2:
+  version "16.4.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.4.2.tgz#2cd90154e3a9d9dd8da2991149fdca3c260e129f"
+  integrity sha512-dMv7YrbxO4y2aqnvA7f/ik9ibeLSHQJTI6TrYAenPSaQ6OXfb+Oti+oJiy8WBxgRzlKatYqtCjphTgDSCEiWFg==
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -7385,20 +7385,20 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rivet-react@0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/rivet-react/-/rivet-react-0.7.0.tgz#d3249d83cdb3e3bd5efc7c285b334662b46de13a"
-  integrity sha512-M+Q1AeelnSCTWNVChDDG7TIf208O3ov+O3uRWcuKZOGs7IANtrRAfZ56RifMkfJRfKVpYTnyzNnxONXPl7ZCVw==
+rivet-react@0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/rivet-react/-/rivet-react-0.7.1.tgz#6ecea47aea988e18cbe0239c2072e96ed3bb2fbc"
+  integrity sha512-PBVcpDxhoGaXjOKRQ4fvoVYj7fbC5GUAzM42L7sFwlnaC+elagToQ8U/Iath0CzlaFvK6UaYFGM2xiKCl0CUNw==
   dependencies:
     classnames "2.2.6"
-    react "16.4.1"
+    react "16.4.2"
     react-display-name "0.2.4"
-    react-dom "16.4.1"
+    react-dom "16.4.2"
 
-rivet-uits@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/rivet-uits/-/rivet-uits-1.1.0.tgz#bd50edae3fd222cd1f8d67416e6513eecf9a4c23"
-  integrity sha512-FGoiWbwvKlq6s+jrfK2pNnuSTPdUuAaNyJskl8TqAYRcDAp2975mSjueVqS9r3fqd0DuqJt5tDfMyOV3m+fYTg==
+rivet-uits@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/rivet-uits/-/rivet-uits-1.2.1.tgz#345b7a8254e335e61e9ac73b16d9b04bd93c1ce4"
+  integrity sha512-dPbRq63nTKgnOjph2XCVNItNjOKt+5xNADNTXD7IVPh/7ArBmwla2zcO2dFPXBXH268fKyKtqraCefLiJg78wA==
 
 rst-selector-parser@^2.2.3:
   version "2.2.3"
