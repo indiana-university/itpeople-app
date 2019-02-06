@@ -51,7 +51,9 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 import { all, fork, takeEvery, put } from 'redux-saga/effects'
-import { restApi, IApi, signinIfUnauthorized, IApiResponse } from '../api';
+import { restApi, IApi, IApiResponse } from '../api';
+import { signinIfUnauthorized } from '../effects';
+
 const api = restApi();
 function* handleFetch(api:IApi) {
   const action = yield api.get<IEntity[]>( '/units')

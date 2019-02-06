@@ -8,9 +8,9 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { Footer, Header, HeaderIdentity, HeaderNavigation } from 'rivet-react';
 import * as Search from '../Search/store'
-import * as Auth from '../SignIn/store'
 import { IApplicationState, IAuthUser  } from '../types'
 import SearchForm from './SearchForm';
+import { signInRequest, signOutRequest } from '../SignIn/store';
 
 export interface IPageProps {
     children?: React.ReactNode
@@ -23,8 +23,8 @@ const fixNavLinkAlignment = {
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface IPropsFromDispatch {
-  signInRequest: typeof Auth.signInRequest
-  signOutRequest: typeof Auth.signOutRequest
+  signInRequest: typeof signInRequest
+  signOutRequest: typeof signOutRequest
   submitSearch: typeof Search.submit
 }
 
@@ -71,8 +71,8 @@ const mapStateToProps = ({ auth }: IApplicationState) => ({
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
-  signInRequest: () => dispatch(Auth.signInRequest()),
-  signOutRequest: () => dispatch(Auth.signOutRequest()),
+  signInRequest: () => dispatch(signInRequest()),
+  signOutRequest: () => dispatch(signOutRequest()),
   submitSearch: () => dispatch(Search.submit())
 })
 

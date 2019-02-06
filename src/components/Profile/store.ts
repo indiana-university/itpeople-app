@@ -88,7 +88,8 @@ export const reducer: Reducer<IState> = (state = initialState, act): IState => {
 
 //#region SAGAS
 import { all, fork, takeEvery, put } from "redux-saga/effects";
-import { restApi, IApiResponse, signinIfUnauthorized, IApi } from "../api";
+import { restApi, IApiResponse, IApi } from "../api";
+import { signinIfUnauthorized } from "../effects";
 
 const api= restApi();
 

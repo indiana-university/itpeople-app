@@ -1,9 +1,10 @@
 import { action } from "typesafe-actions";
 import { Reducer } from "redux";
 import { takeEvery, all, fork, put, select } from "redux-saga/effects";
-import { restApi, IApiResponse, IApi, signinIfUnauthorized } from "./api";
+import { restApi, IApiResponse, IApi } from "./api";
 import { PayloadAction } from "typesafe-actions/dist/types";
 import { IApplicationState } from "./types";
+import { signinIfUnauthorized } from "./effects";
 
 const api = restApi();
 

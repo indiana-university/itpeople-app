@@ -9,7 +9,7 @@ import * as React from 'react';
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { IApplicationState, IAuthRequest } from '../types';
-import * as Auth from './store'
+import { postSignInRequest, IState } from './store';
 
 interface ILocationProps {
     search: string;
@@ -18,10 +18,10 @@ interface IComponentProps {
     location: ILocationProps
 }
 interface IDispatchProps {
-    postSignInRequest: typeof Auth.postSignInRequest
+    postSignInRequest: typeof postSignInRequest
 }
 
-class Component extends React.Component<Auth.IState & IComponentProps & IDispatchProps> {
+class Component extends React.Component<IState & IComponentProps & IDispatchProps> {
 
     public componentDidMount() {
         const queryParam = queryString.parse(this.props.location.search)
@@ -46,10 +46,10 @@ const mapStateToProps = (state: IApplicationState) =>
     state.auth
   
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    postSignInRequest: (request:IAuthRequest) => dispatch(Auth.postSignInRequest(request))
+    postSignInRequest: (request:IAuthRequest) => dispatch(postSignInRequest(request))
 })
   
-export default connect<Auth.IState, IDispatchProps>(
+export default connect<IState, IDispatchProps>(
     mapStateToProps,
     mapDispatchToProps
   )(Component)

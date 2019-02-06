@@ -6,9 +6,9 @@
 import { Reducer, AnyAction  } from 'redux'
 import { all, fork, takeEvery, put } from 'redux-saga/effects'
 import { action } from 'typesafe-actions'
-import { apiEndpoints } from '../effects'
+import { apiEndpoints, signinIfUnauthorized } from '../effects'
 import { IApiState, TaskErrorReducer, TaskStartReducer, TaskSuccessReducer, IEntityRequest, IDepartment, IUnit } from '../types'
-import { restApi, IApi, signinIfUnauthorized, IApiResponse } from '../api';
+import { restApi, IApi, IApiResponse } from '../api';
 
 //#region TYPES
 export const enum DepartmentActionTypes {

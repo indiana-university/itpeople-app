@@ -10,7 +10,7 @@ import { Col, Row } from "rivet-react";
 import PageTitle from "../layout/PageTitle";
 import { Content } from "../layout/Content";
 import { IApplicationState } from "../types";
-import { signInRequest } from "../SignIn/actions";
+import { signInRequest } from "../SignIn/store";
 
 const Component: React.SFC<IDispatchProps & IStateProps> = ({
   signInRequest,

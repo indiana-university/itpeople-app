@@ -3,15 +3,15 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-//#region TYPES
-import { IApiState, IAuthRequest, IAuthUser, IAuthResult } from '../types'
+import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer, IAuthUser, IAuthResult, IAuthRequest, IApiState } from '../types'
 
+//#region TYPES
 export const enum AuthActionTypes {
-    SIGN_IN_REQUEST = '@@auth/SIGN_IN',
-    POST_SIGN_IN_REQUEST = '@@auth/POST_SIGN_IN',
-    POST_SIGN_IN_SUCCESS = '@@auth/POST_SIGN_IN_SUCCESS',
-    POST_SIGN_IN_ERROR = '@@auth/POST_SIGN_IN_ERROR',
-    SIGN_OUT = '@@auth/SIGN_OUT',
+  SIGN_IN_REQUEST = "@@auth/SIGN_IN",
+  POST_SIGN_IN_REQUEST = "@@auth/POST_SIGN_IN",
+  POST_SIGN_IN_SUCCESS = "@@auth/POST_SIGN_IN_SUCCESS",
+  POST_SIGN_IN_ERROR = "@@auth/POST_SIGN_IN_ERROR",
+  SIGN_OUT = "@@auth/SIGN_OUT"
 }
 
 // The name of the authorized user
@@ -19,18 +19,24 @@ export interface IState extends IApiState<IAuthRequest, IAuthUser> { }
 //#endregion
 
 //#region ACTIONS
-import { action } from 'typesafe-actions'
+import { action } from "typesafe-actions";
 
-const signInRequest = () => action(AuthActionTypes.SIGN_IN_REQUEST)
-const postSignInRequest = (request: IAuthRequest) => action(AuthActionTypes.POST_SIGN_IN_REQUEST, request)
-const postSignInSuccess = (data: IAuthUser) => action(AuthActionTypes.POST_SIGN_IN_SUCCESS, data)
-const postSignInError = (message: string) => action(AuthActionTypes.POST_SIGN_IN_ERROR, message)
-const signOutRequest = () => action(AuthActionTypes.SIGN_OUT)
+const signInRequest = () => action(AuthActionTypes.SIGN_IN_REQUEST);
+const postSignInRequest = (request: IAuthRequest) => action(AuthActionTypes.POST_SIGN_IN_REQUEST, request);
+const postSignInSuccess = (data: IAuthUser) => action(AuthActionTypes.POST_SIGN_IN_SUCCESS, data);
+const postSignInError = (message: string) => action(AuthActionTypes.POST_SIGN_IN_ERROR, message);
+const signOutRequest = () => action(AuthActionTypes.SIGN_OUT);
 //#endregion
+
+
+import * as JWT from "jwt-decode";
+import { push } from "react-router-redux";
+import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { clearAuthToken, redirectToLogin, setAuthToken } from "../effects";
 
 //#region REDUCERS
 import { Reducer, AnyAction } from 'redux'
-import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from '../types'
+import { restApi, IApiResponse, IApi } from '../api';
 
 // Type-safe initialState!
 const initialState: IState = {
@@ -67,19 +73,11 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 //#endregion
 
 //#region SAGAS
-import * as JWT from 'jwt-decode'
-import { push } from 'react-router-redux';
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects'
-import { clearAuthToken, redirectToLogin, setAuthToken } from '../effects'
-import { restApi, IApiResponse, IApi } from '../api';
-
-const api = restApi()
 
 function* handleSignIn(){
   yield call(clearAuthToken)
   yield call(redirectToLogin)
 }
-
 
 const handlePostSignInResponse = (resp: IApiResponse<IAuthResult>) => {
   const authUser = resp.data;
@@ -96,16 +94,17 @@ const handlePostSignInResponse = (resp: IApiResponse<IAuthResult>) => {
 
 const handlePostSignInError = (err: any) => [
   call(clearAuthToken),
-  postSignInError(err)
-]
+  put(postSignInError(err))
+];
 
 function* handlePostSignIn(api: IApi, req: IAuthRequest) {
-  const postSignInActions = yield api
+  const postSignInEffects = yield api
     .get<IAuthResult>(`/auth?oauth_code=${req.code}`)
     .then(handlePostSignInResponse)
     .catch(handlePostSignInError);
-  for (let action in postSignInActions){
-    yield action
+
+  for (let i in postSignInEffects){
+    yield postSignInEffects[i]
   }
 }
 
@@ -121,7 +120,7 @@ function* watchSignIn() {
 }
 
 function* watchPostSignIn() {
-  yield takeEvery(AuthActionTypes.POST_SIGN_IN_REQUEST, (a:AnyAction) => handlePostSignIn(api, a.payload))
+  yield takeEvery(AuthActionTypes.POST_SIGN_IN_REQUEST, (a:AnyAction) => handlePostSignIn(restApi(), a.payload))
 }
 
 function* watchSignOut() {
@@ -136,10 +135,10 @@ function* saga() {
 
 
 export {
+    signInRequest,
     postSignInRequest,
     postSignInSuccess,
     postSignInError,
-    signInRequest,
     signOutRequest,
     reducer,
     initialState,

@@ -4,7 +4,6 @@
  */
 
 import { NotAuthorizedError, ForbiddenError } from "./errors";
-import { signInRequest } from "./SignIn/store";
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || "";
 
@@ -41,26 +40,12 @@ export const call: IApiCall = async <T>(method: string, apiUrl: string, path: st
       throw { ...err, errors: err.stack };
     });
 
-export const restApi = (caller: IApiCall = callApiWithAuth, apiUrl = API_ENDPOINT): IApi => ({
+export const restApi = (apiUrl = API_ENDPOINT, caller: IApiCall = callApiWithAuth): IApi => ({
   get: <T>(path: string) => caller<T>("get", apiUrl, path),
   put: <T>(path: string, data: T) => caller<T>("put", apiUrl, path, data),
   post: <T>(path: string, data: T) => caller<T>("post", apiUrl, path, data),
   delete: <T>(path: string) => caller<T>("delete", apiUrl, path)
 });
-
-/**
- * Handle a request that results in an exception.
- *
- * @param {*} err The error object
- * @param {(r:string) => PayloadMetaAction<string,string,any>} error A request failure action generator
- */
-export function signinIfUnauthorized(err: Error) {
-  if (err instanceof NotAuthorizedError) {
-    return signInRequest();
-  }
-
-  throw err;
-}
 
 export interface IApi {
   /**

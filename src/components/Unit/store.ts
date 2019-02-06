@@ -160,8 +160,8 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 //#region SAGA
 import { all, fork, takeEvery, put } from "redux-saga/effects";
-import { apiEndpoints } from "../effects";
-import { IApi, signinIfUnauthorized, IApiResponse, restApi } from "../api";
+import { apiEndpoints, signinIfUnauthorized } from "../effects";
+import { IApi, IApiResponse, restApi } from "../api";
 
 function* handleFetchUnit(api: IApi, request: IEntityRequest) {
   yield put(fetchUnitProfile(request))
