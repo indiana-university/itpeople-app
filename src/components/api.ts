@@ -97,4 +97,5 @@ const getPermissions = (headers: Headers) : Permission[] =>
   (headers.get("X-User-Permissions") + "")
   .split(",")
   .map(v => v.trim().toUpperCase())
-  .map(Permissions.parse);
+  .map(Permissions.parse)
+  .filter(p => p !== undefined);
