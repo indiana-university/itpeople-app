@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { IApiState, IEntity } from '../types'
+import { IApiState, IEntity, defaultState } from '../types'
 
 //#region TYPES
 export const enum UnitsActionTypes {
@@ -29,13 +29,7 @@ import { Reducer } from 'redux'
 import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from '../types'
 
 // Type-safe initialState!
-const initialState: IState = {
-    permissions: [],
-    data: undefined,
-    error: undefined,
-    loading: false,
-    request: undefined,
-}
+const initialState: IState = defaultState;
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
 // everything will remain type-safe.

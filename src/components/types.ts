@@ -55,18 +55,20 @@ export interface IDefaultState<TData> {
   readonly loading: boolean;
 }
 
-export const defaultState = { 
-  permissions: [], 
-  data: undefined, 
-  error: undefined,
-  loading: false
-};
-
 // Declare state types with `readonly` modifier to get compile time immutability.
 // https://github.com/piotrwitek/react-redux-typescript-guide#state-with-type-level-immutability
 export interface IApiState<TRequest, TResponse> extends IDefaultState<TResponse> {
   readonly request?: TRequest;
 }
+
+export const defaultState = {
+  permissions: [],
+  data: undefined,
+  error: undefined,
+  loading: false,
+  request: undefined
+};
+
 
 import { AnyAction } from "redux";
 import { ILookupState } from "./lookup";
