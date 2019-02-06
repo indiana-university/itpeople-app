@@ -14,8 +14,6 @@ export const enum AuthActionTypes {
     SIGN_OUT = '@@auth/SIGN_OUT',
 }
 
-
-
 // The name of the authorized user
 export interface IState extends IApiState<IAuthRequest, IAuthUser> { }
 //#endregion
@@ -68,8 +66,6 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 }
 //#endregion
 
-
-
 //#region SAGAS
 import * as JWT from 'jwt-decode'
 import { push } from 'react-router-redux';
@@ -78,8 +74,6 @@ import { clearAuthToken, handleError, redirectToLogin, setAuthToken } from '../e
 import { restApi, IApiResponse } from '../api';
 
 const api = restApi();
-
-const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
 function* handleSignIn(){
   yield call(clearAuthToken)
