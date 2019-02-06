@@ -13,8 +13,7 @@ import {
   setCurrentList,
   fetchRequest,
   ISimpleSearchRequest,
-  IState,
-  submit
+  IState
 } from "./store";
 import { Loader } from "../Loader";
 import { SearchLists } from "./Results";
@@ -28,9 +27,8 @@ interface ISearchProps {
 }
 
 interface IPropsFromDispatch {
-  searchRequest: typeof fetchRequest;
+  fetchRequest: typeof fetchRequest;
   setCurrentList: typeof setCurrentList;
-  submitSearch: typeof submit;
 }
 
 interface ISimpleSearchContainerProps
@@ -40,7 +38,7 @@ interface ISimpleSearchContainerProps
 
 const executeSearch = (props: ISimpleSearchContainerProps) => {
   const queryParam = queryString.parse(props.location.search);
-  props.searchRequest({ term: queryParam.term });
+  props.fetchRequest({ term: queryParam.term });
 };
 
 class Container extends React.Component<ISimpleSearchContainerProps> {
@@ -57,13 +55,11 @@ class Container extends React.Component<ISimpleSearchContainerProps> {
   public render() {
     return (
       <Loader {...this.props} loadingMessage="Searching...">
-        {this.props.data && (
+        {this.props.data &&
           <Search
             {...this.props.data}
-            submitSearch={this.props.submitSearch}
             setCurrentList={this.props.setCurrentList}
-          />
-        )}
+          />}
       </Loader>
     );
   }
@@ -72,9 +68,8 @@ class Container extends React.Component<ISimpleSearchContainerProps> {
 const mapStateToProps = (state: IApplicationState) => state.searchSimple;
 
 const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
-  searchRequest: (request: ISimpleSearchRequest) => dispatch(fetchRequest(request)),
-  setCurrentList: (list: SearchLists) => dispatch(setCurrentList(list)),
-  submitSearch: () => dispatch(submit())
+  fetchRequest: (request: ISimpleSearchRequest) => dispatch(fetchRequest(request)),
+  setCurrentList: (list: SearchLists) => dispatch(setCurrentList(list))
 });
 
 export default connect(
