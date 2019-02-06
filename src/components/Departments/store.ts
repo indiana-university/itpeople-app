@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { IApiState, IEntity } from '../types'
+import { IApiState, IDepartment } from '../types'
 
 //#region TYPES
 export const enum DepartmentsActionTypes {
@@ -12,7 +12,7 @@ export const enum DepartmentsActionTypes {
     DEPARTMENTS_FETCH_ERROR = '@@departments/FETCH_ERROR',
 }
 
-export interface IState extends IApiState<{}, IEntity[]> { 
+export interface IState extends IApiState<{}, IDepartment[]> { 
 }
 //#endregion
 
@@ -20,8 +20,8 @@ export interface IState extends IApiState<{}, IEntity[]> {
 import { action } from 'typesafe-actions'
 
 export const fetchRequest = () => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_REQUEST)
-export const fetchSuccess = (data: IEntity[]) => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_SUCCESS, data)
-export const fetchError = (error: string) => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_ERROR, error)
+const fetchSuccess = (response: IApiResponse<IDepartment[]>) => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_SUCCESS, response.data)
+const fetchError = (error: string) => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_ERROR, error)
 //#endregion
 
 //#region REDUCER
@@ -50,17 +50,25 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
 
 
 //#region SAGA
-import { all, fork, takeEvery } from 'redux-saga/effects'
-import { httpGet, callApiWithAuth } from '../effects'
+import { all, fork, takeEvery, put } from 'redux-saga/effects'
+import { apiEndpoints } from '../effects'
+import { IApi, restApi, signinIfUnauthorized, IApiResponse } from "../api";
 
-function* handleFetch() {
-  yield httpGet<IEntity[]>(callApiWithAuth, "/departments", fetchSuccess, fetchError);
+const api = restApi();
+
+function* handleFetch(api: IApi) {
+  const action = yield api
+    .get<IDepartment[]>(apiEndpoints.departments.root())
+    .then(fetchSuccess) 
+    .catch(signinIfUnauthorized)
+    .catch(fetchError)
+  yield put(action)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchDepartmentsFetch() {
-  yield takeEvery(DepartmentsActionTypes.DEPARTMENTS_FETCH_REQUEST, handleFetch)
+  yield takeEvery(DepartmentsActionTypes.DEPARTMENTS_FETCH_REQUEST, () => handleFetch(api))
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.
