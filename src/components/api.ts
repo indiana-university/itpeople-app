@@ -102,7 +102,7 @@ export interface IApiResponse<TData> {
   readonly loading?: boolean;
 }
 
-interface IApiCall {
+export interface IApiCall {
   <T>(method: string, url: string, path: string, data?: T, headers?: any): Promise<IApiResponse<T>>;
 }
 

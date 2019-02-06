@@ -9,11 +9,12 @@
 
 import { expectSaga } from 'redux-saga-test-plan'
 import * as unit from './store'
-import { apiFn, apiEndpoints } from '../effects';
+import { apiEndpoints } from '../effects';
 import { UnitPermissions, IUnitMemberRequest, ISupportedDepartmentRequest, IUnit } from '../types';
+import { IApiCall } from '../api';
 
 const sagaApiHappyPath = async (saga: any, request: any, expectedMethod: string, expectedPath: string, expectedDispatch: string, expectedPayload: any) => {
-    const api: apiFn = (m, u, p, d, h) => {
+    const api: IApiCall = (m, u, p, d, h): Promise<any> => {
         expect(m).toEqual(expectedMethod);
         expect(p).toEqual(expectedPath);
         return Promise.resolve({});
@@ -24,7 +25,7 @@ const sagaApiHappyPath = async (saga: any, request: any, expectedMethod: string,
 }
 
 const sagaApiSadPath = async (saga: any, request: any, expectedDispatch: string) => {
-    const api: apiFn = (m, u, p, d, h) =>
+    const api: IApiCall = (m, u, p, d, h): Promise<any>=>
         Promise.resolve({ errors: ["Error"] });
     await expectSaga(saga, api, request)
         .put({ type: expectedDispatch, payload: ["Error"], meta: undefined })
