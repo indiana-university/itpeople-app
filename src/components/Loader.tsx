@@ -16,7 +16,7 @@ export const Loader = ({ loading, loadingMessage, data, error, children }: IDefa
       </>
     )}
     {!loading && data && children && <>{children}</>}
-    {!loading && error && <NotFound error={error} />}
+    {!loading && error}
   </>
 );
 
