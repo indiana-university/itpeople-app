@@ -12,19 +12,15 @@ import { Modal as RivetModal, Button } from "rivet-react";
 import { ModalProps } from "rivet-react/build/dist/components/Modal/Modal";
 import { ButtonProps } from "rivet-react/build/dist/components/Button/Button";
 
-const Container: React.SFC<IElementProps> = (props: IProps) => {
-  const { id, variant, size, modifier, innerRef, title, children, buttonText, buttonStyle, closeModal, current, onOpen, openModal } = props;
-  const isOpen = id == props.current;
-  const buttonProps = { variant, size, modifier, innerRef, title, style: buttonStyle, onClick: () => props.openModal(id) };
-  const modalProps = { title, children, buttonText, closeModal, current, onOpen, openModal, isOpen, onDismiss: closeModal };
-
-  if (isOpen && props.onOpen) {
-    props.onOpen();
-  }
+const Container: React.SFC<IElementProps> = ({ id, variant, size, modifier, innerRef, title, children, buttonText, buttonStyle, closeModal, current, onOpen, openModal } : IProps) => {
+  const isOpen = id == current;
+  const buttonProps = { variant, size, modifier, innerRef, title, style: buttonStyle, onClick: () => openModal(id) };
+  const modalProps = { title, children, current, isOpen, onDismiss: closeModal };
+  isOpen && onOpen && onOpen();
   return (
     <>
       <Button type="button" {...buttonProps}>
-        {props.buttonText}
+        {buttonText}
       </Button>
       <RivetModal {...modalProps} />
     </>
