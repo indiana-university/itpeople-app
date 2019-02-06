@@ -48,28 +48,6 @@ const apiEndpoints = {
         memberId ? `/people/${id}/memberships/${memberId}` : `/people/${id}/memberships`,
   }
 };
-// GET /units/:id/memberships
-// POST /memberships or POST /units/:id
-// DELETE /memberships/:id
-type apiFn = (method: string, url: string, path: string, data?: any, headers?: any) => Promise<any>
-
-const callApi : apiFn = (method: string, url: string, path: string, data?: any, headers?: any) => {
-    const combinedHeaders = {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        ...headers
-    }
-    return fetch(url + path, {
-        body: JSON.stringify(data),
-        headers: combinedHeaders,
-        method,
-    })
-    .then(res => {
-        if (res.status === 401) return { unauthorized: true }
-        else if (!res.ok) return { errors: [`Unable to complete request. The server returned ${res.statusText} (${res.status})`] }
-        else return res.json()})
-    .catch(err => { errors: [err.ToString()]});
-}
 
 /**
  * Handle a request that results in an exception.
@@ -93,9 +71,7 @@ function* handleError(
 
 
 export { 
-    apiFn,
     apiEndpoints,
-    callApi,
     clearAuthToken,
     handleError,
     getAuthToken,

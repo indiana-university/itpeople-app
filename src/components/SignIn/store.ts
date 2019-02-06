@@ -74,7 +74,10 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 import * as JWT from 'jwt-decode'
 import { push } from 'react-router-redux';
 import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
-import { callApi, clearAuthToken, handleError, redirectToLogin, setAuthToken } from '../effects'
+import { clearAuthToken, handleError, redirectToLogin, setAuthToken } from '../effects'
+import { restApi, IApiResponse } from '../api';
+
+const api = restApi();
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
@@ -82,18 +85,22 @@ function* handleSignIn(){
   yield call(clearAuthToken)
   yield call(redirectToLogin)
 }
+interface IAuthResult{
+  access_token: string
+}
 
 function* handlePostSignIn() {
   try {
     const request = (yield select<IApplicationState>((s) => s.auth.request)) as IAuthRequest
-    const response = yield call(callApi, 'get', API_ENDPOINT, `/auth?oauth_code=${request.code}`)
+    const response: IApiResponse<IAuthResult> = yield api.get<IAuthResult>(`/auth?oauth_code=${request.code}`)
+    const authUser = response.data;
 
-    if (response.errors) {
+    if (!authUser || !authUser.access_token) {
       yield call(clearAuthToken)
-      yield put(postSignInError(response.errors))
+      throw new Error("No access token");
     } else {
-      yield call(setAuthToken, response.access_token)
-      const decoded = JWT<IAuthUser>(response.access_token)
+      yield call(setAuthToken, authUser.access_token)
+      const decoded = JWT<IAuthUser>(authUser.access_token)
       yield put(postSignInSuccess(decoded))
       yield put(push(`/units`))
     }
