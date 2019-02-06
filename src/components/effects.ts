@@ -22,7 +22,7 @@ const redirectToLogin = () =>
 
 const apiEndpoints = {
   departments: {
-    root: (id?: number) => (id ? `/departments/${id}` : "/departments"),
+    root: (id?: number) => id ? `/departments/${id}` : "/departments",
     members: (deptId: number, memberId?: number) =>
       memberId
         ? `/departments/${deptId}/members/${memberId}`
@@ -37,7 +37,7 @@ const apiEndpoints = {
         : `/departments/${deptId}/supportingUnits`
   },
   units: {
-    root: (id?: number) => (id ? `/units/${id}` : "/units"),
+    root: (id?: number) => id ? `/units/${id}` : "/units",
     members: (unitId: number, memberId?: number) =>
       memberId
         ? `/units/${unitId}/members/${memberId}`
@@ -52,7 +52,7 @@ const apiEndpoints = {
         : `/units/${unitId}/supportedDepartments`
   },
   people: {
-    root: (id?: number) => (id ? "/people" : `/people/${id}`),
+    root: (id?: number) => id ? `/people/${id}` : "/people",
     memberships: (id?: number, memberId?: number) =>
       memberId
         ? `/people/${id}/memberships/${memberId}`
