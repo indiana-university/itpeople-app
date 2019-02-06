@@ -4,7 +4,7 @@
  */
 
 //#region TYPES
-import { IApiState, IApplicationState, IAuthRequest, IAuthUser } from '../types'
+import { IApiState, IAuthRequest, IAuthUser, IAuthResult } from '../types'
 
 export const enum AuthActionTypes {
     SIGN_IN_REQUEST = '@@auth/SIGN_IN',
@@ -29,7 +29,7 @@ const signOutRequest = () => action(AuthActionTypes.SIGN_OUT)
 //#endregion
 
 //#region REDUCERS
-import { Reducer } from 'redux'
+import { Reducer, AnyAction } from 'redux'
 import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from '../types'
 
 // Type-safe initialState!
@@ -69,38 +69,43 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 //#region SAGAS
 import * as JWT from 'jwt-decode'
 import { push } from 'react-router-redux';
-import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
-import { clearAuthToken, handleError, redirectToLogin, setAuthToken } from '../effects'
-import { restApi, IApiResponse } from '../api';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects'
+import { clearAuthToken, redirectToLogin, setAuthToken } from '../effects'
+import { restApi, IApiResponse, IApi } from '../api';
 
-const api = restApi();
+const api = restApi()
 
 function* handleSignIn(){
   yield call(clearAuthToken)
   yield call(redirectToLogin)
 }
-interface IAuthResult{
-  access_token: string
+
+
+const handlePostSignInResponse = (resp: IApiResponse<IAuthResult>) => {
+  const authUser = resp.data;
+  if (!authUser || !authUser.access_token) {
+    throw new Error("No access token");
+  } else {
+    return [
+      call(setAuthToken, authUser.access_token),
+      put(postSignInSuccess(JWT<IAuthUser>(authUser.access_token))),
+      put(push(`/units`))
+    ];
+  }
 }
 
-function* handlePostSignIn() {
-  try {
-    const request = (yield select<IApplicationState>((s) => s.auth.request)) as IAuthRequest
-    const response: IApiResponse<IAuthResult> = yield api.get<IAuthResult>(`/auth?oauth_code=${request.code}`)
-    const authUser = response.data;
+const handlePostSignInError = (err: any) => [
+  call(clearAuthToken),
+  postSignInError(err)
+]
 
-    if (!authUser || !authUser.access_token) {
-      yield call(clearAuthToken)
-      throw new Error("No access token");
-    } else {
-      yield call(setAuthToken, authUser.access_token)
-      const decoded = JWT<IAuthUser>(authUser.access_token)
-      yield put(postSignInSuccess(decoded))
-      yield put(push(`/units`))
-    }
-  } catch (err) {
-    yield call(clearAuthToken)
-    yield handleError(err, postSignInError)
+function* handlePostSignIn(api: IApi, req: IAuthRequest) {
+  const postSignInActions = yield api
+    .get<IAuthResult>(`/auth?oauth_code=${req.code}`)
+    .then(handlePostSignInResponse)
+    .catch(handlePostSignInError);
+  for (let action in postSignInActions){
+    yield action
   }
 }
 
@@ -116,7 +121,7 @@ function* watchSignIn() {
 }
 
 function* watchPostSignIn() {
-  yield takeEvery(AuthActionTypes.POST_SIGN_IN_REQUEST, handlePostSignIn)
+  yield takeEvery(AuthActionTypes.POST_SIGN_IN_REQUEST, (a:AnyAction) => handlePostSignIn(api, a.payload))
 }
 
 function* watchSignOut() {

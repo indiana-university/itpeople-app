@@ -166,7 +166,9 @@ export interface IPerson extends IEntity {
 export interface IAuthRequest {
   code: string
 }
-
+export interface IAuthResult {
+  access_token: string
+}
 export interface IAuthUser {
   user_name: string,
   user_role: string
