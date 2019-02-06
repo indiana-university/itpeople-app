@@ -3,12 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { put } from 'redux-saga/effects'
-import { PayloadMetaAction } from "typesafe-actions/dist/types";
-import { NotAuthorizedError } from "./errors";
-import { signInRequest } from './SignIn/store';
-
-const clearAuthToken = () =>
+ const clearAuthToken = () =>
     localStorage.removeItem('authToken')
 
 const getAuthToken = () => 
@@ -49,31 +44,9 @@ const apiEndpoints = {
   }
 };
 
-/**
- * Handle a request that results in an exception.
- *
- * @param {*} err The error object
- * @param {(r:string) => PayloadMetaAction<string,string,any>} error A request failure action generator
- */
-function* handleError(
-    err: any,
-    error: (r:string) => PayloadMetaAction<string,string,any>){
-    if (err instanceof NotAuthorizedError){
-        yield put(signInRequest())
-      }
-      else if (err instanceof Error) {
-        yield put(error(err.stack!))
-      } else {
-        yield put(error('An unknown error occured.'))
-      }  
-}
-
-
-
 export { 
     apiEndpoints,
     clearAuthToken,
-    handleError,
     getAuthToken,
     setAuthToken,
     redirectToLogin
