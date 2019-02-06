@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { call, put } from 'redux-saga/effects'
+import { put } from 'redux-saga/effects'
 import { PayloadMetaAction } from "typesafe-actions/dist/types";
 import { NotAuthorizedError } from "./errors";
 import { signInRequest } from './SignIn/store';
@@ -71,15 +71,6 @@ const callApi : apiFn = (method: string, url: string, path: string, data?: any, 
     .catch(err => { errors: [err.ToString()]});
 }
 
-const callApiWithAuth = (method: string, url: string, path: string, data?: any) => {
-    const authToken = getAuthToken()
-    const authHeader = authToken ? { Authorization: `Bearer ${authToken}` } : {}
-    return callApi(method, url, path, data, authHeader)
-}
-
-
-const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
-
 /**
  * Handle a request that results in an exception.
  *
@@ -99,97 +90,13 @@ function* handleError(
       }  
 }
 
-/**
- * Asynchronously issue an HTTP GET request and resolve the response.
- *
- * @template TResponse The expected response type
- * @param {string} path The absolute path from the API root
- * @param {(r:TResponse) => PayloadMetaAction<string,TResponse,any>} success A request success action generator
- * @param {(r:string) => PayloadMetaAction<string,string,any>} error A request failure action generator
- */
-function* httpGet<TResponse>(
-    api: apiFn,
-    path: string, 
-    success: (r:TResponse) => PayloadMetaAction<string,TResponse,any>, 
-    error: (r:string) => PayloadMetaAction<string,string,any>) {
-        const response = yield call(api, 'get', API_ENDPOINT, path)
-        if (response.unauthorized) { yield put(signInRequest()); } 
-        else if (response.errors) { yield put(error(response.errors)); } 
-        else { yield put(success(response)); }      
-}
 
-/**
- * Asynchronously issue an HTTP POST request with a payload and resolve the response.
- *
- * @template TRequest The request payload type.
- * @template TResponse The expected response type
- * @param {string} path The absolute path from the API root
- * @param {TRequest} data The request payload
- * @param {(r:TResponse) => PayloadMetaAction<string,TResponse,any>} success A request success action generator
- * @param {(r:string) => PayloadMetaAction<string,string,any>} error A request failure action generator
- */
-function* httpPost<TRequest, TResponse>(
-    api: apiFn,
-    path: string,
-    data: TRequest,
-    success: (r: TResponse) => PayloadMetaAction<string, TResponse, any>,
-    error: (r: string) => PayloadMetaAction<string, string, any>) {
-        const response = yield call(api, 'post', API_ENDPOINT, path, data)
-        if (response.unauthorized) { yield put(signInRequest()); }
-        else if (response.errors) { yield put(error(response.errors)); }
-        else { yield put(success(response)); }      
-}
-
-/**
- * Asynchronously issue an HTTP PUT request with a payload and resolve the response.
- *
- * @template TRequest The request payload type.
- * @template TResponse The expected response type
- * @param {string} path The absolute path from the API root
- * @param {TRequest} data The request payload
- * @param {(r:TResponse) => PayloadMetaAction<string,TResponse,any>} success A request success action generator
- * @param {(r:string) => PayloadMetaAction<string,string,any>} error A request failure action generator
- */
-function* httpPut<TRequest, TResponse>(
-    api: apiFn,
-    path: string, 
-    data: TRequest,
-    success: (r:TResponse) => PayloadMetaAction<string,TResponse,any>, 
-    error: (r:string) => PayloadMetaAction<string,string,any>) {
-        const response = yield call(api, 'put', API_ENDPOINT, path, data)
-        if (response.unauthorized) { yield put(signInRequest()); }
-        else if (response.errors) { yield put(error(response.errors)); }
-        else { yield put(success(response)); }      
-}
-
-/**
- * Asynchronously issue an HTTP DELETE and resolve the response.
- *
- * @param {string} path The absolute path from the API root
- * @param {() => PayloadMetaAction<string,any,any>} success A request success action generator
- * @param {(r:string) => PayloadMetaAction<string,string,any>} error A request failure action generator
- */
-function* httpDelete(
-    api: apiFn,
-    path: string,
-    success: () => PayloadMetaAction<string, any, any>,
-    error: (r: string) => PayloadMetaAction<string, string, any>) {
-    const response = yield call(api, 'delete', API_ENDPOINT, path)
-        if (response.unauthorized) { yield put(signInRequest()); }
-        else if (response.errors) { yield put(error(response.errors)); }
-        else { yield put(success()); }      
-}
 
 export { 
     apiFn,
     apiEndpoints,
     callApi,
-    callApiWithAuth,
     clearAuthToken,
-    httpGet,
-    httpPost,
-    httpPut,
-    httpDelete,
     handleError,
     getAuthToken,
     setAuthToken,
