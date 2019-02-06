@@ -25,25 +25,15 @@
           {
             "id": 1,
             "name": "name",
-            "description": "description",
             "netId": "netid",
             "campus": "campus",
             "campusEmail": "campus@email.com",
             "campusPhone": "812/856-1234",
             "position": "position",
-            "tools": [
-              "tool1",
-              "tool2"
-            ],
-            "responsibilities": [
-              "rep1",
-              "rep2"
-            ],
+            "tools": "tool1; tool2",
+            "responsibilities": "rep1; rep2",
             "location": "location",
-            "expertise": [
-              "exp1",
-              "exp2"
-            ],
+            "expertise": "exp1; exp2",
             "photoUrl": "http://photo.url"
           }
         ],
@@ -75,22 +65,15 @@
         "body": {
           "id": 1,
           "name": "name",
-          "description": "description",
           "netId": "netid",
           "campus": "campus",
           "campusEmail": "campus@email.com",
           "campusPhone": "812/856-1234",
           "position": "position",
-          "tools": [
-            "tool1"
-          ],
-          "responsibilities": [
-            "rep1"
-          ],
+          "tools": "tool1; tool2",
+          "responsibilities": "rep1; rep2",
           "location": "location",
-          "expertise": [
-            "exp1"
-          ],
+          "expertise": "exp1; exp2",
           "photoUrl": "http://photo.url"
         },
         "matchingRules": {
@@ -98,9 +81,6 @@
             "match": "type"
           },
           "$.body.name": {
-            "match": "type"
-          },
-          "$.body.description": {
             "match": "type"
           },
           "$.body.netId": {
@@ -119,24 +99,15 @@
             "match": "type"
           },
           "$.body.tools": {
-            "min": 1
-          },
-          "$.body.tools[*].*": {
             "match": "type"
           },
           "$.body.responsibilities": {
-            "min": 1
-          },
-          "$.body.responsibilities[*].*": {
             "match": "type"
           },
           "$.body.location": {
             "match": "type"
           },
           "$.body.expertise": {
-            "min": 1
-          },
-          "$.body.expertise[*].*": {
             "match": "type"
           },
           "$.body.photoUrl": {
@@ -607,25 +578,15 @@
             "person": {
               "id": 1,
               "name": "name",
-              "description": "description",
               "netId": "netid",
               "campus": "campus",
               "campusEmail": "campus@email.com",
               "campusPhone": "812/856-1234",
               "position": "position",
-              "tools": [
-                "tool1",
-                "tool2"
-              ],
-              "responsibilities": [
-                "rep1",
-                "rep2"
-              ],
+              "tools": "tool1; tool2",
+              "responsibilities": "rep1; rep2",
               "location": "location",
-              "expertise": [
-                "exp1",
-                "exp2"
-              ],
+              "expertise": "exp1; exp2",
               "photoUrl": "http://photo.url"
             }
           }
@@ -666,22 +627,15 @@
           "person": {
             "id": 1,
             "name": "name",
-            "description": "description",
             "netId": "netid",
             "campus": "campus",
             "campusEmail": "campus@email.com",
             "campusPhone": "812/856-1234",
             "position": "position",
-            "tools": [
-              "tool1"
-            ],
-            "responsibilities": [
-              "rep1"
-            ],
+            "tools": "tool1; tool2",
+            "responsibilities": "rep1; rep2",
             "location": "location",
-            "expertise": [
-              "exp1"
-            ],
+            "expertise": "exp1; exp2",
             "photoUrl": "http://photo.url"
           }
         },
@@ -713,9 +667,6 @@
           "$.body.person.name": {
             "match": "type"
           },
-          "$.body.person.description": {
-            "match": "type"
-          },
           "$.body.person.netId": {
             "match": "type"
           },
@@ -732,24 +683,15 @@
             "match": "type"
           },
           "$.body.person.tools": {
-            "min": 1
-          },
-          "$.body.person.tools[*].*": {
             "match": "type"
           },
           "$.body.person.responsibilities": {
-            "min": 1
-          },
-          "$.body.person.responsibilities[*].*": {
             "match": "type"
           },
           "$.body.person.location": {
             "match": "type"
           },
           "$.body.person.expertise": {
-            "min": 1
-          },
-          "$.body.person.expertise[*].*": {
             "match": "type"
           },
           "$.body.person.photoUrl": {

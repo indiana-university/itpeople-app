@@ -176,7 +176,9 @@ export interface ISupportedDepartment extends ISupportedDepartmentRequest {
   department?: IEntity;
 }
 
-export interface IPerson extends IEntity {
+export interface IPerson {
+  id: number;
+  name: string;
   netId: string;
   position: string;
   location: string;
@@ -186,9 +188,9 @@ export interface IPerson extends IEntity {
   departmentId?: number;
   department?: IDepartment;
   // vvv none of this matters yet vvv
-  tools: string[];
-  expertise: string[];
-  responsibilities: string[];
+  tools: string;
+  expertise: string;
+  responsibilities: string;
   photoUrl?: string;
 }
 

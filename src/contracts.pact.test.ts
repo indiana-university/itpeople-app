@@ -185,16 +185,15 @@ const referenceDepartment: IEntity = {
 const referencePerson: IPerson = {
   id: 1,
   name: "name",
-  description: "description",
   netId: "netid",
   campus: "campus",
   campusEmail: "campus@email.com",
   campusPhone: "812/856-1234",
   position: "position",
-  tools: ["tool1", "tool2"],
-  responsibilities: ["rep1", "rep2"],
+  tools: "tool1; tool2",
+  responsibilities: "rep1; rep2",
   location: "location",
-  expertise: ["exp1", "exp2"],
+  expertise: "exp1; exp2",
   photoUrl: "http://photo.url"
 };
 
