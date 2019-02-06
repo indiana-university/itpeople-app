@@ -4,6 +4,7 @@
  */
 
 import { NotAuthorizedError, ForbiddenError } from "./errors";
+import { Permissions as Permission, Permissions } from "./types";
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || "";
 
@@ -83,8 +84,7 @@ export interface IApi {
 export interface IApiResponse<TData> {
   readonly data: TData | undefined;
   readonly url: string;
-  readonly permissions?: string[];
-  readonly loading?: boolean;
+  readonly permissions: Permission[];
 }
 
 export interface IApiCall {
@@ -93,9 +93,8 @@ export interface IApiCall {
 
 const getAuthToken = () => localStorage.getItem("authToken");
 
-const getPermissions = (headers: Headers): string[] => {
-  if (!headers.has("X-User-Permissions")) {
-    return [];
-  }
-  return (headers.get("X-User-Permissions") + "").split(",").map(v => v.trim());
-};
+const getPermissions = (headers: Headers) : Permission[] =>
+  (headers.get("X-User-Permissions") + "")
+  .split(",")
+  .map(v => v.trim().toUpperCase())
+  .map(Permissions.parse);

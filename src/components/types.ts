@@ -32,7 +32,24 @@ export enum ViewStateType {
   Saving,
   Error
 }
+
+export enum Permissions {
+  Get = "GET",
+  Post = "POST",
+  Put = "PUT",
+  Delete = "DELETE"
+}
+export namespace Permissions {
+  export const canGet = (permissions: Permissions[]) => Permissions.Get in permissions;
+  export const canPost = (permissions: Permissions[]) => Permissions.Post in permissions;
+  export const canPut = (permissions: Permissions[]) => Permissions.Put in permissions;
+  export const canDelete = (permissions: Permissions[]) => Permissions.Delete in permissions;
+  export const parse = (s:string) => Permissions[s];
+}
+
+// action = {type; payload: IApiResponse}
 export interface IDefaultState<TData> {
+  readonly permissions?: Permissions[];
   readonly data?: TData;
   readonly error?: string;
   readonly loading: boolean;
@@ -55,7 +72,8 @@ export const TaskStartReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, actio
 
 export const TaskSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
   ...state,
-  data: action.payload,
+  permissions: action.payload.permissions,
+  data: action.payload.data,
   error: undefined,
   loading: false,
   request: undefined
