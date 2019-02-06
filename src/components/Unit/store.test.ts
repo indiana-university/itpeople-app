@@ -135,7 +135,7 @@ describe('unit profile', () => {
             await sagaApiHappyPath(unit.handleSaveUnit, request, "put", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
         it("sad path", async () =>
-            await sagaApiSadPath(unit.handleSaveUnit, request, unit.UnitActionTypes.UNIT_SAVE_ERROR)
+            await sagaApiSadPath(unit.handleSaveUnit, request, unit.UnitActionTypes.UNIT_SAVE_PROFILE_ERROR)
         );
     });
 });

@@ -19,11 +19,7 @@ interface IContainerProps {
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface IDispatchProps {
   fetchUnit: typeof unit.fetchUnit;
-  fetchUnitMembers: typeof unit.fetchUnitMembers;
-  fetchUnitDepartments: typeof unit.fetchUnitDepartments;
-  fetchUnitChildren: typeof unit.fetchUnitChildren;
-  fetchUnitParent: typeof unit.fetchUnitParent;
-  save: typeof unit.saveUnitRequest;
+  save: typeof unit.saveUnitProfileRequest;
   edit: typeof unit.edit;
   cancel: typeof unit.cancel;
 }
@@ -39,10 +35,6 @@ class Container extends React.Component<
   public componentDidMount() {
     const request = this.props.match.params;
     this.props.fetchUnit(request);
-    this.props.fetchUnitMembers(request);
-    this.props.fetchUnitDepartments(request);
-    this.props.fetchUnitChildren(request);
-    this.props.fetchUnitParent(request);
   }
 
   public render() {
@@ -89,12 +81,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
   fetchUnit: request => dispatch(unit.fetchUnit(request)),
-  fetchUnitMembers: request => dispatch(unit.fetchUnitMembers(request)),
-  fetchUnitDepartments: request => dispatch(unit.fetchUnitDepartments(request)),
-  fetchUnitChildren: request => dispatch(unit.fetchUnitChildren(request)),
-  fetchUnitParent: request => dispatch(unit.fetchUnitParent(request)),
   edit: () => dispatch(unit.edit()),
-  save: (updated:IUnit) => dispatch(unit.saveUnitRequest(updated)),
+  save: (updated:IUnit) => dispatch(unit.saveUnitProfileRequest(updated)),
   cancel: () => dispatch(unit.cancel())
 });
 

@@ -96,7 +96,7 @@ export interface IApi {
 }
 
 export interface IApiResponse<TData> {
-  readonly data: TData;
+  readonly data: TData | undefined;
   readonly url: string;
   readonly permissions?: string[];
   readonly loading?: boolean;

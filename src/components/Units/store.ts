@@ -20,7 +20,7 @@ export interface IState extends IApiState<{}, IEntity[]> {
 import { action } from 'typesafe-actions'
 
 const fetchRequest = () => action(UnitsActionTypes.UNITS_FETCH_REQUEST)
-const fetchSuccess = (data: IEntity[]) => action(UnitsActionTypes.UNITS_FETCH_SUCCESS, data)
+const fetchSuccess = (response: IApiResponse< IEntity[]>) => action(UnitsActionTypes.UNITS_FETCH_SUCCESS, response.data)
 const fetchError = (error: string) => action(UnitsActionTypes.UNITS_FETCH_ERROR, error)
 //#endregion
 
@@ -50,17 +50,22 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 
 //#region SAGA
-import { all, fork, takeEvery } from 'redux-saga/effects'
-import { httpGet, callApiWithAuth } from '../effects'
+import { all, fork, takeEvery, put } from 'redux-saga/effects'
+import { restApi, IApi, signinIfUnauthorized, IApiResponse } from '../api';
+const api = restApi();
+function* handleFetch(api:IApi) {
+  const action = yield api.get<IEntity[]>( '/units')
+    .then(fetchSuccess)
+    .catch(signinIfUnauthorized)
+    .catch(fetchError);
 
-function* handleFetch() {
-    yield httpGet<IEntity[]>(callApiWithAuth, '/units', fetchSuccess, fetchError)
+    yield put(action);
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchUnitsFetch() {
-  yield takeEvery(UnitsActionTypes.UNITS_FETCH_REQUEST, handleFetch)
+  yield takeEvery(UnitsActionTypes.UNITS_FETCH_REQUEST, ()=>handleFetch(api))
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.
@@ -68,7 +73,6 @@ function* saga() {
   yield all([fork(watchUnitsFetch)])
 }
 //#endregion
-
 
 // Instead of using default export, we use named exports. That way we can group these exports
 // inside the `index.js` folder.

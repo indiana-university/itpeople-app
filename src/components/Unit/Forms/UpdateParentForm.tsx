@@ -5,7 +5,7 @@ import { Button, ModalBody, Row, Col } from "rivet-react";
 import { RivetInputField, RivetInput, required } from "../../form";
 import { IApplicationState, IUnit } from "../../types";
 import { Dispatch } from "redux";
-import { lookupUnit, saveUnitRequest } from "../store";
+import { lookupUnit, saveUnitProfileRequest } from "../store";
 import { Modal, closeModal } from "../../layout/Modal";
 import { ParentUnitIcon, TrashCan } from "../../icons";
 
@@ -14,7 +14,7 @@ interface IFormProps extends InjectedFormProps<IFields>, IFields, IDispathProps,
 interface IDispathProps {
   closeModal: typeof closeModal;
   lookupUnit: typeof lookupUnit;
-  save: typeof saveUnitRequest;
+  save: typeof saveUnitProfileRequest;
 }
 interface IFields {
   unit: IUnit;
@@ -127,7 +127,7 @@ UpdateParentForm = connect(
   (dispatch: Dispatch): IDispathProps => ({
     closeModal: () => dispatch(closeModal()),
     lookupUnit: (q: string) => dispatch(lookupUnit(q)),
-    save: unit => dispatch(saveUnitRequest(unit))
+    save: unit => dispatch(saveUnitProfileRequest(unit))
   })
 )(UpdateParentForm);
 

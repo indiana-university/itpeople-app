@@ -24,6 +24,9 @@ const Presentation: React.SFC<IProps> = ({ units }) => (
             are primarily responsible for departmental IT support, while others 
             are principally engaged in IT service development and delivery.  
           </p>
+          <p>
+            Use the search bar to find people or units doing IT work at IU.
+          </p>
         </Col>
       </Row>
     </Content>

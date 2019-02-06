@@ -8,7 +8,7 @@ import { Dispatch } from "redux";
 import { IUnit } from "src/components/types";
 
 interface IDispatchActions {
-  save: typeof unit.saveUnitRequest;
+  save: typeof unit.saveUnitProfileRequest;
   close: typeof unit.cancel;
 }
 
@@ -46,7 +46,7 @@ UpdateUnitForm = reduxForm<IUnit, IDispatchActions>({
 UpdateUnitForm = connect(
   undefined,
   (dispatch: Dispatch): IDispatchActions => ({
-    save: (updated: IUnit) => dispatch(unit.saveUnitRequest(updated)),
+    save: (updated: IUnit) => dispatch(unit.saveUnitProfileRequest(updated)),
     close: () => dispatch(unit.cancel())
   })
 )(UpdateUnitForm);
