@@ -13,7 +13,7 @@ import Profile from "./Profile";
 import Members from "./Members";
 import Parent from "./Parent";
 import Children from "./Children";
-import { IEntity, IDefaultState } from "../../types";
+import { IEntity, IDefaultState, Permissions } from "../../types";
 import Departments from "./Departments";
 import { Pencil } from "src/components/icons";
 
@@ -29,9 +29,11 @@ const Presentation: React.SFC<IState & IProps> = props => {
     <>
       <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, { text: "Units", href: "/units" }, name]} />
       <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
-        <Button onClick={edit} style={{ float: "right" }} title={`Edit: ${name}`}>
-          <Pencil />
-        </Button>
+        {profile && Permissions.canPut( profile.permissions) && 
+          <Button onClick={edit} style={{ float: "right" }} title={`Edit: ${name}`}>
+            <Pencil />
+          </Button>
+        }
         <Profile {...profile} />
       </Content>
       <Content className="rvt-bg-white rvt-p-tb-xxl">
