@@ -457,7 +457,7 @@
         }
       },
       "response": {
-        "status": 200,
+        "status": 201,
         "headers": {
         },
         "body": {
@@ -721,7 +721,7 @@
         }
       },
       "response": {
-        "status": 200,
+        "status": 201,
         "headers": {
         },
         "body": {
@@ -934,7 +934,7 @@
         }
       },
       "response": {
-        "status": 200,
+        "status": 201,
         "headers": {
         },
         "body": {

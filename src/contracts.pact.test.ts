@@ -61,6 +61,7 @@ const deleteFromPactServer = (path: string) => (_: any) => axiosRequest('DELETE'
 
 const expectStatus = (resp: AxiosResponse, status: number) => expect(resp.status).toEqual(status);
 const expectOK = (resp: AxiosResponse) => expectStatus(resp, 200);
+const expectCreated = (resp: AxiosResponse) => expectStatus(resp, 201);
 const expectNoContent = (resp: AxiosResponse) => expectStatus(resp, 204);
 
 
@@ -119,12 +120,12 @@ const create = (name: string, path: string, body: any) =>
         body: body
       },
       willRespondWith: {
-        status: 200,
+        status: 201,
         body: deepMatchify(body)
       }
     })
     .then(postToPactServer(path, body))
-    .then(expectOK);
+    .then(expectCreated);
 
 const update = (name: string, path: string, body: any) =>
   pactServer
