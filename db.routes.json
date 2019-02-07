@@ -9,6 +9,6 @@
   "/people/:id/memberships": "/memberships?personId=:id&_expand=unit",
   "/people/:id": "/people/:id?_expand=department",
   "/departments/:id/members": "/people?departmentId=:id",
-  "/departments/:id/constituentUnits": "/units?id=1&id=2&id=4",
+  "/departments/:id/memberUnits": "/units?id=1&id=2&id=4",
   "/departments/:id/supportingUnits": "/units?id=1"
 }

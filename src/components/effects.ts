@@ -27,10 +27,10 @@ const apiEndpoints = {
       memberId
         ? `/departments/${deptId}/members/${memberId}`
         : `/departments/${deptId}/members`,
-    constituentUnits: (deptId: number, memberId?: number) =>
+    memberUnits: (deptId: number, memberId?: number) =>
       memberId
-        ? `/departments/${deptId}/constituentUnits/${memberId}`
-        : `/departments/${deptId}/constituentUnits`,
+        ? `/departments/${deptId}/memberUnits/${memberId}`
+        : `/departments/${deptId}/memberUnits`,
     supportingUnits: (deptId: number, memberId?: number) =>
       memberId
         ? `/departments/${deptId}/supportingUnits/${memberId}`

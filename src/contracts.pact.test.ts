@@ -287,10 +287,10 @@ describe('Contracts', () => {
 
 
   describe('Units in a Department', () => {
-    const resource = 'constituentUnits'
+    const resource = 'memberUnits'
 
     it('gets units in a department', async () =>
-      await getOne(resource, apiEndpoints.departments.constituentUnits(referenceDepartment.id), [referenceUnit]))
+      await getOne(resource, apiEndpoints.departments.memberUnits(referenceDepartment.id), [referenceUnit]))
   })
 
   describe('Units supporting a Department', () => {

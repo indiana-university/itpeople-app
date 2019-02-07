@@ -18,9 +18,9 @@ export const enum DepartmentActionTypes {
     DEPARTMENT_FETCH_PROFILE_REQUEST = '@@department/FETCH_PROFILE_REQUEST',
     DEPARTMENT_FETCH_PROFILE_SUCCESS = '@@department/FETCH_PROFILE_SUCCESS',
     DEPARTMENT_FETCH_PROFILE_ERROR = '@@department/FETCH_PROFILE_ERROR',
-    DEPARTMENT_FETCH_CONSTITUENT_UNITS_REQUEST = '@@department/FETCH_CONSTITUENT_UNITS_REQUEST',
-    DEPARTMENT_FETCH_CONSTITUENT_UNITS_SUCCESS = '@@department/FETCH_CONSTITUENT_UNITS_SUCCESS',
-    DEPARTMENT_FETCH_CONSTITUENT_UNITS_ERROR = '@@department/FETCH_CONSTITUENT_UNITS_ERROR',
+    DEPARTMENT_FETCH_MEMBER_UNITS_REQUEST = '@@department/FETCH_MEMBER_UNITS_REQUEST',
+    DEPARTMENT_FETCH_MEMBER_UNITS_SUCCESS = '@@department/FETCH_MEMBER_UNITS_SUCCESS',
+    DEPARTMENT_FETCH_MEMBER_UNITS_ERROR = '@@department/FETCH_MEMBER_UNITS_ERROR',
     DEPARTMENT_FETCH_SUPPORTING_UNITS_REQUEST = '@@department/FETCH_SUPPORTING_UNITS_REQUEST',
     DEPARTMENT_FETCH_SUPPORTING_UNITS_SUCCESS = '@@department/FETCH_SUPPORTING_UNITS_SUCCESS',
     DEPARTMENT_FETCH_SUPPORTING_UNITS_ERROR = '@@department/FETCH_SUPPORTING_UNITS_ERROR',
@@ -28,7 +28,7 @@ export const enum DepartmentActionTypes {
 
 export interface IState {
   profile: IApiState<IEntityRequest, IDepartment>;
-  constituentUnits: IApiState<IEntityRequest, IUnit[]>;
+  memberUnits: IApiState<IEntityRequest, IUnit[]>;
   supportingUnits: IApiState<IEntityRequest, IUnit[]>;
 }
 //#endregion
@@ -39,9 +39,9 @@ export const fetchRequest = (request: IEntityRequest) => action(DepartmentAction
 const fetchProfileRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_REQUEST, request)
 const fetchProfileSuccess = (response: IApiResponse<IDepartment>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_SUCCESS, response)
 const fetchProfileError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_ERROR, error)
-const fetchConstituentUnitsRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_CONSTITUENT_UNITS_REQUEST, request)
-const fetchConstituentUnitsSuccess = (response: IApiResponse<IUnit[]>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_CONSTITUENT_UNITS_SUCCESS, response)
-const fetchConstituentUnitsError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_CONSTITUENT_UNITS_ERROR, error)
+const fetchMemberUnitsRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_MEMBER_UNITS_REQUEST, request)
+const fetchMemberUnitsSuccess = (response: IApiResponse<IUnit[]>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_MEMBER_UNITS_SUCCESS, response)
+const fetchMemberUnitsError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_MEMBER_UNITS_ERROR, error)
 const fetchSupportingUnitsRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_REQUEST, request)
 const fetchSupportingUnitsSuccess = (response: IApiResponse< IUnit[]>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_SUCCESS, response)
 const fetchSupportingUnitsError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_ERROR, error)
@@ -51,7 +51,7 @@ const fetchSupportingUnitsError = (error: string) => action(DepartmentActionType
 //#region REDUCER
 export const initialState: IState = {
   profile: defaultState(),
-  constituentUnits: defaultState(),
+  memberUnits: defaultState(),
   supportingUnits: defaultState(),
 }
 
@@ -60,9 +60,9 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
     case DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_REQUEST: return {...state, profile: TaskStartReducer(state.profile, act) }
     case DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_SUCCESS: return { ...state, profile: TaskSuccessReducer(state.profile, act) }
     case DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_ERROR: return { ...state, profile: TaskErrorReducer(state.profile, act) }
-    case DepartmentActionTypes.DEPARTMENT_FETCH_CONSTITUENT_UNITS_REQUEST: return { ...state, constituentUnits: TaskStartReducer(state.constituentUnits, act) }
-    case DepartmentActionTypes.DEPARTMENT_FETCH_CONSTITUENT_UNITS_SUCCESS: return { ...state, constituentUnits: TaskSuccessReducer(state.constituentUnits, act) }
-    case DepartmentActionTypes.DEPARTMENT_FETCH_CONSTITUENT_UNITS_ERROR: return { ...state, constituentUnits: TaskErrorReducer(state.constituentUnits, act) }
+    case DepartmentActionTypes.DEPARTMENT_FETCH_MEMBER_UNITS_REQUEST: return { ...state, memberUnits: TaskStartReducer(state.memberUnits, act) }
+    case DepartmentActionTypes.DEPARTMENT_FETCH_MEMBER_UNITS_SUCCESS: return { ...state, memberUnits: TaskSuccessReducer(state.memberUnits, act) }
+    case DepartmentActionTypes.DEPARTMENT_FETCH_MEMBER_UNITS_ERROR: return { ...state, memberUnits: TaskErrorReducer(state.memberUnits, act) }
     case DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_REQUEST: return { ...state, supportingUnits: TaskStartReducer(state.supportingUnits, act) }
     case DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_SUCCESS: return { ...state, supportingUnits: TaskSuccessReducer(state.supportingUnits, act) }
     case DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_ERROR: return { ...state, supportingUnits: TaskErrorReducer(state.supportingUnits, act) }
@@ -76,7 +76,7 @@ const api = restApi();
 //#region SAGA
 function* handleFetch(req: IEntityRequest) {
   yield put(fetchProfileRequest(req))
-  yield put(fetchConstituentUnitsRequest(req))
+  yield put(fetchMemberUnitsRequest(req))
   yield put(fetchSupportingUnitsRequest(req))
 }
 
@@ -92,10 +92,10 @@ yield put (action);
 function* handleConstituentUnitsFetch(api: IApi, req: IEntityRequest) {
   const action = 
     yield api
-      .get<IUnit[]>(apiEndpoints.departments.constituentUnits(req.id))
-      .then(fetchConstituentUnitsSuccess)
+      .get<IUnit[]>(apiEndpoints.departments.memberUnits(req.id))
+      .then(fetchMemberUnitsSuccess)
       .catch(signinIfUnauthorized)
-      .catch(fetchConstituentUnitsError);
+      .catch(fetchMemberUnitsError);
   yield put(action);
 }
 
@@ -114,7 +114,7 @@ function* handleSupportingUnitsFetch(api: IApi, req: IEntityRequest) {
 function* watchDepartmentFetch() {
   yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST, (a: AnyAction) => handleFetch(a.payload))
   yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_REQUEST, (a: AnyAction) => handleFetchProfile(api, a.payload))
-  yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_CONSTITUENT_UNITS_REQUEST, (a: AnyAction) => handleConstituentUnitsFetch(api, a.payload))
+  yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_MEMBER_UNITS_REQUEST, (a: AnyAction) => handleConstituentUnitsFetch(api, a.payload))
   yield takeEvery(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_REQUEST, (a: AnyAction) => handleSupportingUnitsFetch(api, a.payload))
 }
 

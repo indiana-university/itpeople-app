@@ -5,7 +5,7 @@ import { Loader } from "src/components/Loader";
 import { IState } from "../store";
 import { UnitList, Profile } from ".";
 
-export const View: React.SFC<IState> = ({ profile, constituentUnits, supportingUnits }) => (
+export const View: React.SFC<IState> = ({ profile, memberUnits, supportingUnits }) => (
   <>
     <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, "Departments", profile && profile.data ? profile.data.name: "loading..."]} />
     <Content className="rvt-bg-white rvt-m-tb-xl rvt-p-tb-xl">
@@ -25,8 +25,8 @@ export const View: React.SFC<IState> = ({ profile, constituentUnits, supportingU
           </Loader>
         </Col>
         <Col md={6} last={true} className="rvt-p-lr-md">
-          <Loader {...constituentUnits}>
-            {constituentUnits.data && <UnitList units={constituentUnits.data} title="Constituent Units"/>}
+          <Loader {...memberUnits}>
+            {memberUnits.data && <UnitList units={memberUnits.data} title="Member Units"/>}
           </Loader>
         </Col>
       </Row>

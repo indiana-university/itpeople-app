@@ -296,11 +296,11 @@
       }
     },
     {
-      "description": "a GET request for one constituentUnits",
-      "providerState": "constituentUnits exists",
+      "description": "a GET request for one memberUnits",
+      "providerState": "memberUnits exists",
       "request": {
         "method": "GET",
-        "path": "/departments/1/constituentUnits",
+        "path": "/departments/1/memberUnits",
         "headers": {
           "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
         }
