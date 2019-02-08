@@ -144,6 +144,7 @@
               "id": 1,
               "name": "name",
               "description": "description",
+              "parentId": 2,
               "url": "url"
             }
           }
@@ -154,7 +155,8 @@
           },
           "$.body[*].*": {
             "match": "type"
-          }
+          },
+          "$.body[*].personId": { "match": "null" }
         }
       }
     },
@@ -186,6 +188,7 @@
               "id": 1,
               "name": "name",
               "description": "description",
+              "parentId": 2,
               "url": "url"
             }
           }
@@ -227,6 +230,7 @@
             "id": 1,
             "name": "name",
             "description": "description",
+            "parentId": 2,
             "url": "url"
           }
         },
@@ -259,6 +263,9 @@
             "match": "type"
           },
           "$.body.unit.description": {
+            "match": "type"
+          },
+          "$.body.unit.parentId": {
             "match": "type"
           },
           "$.body.unit.url": {
@@ -289,6 +296,7 @@
             "id": 1,
             "name": "name",
             "description": "description",
+            "parentId": 2,
             "url": "url"
           }
         }
@@ -309,6 +317,7 @@
             "id": 1,
             "name": "name",
             "description": "description",
+            "parentId": 2,
             "url": "url"
           }
         },
@@ -341,6 +350,9 @@
             "match": "type"
           },
           "$.body.unit.description": {
+            "match": "type"
+          },
+          "$.body.unit.parentId": {
             "match": "type"
           },
           "$.body.unit.url": {
@@ -371,6 +383,7 @@
             "id": 1,
             "name": "name",
             "description": "description",
+            "parentId": 2,
             "url": "url"
           }
         }
@@ -391,6 +404,7 @@
             "id": 1,
             "name": "name",
             "description": "description",
+            "parentId": 2,
             "url": "url"
           }
         },
@@ -425,6 +439,9 @@
           "$.body.unit.description": {
             "match": "type"
           },
+          "$.body.unit.parentId": [
+            {"match": "type"}, 
+            {"match": "null"}],
           "$.body.unit.url": {
             "match": "type"
           }
@@ -533,6 +550,7 @@
             "id": 1,
             "name": "name",
             "description": "description",
+            "parentId": 2,
             "url": "url"
           }
         ],
@@ -575,6 +593,7 @@
               "id": 1,
               "name": "name",
               "description": "description",
+              "parentId": 2,
               "url": "url"
             }
           }
@@ -609,6 +628,7 @@
             "id": 1,
             "name": "name",
             "description": "description",
+            "parentId": 2,
             "url": "url"
           }
         ],
@@ -641,6 +661,7 @@
           "id": 1,
           "name": "name",
           "description": "description",
+          "parentId": 2,
           "url": "url"
         },
         "matchingRules": {
@@ -651,6 +672,9 @@
             "match": "type"
           },
           "$.body.description": {
+            "match": "type"
+          },
+          "$.body.parentId": {
             "match": "type"
           },
           "$.body.url": {
@@ -738,6 +762,7 @@
               "id": 1,
               "name": "name",
               "description": "description",
+              "parentId": 2,
               "url": "url"
             }
           }
@@ -781,6 +806,7 @@
               "id": 1,
               "name": "name",
               "description": "description",
+              "parentId": 2,
               "url": "url"
             }
           }
@@ -823,6 +849,7 @@
             "id": 1,
             "name": "name",
             "description": "description",
+            "parentId": 2,
             "url": "url"
           }
         },
@@ -852,6 +879,9 @@
             "match": "type"
           },
           "$.body.unit.description": {
+            "match": "type"
+          },
+          "$.body.unit.parentId": {
             "match": "type"
           },
           "$.body.unit.url": {
@@ -970,6 +1000,7 @@
             "id": 1,
             "name": "name",
             "description": "description",
+            "parentId": 2,
             "url": "url"
           }
         ],
