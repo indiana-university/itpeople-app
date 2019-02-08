@@ -21,7 +21,7 @@ export const View: React.SFC<IState> = ({ profile, memberUnits, supportingUnits 
       <Row>
         <Col md={6} className="rvt-p-lr-md">
           <Loader {...supportingUnits}>
-            {supportingUnits.data && <UnitList units={supportingUnits.data} title="Supporting Units" />}
+            {supportingUnits.data && <UnitList units={supportingUnits.data.map(d => d.unit)} title="Supporting Units" />}
           </Loader>
         </Col>
         <Col md={6} last={true} className="rvt-p-lr-md">

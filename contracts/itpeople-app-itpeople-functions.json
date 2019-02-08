@@ -581,10 +581,20 @@
         "body": [
           {
             "id": 1,
-            "name": "name",
-            "description": "description",
-            "parentId": 2,
-            "url": "url"
+            "unitId": 1,
+            "departmentId": 1,
+            "department": {
+              "id": 1,
+              "name": "name",
+              "description": "description"
+            },
+            "unit": {
+              "id": 1,
+              "name": "name",
+              "description": "description",
+              "parentId": 2,
+              "url": "url"
+            }
           }
         ],
         "matchingRules": {

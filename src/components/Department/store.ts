@@ -7,7 +7,7 @@ import { Reducer, AnyAction  } from 'redux'
 import { all, fork, takeEvery, put } from 'redux-saga/effects'
 import { action } from 'typesafe-actions'
 import { apiEndpoints, signinIfUnauthorized } from '../effects'
-import { IApiState, TaskErrorReducer, TaskStartReducer, TaskSuccessReducer, IEntityRequest, IDepartment, IUnit, defaultState } from '../types'
+import { IApiState, TaskErrorReducer, TaskStartReducer, TaskSuccessReducer, IEntityRequest, IDepartment, IUnit, defaultState, ISupportRelationship } from '../types'
 import { restApi, IApi, IApiResponse } from '../api';
 
 //#region TYPES
@@ -29,7 +29,7 @@ export const enum DepartmentActionTypes {
 export interface IState {
   profile: IApiState<IEntityRequest, IDepartment>;
   memberUnits: IApiState<IEntityRequest, IUnit[]>;
-  supportingUnits: IApiState<IEntityRequest, IUnit[]>; // Todo: Support relationship?
+  supportingUnits: IApiState<IEntityRequest, ISupportRelationship[]>;
 }
 //#endregion
 
@@ -43,7 +43,7 @@ const fetchMemberUnitsRequest = (request: IEntityRequest) => action(DepartmentAc
 const fetchMemberUnitsSuccess = (response: IApiResponse<IUnit[]>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_MEMBER_UNITS_SUCCESS, response)
 const fetchMemberUnitsError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_MEMBER_UNITS_ERROR, error)
 const fetchSupportingUnitsRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_REQUEST, request)
-const fetchSupportingUnitsSuccess = (response: IApiResponse< IUnit[]>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_SUCCESS, response)
+const fetchSupportingUnitsSuccess = (response: IApiResponse<ISupportRelationship[]>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_SUCCESS, response)
 const fetchSupportingUnitsError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_ERROR, error)
 //#endregion
 
@@ -102,7 +102,7 @@ function* handleConstituentUnitsFetch(api: IApi, req: IEntityRequest) {
 function* handleSupportingUnitsFetch(api: IApi, req: IEntityRequest) {
   const action = 
     yield api
-      .get<IUnit[]>(apiEndpoints.departments.supportingUnits(req.id))
+      .get<ISupportRelationship[]>(apiEndpoints.departments.supportingUnits(req.id))
       .then(fetchSupportingUnitsSuccess)
       .catch(signinIfUnauthorized)
       .catch(fetchSupportingUnitsError);
