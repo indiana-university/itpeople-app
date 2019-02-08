@@ -284,11 +284,20 @@
           "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
-          "id": 0,
-          "name": "name",
-          "description": "description",
-          "parentId": 1,
-          "url": "url"
+          "id": 1,
+          "unitId": 1,
+          "personId": 1,
+          "title": "title",
+          "role": "Leader",
+          "percentage": 100,
+          "permissions": "Viewer",
+          "unit": {
+            "id": 1,
+            "name": "name",
+            "description": "description",
+            "parentId": 2,
+            "url": "url"
+          }
         }
       },
       "response": {
@@ -296,26 +305,56 @@
         "headers": {
         },
         "body": {
-          "id": 0,
-          "name": "name",
-          "description": "description",
-          "parentId": 1,
-          "url": "url"
+          "id": 1,
+          "unitId": 1,
+          "personId": 1,
+          "title": "title",
+          "role": "Leader",
+          "percentage": 100,
+          "permissions": "Viewer",
+          "unit": {
+            "id": 1,
+            "name": "name",
+            "description": "description",
+            "parentId": 2,
+            "url": "url"
+          }
         },
         "matchingRules": {
           "$.body.id": {
             "match": "type"
           },
-          "$.body.name": {
+          "$.body.unitId": {
             "match": "type"
           },
-          "$.body.description": {
+          "$.body.personId": {
             "match": "type"
           },
-          "$.body.parentId": {
+          "$.body.title": {
             "match": "type"
           },
-          "$.body.url": {
+          "$.body.role": {
+            "match": "type"
+          },
+          "$.body.percentage": {
+            "match": "type"
+          },
+          "$.body.permissions": {
+            "match": "type"
+          },
+          "$.body.unit.id": {
+            "match": "type"
+          },
+          "$.body.unit.name": {
+            "match": "type"
+          },
+          "$.body.unit.description": {
+            "match": "type"
+          },
+          "$.body.unit.parentId": {
+            "match": "type"
+          },
+          "$.body.unit.url": {
             "match": "type"
           }
         }
@@ -333,10 +372,19 @@
         },
         "body": {
           "id": 1,
-          "name": "name",
-          "description": "description",
-          "parentId": 2,
-          "url": "url"
+          "unitId": 1,
+          "personId": 1,
+          "title": "title",
+          "role": "Leader",
+          "percentage": 100,
+          "permissions": "Viewer",
+          "unit": {
+            "id": 1,
+            "name": "name",
+            "description": "description",
+            "parentId": 2,
+            "url": "url"
+          }
         }
       },
       "response": {
@@ -345,25 +393,55 @@
         },
         "body": {
           "id": 1,
-          "name": "name",
-          "description": "description",
-          "parentId": 2,
-          "url": "url"
+          "unitId": 1,
+          "personId": 1,
+          "title": "title",
+          "role": "Leader",
+          "percentage": 100,
+          "permissions": "Viewer",
+          "unit": {
+            "id": 1,
+            "name": "name",
+            "description": "description",
+            "parentId": 2,
+            "url": "url"
+          }
         },
         "matchingRules": {
           "$.body.id": {
             "match": "type"
           },
-          "$.body.name": {
+          "$.body.unitId": {
             "match": "type"
           },
-          "$.body.description": {
+          "$.body.personId": {
             "match": "type"
           },
-          "$.body.parentId": {
+          "$.body.title": {
             "match": "type"
           },
-          "$.body.url": {
+          "$.body.role": {
+            "match": "type"
+          },
+          "$.body.percentage": {
+            "match": "type"
+          },
+          "$.body.permissions": {
+            "match": "type"
+          },
+          "$.body.unit.id": {
+            "match": "type"
+          },
+          "$.body.unit.name": {
+            "match": "type"
+          },
+          "$.body.unit.description": {
+            "match": "type"
+          },
+          "$.body.unit.parentId": {
+            "match": "type"
+          },
+          "$.body.unit.url": {
             "match": "type"
           }
         }

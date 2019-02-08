@@ -274,9 +274,9 @@ describe('Contracts', () => {
     it('gets a single membership', async () =>
       await getOne(resource, itemPath, referenceUnitMembership))
     it('creates a new membership', async () =>
-      await create(resource, setPath, { ...referenceUnit, id: 0, parentId: 1 }))
+      await create(resource, setPath, referenceUnitMembership))
     it('updates an existing membership', async () =>
-      await update(resource, itemPath, referenceUnit))
+      await update(resource, itemPath, referenceUnitMembership))
     it('deletes an existing membership', async () =>
       await delete_(resource, itemPath))
   })
