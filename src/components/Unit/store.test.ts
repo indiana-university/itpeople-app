@@ -51,7 +51,7 @@ describe('unit memberships', () => {
 
     describe ('creating', () => {
         const request = {...model, id: undefined }
-        const expectedPath = apiEndpoints.units.members(model.unitId);
+        const expectedPath = apiEndpoints.memberships();
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleSaveMember, request, "post", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
@@ -62,7 +62,7 @@ describe('unit memberships', () => {
 
     describe('updating', () => {
         const request = { ...model, id: 1 }
-        const expectedPath = apiEndpoints.units.members(model.unitId, request.id);
+        const expectedPath = apiEndpoints.memberships(request.id);
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleSaveMember, request, "put", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });
@@ -73,7 +73,7 @@ describe('unit memberships', () => {
 
     describe('deleting', () => {
         const request = { ...model, id: 1 }
-        const expectedPath = apiEndpoints.units.members(model.unitId, request.id);
+        const expectedPath = apiEndpoints.memberships(request.id);
         it("happy path", async () => {
             await sagaApiHappyPath(unit.handleDeleteMember, request, "delete", expectedPath, expectedSuccessDispatch, expectedSuccessPayload);
         });

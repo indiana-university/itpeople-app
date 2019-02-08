@@ -254,8 +254,8 @@ function* handleSaveUnit(api: IApi, unit: IUnit) {
 const saveMemberError= (error:string) => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error)
 function* handleSaveMember(api: IApi, member: IUnitMemberRequest) {
   const request = (member.id) 
-    ? api.put(apiEndpoints.units.members(member.unitId, member.id),member)
-    : api.post(apiEndpoints.units.members(member.unitId, member.id),member)
+    ? api.put(apiEndpoints.memberships(member.id),member)
+    : api.post(apiEndpoints.memberships(member.id),member)
   const action = yield request
     .then(_ => fetchUnitMembers({id: member.unitId}))
     .catch(signinIfUnauthorized)
@@ -266,7 +266,7 @@ function* handleSaveMember(api: IApi, member: IUnitMemberRequest) {
 const deleteMemberError = (error:string) => action(UnitActionTypes.UNIT_DELETE_MEMBER_ERROR, error)
 function* handleDeleteMember(api: IApi, member: IUnitMember) {
   const action = yield api
-    .delete(apiEndpoints.units.members(member.unitId, member.id))
+    .delete(apiEndpoints.memberships(member.id))
     .then(_ => fetchUnitMembers({id: member.unitId}))
     .catch(signinIfUnauthorized)
     .catch(deleteMemberError);

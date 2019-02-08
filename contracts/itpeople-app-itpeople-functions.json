@@ -117,11 +117,54 @@
       }
     },
     {
+      "description": "a GET request for all memberships by persons",
+      "providerState": "at least one memberships by person exists",
+      "request": {
+        "method": "GET",
+        "path": "/people/1/memberships",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "unitId": 1,
+            "personId": 1,
+            "title": "title",
+            "role": "Leader",
+            "percentage": 100,
+            "permissions": "Viewer",
+            "unit": {
+              "id": 1,
+              "name": "name",
+              "description": "description",
+              "parentId": 2,
+              "url": "url"
+            }
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
       "description": "a GET request for all memberships",
       "providerState": "at least one membership exists",
       "request": {
         "method": "GET",
-        "path": "/people/1/memberships",
+        "path": "/memberships",
         "headers": {
           "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
         }
@@ -164,7 +207,7 @@
       "providerState": "membership exists",
       "request": {
         "method": "GET",
-        "path": "/people/1/memberships/1",
+        "path": "/memberships/1",
         "headers": {
           "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
         }
@@ -227,6 +270,119 @@
           "$.body.unit.url": {
             "match": "type"
           }
+        }
+      }
+    },
+    {
+      "description": "a POST request to create a membership",
+      "providerState": "membership may be created",
+      "request": {
+        "method": "POST",
+        "path": "/memberships",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 0,
+          "name": "name",
+          "description": "description",
+          "parentId": 1,
+          "url": "url"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+        },
+        "body": {
+          "id": 0,
+          "name": "name",
+          "description": "description",
+          "parentId": 1,
+          "url": "url"
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.name": {
+            "match": "type"
+          },
+          "$.body.description": {
+            "match": "type"
+          },
+          "$.body.parentId": {
+            "match": "type"
+          },
+          "$.body.url": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a PUT request to update a membership",
+      "providerState": "membership exists",
+      "request": {
+        "method": "PUT",
+        "path": "/memberships/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "name": "name",
+          "description": "description",
+          "parentId": 2,
+          "url": "url"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "id": 1,
+          "name": "name",
+          "description": "description",
+          "parentId": 2,
+          "url": "url"
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.name": {
+            "match": "type"
+          },
+          "$.body.description": {
+            "match": "type"
+          },
+          "$.body.parentId": {
+            "match": "type"
+          },
+          "$.body.url": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a DELETE request to delete a membership",
+      "providerState": "membership exists",
+      "request": {
+        "method": "DELETE",
+        "path": "/memberships/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        }
+      },
+      "response": {
+        "status": 204,
+        "headers": {
         }
       }
     },
@@ -439,121 +595,8 @@
       }
     },
     {
-      "description": "a POST request to create a unit",
-      "providerState": "unit may be created",
-      "request": {
-        "method": "POST",
-        "path": "/units",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        "body": {
-          "id": 0,
-          "name": "name",
-          "description": "description",
-          "parentId": 1,
-          "url": "url"
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {
-        },
-        "body": {
-          "id": 0,
-          "name": "name",
-          "description": "description",
-          "parentId": 1,
-          "url": "url"
-        },
-        "matchingRules": {
-          "$.body.id": {
-            "match": "type"
-          },
-          "$.body.name": {
-            "match": "type"
-          },
-          "$.body.description": {
-            "match": "type"
-          },
-          "$.body.parentId": {
-            "match": "type"
-          },
-          "$.body.url": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "a PUT request to update a unit",
-      "providerState": "unit exists",
-      "request": {
-        "method": "PUT",
-        "path": "/units/1",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        "body": {
-          "id": 1,
-          "name": "name",
-          "description": "description",
-          "parentId": 2,
-          "url": "url"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-        },
-        "body": {
-          "id": 1,
-          "name": "name",
-          "description": "description",
-          "parentId": 2,
-          "url": "url"
-        },
-        "matchingRules": {
-          "$.body.id": {
-            "match": "type"
-          },
-          "$.body.name": {
-            "match": "type"
-          },
-          "$.body.description": {
-            "match": "type"
-          },
-          "$.body.parentId": {
-            "match": "type"
-          },
-          "$.body.url": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "a DELETE request to delete a unit",
-      "providerState": "unit exists",
-      "request": {
-        "method": "DELETE",
-        "path": "/units/1",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
-          "Content-Type": "application/json; charset=utf-8"
-        }
-      },
-      "response": {
-        "status": 204,
-        "headers": {
-        }
-      }
-    },
-    {
-      "description": "a GET request for all unit members",
-      "providerState": "at least one unit member exists",
+      "description": "a GET request for all memberships by units",
+      "providerState": "at least one memberships by unit exists",
       "request": {
         "method": "GET",
         "path": "/units/1/members",
@@ -598,238 +641,6 @@
           "$.body[*].*": {
             "match": "type"
           }
-        }
-      }
-    },
-    {
-      "description": "a GET request for one unit member",
-      "providerState": "unit member exists",
-      "request": {
-        "method": "GET",
-        "path": "/units/1/members/1",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        "body": {
-          "id": 1,
-          "unitId": 1,
-          "personId": 1,
-          "title": "title",
-          "role": "Leader",
-          "percentage": 100,
-          "permissions": "Viewer",
-          "person": {
-            "id": 1,
-            "name": "name",
-            "netId": "netid",
-            "campus": "campus",
-            "campusEmail": "campus@email.com",
-            "campusPhone": "812/856-1234",
-            "position": "position",
-            "tools": "tool1; tool2",
-            "responsibilities": "rep1; rep2",
-            "location": "location",
-            "expertise": "exp1; exp2",
-            "photoUrl": "http://photo.url"
-          }
-        },
-        "matchingRules": {
-          "$.body.id": {
-            "match": "type"
-          },
-          "$.body.unitId": {
-            "match": "type"
-          },
-          "$.body.personId": {
-            "match": "type"
-          },
-          "$.body.title": {
-            "match": "type"
-          },
-          "$.body.role": {
-            "match": "type"
-          },
-          "$.body.percentage": {
-            "match": "type"
-          },
-          "$.body.permissions": {
-            "match": "type"
-          },
-          "$.body.person.id": {
-            "match": "type"
-          },
-          "$.body.person.name": {
-            "match": "type"
-          },
-          "$.body.person.netId": {
-            "match": "type"
-          },
-          "$.body.person.campus": {
-            "match": "type"
-          },
-          "$.body.person.campusEmail": {
-            "match": "type"
-          },
-          "$.body.person.campusPhone": {
-            "match": "type"
-          },
-          "$.body.person.position": {
-            "match": "type"
-          },
-          "$.body.person.tools": {
-            "match": "type"
-          },
-          "$.body.person.responsibilities": {
-            "match": "type"
-          },
-          "$.body.person.location": {
-            "match": "type"
-          },
-          "$.body.person.expertise": {
-            "match": "type"
-          },
-          "$.body.person.photoUrl": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "a POST request to create a unit member",
-      "providerState": "unit member may be created",
-      "request": {
-        "method": "POST",
-        "path": "/units/1/members",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        "body": {
-          "id": 0,
-          "unitId": 1,
-          "personId": 1,
-          "title": "title",
-          "role": "Leader",
-          "percentage": 100,
-          "permissions": "Viewer"
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {
-        },
-        "body": {
-          "id": 0,
-          "unitId": 1,
-          "personId": 1,
-          "title": "title",
-          "role": "Leader",
-          "percentage": 100,
-          "permissions": "Viewer"
-        },
-        "matchingRules": {
-          "$.body.id": {
-            "match": "type"
-          },
-          "$.body.unitId": {
-            "match": "type"
-          },
-          "$.body.personId": {
-            "match": "type"
-          },
-          "$.body.title": {
-            "match": "type"
-          },
-          "$.body.role": {
-            "match": "type"
-          },
-          "$.body.percentage": {
-            "match": "type"
-          },
-          "$.body.permissions": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "a PUT request to update a unit member",
-      "providerState": "unit member exists",
-      "request": {
-        "method": "PUT",
-        "path": "/units/1/members/1",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        "body": {
-          "id": 1,
-          "unitId": 1,
-          "personId": 1,
-          "title": "title",
-          "role": "Leader",
-          "percentage": 100,
-          "permissions": "Viewer"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-        },
-        "body": {
-          "id": 1,
-          "unitId": 1,
-          "personId": 1,
-          "title": "title",
-          "role": "Leader",
-          "percentage": 100,
-          "permissions": "Viewer"
-        },
-        "matchingRules": {
-          "$.body.id": {
-            "match": "type"
-          },
-          "$.body.unitId": {
-            "match": "type"
-          },
-          "$.body.personId": {
-            "match": "type"
-          },
-          "$.body.title": {
-            "match": "type"
-          },
-          "$.body.role": {
-            "match": "type"
-          },
-          "$.body.percentage": {
-            "match": "type"
-          },
-          "$.body.permissions": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "a DELETE request to delete a unit member",
-      "providerState": "unit member exists",
-      "request": {
-        "method": "DELETE",
-        "path": "/units/1/members/1",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
-          "Content-Type": "application/json; charset=utf-8"
-        }
-      },
-      "response": {
-        "status": 204,
-        "headers": {
         }
       }
     },

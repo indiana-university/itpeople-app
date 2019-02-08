@@ -257,14 +257,28 @@ describe('Contracts', () => {
   });
 
   describe('Unit memberships for a person', () => {
-    const resource = 'membership'
+    const resource = 'memberships by person'
     const setPath = apiEndpoints.people.memberships(referencePerson.id)
-    const itemPath = apiEndpoints.people.memberships(referencePerson.id, referenceUnitMember.id)
 
     it('gets all unit memberships for a person', async () => 
       await getAll(resource, setPath, referenceUnitMembership))
-    it('gets a single unit membership for a person', async () => 
+  })
+
+  describe('Memberships', () => {
+    const resource = 'membership'
+    const setPath = apiEndpoints.memberships()
+    const itemPath = apiEndpoints.memberships(referenceUnitMember.id)
+
+    it('gets all memberships', async () =>
+      await getAll(resource, setPath, referenceUnitMembership))
+    it('gets a single membership', async () =>
       await getOne(resource, itemPath, referenceUnitMembership))
+    it('creates a new membership', async () =>
+      await create(resource, setPath, { ...referenceUnit, id: 0, parentId: 1 }))
+    it('updates an existing membership', async () =>
+      await update(resource, itemPath, referenceUnit))
+    it('deletes an existing membership', async () =>
+      await delete_(resource, itemPath))
   })
 
   describe('Departments', () => {
@@ -310,12 +324,7 @@ describe('Contracts', () => {
       await getAll(resource, setPath, referenceUnit))
     it('gets a single unit', async () => 
       await getOne(resource, itemPath, referenceUnit))
-    it('creates a new unit', async () => 
-      await create(resource, setPath, { ...referenceUnit, id: 0, parentId: 1 }))
-    it('updates an existing unit', async () => 
-      await update(resource, itemPath, referenceUnit))
-    it('deletes an existing unit', async () => 
-      await delete_(resource, itemPath))
+
   })
 
   describe("Unit search", () => {
@@ -328,20 +337,11 @@ describe('Contracts', () => {
 
 
   describe('Unit Memberships', () => {
-    const resource = "unit member"
+    const resource = "memberships by unit"
     const setPath = apiEndpoints.units.members(referenceUnitMember.unitId)
-    const itemPath = apiEndpoints.units.members(referenceUnitMember.unitId, referenceUnitMember.id)
-
+    
     it('gets all unit memberships', async () => 
       await getAll(resource, setPath, referenceUnitMember))
-    it('gets a single unit member', async () => 
-      await getOne(resource, itemPath, referenceUnitMember))
-    it('creates a new unit', async () => 
-      await create(resource, setPath, { ...referenceUnitMemberRequest, id: 0 }))
-    it('updates an existing unit member', async () => 
-      await update(resource, itemPath, referenceUnitMemberRequest))
-    it('deletes an existing unit member', async () => 
-      await delete_(resource, itemPath))
   })
 
   describe('Supported Departments', () => {

@@ -38,10 +38,7 @@ const apiEndpoints = {
   },
   units: {
     root: (id?: number) => id ? `/units/${id}` : "/units",
-    members: (unitId: number, memberId?: number) =>
-      memberId
-        ? `/units/${unitId}/members/${memberId}`
-        : `/units/${unitId}/members`,
+    members: (unitId: number) => `/units/${unitId}/members`,
     children: (unitId: number, childId?: number) =>
       childId
         ? `/units/${unitId}/children/${childId}`
@@ -53,11 +50,9 @@ const apiEndpoints = {
   },
   people: {
     root: (id?: number) => id ? `/people/${id}` : "/people",
-    memberships: (id?: number, memberId?: number) =>
-      memberId
-        ? `/people/${id}/memberships/${memberId}`
-        : `/people/${id}/memberships`
-  }
+    memberships: (id: number) => `/people/${id}/memberships`
+  },
+  memberships: (id?: number) => id ? `/memberships/${id}` : "/memberships",
 };
 /**
  * Handle a request that results in an exception.
