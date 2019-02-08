@@ -144,7 +144,6 @@
               "id": 1,
               "name": "name",
               "description": "description",
-              "parentId": 2,
               "url": "url"
             }
           }
@@ -187,7 +186,6 @@
               "id": 1,
               "name": "name",
               "description": "description",
-              "parentId": 2,
               "url": "url"
             }
           }
@@ -229,7 +227,6 @@
             "id": 1,
             "name": "name",
             "description": "description",
-            "parentId": 2,
             "url": "url"
           }
         },
@@ -262,9 +259,6 @@
             "match": "type"
           },
           "$.body.unit.description": {
-            "match": "type"
-          },
-          "$.body.unit.parentId": {
             "match": "type"
           },
           "$.body.unit.url": {
@@ -295,7 +289,6 @@
             "id": 1,
             "name": "name",
             "description": "description",
-            "parentId": 2,
             "url": "url"
           }
         }
@@ -316,7 +309,6 @@
             "id": 1,
             "name": "name",
             "description": "description",
-            "parentId": 2,
             "url": "url"
           }
         },
@@ -349,9 +341,6 @@
             "match": "type"
           },
           "$.body.unit.description": {
-            "match": "type"
-          },
-          "$.body.unit.parentId": {
             "match": "type"
           },
           "$.body.unit.url": {
@@ -382,7 +371,6 @@
             "id": 1,
             "name": "name",
             "description": "description",
-            "parentId": 2,
             "url": "url"
           }
         }
@@ -403,7 +391,6 @@
             "id": 1,
             "name": "name",
             "description": "description",
-            "parentId": 2,
             "url": "url"
           }
         },
@@ -436,9 +423,6 @@
             "match": "type"
           },
           "$.body.unit.description": {
-            "match": "type"
-          },
-          "$.body.unit.parentId": {
             "match": "type"
           },
           "$.body.unit.url": {
@@ -549,7 +533,6 @@
             "id": 1,
             "name": "name",
             "description": "description",
-            "parentId": 2,
             "url": "url"
           }
         ],
@@ -592,7 +575,6 @@
               "id": 1,
               "name": "name",
               "description": "description",
-              "parentId": 2,
               "url": "url"
             }
           }
@@ -627,7 +609,6 @@
             "id": 1,
             "name": "name",
             "description": "description",
-            "parentId": 2,
             "url": "url"
           }
         ],
@@ -660,7 +641,6 @@
           "id": 1,
           "name": "name",
           "description": "description",
-          "parentId": 2,
           "url": "url"
         },
         "matchingRules": {
@@ -671,9 +651,6 @@
             "match": "type"
           },
           "$.body.description": {
-            "match": "type"
-          },
-          "$.body.parentId": {
             "match": "type"
           },
           "$.body.url": {
@@ -761,7 +738,6 @@
               "id": 1,
               "name": "name",
               "description": "description",
-              "parentId": 2,
               "url": "url"
             }
           }
@@ -805,7 +781,6 @@
               "id": 1,
               "name": "name",
               "description": "description",
-              "parentId": 2,
               "url": "url"
             }
           }
@@ -848,7 +823,6 @@
             "id": 1,
             "name": "name",
             "description": "description",
-            "parentId": 2,
             "url": "url"
           }
         },
@@ -878,9 +852,6 @@
             "match": "type"
           },
           "$.body.unit.description": {
-            "match": "type"
-          },
-          "$.body.unit.parentId": {
             "match": "type"
           },
           "$.body.unit.url": {
@@ -915,9 +886,6 @@
           "departmentId": 1
         },
         "matchingRules": {
-          "$.body.id": {
-            "match": "type"
-          },
           "$.body.unitId": {
             "match": "type"
           },
@@ -1002,7 +970,6 @@
             "id": 1,
             "name": "name",
             "description": "description",
-            "parentId": 2,
             "url": "url"
           }
         ],

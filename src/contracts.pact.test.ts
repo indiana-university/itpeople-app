@@ -19,8 +19,9 @@ const deepMatchify = (obj: Object) => traverse(obj).map(
     if (Array.isArray(x) && x.length > 0) {
       this.update(Matchers.eachLike(x[0]), true)
     }
-    else if (this.isLeaf) {
-      this.update(Matchers.like(x), true)
+    else if (this.isLeaf && x) {
+      
+      this.update(Matchers. like(x), true)
     }
   })
 
@@ -173,7 +174,7 @@ const referenceUnit: IUnit = {
   id: 1,
   name: "name",
   description: "description",
-  parentId: 2,
+  parentId: undefined,
   url: "url"
 };
 
