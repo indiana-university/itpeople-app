@@ -29,7 +29,7 @@ export const enum DepartmentActionTypes {
 export interface IState {
   profile: IApiState<IEntityRequest, IDepartment>;
   memberUnits: IApiState<IEntityRequest, IUnit[]>;
-  supportingUnits: IApiState<IEntityRequest, IUnit[]>;
+  supportingUnits: IApiState<IEntityRequest, IUnit[]>; // Todo: Support relationship?
 }
 //#endregion
 

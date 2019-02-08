@@ -12,7 +12,7 @@ import { Pact, Matchers, Query } from '@pact-foundation/pact'
 import axios, { AxiosResponse } from 'axios'
 import * as traverse from 'traverse'
 import { apiEndpoints } from './components/effects';
-import { IEntity, ISupportedDepartment, ISupportedDepartmentRequest, IUnitMember, IUnitMemberRequest, IUnit, IPerson, IUnitMembership } from './components/types'
+import { IEntity, ISupportRelationship, ISupportRelationshipRequest, IUnitMember, IUnitMemberRequest, IUnit, IPerson, IUnitMembership } from './components/types'
 
 const deepMatchify = (obj: Object) => traverse(obj).map(
   function (this: traverse.TraverseContext, x: any) {
@@ -216,15 +216,16 @@ const referenceUnitMembership: IUnitMembership = {
   unit: referenceUnit
 };
 
-const referenceSupportedDepartmentRequest: ISupportedDepartmentRequest = {
+const referenceSupportRelationshipRequest: ISupportRelationshipRequest = {
   id: 1,
   unitId: referenceUnit.id,
   departmentId: referenceDepartment.id
 };
 
-const referenceSupportedDepartment: ISupportedDepartment = {
-  ...referenceSupportedDepartmentRequest,
-  department: referenceDepartment
+const referenceSupportRelationship: ISupportRelationship = {
+  ...referenceSupportRelationshipRequest,
+  department: referenceDepartment,
+  unit: referenceUnit
 };
 
 /************************
@@ -346,20 +347,29 @@ describe('Contracts', () => {
 
   describe('Supported Departments', () => {
     const resource = "supported department"
-    const setPath = apiEndpoints.units.supportedDepartments(referenceSupportedDepartment.unitId)
-    const itemPath = apiEndpoints.units.supportedDepartments(referenceSupportedDepartment.unitId, referenceSupportedDepartment.id)
+    const setPath = apiEndpoints.units.supportedDepartments(referenceSupportRelationship.unitId)
 
     it('gets all supported departments', async () => 
-      await getAll(resource, setPath, referenceSupportedDepartment))
-    it('gets a single unit member', async () => 
-      await getOne(resource, itemPath, referenceSupportedDepartment))
-    it('creates a new unit', async () => 
-      await create(resource, setPath, { ...referenceSupportedDepartmentRequest, id: 0 }))
-    it('updates an existing unit member', async () => 
-      await update(resource, itemPath, referenceSupportedDepartmentRequest))
-    it('deletes an existing unit member', async () => 
+      await getAll(resource, setPath, referenceSupportRelationship))
+  })
+
+  describe('Support Relationships', () => {
+    const resource = "support relationship"
+    const setPath = apiEndpoints.supportRelationships()
+    const itemPath = apiEndpoints.supportRelationships(referenceSupportRelationship.id)
+
+    it('gets all support relationships', async () =>
+      await getAll(resource, setPath, referenceSupportRelationship))
+    it('gets a single support relationship', async () =>
+      await getOne(resource, itemPath, referenceSupportRelationship))
+    it('creates a new support relationships', async () =>
+      await create(resource, setPath, { ...referenceSupportRelationshipRequest, id: 0 }))
+    it('updates an existing support relationships', async () =>
+      await update(resource, itemPath, referenceSupportRelationshipRequest))
+    it('deletes an existing support relationships', async () =>
       await delete_(resource, itemPath))
   })
+
 
   describe('Unit Children', () => {
     const resource = "unit child"

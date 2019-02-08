@@ -23,36 +23,22 @@ const redirectToLogin = () =>
 const apiEndpoints = {
   departments: {
     root: (id?: number) => id ? `/departments/${id}` : "/departments",
-    members: (deptId: number, memberId?: number) =>
-      memberId
-        ? `/departments/${deptId}/members/${memberId}`
-        : `/departments/${deptId}/members`,
-    memberUnits: (deptId: number, memberId?: number) =>
-      memberId
-        ? `/departments/${deptId}/memberUnits/${memberId}`
-        : `/departments/${deptId}/memberUnits`,
-    supportingUnits: (deptId: number, memberId?: number) =>
-      memberId
-        ? `/departments/${deptId}/supportingUnits/${memberId}`
-        : `/departments/${deptId}/supportingUnits`
+    members: (deptId: number) => `/departments/${deptId}/members`,
+    memberUnits: (deptId: number) => `/departments/${deptId}/memberUnits`,
+    supportingUnits: (deptId: number) => `/departments/${deptId}/supportingUnits`
   },
   units: {
     root: (id?: number) => id ? `/units/${id}` : "/units",
     members: (unitId: number) => `/units/${unitId}/members`,
-    children: (unitId: number, childId?: number) =>
-      childId
-        ? `/units/${unitId}/children/${childId}`
-        : `/units/${unitId}/children`,
-    supportedDepartments: (unitId: number, departmentId?: number) =>
-      departmentId
-        ? `/units/${unitId}/supportedDepartments/${departmentId}`
-        : `/units/${unitId}/supportedDepartments`
+    children: (unitId: number) => `/units/${unitId}/children`,
+    supportedDepartments: (unitId: number) =>`/units/${unitId}/supportedDepartments`
   },
   people: {
     root: (id?: number) => id ? `/people/${id}` : "/people",
     memberships: (id: number) => `/people/${id}/memberships`
   },
   memberships: (id?: number) => id ? `/memberships/${id}` : "/memberships",
+  supportRelationships: (id?: number) => id ? `/supportRelationships/${id}` : "/supportRelationships",
 };
 /**
  * Handle a request that results in an exception.

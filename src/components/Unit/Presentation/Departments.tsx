@@ -7,19 +7,19 @@ import * as React from "react";
 import { IDefaultState } from "src/components/types";
 import { Loader } from "src/components/Loader";
 import { List } from "rivet-react";
-import { ISupportedDepartment } from "../../types";
+import { ISupportRelationship } from "../../types";
 
-const Departments: React.SFC<IDefaultState<ISupportedDepartment[]>> = props => {
+const Departments: React.SFC<IDefaultState<ISupportRelationship[]>> = props => {
   const { data: departments } = props;
   return (
     <>
       <Loader {...props}>
         {departments && (
           <List variant="plain">
-            {departments.map(({ id, department }, i) => (
-              <li key={i}>
-                <a href={`/departments/${id}`}>{department && department.name}</a> <br /> {department && department.description}
-              </li>
+            {departments.map(({ department }, i) => (
+                <li key={i}>
+                  <a href={`/departments/${department.id}`}>{department.name}</a> <br /> {department.description}
+                </li>
             ))}
           </List>
         )}

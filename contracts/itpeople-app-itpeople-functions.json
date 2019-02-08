@@ -746,6 +746,13 @@
               "id": 1,
               "name": "name",
               "description": "description"
+            },
+            "unit": {
+              "id": 1,
+              "name": "name",
+              "description": "description",
+              "parentId": 2,
+              "url": "url"
             }
           }
         ],
@@ -760,11 +767,55 @@
       }
     },
     {
-      "description": "a GET request for one supported department",
-      "providerState": "supported department exists",
+      "description": "a GET request for all support relationships",
+      "providerState": "at least one support relationship exists",
       "request": {
         "method": "GET",
-        "path": "/units/1/supportedDepartments/1",
+        "path": "/supportRelationships",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "unitId": 1,
+            "departmentId": 1,
+            "department": {
+              "id": 1,
+              "name": "name",
+              "description": "description"
+            },
+            "unit": {
+              "id": 1,
+              "name": "name",
+              "description": "description",
+              "parentId": 2,
+              "url": "url"
+            }
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for one support relationship",
+      "providerState": "support relationship exists",
+      "request": {
+        "method": "GET",
+        "path": "/supportRelationships/1",
         "headers": {
           "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
         }
@@ -782,6 +833,13 @@
             "id": 1,
             "name": "name",
             "description": "description"
+          },
+          "unit": {
+            "id": 1,
+            "name": "name",
+            "description": "description",
+            "parentId": 2,
+            "url": "url"
           }
         },
         "matchingRules": {
@@ -802,16 +860,31 @@
           },
           "$.body.department.description": {
             "match": "type"
+          },
+          "$.body.unit.id": {
+            "match": "type"
+          },
+          "$.body.unit.name": {
+            "match": "type"
+          },
+          "$.body.unit.description": {
+            "match": "type"
+          },
+          "$.body.unit.parentId": {
+            "match": "type"
+          },
+          "$.body.unit.url": {
+            "match": "type"
           }
         }
       }
     },
     {
-      "description": "a POST request to create a supported department",
-      "providerState": "supported department may be created",
+      "description": "a POST request to create a support relationship",
+      "providerState": "support relationship may be created",
       "request": {
         "method": "POST",
-        "path": "/units/1/supportedDepartments",
+        "path": "/supportRelationships",
         "headers": {
           "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
           "Content-Type": "application/json; charset=utf-8"
@@ -845,11 +918,11 @@
       }
     },
     {
-      "description": "a PUT request to update a supported department",
-      "providerState": "supported department exists",
+      "description": "a PUT request to update a support relationship",
+      "providerState": "support relationship exists",
       "request": {
         "method": "PUT",
-        "path": "/units/1/supportedDepartments/1",
+        "path": "/supportRelationships/1",
         "headers": {
           "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
           "Content-Type": "application/json; charset=utf-8"
@@ -883,11 +956,11 @@
       }
     },
     {
-      "description": "a DELETE request to delete a supported department",
-      "providerState": "supported department exists",
+      "description": "a DELETE request to delete a support relationship",
+      "providerState": "support relationship exists",
       "request": {
         "method": "DELETE",
-        "path": "/units/1/supportedDepartments/1",
+        "path": "/supportRelationships/1",
         "headers": {
           "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
           "Content-Type": "application/json; charset=utf-8"

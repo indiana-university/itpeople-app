@@ -166,14 +166,15 @@ export interface IUnitMembership extends IUnitMemberRequest {
   unit?: IUnit;
 }
 
-export interface ISupportedDepartmentRequest {
+export interface ISupportRelationshipRequest {
   id?: number;
   unitId: number;
   departmentId: number;
 }
 
-export interface ISupportedDepartment extends ISupportedDepartmentRequest {
-  department?: IEntity;
+export interface ISupportRelationship extends ISupportRelationshipRequest {
+  unit: IUnit;
+  department: IDepartment
 }
 
 export interface IPerson {

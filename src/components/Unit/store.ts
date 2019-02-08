@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { IApiState, IEntity, ViewStateType, IEntityRequest, IUnit, IUnitMember, ISupportedDepartment, IUnitMemberRequest, ISupportedDepartmentRequest, defaultState } from "../types";
+import { IApiState, IEntity, ViewStateType, IEntityRequest, IUnit, IUnitMember, ISupportRelationship, IUnitMemberRequest, ISupportRelationshipRequest, defaultState } from "../types";
 import { lookup } from "../lookup";
 
 //#region TYPES
@@ -60,7 +60,7 @@ export interface IState {
   members: IApiState<IEntityRequest, IUnitMember[]>;
   unitChildren: IApiState<IEntityRequest, IEntity[]>; // children conflicts with react props 😟
   parent: IApiState<IEntityRequest, IEntity>;
-  departments: IApiState<IEntityRequest, ISupportedDepartment[]>;
+  departments: IApiState<IEntityRequest, ISupportRelationship[]>;
   view: ViewStateType;
 }
 //#endregion
@@ -72,8 +72,8 @@ const edit = () => action(UnitActionTypes.UNIT_EDIT, {});
 const cancel = () => action(UnitActionTypes.UNIT_CANCEL, {});
 const fetchUnit = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request);
 const saveUnitProfileRequest = (request: IUnit) => action(UnitActionTypes.UNIT_SAVE_PROFILE_REQUEST, request);
-const saveUnitDepartment = (request: ISupportedDepartment) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, request);
-const deleteUnitDepartment = (request: ISupportedDepartment) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, request);
+const saveUnitDepartment = (request: ISupportRelationshipRequest) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, request);
+const deleteUnitDepartment = (request: ISupportRelationshipRequest) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, request);
 const saveUnitChild = (request: IEntityRequest) => action(UnitActionTypes.UNIT_SAVE_CHILD_REQUEST, request);
 const deleteUnitChild = (request: IEntityRequest) => action(UnitActionTypes.UNIT_DELETE_CHILD_REQUEST, request);
 const saveUnitParent = (request: IEntityRequest) => action(UnitActionTypes.UNIT_SAVE_PARENT_REQUEST, request);
@@ -167,7 +167,7 @@ function* handleFetchUnit(api: IApi, request: IEntityRequest) {
   yield put(fetchUnitProfile(request))
   yield put(fetchUnitMembers(request));
   yield put(fetchUnitChildren(request));
-  yield put(fetchUnitDepartments(request));
+  yield put(fetchUnitSupportedDepartments(request));
 }
 
 const fetchUnitProfile = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_PROFILE_REQUEST, request);
@@ -205,11 +205,11 @@ function* handleFetchUnitChildren(api: IApi, request: IEntityRequest) {
   yield put(action);
 }
 
-const fetchUnitDepartments = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, request);
-const fetchUnitDepartmentsSuccess = (response: IApiResponse<IEntity[]>) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS, response)
+const fetchUnitSupportedDepartments = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, request);
+const fetchUnitDepartmentsSuccess = (response: IApiResponse<ISupportRelationship[]>) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS, response)
 const fetchUnitDepartmentsError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_ERROR, error)
 function* handleFetchUnitDepartments(api: IApi, request: IEntityRequest) {
-  const action = yield api.get<IEntity[]>(apiEndpoints.units.supportedDepartments(request.id))
+  const action = yield api.get<ISupportRelationship[]>(apiEndpoints.units.supportedDepartments(request.id))
     .then(fetchUnitDepartmentsSuccess)
     .catch(signinIfUnauthorized)    
     .catch(fetchUnitDepartmentsError)          
@@ -298,23 +298,23 @@ function* handleRemoveChild(api: IApi, child: IUnit) {
   yield put(action)
 }
 
-const saveDepartmentError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_ERROR, error)
-function* handleSaveDepartment(api: IApi, department: ISupportedDepartmentRequest) {
+const saveSupportRelationshipError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_ERROR, error)
+function* handleSaveSupportRelationship(api: IApi, supportRelationship: ISupportRelationshipRequest) {
   const action = yield api
-    .post<ISupportedDepartmentRequest>(apiEndpoints.units.supportedDepartments(department.unitId), department)
-    .then(_ => fetchUnitDepartments({ id: department.unitId }))
+    .post<ISupportRelationshipRequest>(apiEndpoints.supportRelationships(), supportRelationship )
+    .then(() => fetchUnitSupportedDepartments({ id: supportRelationship.unitId }))
     .catch(signinIfUnauthorized)
-    .catch(saveDepartmentError)
+    .catch(saveSupportRelationshipError)
   yield put(action)
 }
 
-const deleteDepartmentError = (error: Error) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_ERROR, error)
-function* handleDeleteDepartment(api: IApi, department: ISupportedDepartmentRequest) {
+const deleteSupportRelationshipError = (error: Error) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_ERROR, error)
+function* handleDeleteSupportRelationship(api: IApi, supportRelationship: ISupportRelationshipRequest) {
   const action = yield api
-    .delete(apiEndpoints.units.supportedDepartments(department.unitId, department.id))
-    .then(_ => fetchUnitDepartments({ id: department.unitId }))
+    .delete(apiEndpoints.supportRelationships(supportRelationship.id))
+    .then(_ => fetchUnitSupportedDepartments({ id: supportRelationship.unitId }))
     .catch(signinIfUnauthorized)
-    .catch(deleteDepartmentError)
+    .catch(deleteSupportRelationshipError)
   yield put(action)
 }
 
@@ -337,13 +337,13 @@ function* watchUnitFetch() {
 function* watchUnitSave() {
   yield takeEvery(UnitActionTypes.UNIT_SAVE_PROFILE_REQUEST, (a: AnyAction) => handleSaveUnit(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, (a: AnyAction) => handleSaveMember(api, a.payload));
-  yield takeEvery(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, (a: AnyAction) => handleSaveDepartment(api, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, (a: AnyAction) => handleSaveSupportRelationship(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_SAVE_CHILD_REQUEST, (a: AnyAction) => handleAddChild(api, a.payload));
 }
 
 function* watchUnitDelete() {
   yield takeEvery(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, (a: AnyAction) => handleDeleteMember(api, a.payload));
-  yield takeEvery(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, (a: AnyAction) => handleDeleteDepartment(api, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, (a: AnyAction) => handleDeleteSupportRelationship(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_DELETE_CHILD_REQUEST, (a: AnyAction) => handleRemoveChild(api, a.payload));
 }
 
@@ -377,6 +377,6 @@ export {
   handleSaveUnit,
   handleSaveMember,
   handleDeleteMember,
-  handleSaveDepartment,
-  handleDeleteDepartment
+  handleSaveSupportRelationship as handleSaveDepartment,
+  handleDeleteSupportRelationship as handleDeleteDepartment
 };

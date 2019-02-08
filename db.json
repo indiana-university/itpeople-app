@@ -175,7 +175,7 @@
       "title": "Manager"
     }
   ],
-  "supportedDepartments": [
+  "supportRelationships": [
     {
       "id": 1,
       "unitId": 1,
