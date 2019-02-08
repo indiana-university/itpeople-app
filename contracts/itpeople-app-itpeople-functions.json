@@ -266,7 +266,10 @@
             "match": "type"
           },
           "$.body.unit.parentId": {
-            "match": "type"
+            "matchers":[
+              {"match": "type"}, 
+              {"match": "null"}
+            ]
           },
           "$.body.unit.url": {
             "match": "type"
@@ -353,7 +356,10 @@
             "match": "type"
           },
           "$.body.unit.parentId": {
-            "match": "type"
+            "matchers":[
+              {"match": "type"}, 
+              {"match": "null"}
+            ]
           },
           "$.body.unit.url": {
             "match": "type"
@@ -439,9 +445,12 @@
           "$.body.unit.description": {
             "match": "type"
           },
-          "$.body.unit.parentId": [
-            {"match": "type"}, 
-            {"match": "null"}],
+          "$.body.unit.parentId": {
+            "matchers":[
+              {"match": "type"}, 
+              {"match": "null"}
+            ]
+          },
           "$.body.unit.url": {
             "match": "type"
           }
@@ -882,7 +891,10 @@
             "match": "type"
           },
           "$.body.unit.parentId": {
-            "match": "type"
+            "matchers":[
+              {"match": "type"}, 
+              {"match": "null"}
+            ]
           },
           "$.body.unit.url": {
             "match": "type"
