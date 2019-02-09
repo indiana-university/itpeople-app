@@ -174,7 +174,7 @@ const referenceUnit: IUnit = {
   id: 1,
   name: "name",
   description: "description",
-  parentId: 2,
+  parentId: undefined,
   url: "url"
 };
 
