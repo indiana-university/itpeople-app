@@ -272,13 +272,13 @@ describe('Contracts', () => {
     const itemPath = apiEndpoints.memberships(referenceUnitMember.id)
 
     it('gets all memberships', async () =>
-      await getAll(resource, setPath, referenceUnitMembership))
+      await getAll(resource, setPath, referenceUnitMemberRequest))
     it('gets a single membership', async () =>
-      await getOne(resource, itemPath, referenceUnitMembership))
+      await getOne(resource, itemPath, referenceUnitMemberRequest))
     it('creates a new membership', async () =>
-      await create(resource, setPath, referenceUnitMembership))
+      await create(resource, setPath, referenceUnitMemberRequest))
     it('updates an existing membership', async () =>
-      await update(resource, itemPath, referenceUnitMembership))
+      await update(resource, itemPath, referenceUnitMemberRequest))
     it('deletes an existing membership', async () =>
       await delete_(resource, itemPath))
   })

@@ -155,8 +155,7 @@
           },
           "$.body[*].*": {
             "match": "type"
-          },
-          "$.body[*].personId": { "match": "null" }
+          }
         }
       }
     },
@@ -183,14 +182,7 @@
             "title": "title",
             "role": "Leader",
             "percentage": 100,
-            "permissions": "Viewer",
-            "unit": {
-              "id": 1,
-              "name": "name",
-              "description": "description",
-              "parentId": 2,
-              "url": "url"
-            }
+            "permissions": "Viewer"
           }
         ],
         "matchingRules": {
@@ -225,14 +217,7 @@
           "title": "title",
           "role": "Leader",
           "percentage": 100,
-          "permissions": "Viewer",
-          "unit": {
-            "id": 1,
-            "name": "name",
-            "description": "description",
-            "parentId": 2,
-            "url": "url"
-          }
+          "permissions": "Viewer"
         },
         "matchingRules": {
           "$.body.id": {
@@ -254,24 +239,6 @@
             "match": "type"
           },
           "$.body.permissions": {
-            "match": "type"
-          },
-          "$.body.unit.id": {
-            "match": "type"
-          },
-          "$.body.unit.name": {
-            "match": "type"
-          },
-          "$.body.unit.description": {
-            "match": "type"
-          },
-          "$.body.unit.parentId": {
-            "matchers":[
-              {"match": "type"}, 
-              {"match": "null"}
-            ]
-          },
-          "$.body.unit.url": {
             "match": "type"
           }
         }
@@ -294,14 +261,7 @@
           "title": "title",
           "role": "Leader",
           "percentage": 100,
-          "permissions": "Viewer",
-          "unit": {
-            "id": 1,
-            "name": "name",
-            "description": "description",
-            "parentId": 2,
-            "url": "url"
-          }
+          "permissions": "Viewer"
         }
       },
       "response": {
@@ -315,14 +275,7 @@
           "title": "title",
           "role": "Leader",
           "percentage": 100,
-          "permissions": "Viewer",
-          "unit": {
-            "id": 1,
-            "name": "name",
-            "description": "description",
-            "parentId": 2,
-            "url": "url"
-          }
+          "permissions": "Viewer"
         },
         "matchingRules": {
           "$.body.id": {
@@ -344,24 +297,6 @@
             "match": "type"
           },
           "$.body.permissions": {
-            "match": "type"
-          },
-          "$.body.unit.id": {
-            "match": "type"
-          },
-          "$.body.unit.name": {
-            "match": "type"
-          },
-          "$.body.unit.description": {
-            "match": "type"
-          },
-          "$.body.unit.parentId": {
-            "matchers":[
-              {"match": "type"}, 
-              {"match": "null"}
-            ]
-          },
-          "$.body.unit.url": {
             "match": "type"
           }
         }
@@ -384,14 +319,7 @@
           "title": "title",
           "role": "Leader",
           "percentage": 100,
-          "permissions": "Viewer",
-          "unit": {
-            "id": 1,
-            "name": "name",
-            "description": "description",
-            "parentId": 2,
-            "url": "url"
-          }
+          "permissions": "Viewer"
         }
       },
       "response": {
@@ -405,14 +333,7 @@
           "title": "title",
           "role": "Leader",
           "percentage": 100,
-          "permissions": "Viewer",
-          "unit": {
-            "id": 1,
-            "name": "name",
-            "description": "description",
-            "parentId": 2,
-            "url": "url"
-          }
+          "permissions": "Viewer"
         },
         "matchingRules": {
           "$.body.id": {
@@ -434,24 +355,6 @@
             "match": "type"
           },
           "$.body.permissions": {
-            "match": "type"
-          },
-          "$.body.unit.id": {
-            "match": "type"
-          },
-          "$.body.unit.name": {
-            "match": "type"
-          },
-          "$.body.unit.description": {
-            "match": "type"
-          },
-          "$.body.unit.parentId": {
-            "matchers":[
-              {"match": "type"}, 
-              {"match": "null"}
-            ]
-          },
-          "$.body.unit.url": {
             "match": "type"
           }
         }
@@ -891,10 +794,7 @@
             "match": "type"
           },
           "$.body.unit.parentId": {
-            "matchers":[
-              {"match": "type"}, 
-              {"match": "null"}
-            ]
+            "match": "type"
           },
           "$.body.unit.url": {
             "match": "type"
