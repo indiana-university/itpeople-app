@@ -364,7 +364,7 @@ describe('Contracts', () => {
     it('gets a single support relationship', async () =>
       await getOne(resource, itemPath, referenceSupportRelationshipRequest))
     it('creates a new support relationships', async () =>
-      await create(resource, setPath, { ...referenceSupportRelationshipRequest, id: 0 }))
+      await create(resource, setPath, referenceSupportRelationshipRequest))
     it('updates an existing support relationships', async () =>
       await update(resource, itemPath, referenceSupportRelationshipRequest))
     it('deletes an existing support relationships', async () =>
