@@ -694,18 +694,7 @@
           {
             "id": 1,
             "unitId": 1,
-            "departmentId": 1,
-            "department": {
-              "id": 1,
-              "name": "name",
-              "description": "description"
-            },
-            "unit": {
-              "id": 1,
-              "name": "name",
-              "description": "description",
-              "url": "url"
-            }
+            "departmentId": 1
           }
         ],
         "matchingRules": {
@@ -736,18 +725,7 @@
         "body": {
           "id": 1,
           "unitId": 1,
-          "departmentId": 1,
-          "department": {
-            "id": 1,
-            "name": "name",
-            "description": "description"
-          },
-          "unit": {
-            "id": 1,
-            "name": "name",
-            "description": "description",
-            "url": "url"
-          }
+          "departmentId": 1
         },
         "matchingRules": {
           "$.body.id": {
@@ -757,27 +735,6 @@
             "match": "type"
           },
           "$.body.departmentId": {
-            "match": "type"
-          },
-          "$.body.department.id": {
-            "match": "type"
-          },
-          "$.body.department.name": {
-            "match": "type"
-          },
-          "$.body.department.description": {
-            "match": "type"
-          },
-          "$.body.unit.id": {
-            "match": "type"
-          },
-          "$.body.unit.name": {
-            "match": "type"
-          },
-          "$.body.unit.description": {
-            "match": "type"
-          },
-          "$.body.unit.url": {
             "match": "type"
           }
         }
