@@ -349,9 +349,9 @@ describe('Contracts', () => {
   describe('Supported Departments', () => {
     const resource = "supported department"
     const setPath = apiEndpoints.units.supportedDepartments(referenceSupportRelationship.unitId)
-
+    const body = {... referenceSupportRelationship, unit: undefined}
     it('gets all supported departments', async () => 
-      await getAll(resource, setPath, referenceSupportRelationship))
+      await getAll(resource, setPath, body))
   })
 
   describe('Support Relationships', () => {

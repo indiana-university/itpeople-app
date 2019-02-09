@@ -656,12 +656,6 @@
               "id": 1,
               "name": "name",
               "description": "description"
-            },
-            "unit": {
-              "id": 1,
-              "name": "name",
-              "description": "description",
-              "url": "url"
             }
           }
         ],
