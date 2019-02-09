@@ -494,11 +494,6 @@
             "id": 1,
             "unitId": 1,
             "departmentId": 1,
-            "department": {
-              "id": 1,
-              "name": "name",
-              "description": "description"
-            },
             "unit": {
               "id": 1,
               "name": "name",

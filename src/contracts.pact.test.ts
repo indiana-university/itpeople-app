@@ -312,9 +312,9 @@ describe('Contracts', () => {
 
   describe('Units supporting a Department', () => {
     const resource = 'supportingUnits'
-
+    const body = { ...referenceSupportRelationship, department: undefined }
     it('gets units supporting a department', async () => 
-      await getOne(resource, apiEndpoints.departments.supportingUnits(referenceDepartment.id), [referenceSupportRelationship]))
+      await getOne(resource, apiEndpoints.departments.supportingUnits(referenceDepartment.id), [body]))
   })
 
   describe('Units', () => {
