@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer, IAuthUser, IAuthResult, IAuthRequest, IApiState, defaultState } from '../types'
+import { TaskErrorReducer, IAuthUser, IAuthResult, IAuthRequest, IApiState, defaultState, TaskStartReducer } from '../types'
 
 //#region TYPES
 export const enum AuthActionTypes {
@@ -53,7 +53,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
         request: undefined,
       }  
     case AuthActionTypes.POST_SIGN_IN_REQUEST: return TaskStartReducer(state, act)
-    case AuthActionTypes.POST_SIGN_IN_SUCCESS: return TaskSuccessReducer(state, act)
+    case AuthActionTypes.POST_SIGN_IN_SUCCESS: return {...state, data:act.payload}
     case AuthActionTypes.POST_SIGN_IN_ERROR: return TaskErrorReducer(state, act)
     case AuthActionTypes.SIGN_OUT:
       return { ...state, 

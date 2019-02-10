@@ -83,8 +83,9 @@ export const TaskStartReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, actio
 
 export const TaskSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, action: AnyAction): IApiState<TReq, TRes> => ({
   ...state,
+  // TODO: set payload type to IApiRepsonse or handle other payload types
   permissions: action.payload.permissions,
-  data: action.payload.data,
+  data: action.payload.data, 
   error: undefined,
   loading: false,
   request: undefined
