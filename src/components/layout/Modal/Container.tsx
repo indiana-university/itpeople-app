@@ -12,10 +12,10 @@ import { Modal as RivetModal, Button } from "rivet-react";
 import { ModalProps } from "rivet-react/build/dist/components/Modal/Modal";
 import { ButtonProps } from "rivet-react/build/dist/components/Button/Button";
 
-const Container: React.SFC<IElementProps> = ({ id, variant, size, modifier, innerRef, title, children, buttonText, buttonStyle, closeModal, current, onOpen, openModal } : IProps) => {
+const Container: React.SFC<IElementProps> = ({ id, variant, size, modifier, innerRef, title, children, buttonText, buttonStyle, onDismiss, current, onOpen, openModal } : IProps) => {
   const isOpen = id == current;
-  const buttonProps = { variant, size, modifier, innerRef, title, style: buttonStyle, onClick: () => openModal(id) };
-  const modalProps = { title, children, current, isOpen, onDismiss: closeModal, onLoad: onOpen };
+  const buttonProps = { variant, size, modifier, innerRef, title, style: buttonStyle, onClick: () => {openModal(id); onOpen && onOpen()}  };
+  const modalProps = { title, children, current, isOpen, onDismiss };
   return (
     <>
       <Button type="button" {...buttonProps}>
@@ -26,13 +26,12 @@ const Container: React.SFC<IElementProps> = ({ id, variant, size, modifier, inne
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
-  closeModal: () => dispatch(closeModal()),
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps | ModalProps => ({
+  onDismiss: () => dispatch(closeModal()),
   openModal: id => dispatch(openModal(id))
 });
 
 interface IDispatchProps {
-  closeModal: typeof closeModal;
   openModal: typeof openModal;
 }
 interface IStateProps {
