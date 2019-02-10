@@ -29,7 +29,7 @@
     "tdd": "yarn json-server & jest --env=jsdom --watch && kill 0",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
-    "test": "yarn json-server & jest --env=jsdom && kill 0",
+    "test": "yarn json-server & jest --env=jsdom",
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
