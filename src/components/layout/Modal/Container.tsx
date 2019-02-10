@@ -15,8 +15,7 @@ import { ButtonProps } from "rivet-react/build/dist/components/Button/Button";
 const Container: React.SFC<IElementProps> = ({ id, variant, size, modifier, innerRef, title, children, buttonText, buttonStyle, closeModal, current, onOpen, openModal } : IProps) => {
   const isOpen = id == current;
   const buttonProps = { variant, size, modifier, innerRef, title, style: buttonStyle, onClick: () => openModal(id) };
-  const modalProps = { title, children, current, isOpen, onDismiss: closeModal };
-  isOpen && onOpen && onOpen();
+  const modalProps = { title, children, current, isOpen, onDismiss: closeModal, onLoad: onOpen };
   return (
     <>
       <Button type="button" {...buttonProps}>
