@@ -3,7 +3,7 @@
   "/units/:id/members/:mid": "/memberships/:mid?_expand=person",
   "/units/:id/members": "/memberships?unitId=:id&_expand=person",
   "/units/:id/children": "/units?parentId=:id",
-  "/units/:id/supportedDepartments": "/supportRelationships?unitId=:id",
+  "/units/:id/supportedDepartments": "/supportRelationships?unitId=:id&_expand=department",
   "/people/:id/memberships/:mid": "/memberships/:mid?_expand=unit",
   "/people/:id/memberships": "/memberships?personId=:id&_expand=unit",
   "/people/:id": "/people/:id?_expand=department",
