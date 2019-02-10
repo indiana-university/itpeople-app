@@ -349,9 +349,9 @@ describe('Contracts', () => {
   describe('Supported Departments', () => {
     const resource = "supported department"
     const setPath = apiEndpoints.units.supportedDepartments(referenceSupportRelationship.unitId)
-
+    const body = {... referenceSupportRelationship, unit: undefined}
     it('gets all supported departments', async () => 
-      await getAll(resource, setPath, referenceSupportRelationship))
+      await getAll(resource, setPath, body))
   })
 
   describe('Support Relationships', () => {
@@ -360,11 +360,11 @@ describe('Contracts', () => {
     const itemPath = apiEndpoints.supportRelationships(referenceSupportRelationship.id)
 
     it('gets all support relationships', async () =>
-      await getAll(resource, setPath, referenceSupportRelationship))
+      await getAll(resource, setPath, referenceSupportRelationshipRequest))
     it('gets a single support relationship', async () =>
-      await getOne(resource, itemPath, referenceSupportRelationship))
+      await getOne(resource, itemPath, referenceSupportRelationshipRequest))
     it('creates a new support relationships', async () =>
-      await create(resource, setPath, { ...referenceSupportRelationshipRequest, id: 0 }))
+      await create(resource, setPath, referenceSupportRelationshipRequest))
     it('updates an existing support relationships', async () =>
       await update(resource, itemPath, referenceSupportRelationshipRequest))
     it('deletes an existing support relationships', async () =>
