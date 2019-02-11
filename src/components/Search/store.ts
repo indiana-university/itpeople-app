@@ -4,16 +4,7 @@
  */
 
 import { action } from "typesafe-actions";
-import {
-  IApiState,
-  TaskErrorReducer,
-  TaskStartReducer,
-  defaultState,
-  IDepartment,
-  IUnit,
-  IPerson,
-  TaskSuccessReducer
-} from "../types";
+import { IApiState, TaskErrorReducer, TaskStartReducer, defaultState, IDepartment, IUnit, IPerson, TaskSuccessReducer } from "../types";
 import { SearchLists } from "./Results";
 
 //#region TYPES
@@ -66,6 +57,19 @@ export const initialState: IState = {
   selectedList: undefined
 };
 
+const setSelectedList = (s: IState) => {
+  s.selectedList =
+    s.selectedList ||
+    (s.units.data && s.units.data.length
+      ? SearchLists.Units
+      : s.departments.data && s.departments.data.length
+      ? SearchLists.Departments
+      : s.people.data && s.people.data.length
+      ? SearchLists.People
+      : undefined);
+  return s;
+};
+
 export const reducer: Reducer<IState> = (state = initialState, act) => {
   switch (act.type) {
     // submit search
@@ -76,7 +80,7 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
     case SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_REQUEST:
       return { ...state, departments: TaskStartReducer(state.departments, act) };
     case SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_SUCCESS:
-      return { ...state, departments: TaskSuccessReducer(state.departments, act) };
+      return setSelectedList({ ...state, departments: TaskSuccessReducer(state.departments, act) });
     case SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_ERROR:
       return { ...state, departments: TaskErrorReducer(state.departments, act) };
 
@@ -84,7 +88,7 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
     case SearchActionTypes.SEARCH_UNITS_FETCH_REQUEST:
       return { ...state, units: TaskStartReducer(state.units, act) };
     case SearchActionTypes.SEARCH_UNITS_FETCH_SUCCESS:
-      return { ...state, units: TaskSuccessReducer(state.units, act) };
+      return setSelectedList({ ...state, units: TaskSuccessReducer(state.units, act) });
     case SearchActionTypes.SEARCH_UNITS_FETCH_ERROR:
       return { ...state, units: TaskErrorReducer(state.units, act) };
 
@@ -92,7 +96,7 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
     case SearchActionTypes.SEARCH_PEOPLE_FETCH_REQUEST:
       return { ...state, people: TaskStartReducer(state.people, act) };
     case SearchActionTypes.SEARCH_PEOPLE_FETCH_SUCCESS:
-      return { ...state, people: TaskSuccessReducer(state.people, act) };
+      return setSelectedList({ ...state, people: TaskSuccessReducer(state.people, act) });
     case SearchActionTypes.SEARCH_PEOPLE_FETCH_ERROR:
       return { ...state, people: TaskErrorReducer(state.people, act) };
 
@@ -122,7 +126,7 @@ function* handleDepartmentSearch(api: IApi, term: string) {
     .catch(signinIfUnauthorized)
     .catch(searchDepartmentsError);
 
-    yield put(action);
+  yield put(action);
 }
 function* handleUnitSearch(api: IApi, term: string) {
   const action = yield api
@@ -131,7 +135,7 @@ function* handleUnitSearch(api: IApi, term: string) {
     .catch(signinIfUnauthorized)
     .catch(searchUnitsError);
 
-    yield put(action);
+  yield put(action);
 }
 function* handlePeopleSearch(api: IApi, term: string) {
   const action = yield api
@@ -140,9 +144,8 @@ function* handlePeopleSearch(api: IApi, term: string) {
     .catch(signinIfUnauthorized)
     .catch(searchPeopleError);
 
-    yield put(action);
+  yield put(action);
 }
-
 
 function* watchSimpleSearchFetch() {
   yield takeEvery(SearchActionTypes.SEARCH_SIMPLE_SUBMIT, (a: AnyAction) => handleSearch(api, a.payload));

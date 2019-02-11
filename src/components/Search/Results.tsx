@@ -17,9 +17,9 @@ interface IProps {
   setCurrentList(list: SearchLists): void;
 }
 export enum SearchLists {
-  People,
-  Units,
-  Departments
+  People = "people",
+  Units = "units",
+  Departments = "departments"
 }
 
 export const Results: React.SFC<IProps> = ({ departments, setCurrentList, selectedList, units, people }) => {
