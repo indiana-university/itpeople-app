@@ -39,9 +39,9 @@ const Page: React.SFC<IPageProps & IPropsFromDispatch> = ({ user, signInRequest,
           <SearchForm onSubmit={submitSearch} />
         </HeaderNavigation>
       }
-      { user &&
+      { user && user.user_id != 0 &&
         <HeaderIdentity username={user.user_name} onLogout={signOutRequest}>
-          <a href="/me">Profile</a>
+          <a href={`/people/${user.user_id}`}>Profile</a>
         </HeaderIdentity>
       }
       { !user &&

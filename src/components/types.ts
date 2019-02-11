@@ -204,5 +204,5 @@ export interface IAuthResult {
 }
 export interface IAuthUser {
   user_name: string,
-  user_role: string
+  user_id: number
 }
