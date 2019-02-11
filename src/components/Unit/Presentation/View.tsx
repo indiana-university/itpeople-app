@@ -13,7 +13,7 @@ import Profile from "./Profile";
 import Members from "./Members";
 import Parent from "./Parent";
 import Children from "./Children";
-import { IEntity, IDefaultState, Permissions } from "../../types";
+import { IEntity, IDefaultState, Permissions, IApiState } from "../../types";
 import Departments from "./Departments";
 import { Pencil } from "src/components/icons";
 
@@ -21,19 +21,23 @@ interface IProps {
   edit(): any;
   unitChildren: IDefaultState<IEntity[]>;
 }
+const hasData = (result: IApiState<any, any>) => {
+  return result.loading || (Array.isArray(result.data) ? !!result.data.length : !!result.data);
+};
 
 const Presentation: React.SFC<IState & IProps> = props => {
   const { edit, profile, members, parent, unitChildren, departments } = props;
   const name = profile.data ? profile.data.name : "...";
+
   return (
     <>
       <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, { text: "Units", href: "/units" }, name]} />
       <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
-        {profile && Permissions.canPut( profile.permissions) && 
+        {profile && Permissions.canPut(profile.permissions) && (
           <Button onClick={edit} style={{ float: "right" }} title={`Edit: ${name}`}>
             <Pencil />
           </Button>
-        }
+        )}
         <Profile {...profile} />
       </Content>
       <Content className="rvt-bg-white rvt-p-tb-xxl">
@@ -43,15 +47,19 @@ const Presentation: React.SFC<IState & IProps> = props => {
           </Col>
           <Col lg={5} last={true}>
             <div className="rvt-m-all-md">
-              <div className="rvt-m-bottom-lg">
-                <Panel title="Parent and Children">
-                  <Parent {...parent} />
-                  <Children {...unitChildren} />
+              {(hasData(parent) || hasData(unitChildren)) && (
+                <div className="rvt-m-bottom-lg">
+                  <Panel title="Parent and Children">
+                    <Parent {...parent} />
+                    <Children {...unitChildren} />
+                  </Panel>
+                </div>
+              )}
+              {hasData(departments) && (
+                <Panel title="Supported Departments">
+                  <Departments {...departments} />
                 </Panel>
-              </div>
-              <Panel title="Supported Departments">
-                <Departments {...departments} />
-              </Panel>
+              )}
             </div>
           </Col>
         </Row>
