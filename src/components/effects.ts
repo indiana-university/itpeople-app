@@ -25,17 +25,21 @@ const apiEndpoints = {
     root: (id?: number) => id ? `/departments/${id}` : "/departments",
     members: (deptId: number) => `/departments/${deptId}/members`,
     memberUnits: (deptId: number) => `/departments/${deptId}/memberUnits`,
-    supportingUnits: (deptId: number) => `/departments/${deptId}/supportingUnits`
+    supportingUnits: (deptId: number) => `/departments/${deptId}/supportingUnits`,
+    search: (term:string) => `/departments?q=${term}`
   },
   units: {
     root: (id?: number) => id ? `/units/${id}` : "/units",
     members: (unitId: number) => `/units/${unitId}/members`,
     children: (unitId: number) => `/units/${unitId}/children`,
-    supportedDepartments: (unitId: number) =>`/units/${unitId}/supportedDepartments`
+    supportedDepartments: (unitId: number) =>`/units/${unitId}/supportedDepartments`,
+    search: (term:string) => `/units?q=${term}`
+
   },
   people: {
     root: (id?: number) => id ? `/people/${id}` : "/people",
-    memberships: (id: number) => `/people/${id}/memberships`
+    memberships: (id: number) => `/people/${id}/memberships`,
+    search: (term:string) => `/people?q=${term}`
   },
   memberships: (id?: number) => id ? `/memberships/${id}` : "/memberships",
   supportRelationships: (id?: number) => id ? `/supportRelationships/${id}` : "/supportRelationships",

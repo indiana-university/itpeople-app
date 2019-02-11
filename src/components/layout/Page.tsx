@@ -73,7 +73,7 @@ const mapStateToProps = ({ auth }: IApplicationState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) : IPropsFromDispatch => ({
   signInRequest: () => dispatch(signInRequest()),
   signOutRequest: () => dispatch(signOutRequest()),
-  submitSearch: () => dispatch(Search.submit())
+  submitSearch: (q:string) => dispatch(Search.submit(q))
 })
 
 // Now let's connect our component!
