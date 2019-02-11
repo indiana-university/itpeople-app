@@ -31,20 +31,32 @@ export const Results: React.SFC<IProps> = ({ departments, setCurrentList, select
     <>
       <Row>
         <Col className="rvt-m-bottom-lg search-list-button">
-          <List variant="plain" orientation="inline">
-            <button onClick={showPeople} className={"rvt-button--plain" + (selectedList == SearchLists.People ? " selected" : "")}>
-              People ({people && people.data && people.data.length})
-            </button>
-            <button onClick={showUnits} className={"rvt-button--plain" + (selectedList == SearchLists.Units ? " selected" : "")}>
-              Units ({units && units.data && units.data.length})
-            </button>
-            <button
-              onClick={showDepartments}
-              className={"rvt-button--plain" + (selectedList == SearchLists.Departments ? " selected" : "")}
-            >
-              Departments ({departments && departments.data && departments.data.length})
-            </button>
-          </List>
+          <ul className="rvt-list rvt-plain-list rvt-inline-list">
+            {people && people.data && people.data.length > 0 && (
+              <li>
+                <button onClick={showPeople} className={"rvt-button--plain" + (selectedList == SearchLists.People ? " selected" : "")}>
+                  People ({people.data.length})
+                </button>
+              </li>
+            )}
+            {units && units.data && units.data.length > 0 && (
+              <li>
+                <button onClick={showUnits} className={"rvt-button--plain" + (selectedList == SearchLists.Units ? " selected" : "")}>
+                  Units ({units.data.length})
+                </button>
+              </li>
+            )}
+            {departments && departments.data && departments.data.length > 0 && (
+              <li>
+                <button
+                  onClick={showDepartments}
+                  className={"rvt-button--plain" + (selectedList == SearchLists.Departments ? " selected" : "")}
+                >
+                  Departments ({departments.data.length})
+                </button>
+              </li>
+            )}
+          </ul>
         </Col>
       </Row>
 
