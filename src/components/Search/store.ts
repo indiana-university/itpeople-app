@@ -4,7 +4,17 @@
  */
 
 import { action } from "typesafe-actions";
-import { IApiState, TaskErrorReducer, TaskStartReducer, defaultState, IDepartment, IUnit, IPerson, TaskSuccessReducer } from "../types";
+import {
+  IApiState,
+  TaskErrorReducer,
+  TaskStartReducer,
+  defaultState,
+  IDepartment,
+  IUnit,
+  IPerson,
+  TaskSuccessReducer,
+  IDefaultState
+} from "../types";
 import { SearchLists } from "./Results";
 
 //#region TYPES
@@ -57,19 +67,6 @@ export const initialState: IState = {
   selectedList: undefined
 };
 
-const setSelectedList = (s: IState) => {
-  s.selectedList =
-    s.selectedList ||
-    (s.units.data && s.units.data.length
-      ? SearchLists.Units
-      : s.departments.data && s.departments.data.length
-      ? SearchLists.Departments
-      : s.people.data && s.people.data.length
-      ? SearchLists.People
-      : undefined);
-  return s;
-};
-
 export const reducer: Reducer<IState> = (state = initialState, act) => {
   switch (act.type) {
     // submit search
@@ -105,6 +102,34 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
     default:
       return state;
   }
+};
+const setSelectedList = (s: IState) => {
+  if (hasSelectedData(s)) {
+    return s;
+  }
+  const selectedList = hasData(s.units)
+    ? SearchLists.Units
+    : hasData(s.departments)
+    ? SearchLists.Departments
+    : hasData(s.people)
+    ? SearchLists.People
+    : undefined;
+  return { ...s, selectedList };
+};
+const hasData = (result: IDefaultState<any[]>) => {
+  return !!(result && result.data && result.data.length);
+};
+const hasSelectedData = (s: IState): boolean => {
+  const listType = s.selectedList;
+  const data =
+    (listType == SearchLists.Departments
+      ? s.departments.data
+      : listType == SearchLists.Units
+      ? s.units.data
+      : listType == SearchLists.People
+      ? s.people.data
+      : []) || [];
+  return !!data.length;
 };
 
 import { all, fork, put, takeEvery } from "redux-saga/effects";
