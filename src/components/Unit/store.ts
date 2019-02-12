@@ -340,9 +340,7 @@ function* watchUnitFetch() {
   yield takeEvery(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, (a: AnyAction) => handleFetchUnitChildren(api, a.payload));
   // The unit parent is defined by a parentId on the unit record, so we must await the unit record fetch.
   yield takeEvery(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, (a: AnyAction) => handleFetchUnitParent(api, a.payload));
-  yield takeEvery(UnitActionTypes.UNIT_FETCH_PROFILE_SUCCESS, (a: AnyAction) => {
-    return handleFetchProfileSuccess(api, a.payload.data);
-  });
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_PROFILE_SUCCESS, (a: AnyAction) => handleFetchProfileSuccess(api, a.payload.data));
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
