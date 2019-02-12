@@ -11,6 +11,7 @@ import { IApplicationState } from "../types";
 import Search from "./Presentation";
 import { setCurrentList, submit as search, IState } from "./store";
 import { SearchLists } from "./Results";
+import { change } from "redux-form";
 
 interface ILocationProps {
   search: string;
@@ -23,12 +24,14 @@ interface ISearchProps {
 interface IPropsFromDispatch {
   search: typeof search;
   setCurrentList: typeof setCurrentList;
+  setSearchTerm: (q: string) => any;
 }
 
 interface ISimpleSearchContainerProps extends IState, ISearchProps, IPropsFromDispatch {}
 
 const executeSearch = (props: ISimpleSearchContainerProps) => {
   const queryParam = queryString.parse(props.location.search);
+  props.setSearchTerm(queryParam.term);
   return props.search(queryParam.term);
 };
 
@@ -52,7 +55,8 @@ const mapStateToProps = (state: IApplicationState) => state.searchSimple;
 
 const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
   search: (term: string) => dispatch(search(term)),
-  setCurrentList: (list: SearchLists) => dispatch(setCurrentList(list))
+  setCurrentList: (list: SearchLists) => dispatch(setCurrentList(list)),
+  setSearchTerm: (q: string) => dispatch(change("search", "term", q))
 });
 
 export default connect(
