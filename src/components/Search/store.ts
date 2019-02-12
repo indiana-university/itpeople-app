@@ -74,7 +74,7 @@ export const reducer: Reducer<IState> = (state = initialState, act) => {
   switch (act.type) {
     // submit search
     case SearchActionTypes.SEARCH_SIMPLE_SUBMIT:
-      return { ...state, ...initialState, term: act.payload };
+      return { ...state, term: act.payload };
 
     // department search
     case SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_REQUEST:

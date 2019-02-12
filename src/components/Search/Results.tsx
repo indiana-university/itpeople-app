@@ -30,7 +30,14 @@ export const Results: React.SFC<IProps> = ({ departments, setCurrentList, select
 
   return (
     <>
-      <Loader loading={departments.loading || units.loading || people.loading} error={departments.error || units.error || people.error} />
+      <div style={{position:"relative"}}>
+        <span style={{ position: "absolute", right: 0 }}>
+          <Loader
+            loading={departments.loading || units.loading || people.loading}
+            error={departments.error || units.error || people.error}
+          />
+        </span>
+      </div>
       <Row>
         <Col className="rvt-m-bottom-lg search-list-button">
           <ul className="rvt-list rvt-plain-list rvt-inline-list">
