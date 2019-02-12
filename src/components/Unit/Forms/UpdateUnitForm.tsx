@@ -27,7 +27,7 @@ let UpdateUnitForm: React.SFC<IFormProps> | any = ({close,save,handleSubmit}: IF
           <RivetInputField name="name" component={RivetInput} label="Name" validate={[required]} />
         </div>
         <div>
-          <RivetTextareaField name="description" component={RivetTextarea} label="Description" validate={[required]} />
+          <RivetTextareaField name="description" component={RivetTextarea} label="Description" />
         </div>
         <div>
           <RivetInputField name="url" component={RivetInput} label="URL" validate={[url]} />
