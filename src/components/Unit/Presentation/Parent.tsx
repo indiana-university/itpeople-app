@@ -11,9 +11,9 @@ import { ParentCard } from "..";
 const Parent: React.SFC<IDefaultState<IEntity>> = props => {
   const { data: parent } = props;
   return (
-    <>
+    <div>
       <Loader {...props}>{parent && <ParentCard parent={parent} />}</Loader>
-    </>
+    </div>
   );
 };
 
