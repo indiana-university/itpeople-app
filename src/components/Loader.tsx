@@ -4,9 +4,8 @@
  */
 
 import * as React from "react";
-import { IDefaultState } from "./types";
 
-export const Loader = ({ loading, loadingMessage, data, error, children }: IDefaultState<any> & IProps) => (
+export const Loader = ({ loading, loadingMessage, data, error, children }: IProps) => (
   <>
     {loading && (
       <>
@@ -21,5 +20,8 @@ export const Loader = ({ loading, loadingMessage, data, error, children }: IDefa
 
 interface IProps {
   children?: React.ReactNode;
+  loading: boolean;
   loadingMessage?: string | React.ReactNode;
+  data?: any;
+  error?: string | Error;
 }

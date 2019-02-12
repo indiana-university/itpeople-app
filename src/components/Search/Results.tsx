@@ -8,6 +8,7 @@ import { Row, Col } from "rivet-react";
 import { List } from "rivet-react/build/dist/components/List/List";
 import { IEntity, IDefaultState } from "../types";
 import { ProfileList } from "../Profile/ProfileList";
+import { Loader } from "../Loader";
 
 interface IProps {
   people: IDefaultState<IEntity[]>;
@@ -29,6 +30,7 @@ export const Results: React.SFC<IProps> = ({ departments, setCurrentList, select
 
   return (
     <>
+      <Loader loading={departments.loading || units.loading || people.loading} error={departments.error || units.error || people.error} />
       <Row>
         <Col className="rvt-m-bottom-lg search-list-button">
           <ul className="rvt-list rvt-plain-list rvt-inline-list">
