@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { IApplicationState, IAuthRequest } from '../types';
 import { postSignInRequest, IState } from './store';
+import { ErrorMessage } from '../ErrorMessage';
 
 interface ILocationProps {
     search: string;
@@ -35,7 +36,7 @@ class Component extends React.Component<IState & IComponentProps & IDispatchProp
                   <p>Signing in...</p> }
                 { !this.props.loading && this.props.error &&
                   <div>
-                    <p>Errors: {this.props.error}</p> 
+                      <ErrorMessage error={this.props.error}>Failed to log in 😟 </ErrorMessage>
                   </div> }
             </>
         )

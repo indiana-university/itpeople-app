@@ -254,7 +254,7 @@ GET/POST/DELETE /units/{unit_id}/parent/{parent_unit_id}
 GET/POST/DELETE /units/{unit_id}/supported_departments/{department_id}
 */
 
-const saveUnitError = (error: string) => action(UnitActionTypes.UNIT_SAVE_PROFILE_ERROR, error);
+const saveUnitError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_PROFILE_ERROR, error);
 function* handleSaveUnit(api: IApi, unit: IUnit) {
   const request = unit.id != 0 ? api.put(apiEndpoints.units.root(unit.id), unit) : api.post(apiEndpoints.units.root(), unit);
   const action = yield request
@@ -263,7 +263,7 @@ function* handleSaveUnit(api: IApi, unit: IUnit) {
     .catch(saveUnitError);
   yield put(action);
 }
-const saveMemberError = (error: string) => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error);
+const saveMemberError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error);
 function* handleSaveMember(api: IApi, member: IUnitMemberRequest) {
   const request = member.id ? api.put(apiEndpoints.memberships(member.id), member) : api.post(apiEndpoints.memberships(member.id), member);
   const action = yield request
@@ -273,7 +273,7 @@ function* handleSaveMember(api: IApi, member: IUnitMemberRequest) {
   yield put(action);
 }
 
-const deleteMemberError = (error: string) => action(UnitActionTypes.UNIT_DELETE_MEMBER_ERROR, error);
+const deleteMemberError = (error: Error) => action(UnitActionTypes.UNIT_DELETE_MEMBER_ERROR, error);
 function* handleDeleteMember(api: IApi, member: IUnitMember) {
   const action = yield api
     .delete(apiEndpoints.memberships(member.id))
@@ -283,7 +283,7 @@ function* handleDeleteMember(api: IApi, member: IUnitMember) {
   yield put(action);
 }
 
-const addChildError = (error: string) => action(UnitActionTypes.UNIT_SAVE_CHILD_ERROR, error);
+const addChildError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_CHILD_ERROR, error);
 function* handleAddChild(api: IApi, child: IUnit) {
   const action = yield api
     .put<IUnit>(apiEndpoints.units.root(child.id), child)

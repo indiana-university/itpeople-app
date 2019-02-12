@@ -38,13 +38,13 @@ export interface IState {
 export const fetchRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_REQUEST, request)
 const fetchProfileRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_REQUEST, request)
 const fetchProfileSuccess = (response: IApiResponse<IDepartment>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_SUCCESS, response)
-const fetchProfileError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_ERROR, error)
+const fetchProfileError = (error: Error) => action(DepartmentActionTypes.DEPARTMENT_FETCH_PROFILE_ERROR, error)
 const fetchMemberUnitsRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_MEMBER_UNITS_REQUEST, request)
 const fetchMemberUnitsSuccess = (response: IApiResponse<IUnit[]>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_MEMBER_UNITS_SUCCESS, response)
-const fetchMemberUnitsError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_MEMBER_UNITS_ERROR, error)
+const fetchMemberUnitsError = (error: Error) => action(DepartmentActionTypes.DEPARTMENT_FETCH_MEMBER_UNITS_ERROR, error)
 const fetchSupportingUnitsRequest = (request: IEntityRequest) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_REQUEST, request)
 const fetchSupportingUnitsSuccess = (response: IApiResponse<ISupportRelationship[]>) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_SUCCESS, response)
-const fetchSupportingUnitsError = (error: string) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_ERROR, error)
+const fetchSupportingUnitsError = (error: Error) => action(DepartmentActionTypes.DEPARTMENT_FETCH_SUPPORTING_UNITS_ERROR, error)
 //#endregion
 
 

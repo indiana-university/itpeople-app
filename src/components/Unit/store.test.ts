@@ -26,12 +26,12 @@ const sagaApiHappyPath = async (saga: any, request: any, expectedMethod: string,
 }
 
 const sagaApiSadPath = async (saga: any, request: any, expectedDispatch: string) => {
-    const errors = { errors: ["Error"] };
+    const error = new Error("Error");
     const apiCaller: IApiCall = (m, u, p, d, h): Promise<any>=>
-        Promise.reject(errors);
+        Promise.reject(error);
     const api = restApi("", apiCaller);
     await expectSaga(saga, api, request)
-        .put({ type: expectedDispatch, payload: errors, meta: undefined })
+        .put({ type: expectedDispatch, payload: error, meta: undefined })
         .silentRun(50);
 };
 
