@@ -3,7 +3,18 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { IApiState, IEntity, ViewStateType, IEntityRequest, IUnit, IUnitMember, ISupportRelationship, IUnitMemberRequest, ISupportRelationshipRequest, defaultState } from "../types";
+import {
+  IApiState,
+  IEntity,
+  ViewStateType,
+  IEntityRequest,
+  IUnit,
+  IUnitMember,
+  ISupportRelationship,
+  IUnitMemberRequest,
+  ISupportRelationshipRequest,
+  defaultState
+} from "../types";
 import { lookup } from "../lookup";
 
 //#region TYPES
@@ -121,7 +132,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
     case UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS: return { ...state, members: TaskSuccessReducer(state.members, act) };
     case UnitActionTypes.UNIT_FETCH_MEMBERS_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
-    case UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
+    case UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
     case UnitActionTypes.UNIT_SAVE_MEMBER_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
     case UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
     case UnitActionTypes.UNIT_DELETE_MEMBER_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
@@ -129,7 +140,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST: return { ...state, unitChildren: TaskStartReducer(state.unitChildren, act) };
     case UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS: return { ...state, unitChildren: TaskSuccessReducer(state.unitChildren, act) };
     case UnitActionTypes.UNIT_FETCH_CHILDREN_ERROR: return { ...state, unitChildren: TaskErrorReducer(state.unitChildren, act) };
-    case UnitActionTypes.UNIT_SAVE_CHILD_REQUEST: return { ...state, unitChildren: TaskStartReducer(state.unitChildren, act) };
+    case UnitActionTypes.UNIT_SAVE_CHILD_REQUEST: return { ...state, unitChildren: TaskStartReducer(state.unitChildren, act) };
     case UnitActionTypes.UNIT_SAVE_CHILD_SUCCESS: return { ...state, unitChildren: TaskSuccessReducer(state.unitChildren, act) };
     case UnitActionTypes.UNIT_SAVE_CHILD_ERROR: return { ...state, unitChildren: TaskErrorReducer(state.unitChildren, act) };
     //
@@ -160,58 +171,66 @@ import { apiEndpoints, signinIfUnauthorized } from "../effects";
 import { IApi, IApiResponse, restApi } from "../api";
 
 function* handleFetchUnit(api: IApi, request: IEntityRequest) {
-  yield put(fetchUnitProfile(request))
+  yield put(fetchUnitProfile(request));
   yield put(fetchUnitMembers(request));
   yield put(fetchUnitChildren(request));
   yield put(fetchUnitSupportedDepartments(request));
 }
+function* handleFetchProfileSuccess(api: IApi, request: IEntityRequest) {
+  yield put(fetchUnitParentRequest(request));
+}
 
 const fetchUnitProfile = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_PROFILE_REQUEST, request);
 const fetchUnitProfileSuccess = (response: IApiResponse<IUnit>) => action(UnitActionTypes.UNIT_FETCH_PROFILE_SUCCESS, response);
-const fetchUnitProfileError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_PROFILE_ERROR, error)
+const fetchUnitProfileError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_PROFILE_ERROR, error);
 function* handleFetchUnitProfile(api: IApi, request: IEntityRequest) {
   const action = yield api
-      .get<IUnit>(apiEndpoints.units.root(request.id))
-      .then(fetchUnitProfileSuccess)
-      .catch(signinIfUnauthorized)
-      .catch(fetchUnitProfileError)
-  yield put(action)
+    .get<IUnit>(apiEndpoints.units.root(request.id))
+    .then(fetchUnitProfileSuccess)
+    .catch(signinIfUnauthorized)
+    .catch(fetchUnitProfileError);
+  yield put(action);
 }
 
 const fetchUnitMembers = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, request);
 const fetchUnitMembersSuccess = (response: IApiResponse<IUnitMember[]>) => action(UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS, response);
-const fetchUnitMembersError = (error: Error) => action(UnitActionTypes.UNIT_DELETE_MEMBER_ERROR, error)
+const fetchUnitMembersError = (error: Error) => action(UnitActionTypes.UNIT_DELETE_MEMBER_ERROR, error);
 function* handleFetchUnitMembers(api: IApi, request: IEntityRequest) {
   const action = yield api
-      .get<IUnitMember[]>(apiEndpoints.units.members(request.id))
-      .then(fetchUnitMembersSuccess)
-      .catch(signinIfUnauthorized)
-      .catch(fetchUnitMembersError);
-  yield put(action)
+    .get<IUnitMember[]>(apiEndpoints.units.members(request.id))
+    .then(fetchUnitMembersSuccess)
+    .catch(signinIfUnauthorized)
+    .catch(fetchUnitMembersError);
+  yield put(action);
 }
 
 const fetchUnitChildren = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, request);
-const fetchUnitChildrenSuccess = (response: IApiResponse<IEntityRequest[]>) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS, response);
+const fetchUnitChildrenSuccess = (response: IApiResponse<IEntityRequest[]>) =>
+  action(UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS, response);
 const fetchUnitChildrenError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_CHILDREN_ERROR, error);
 function* handleFetchUnitChildren(api: IApi, request: IEntityRequest) {
-  const action = yield api.get<IUnit[]>(apiEndpoints.units.children(request.id))
+  const action = yield api
+    .get<IUnit[]>(apiEndpoints.units.children(request.id))
     .then(fetchUnitChildrenSuccess)
     .catch(signinIfUnauthorized)
-    .catch(fetchUnitChildrenError)
+    .catch(fetchUnitChildrenError);
   yield put(action);
 }
 
 const fetchUnitSupportedDepartments = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, request);
-const fetchUnitDepartmentsSuccess = (response: IApiResponse<ISupportRelationship[]>) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS, response)
-const fetchUnitDepartmentsError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_ERROR, error)
+const fetchUnitDepartmentsSuccess = (response: IApiResponse<ISupportRelationship[]>) =>
+  action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS, response);
+const fetchUnitDepartmentsError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_ERROR, error);
 function* handleFetchUnitDepartments(api: IApi, request: IEntityRequest) {
-  const action = yield api.get<ISupportRelationship[]>(apiEndpoints.units.supportedDepartments(request.id))
+  const action = yield api
+    .get<ISupportRelationship[]>(apiEndpoints.units.supportedDepartments(request.id))
     .then(fetchUnitDepartmentsSuccess)
-    .catch(signinIfUnauthorized)    
-    .catch(fetchUnitDepartmentsError)          
+    .catch(signinIfUnauthorized)
+    .catch(fetchUnitDepartmentsError);
   yield put(action);
 }
 
+const fetchUnitParentRequest = (response: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, response);
 const fetchUnitParentSuccess = (response: IApiResponse<IUnit>) => action(UnitActionTypes.UNIT_FETCH_PARENT_SUCCESS, response);
 const fetchUnitParentError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_PARENT_ERROR, error);
 function* handleFetchUnitParent(api: IApi, unit?: IUnit) {
@@ -220,10 +239,10 @@ function* handleFetchUnitParent(api: IApi, unit?: IUnit) {
       .get<IUnit>(apiEndpoints.units.root(unit.parentId))
       .then(fetchUnitParentSuccess)
       .catch(signinIfUnauthorized)
-      .catch(fetchUnitParentError)
-    yield put(action)
+      .catch(fetchUnitParentError);
+    yield put(action);
   } else {
-    yield put(fetchUnitParentSuccess({data: undefined, url:"", permissions:[]}));
+    yield put(fetchUnitParentSuccess({ data: undefined, url: "", permissions: [] }));
   }
 }
 
@@ -235,51 +254,46 @@ GET/POST/DELETE /units/{unit_id}/parent/{parent_unit_id}
 GET/POST/DELETE /units/{unit_id}/supported_departments/{department_id}
 */
 
-const saveUnitError = (error:string) => action(UnitActionTypes.UNIT_SAVE_PROFILE_ERROR, error);
+const saveUnitError = (error: string) => action(UnitActionTypes.UNIT_SAVE_PROFILE_ERROR, error);
 function* handleSaveUnit(api: IApi, unit: IUnit) {
-  const request =
-    unit.id != 0
-    ? api.put(apiEndpoints.units.root(unit.id), unit)
-    : api.post(apiEndpoints.units.root(), unit)
+  const request = unit.id != 0 ? api.put(apiEndpoints.units.root(unit.id), unit) : api.post(apiEndpoints.units.root(), unit);
   const action = yield request
-    .then(_ => fetchUnit({id: unit.id}))
+    .then(_ => fetchUnit({ id: unit.id }))
     .catch(signinIfUnauthorized)
-    .catch(saveUnitError)
+    .catch(saveUnitError);
   yield put(action);
 }
-const saveMemberError= (error:string) => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error)
+const saveMemberError = (error: string) => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error);
 function* handleSaveMember(api: IApi, member: IUnitMemberRequest) {
-  const request = (member.id) 
-    ? api.put(apiEndpoints.memberships(member.id),member)
-    : api.post(apiEndpoints.memberships(member.id),member)
+  const request = member.id ? api.put(apiEndpoints.memberships(member.id), member) : api.post(apiEndpoints.memberships(member.id), member);
   const action = yield request
-    .then(_ => fetchUnitMembers({id: member.unitId}))
+    .then(_ => fetchUnitMembers({ id: member.unitId }))
     .catch(signinIfUnauthorized)
     .catch(saveMemberError);
-  yield put(action);        
+  yield put(action);
 }
 
-const deleteMemberError = (error:string) => action(UnitActionTypes.UNIT_DELETE_MEMBER_ERROR, error)
+const deleteMemberError = (error: string) => action(UnitActionTypes.UNIT_DELETE_MEMBER_ERROR, error);
 function* handleDeleteMember(api: IApi, member: IUnitMember) {
   const action = yield api
     .delete(apiEndpoints.memberships(member.id))
-    .then(_ => fetchUnitMembers({id: member.unitId}))
+    .then(_ => fetchUnitMembers({ id: member.unitId }))
     .catch(signinIfUnauthorized)
     .catch(deleteMemberError);
-  yield put(action)
+  yield put(action);
 }
 
-const addChildError = (error:string) => action(UnitActionTypes.UNIT_SAVE_CHILD_ERROR, error)
+const addChildError = (error: string) => action(UnitActionTypes.UNIT_SAVE_CHILD_ERROR, error);
 function* handleAddChild(api: IApi, child: IUnit) {
   const action = yield api
     .put<IUnit>(apiEndpoints.units.root(child.id), child)
     .then(_ => fetchUnitChildren({ id: child.parentId as number }))
     .catch(signinIfUnauthorized)
     .catch(addChildError);
-  yield put(action)
+  yield put(action);
 }
 
-const deleteChildError = (error:Error) => action(UnitActionTypes.UNIT_DELETE_CHILD_ERROR, error)
+const deleteChildError = (error: Error) => action(UnitActionTypes.UNIT_DELETE_CHILD_ERROR, error);
 function* handleRemoveChild(api: IApi, child: IUnit) {
   if (!child.parentId) return;
 
@@ -288,33 +302,33 @@ function* handleRemoveChild(api: IApi, child: IUnit) {
 
   const action = yield api
     .put<IUnit>(apiEndpoints.units.root(child.id), child)
-    .then(_ => fetchUnitChildren({id: parentId}))
+    .then(_ => fetchUnitChildren({ id: parentId }))
     .catch(signinIfUnauthorized)
-    .catch(deleteChildError)
-  yield put(action)
+    .catch(deleteChildError);
+  yield put(action);
 }
 
-const saveSupportRelationshipError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_ERROR, error)
+const saveSupportRelationshipError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_ERROR, error);
 function* handleSaveSupportRelationship(api: IApi, supportRelationship: ISupportRelationshipRequest) {
   const action = yield api
-    .post<ISupportRelationshipRequest>(apiEndpoints.supportRelationships(), supportRelationship )
+    .post<ISupportRelationshipRequest>(apiEndpoints.supportRelationships(), supportRelationship)
     .then(() => fetchUnitSupportedDepartments({ id: supportRelationship.unitId }))
     .catch(signinIfUnauthorized)
-    .catch(saveSupportRelationshipError)
-  yield put(action)
+    .catch(saveSupportRelationshipError);
+  yield put(action);
 }
 
-const deleteSupportRelationshipError = (error: Error) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_ERROR, error)
+const deleteSupportRelationshipError = (error: Error) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_ERROR, error);
 function* handleDeleteSupportRelationship(api: IApi, supportRelationship: ISupportRelationshipRequest) {
   const action = yield api
     .delete(apiEndpoints.supportRelationships(supportRelationship.id))
     .then(_ => fetchUnitSupportedDepartments({ id: supportRelationship.unitId }))
     .catch(signinIfUnauthorized)
-    .catch(deleteSupportRelationshipError)
-  yield put(action)
+    .catch(deleteSupportRelationshipError);
+  yield put(action);
 }
 
-const api = restApi()
+const api = restApi();
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
@@ -325,7 +339,10 @@ function* watchUnitFetch() {
   yield takeEvery(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, (a: AnyAction) => handleFetchUnitDepartments(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, (a: AnyAction) => handleFetchUnitChildren(api, a.payload));
   // The unit parent is defined by a parentId on the unit record, so we must await the unit record fetch.
-  yield takeEvery(UnitActionTypes.UNIT_FETCH_PROFILE_SUCCESS, (a: AnyAction) => handleFetchUnitParent(api, a.payload.data));
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, (a: AnyAction) => handleFetchUnitParent(api, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_PROFILE_SUCCESS, (a: AnyAction) => {
+    return handleFetchProfileSuccess(api, a.payload.data);
+  });
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
