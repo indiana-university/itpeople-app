@@ -7,116 +7,11 @@
   },
   "interactions": [
     {
-      "description": "an unauthorized GET request for unit 401",
-      "providerState": "the server requires authorization for GET /units/*",
+      "description": "a GET request for all persons",
+      "providerState": "at least one person exists",
       "request": {
         "method": "GET",
-        "path": "/units/401"
-      },
-      "response": {
-        "status": 401,
-        "headers": {
-        }
-      }
-    },
-    {
-      "description": "a GET request for unit 1",
-      "providerState": "unit 1 exists",
-      "request": {
-        "method": "GET",
-        "path": "/units/1",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        "body": {
-          "id": 1,
-          "name": "Parks and Recreation IT",
-          "description": "This page is under construction",
-          "url": "http://pawneeindiana.com/information-technology/",
-          "members": [
-            {
-              "id": 2,
-              "name": "Leslie Knope",
-              "percentage": 100,
-              "role": "Member",
-              "title": "Developer"
-            }
-          ],
-          "supportedDepartments": [
-            {
-              "id": 1,
-              "name": "Parks and Recreation Department",
-              "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
-            }
-          ],
-          "children": [
-            {
-              "id": 2,
-              "name": "Fourth floor",
-              "description": "This is a child unit description"
-            }
-          ],
-          "parent": {
-            "id": 1,
-            "name": "CITY COUNCIL",
-            "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
-          }
-        },
-        "matchingRules": {
-          "$.body.id": {
-            "match": "type"
-          },
-          "$.body.name": {
-            "match": "type"
-          },
-          "$.body.description": {
-            "match": "type"
-          },
-          "$.body.url": {
-            "match": "type"
-          },
-          "$.body.members": {
-            "min": 1
-          },
-          "$.body.members[*].*": {
-            "match": "type"
-          },
-          "$.body.supportedDepartments": {
-            "min": 1
-          },
-          "$.body.supportedDepartments[*].*": {
-            "match": "type"
-          },
-          "$.body.children": {
-            "min": 1
-          },
-          "$.body.children[*].*": {
-            "match": "type"
-          },
-          "$.body.parent.id": {
-            "match": "type"
-          },
-          "$.body.parent.name": {
-            "match": "type"
-          },
-          "$.body.parent.description": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "a GET request to list units",
-      "providerState": "at least one unit exists",
-      "request": {
-        "method": "GET",
-        "path": "/units",
+        "path": "/people",
         "headers": {
           "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
         }
@@ -129,9 +24,17 @@
         "body": [
           {
             "id": 1,
-            "name": "Parks and Recreation IT",
-            "description": "This page is under construction",
-            "url": "http://pawneeindiana.com/information-technology/"
+            "name": "name",
+            "netId": "netid",
+            "campus": "campus",
+            "campusEmail": "campus@email.com",
+            "campusPhone": "812/856-1234",
+            "position": "position",
+            "tools": "tool1; tool2",
+            "responsibilities": "rep1; rep2",
+            "location": "location",
+            "expertise": "exp1; exp2",
+            "photoUrl": "http://photo.url"
           }
         ],
         "matchingRules": {
@@ -145,84 +48,8 @@
       }
     },
     {
-      "description": "a PUT request to update attributes for unit 1",
-      "providerState": "unit 1 exists",
-      "request": {
-        "method": "PUT",
-        "path": "/units/1",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        "body": {
-          "name": "Fourth floor IT",
-          "description": "It is creepy up here",
-          "url": "https://map.concept3d.com/?id=951#!m/9510954"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-        }
-      }
-    },
-    {
-      "description": "a POST request to create a unit",
-      "providerState": "units may be created",
-      "request": {
-        "method": "POST",
-        "path": "/units",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        "body": {
-          "name": "Fourth floor IT",
-          "description": "It is creepy up here",
-          "url": "https://map.concept3d.com/?id=951#!m/9510954"
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {
-          "Location": "/units/1",
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        "body": {
-          "id": 4,
-          "name": "Fourth floor IT",
-          "description": "It is creepy up here",
-          "url": "https://map.concept3d.com/?id=951#!m/9510954"
-        },
-        "matchingRules": {
-          "$.headers.Location": {
-            "match": "type"
-          },
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "a DELETE request for /units/1",
-      "providerState": "/units/1 exists",
-      "request": {
-        "method": "DELETE",
-        "path": "/units/1",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
-        }
-      },
-      "response": {
-        "status": 204,
-        "headers": {
-        }
-      }
-    },
-    {
-      "description": "a GET request for person 1",
-      "providerState": "person 1 exists",
+      "description": "a GET request for one person",
+      "providerState": "person exists",
       "request": {
         "method": "GET",
         "path": "/people/1",
@@ -237,40 +64,17 @@
         },
         "body": {
           "id": 1,
-          "name": "Ron Swanson",
-          "netId": "rswanso",
-          "position": "Parks and Rec Director",
-          "location": "Municipal Building, Office 123",
-          "campusPhone": "812-856-1234",
-          "campusEmail": "rswanso@iu.edu",
-          "campus": "Bloomington",
-          "tools": [
-            "Claw hammer"
-          ],
-          "expertise": [
-            "Wood-working"
-          ],
-          "responsibilities": [
-            "IT Leadership"
-          ],
-          "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
-          "unitMemberships": [
-            {
-              "id": 1,
-              "name": "Parks and Recreation IT",
-              "description": "This is a description for a test unit.",
-              "title": "Manager",
-              "role": "Admin",
-              "tools": [
-                "AccountMgt"
-              ]
-            }
-          ],
-          "department": {
-            "id": 1,
-            "name": "Parks and Recreation Department",
-            "description": "This is a description for a test unit."
-          }
+          "name": "name",
+          "netId": "netid",
+          "campus": "campus",
+          "campusEmail": "campus@email.com",
+          "campusPhone": "812/856-1234",
+          "position": "position",
+          "tools": "tool1; tool2",
+          "responsibilities": "rep1; rep2",
+          "location": "location",
+          "expertise": "exp1; exp2",
+          "photoUrl": "http://photo.url"
         },
         "matchingRules": {
           "$.body.id": {
@@ -282,66 +86,84 @@
           "$.body.netId": {
             "match": "type"
           },
-          "$.body.position": {
-            "match": "type"
-          },
-          "$.body.location": {
-            "match": "type"
-          },
-          "$.body.campusPhone": {
+          "$.body.campus": {
             "match": "type"
           },
           "$.body.campusEmail": {
             "match": "type"
           },
-          "$.body.campus": {
+          "$.body.campusPhone": {
+            "match": "type"
+          },
+          "$.body.position": {
             "match": "type"
           },
           "$.body.tools": {
-            "min": 1
-          },
-          "$.body.tools[*].*": {
-            "match": "type"
-          },
-          "$.body.expertise": {
-            "min": 1
-          },
-          "$.body.expertise[*].*": {
             "match": "type"
           },
           "$.body.responsibilities": {
-            "min": 1
+            "match": "type"
           },
-          "$.body.responsibilities[*].*": {
+          "$.body.location": {
+            "match": "type"
+          },
+          "$.body.expertise": {
             "match": "type"
           },
           "$.body.photoUrl": {
-            "match": "type"
-          },
-          "$.body.unitMemberships": {
-            "min": 1
-          },
-          "$.body.unitMemberships[*].*": {
-            "match": "type"
-          },
-          "$.body.department.id": {
-            "match": "type"
-          },
-          "$.body.department.name": {
-            "match": "type"
-          },
-          "$.body.department.description": {
             "match": "type"
           }
         }
       }
     },
     {
-      "description": "a GET request to retrieve my profile",
-      "providerState": "there is a user logged in for whom a profile exists",
+      "description": "a GET request for all memberships by persons",
+      "providerState": "at least one memberships by person exists",
       "request": {
         "method": "GET",
-        "path": "/me",
+        "path": "/people/1/memberships",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "unitId": 1,
+            "personId": 1,
+            "title": "title",
+            "role": "Leader",
+            "percentage": 100,
+            "permissions": "Viewer",
+            "unit": {
+              "id": 1,
+              "name": "name",
+              "description": "description",
+              "url": "url"
+            }
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for one membership",
+      "providerState": "membership exists",
+      "request": {
+        "method": "GET",
+        "path": "/memberships/1",
         "headers": {
           "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
         }
@@ -353,196 +175,173 @@
         },
         "body": {
           "id": 1,
-          "name": "Ron Swanson",
-          "netId": "rswanso",
-          "position": "Parks and Rec Director",
-          "location": "Municipal Building, Office 123",
-          "campusPhone": "812-856-1234",
-          "campusEmail": "rswanso@iu.edu",
-          "campus": "Bloomington",
-          "tools": [
-            "Claw hammer"
-          ],
-          "expertise": [
-            "Wood-working"
-          ],
-          "responsibilities": [
-            "IT Leadership"
-          ],
-          "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
-          "unitMemberships": [
-            {
-              "id": 1,
-              "name": "Parks and Recreation IT",
-              "description": "This is a description for a test unit.",
-              "title": "Manager",
-              "role": "Admin",
-              "tools": [
-                "AccountMgt"
-              ]
-            }
-          ],
-          "department": {
-            "id": 1,
-            "name": "Parks and Recreation Department",
-            "description": "This is a description for a test unit."
-          }
+          "unitId": 1,
+          "personId": 1,
+          "title": "title",
+          "role": "Leader",
+          "percentage": 100,
+          "permissions": "Viewer"
         },
         "matchingRules": {
           "$.body.id": {
             "match": "type"
           },
-          "$.body.name": {
+          "$.body.unitId": {
             "match": "type"
           },
-          "$.body.netId": {
+          "$.body.personId": {
             "match": "type"
           },
-          "$.body.position": {
+          "$.body.title": {
             "match": "type"
           },
-          "$.body.location": {
+          "$.body.role": {
             "match": "type"
           },
-          "$.body.campusPhone": {
+          "$.body.percentage": {
             "match": "type"
           },
-          "$.body.campusEmail": {
-            "match": "type"
-          },
-          "$.body.campus": {
-            "match": "type"
-          },
-          "$.body.tools": {
-            "min": 1
-          },
-          "$.body.tools[*].*": {
-            "match": "type"
-          },
-          "$.body.expertise": {
-            "min": 1
-          },
-          "$.body.expertise[*].*": {
-            "match": "type"
-          },
-          "$.body.responsibilities": {
-            "min": 1
-          },
-          "$.body.responsibilities[*].*": {
-            "match": "type"
-          },
-          "$.body.photoUrl": {
-            "match": "type"
-          },
-          "$.body.unitMemberships": {
-            "min": 1
-          },
-          "$.body.unitMemberships[*].*": {
-            "match": "type"
-          },
-          "$.body.department.id": {
-            "match": "type"
-          },
-          "$.body.department.name": {
-            "match": "type"
-          },
-          "$.body.department.description": {
+          "$.body.permissions": {
             "match": "type"
           }
         }
       }
     },
     {
-      "description": "a PUT request to update location for person 5",
-      "providerState": "person 5 exists",
+      "description": "a POST request to create a membership",
+      "providerState": "membership may be created",
       "request": {
-        "method": "PUT",
-        "path": "/people/5",
+        "method": "POST",
+        "path": "/memberships",
         "headers": {
           "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
           "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
-          "location": "CIB sub-sub-basement"
+          "id": 1,
+          "unitId": 1,
+          "personId": 1,
+          "title": "title",
+          "role": "Leader",
+          "percentage": 100,
+          "permissions": "Viewer"
         }
       },
       "response": {
-        "status": 200,
+        "status": 201,
         "headers": {
-        }
-      }
-    },
-    {
-      "description": "a GET request for /departments/1",
-      "providerState": "/departments/1 exists",
-      "request": {
-        "method": "GET",
-        "path": "/departments/1",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "id": 1,
-          "name": "Parks and Recreation Department",
-          "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities.",
-          "members": [
-            {
-              "id": 1,
-              "name": "Ron Swanson"
-            }
-          ],
-          "units": [
-            {
-              "id": 1,
-              "name": "Parks and Recreation IT"
-            }
-          ],
-          "supportingUnits": [
-            {
-              "id": 1,
-              "name": "Sanitization"
-            }
-          ]
+          "unitId": 1,
+          "personId": 1,
+          "title": "title",
+          "role": "Leader",
+          "percentage": 100,
+          "permissions": "Viewer"
         },
         "matchingRules": {
           "$.body.id": {
             "match": "type"
           },
-          "$.body.name": {
+          "$.body.unitId": {
             "match": "type"
           },
-          "$.body.description": {
+          "$.body.personId": {
             "match": "type"
           },
-          "$.body.members": {
-            "min": 1
-          },
-          "$.body.members[*].*": {
+          "$.body.title": {
             "match": "type"
           },
-          "$.body.units": {
-            "min": 1
-          },
-          "$.body.units[*].*": {
+          "$.body.role": {
             "match": "type"
           },
-          "$.body.supportingUnits": {
-            "min": 1
+          "$.body.percentage": {
+            "match": "type"
           },
-          "$.body.supportingUnits[*].*": {
+          "$.body.permissions": {
             "match": "type"
           }
         }
       }
     },
     {
-      "description": "a GET request to list departments",
+      "description": "a PUT request to update a membership",
+      "providerState": "membership exists",
+      "request": {
+        "method": "PUT",
+        "path": "/memberships/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "unitId": 1,
+          "personId": 1,
+          "title": "title",
+          "role": "Leader",
+          "percentage": 100,
+          "permissions": "Viewer"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "id": 1,
+          "unitId": 1,
+          "personId": 1,
+          "title": "title",
+          "role": "Leader",
+          "percentage": 100,
+          "permissions": "Viewer"
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.unitId": {
+            "match": "type"
+          },
+          "$.body.personId": {
+            "match": "type"
+          },
+          "$.body.title": {
+            "match": "type"
+          },
+          "$.body.role": {
+            "match": "type"
+          },
+          "$.body.percentage": {
+            "match": "type"
+          },
+          "$.body.permissions": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a DELETE request to delete a membership",
+      "providerState": "membership exists",
+      "request": {
+        "method": "DELETE",
+        "path": "/memberships/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        }
+      },
+      "response": {
+        "status": 204,
+        "headers": {
+        }
+      }
+    },
+    {
+      "description": "a GET request for all departments",
       "providerState": "at least one department exists",
       "request": {
         "method": "GET",
@@ -559,8 +358,8 @@
         "body": [
           {
             "id": 1,
-            "name": "Parks and Recreation Department",
-            "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+            "name": "name",
+            "description": "description"
           }
         ],
         "matchingRules": {
@@ -574,70 +373,416 @@
       }
     },
     {
-      "description": "a PUT request to update department 1",
-      "providerState": "/departments/1 exists",
+      "description": "a GET request for one department",
+      "providerState": "department exists",
       "request": {
-        "method": "PUT",
+        "method": "GET",
         "path": "/departments/1",
         "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        "body": {
-          "name": "Parks and Recreation Department",
-          "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
         }
       },
       "response": {
         "status": 200,
         "headers": {
-        }
-      }
-    },
-    {
-      "description": "a POST request for /departments",
-      "providerState": "no state",
-      "request": {
-        "method": "POST",
-        "path": "/departments",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        "body": {
-          "name": "Parks and Recreation Department",
-          "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {
-          "Location": "/departments/1",
           "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "id": 1,
-          "name": "Parks and Recreation Department",
-          "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+          "name": "name",
+          "description": "description"
         },
         "matchingRules": {
-          "$.headers.Location": {
+          "$.body.id": {
             "match": "type"
           },
-          "$.body": {
+          "$.body.name": {
+            "match": "type"
+          },
+          "$.body.description": {
             "match": "type"
           }
         }
       }
     },
     {
-      "description": "a DELETE request for /departments/1",
-      "providerState": "/departments/1 exists",
+      "description": "a GET request for one memberUnits",
+      "providerState": "memberUnits exists",
       "request": {
-        "method": "DELETE",
-        "path": "/departments/1",
+        "method": "GET",
+        "path": "/departments/1/memberUnits",
         "headers": {
           "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "name": "name",
+            "description": "description",
+            "url": "url"
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for one supportingUnits",
+      "providerState": "supportingUnits exists",
+      "request": {
+        "method": "GET",
+        "path": "/departments/1/supportingUnits",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "unitId": 1,
+            "departmentId": 1,
+            "unit": {
+              "id": 1,
+              "name": "name",
+              "description": "description",
+              "url": "url"
+            }
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for all units",
+      "providerState": "at least one unit exists",
+      "request": {
+        "method": "GET",
+        "path": "/units",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "name": "name",
+            "description": "description",
+            "url": "url"
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for one unit",
+      "providerState": "unit exists",
+      "request": {
+        "method": "GET",
+        "path": "/units/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "name": "name",
+          "description": "description",
+          "url": "url"
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.name": {
+            "match": "type"
+          },
+          "$.body.description": {
+            "match": "type"
+          },
+          "$.body.url": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for all memberships by units",
+      "providerState": "at least one memberships by unit exists",
+      "request": {
+        "method": "GET",
+        "path": "/units/1/members",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "unitId": 1,
+            "personId": 1,
+            "title": "title",
+            "role": "Leader",
+            "percentage": 100,
+            "permissions": "Viewer",
+            "person": {
+              "id": 1,
+              "name": "name",
+              "netId": "netid",
+              "campus": "campus",
+              "campusEmail": "campus@email.com",
+              "campusPhone": "812/856-1234",
+              "position": "position",
+              "tools": "tool1; tool2",
+              "responsibilities": "rep1; rep2",
+              "location": "location",
+              "expertise": "exp1; exp2",
+              "photoUrl": "http://photo.url"
+            }
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for all supported departments",
+      "providerState": "at least one supported department exists",
+      "request": {
+        "method": "GET",
+        "path": "/units/1/supportedDepartments",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "unitId": 1,
+            "departmentId": 1,
+            "department": {
+              "id": 1,
+              "name": "name",
+              "description": "description"
+            }
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for all support relationships",
+      "providerState": "at least one support relationship exists",
+      "request": {
+        "method": "GET",
+        "path": "/supportRelationships",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "unitId": 1,
+            "departmentId": 1
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for one support relationship",
+      "providerState": "support relationship exists",
+      "request": {
+        "method": "GET",
+        "path": "/supportRelationships/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "unitId": 1,
+          "departmentId": 1
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.unitId": {
+            "match": "type"
+          },
+          "$.body.departmentId": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a POST request to create a support relationship",
+      "providerState": "support relationship may be created",
+      "request": {
+        "method": "POST",
+        "path": "/supportRelationships",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "unitId": 1,
+          "departmentId": 1
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+        },
+        "body": {
+          "id": 1,
+          "unitId": 1,
+          "departmentId": 1
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.unitId": {
+            "match": "type"
+          },
+          "$.body.departmentId": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a PUT request to update a support relationship",
+      "providerState": "support relationship exists",
+      "request": {
+        "method": "PUT",
+        "path": "/supportRelationships/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "unitId": 1,
+          "departmentId": 1
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "id": 1,
+          "unitId": 1,
+          "departmentId": 1
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.unitId": {
+            "match": "type"
+          },
+          "$.body.departmentId": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a DELETE request to delete a support relationship",
+      "providerState": "support relationship exists",
+      "request": {
+        "method": "DELETE",
+        "path": "/supportRelationships/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
         }
       },
       "response": {
@@ -647,12 +792,11 @@
       }
     },
     {
-      "description": "a GET request to search with term 'park'",
-      "providerState": "data exists to be returned by term 'park'",
+      "description": "a GET request for all unit childs",
+      "providerState": "at least one unit child exists",
       "request": {
         "method": "GET",
-        "path": "/search",
-        "query": "term=park",
+        "path": "/units/1/children",
         "headers": {
           "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
         }
@@ -662,46 +806,19 @@
         "headers": {
           "Content-Type": "application/json; charset=utf-8"
         },
-        "body": {
-          "departments": [
-            {
-              "id": 1,
-              "name": "Parks and Recreation Department",
-              "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
-            }
-          ],
-          "units": [
-            {
-              "id": 1,
-              "name": "Parks and Recreation IT",
-              "description": "This page is under construction"
-            }
-          ],
-          "users": [
-            {
-              "id": 2,
-              "name": "Leslie Knope",
-              "description": "Manager"
-            }
-          ]
-        },
+        "body": [
+          {
+            "id": 1,
+            "name": "name",
+            "description": "description",
+            "url": "url"
+          }
+        ],
         "matchingRules": {
-          "$.body.departments": {
+          "$.body": {
             "min": 1
           },
-          "$.body.departments[*].*": {
-            "match": "type"
-          },
-          "$.body.units": {
-            "min": 1
-          },
-          "$.body.units[*].*": {
-            "match": "type"
-          },
-          "$.body.users": {
-            "min": 1
-          },
-          "$.body.users[*].*": {
+          "$.body[*].*": {
             "match": "type"
           }
         }

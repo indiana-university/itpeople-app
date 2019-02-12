@@ -1,35 +1,27 @@
-/** 
+/**
  * Copyright (C) 2018 The Trustees of Indiana University
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 import * as React from "react";
-import { IApiState2 } from "./types";
-import NotFound from './Errors/404'
 
-export const Loader = (props: IApiState2<any> & IProps) => {
-    const loading = props.loading;
-    return <>
-        {loading &&
-            <>
-            {props.loadingMessage ?
-                <p> { props.loadingMessage}</p>
-                :
-                <p>Loading... </p>
-            }
-            </>
-
-        }
-        {props.data && props.children &&
-            <>{props.children}</>
-        }
-        {props.error &&
-            <NotFound error={props.error} />
-        }
-    </>
-}
+export const Loader = ({ loading, loadingMessage, data, error, children }: IProps) => (
+  <>
+    {loading && (
+      <>
+        <span className="rvt-loader rvt-loader--md" aria-label="Content loading" />
+        {loadingMessage && <span>{loadingMessage}</span>}
+      </>
+    )}
+    {!loading && data && children && <>{children}</>}
+    {!loading && error}
+  </>
+);
 
 interface IProps {
-    children?: React.ReactNode,
-    loadingMessage?: string | React.ReactNode
+  children?: React.ReactNode;
+  loading: boolean;
+  loadingMessage?: string | React.ReactNode;
+  data?: any;
+  error?: string | Error;
 }

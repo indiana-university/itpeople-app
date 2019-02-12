@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2018 The Trustees of Indiana University
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -6,10 +6,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { IApplicationState } from "../types";
+import { IApplicationState, ViewStateType, IUnit } from "../types";
 import Unit from "./Presentation";
 import * as unit from "./store";
-import { Loader } from "../Loader";
+import * as auth from "../SignIn/store";
+import { Edit } from "./Presentation/Edit";
 
 interface IContainerProps {
   match: any;
@@ -17,22 +18,47 @@ interface IContainerProps {
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface IDispatchProps {
-  fetchRequest: typeof unit.fetchRequest;
+  fetchUnit: typeof unit.fetchUnit;
+  save: typeof unit.saveUnitProfileRequest;
+  edit: typeof unit.edit;
+  cancel: typeof unit.cancel;
+}
+
+interface ICurrentUser {
+  auth: auth.IState;
 }
 
 // tslint:disable-next-line:max-classes-per-file
 class Container extends React.Component<
-  unit.IState & IContainerProps & IDispatchProps
+  unit.IState & ICurrentUser & IContainerProps & IDispatchProps
 > {
   public componentDidMount() {
-    this.props.fetchRequest(this.props.match.params);
+    const request = this.props.match.params;
+    this.props.fetchUnit(request);
   }
 
   public render() {
+    const { view, edit, cancel, match } = this.props;
     return (
-      <Loader {...this.props}>
-        {this.props.data && <Unit {...this.props.data} />}
-      </Loader>
+      <>
+        {view == ViewStateType.Editing && (
+          <>
+            <Edit
+              {...this.props}
+              cancel={cancel}
+              id={match.params.id}
+            />
+          </>
+        )}
+        {view == ViewStateType.Viewing && (
+          <>
+            <Unit
+              {...this.props}
+              edit={edit}
+            />
+          </>
+        )}
+      </>
     );
   }
 }
@@ -40,14 +66,17 @@ class Container extends React.Component<
 // Although if necessary, you can always include multiple contexts. Just make sure to
 // separate them from each other to prevent prop conflicts.
 const mapStateToProps = (state: IApplicationState) => ({
-  ...state.unit
+  ...state.unit,
+  auth: state.auth
 });
 
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
-  fetchRequest: (request: unit.IUnitRequest) =>
-    dispatch(unit.fetchRequest(request))
+  fetchUnit: request => dispatch(unit.fetchUnit(request)),
+  edit: () => dispatch(unit.edit()),
+  save: (updated:IUnit) => dispatch(unit.saveUnitProfileRequest(updated)),
+  cancel: () => dispatch(unit.cancel())
 });
 
 // Now let's connect our component!

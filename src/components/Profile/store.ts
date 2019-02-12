@@ -1,164 +1,127 @@
-/** 
+/**
  * Copyright (C) 2018 The Trustees of Indiana University
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 //#region TYPES
-import { IApiState, IApplicationState, IEntity } from "../types";
+import { IApiState, IEntityRequest, IPerson, IUnitMembership, defaultState } from "../types";
 
 export const enum ProfileActionTypes {
   PROFILE_FETCH_REQUEST = "@@profile/PROFILE_FETCH_REQUEST",
   PROFILE_FETCH_SUCCESS = "@@profile/PROFILE_FETCH_SUCCESS",
   PROFILE_FETCH_ERROR = "@@profile/PROFILE_FETCH_ERROR",
-  PROFILE_UPDATE_REQUEST = "@@profile/PROFILE_UPDATE_REQUEST",
-  PROFILE_UPDATE_SUCCESS = "@@profile/PROFILE_UPDATE_SUCCESS",
-  PROFILE_UPDATE_ERROR = "@@profile/PROFILE_UPDATE_ERROR",
-  PROFILE_TOGGLE_UNIT = "PROFILE_TOGGLE_UNIT"
+  // PROFILE_UPDATE_REQUEST = "@@profile/PROFILE_UPDATE_REQUEST",
+  // PROFILE_UPDATE_SUCCESS = "@@profile/PROFILE_UPDATE_SUCCESS",
+  // PROFILE_UPDATE_ERROR = "@@profile/PROFILE_UPDATE_ERROR",
+  PROFILE_TOGGLE_UNIT = "PROFILE_TOGGLE_UNIT",
+  PROFILE_MEMBERSHIPS_FETCH_REQUEST = "@@profile/PROFILE_MEMBERSHIPS_FETCH_REQUEST",
+  PROFILE_MEMBERSHIPS_FETCH_SUCCESS = "@@profile/PROFILE_MEMBERSHIPS_FETCH_SUCCESS",
+  PROFILE_MEMBERSHIPS_FETCH_ERROR = "@@profile/PROFILE_MEMBERSHIPS_FETCH_ERROR"
 }
 
-export interface IUserRequest {
-  id: number;
+
+
+
+export interface IState {
+  person: IApiState<IEntityRequest, IPerson>;
+  memberships: IApiState<IEntityRequest, IUnitMembership[]>;
+  visuallyExpandedUnits: number[];
 }
 
-export interface IUser extends IEntity {
-  netId: string;
-  position: string;
-  location: string;
-  campusPhone: string;
-  campusEmail: string;
-  campus: string;
-  tools: string[];
-  expertise: string[];
-  responsibilities: string[];
-  photoUrl?: string;
-}
-
-export interface IUnitMembership extends IEntity {
-  tools?: string[];
-  title?: string;
-  role?: string;
-}
-
-export interface IUserProfile extends IUser {
-  unitMemberships: IUnitMembership[];
-  visuallyExpandedUnits?: number[];
-  department: IEntity;
-}
-
-export interface IState extends IApiState<IUserRequest, IUserProfile> {}
 //#endregion
 
 //#region ACTIONS
 import { action } from "typesafe-actions";
-export const fetchRequest = (request: IUserRequest) =>
-  action(ProfileActionTypes.PROFILE_FETCH_REQUEST, request);
-export const fetchSuccess = (data: IUserProfile) =>
-  action(ProfileActionTypes.PROFILE_FETCH_SUCCESS, data);
-export const fetchError = (error: string) =>
-  action(ProfileActionTypes.PROFILE_FETCH_ERROR, error);
-export const updateRequest = (request: IUserRequest) =>
-  action(ProfileActionTypes.PROFILE_UPDATE_REQUEST, request);
-export const updateSuccess = (data: IUserProfile) =>
-  action(ProfileActionTypes.PROFILE_UPDATE_SUCCESS, data);
-export const updateError = (error: string) =>
-  action(ProfileActionTypes.PROFILE_UPDATE_ERROR, error);
-export const toggleUnit = (id: number) =>
-  action(ProfileActionTypes.PROFILE_TOGGLE_UNIT, id);
+export const fetchRequest = (request: IEntityRequest) => action(ProfileActionTypes.PROFILE_FETCH_REQUEST, request);
+const fetchSuccess = (response: IApiResponse<IPerson>) => action(ProfileActionTypes.PROFILE_FETCH_SUCCESS, response);
+const fetchError = (error: string) => action(ProfileActionTypes.PROFILE_FETCH_ERROR, error);
+// export const updateRequest = (request: IPersonRequest) => action(ProfileActionTypes.PROFILE_UPDATE_REQUEST, request);
+// export const updateSuccess = (data: IPersonProfile) => action(ProfileActionTypes.PROFILE_UPDATE_SUCCESS, data);
+// export const updateError = (error: string) => action(ProfileActionTypes.PROFILE_UPDATE_ERROR, error);
+export const toggleUnit = (id: number) => action(ProfileActionTypes.PROFILE_TOGGLE_UNIT, id);
+
+  // MEMBERSHIPS
+export const fetchMembershipsRequest = (request: IEntityRequest) => action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_REQUEST, request);
+const fetchMembershipsSuccess = (response: IApiResponse<IUnitMembership[]>) => action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_SUCCESS, response);
+const fetchMembershipsError = (error: string) => action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_ERROR, error);
 //#endregion
 
 //#region REDUCER
-import { Reducer } from "redux";
+import { Reducer, AnyAction } from "redux";
 import {
-  FetchErrorReducer,
-  FetchRequestReducer,
-  FetchSuccessReducer,
-  PutErrorReducer,
-  PutRequestReducer,
-  PutSuccessReducer
+  TaskErrorReducer,
+  TaskStartReducer,
+  TaskSuccessReducer
 } from "../types";
 
 // Type-safe initialState!
-export const initialState: IState = {
-  data: undefined,
-  error: undefined,
-  loading: false,
-  request: undefined
+export const initialState: IState =  {
+  person: defaultState(),
+  memberships: defaultState(),
+  visuallyExpandedUnits: []
 };
+
+const doToggleUnit = (state: IState, toggledId: number) : IState => {
+  let a = [...state.visuallyExpandedUnits];
+  let next = a.indexOf(toggledId) == -1
+    ? [...a, toggledId]
+    : a.filter(id => id != toggledId) ;
+  return {...state, visuallyExpandedUnits: next}
+}
+
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
 // everything will remain type-safe.
-export const reducer: Reducer<IState> = (state = initialState, act) => {
+export const reducer: Reducer<IState> = (state = initialState, act): IState => {
   switch (act.type) {
-    case ProfileActionTypes.PROFILE_FETCH_REQUEST:
-      return FetchRequestReducer(state, act);
-    case ProfileActionTypes.PROFILE_FETCH_SUCCESS:
-      return FetchSuccessReducer(state, act);
-    case ProfileActionTypes.PROFILE_FETCH_ERROR:
-      return FetchErrorReducer(state, act);
-    case ProfileActionTypes.PROFILE_UPDATE_REQUEST:
-      return PutRequestReducer(state, act);
-    case ProfileActionTypes.PROFILE_UPDATE_SUCCESS:
-      return PutSuccessReducer(state, act);
-    case ProfileActionTypes.PROFILE_UPDATE_ERROR:
-      return PutErrorReducer(state, act);
-    case ProfileActionTypes.PROFILE_TOGGLE_UNIT:
-      if (
-        state &&
-        state.data &&
-        state.data.unitMemberships &&
-        state.data.unitMemberships.length > 0
-      ) {
-        const toggledId = act.payload;
-        let expandedUnits = state.data.visuallyExpandedUnits || [];
-        if (expandedUnits.indexOf(toggledId) == -1) {
-          expandedUnits.push(toggledId);
-        } else {
-          expandedUnits = expandedUnits.filter(id => id != toggledId);
-        }
-        return {
-          ...state,
-          data: { ...state.data, visuallyExpandedUnits: expandedUnits }
-        };
-      }
-    default:
-      return state;
+    case ProfileActionTypes.PROFILE_FETCH_REQUEST: return {...state, person: TaskStartReducer(state.person, act)};
+    case ProfileActionTypes.PROFILE_FETCH_SUCCESS: return { ...state, person: TaskSuccessReducer(state.person, act) };
+    case ProfileActionTypes.PROFILE_FETCH_ERROR: return { ...state, person: TaskErrorReducer(state.person, act) };
+    case ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_REQUEST: return {...state, memberships: TaskStartReducer(state.memberships, act)};
+    case ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_SUCCESS: return { ...state, memberships: TaskSuccessReducer(state.memberships, act) };
+    case ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_ERROR: return { ...state, memberships: TaskErrorReducer(state.memberships, act) };
+    case ProfileActionTypes.PROFILE_TOGGLE_UNIT: return doToggleUnit(state, act.payload);
+    default: return state;
   }
 };
 //#endregion
 
 //#region SAGAS
-import { all, fork, select, takeEvery } from "redux-saga/effects";
-import { httpGet, httpPut } from "../effects";
+import { all, fork, takeEvery, put } from "redux-saga/effects";
+import { restApi, IApiResponse, IApi } from "../api";
+import { signinIfUnauthorized } from "../effects";
 
-function* handleFetch() {
-  const state = (yield select<IApplicationState>(
-    s => s.profile.request
-  )) as IUserRequest;
-  const path = state.id === 0 ? "/me" : `/people/${state.id}`;
-  yield httpGet<IUserProfile>(path, fetchSuccess, fetchError);
+const api= restApi();
+
+function* handleFetchPerson(api:IApi, person:IEntityRequest) {
+  const nextAction = 
+    yield api
+      .get<IPerson>(`/people/${person.id}`)
+      .then(fetchSuccess)
+      .catch(signinIfUnauthorized)
+      .catch(fetchError);
+  yield put(nextAction)
 }
 
-function* handleUpdate() {
-  const form = (yield select<any>(s => s.form.profile.values)) as IUser;
-  const req = (yield select<IApplicationState>(
-    s => s.profile.request
-  )) as IUserRequest;
-  const path = `/people/${req.id}`;
-  yield httpPut<IUser, IUserProfile>(path, form, fetchSuccess, fetchError);
+function* handleFetchMemberships(api: IApi, person: IEntityRequest) {
+  const nextAction = 
+    yield api
+      .get<IUnitMembership[]>(`/people/${person.id}/memberships`)
+      .then(fetchMembershipsSuccess)
+      .catch(signinIfUnauthorized)
+      .catch(fetchMembershipsError);
+  yield put(nextAction)
 }
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchProfileFetch() {
-  yield takeEvery(ProfileActionTypes.PROFILE_FETCH_REQUEST, handleFetch);
-}
-
-function* watchProfileUpdate() {
-  yield takeEvery(ProfileActionTypes.PROFILE_UPDATE_REQUEST, handleUpdate);
+  yield takeEvery(ProfileActionTypes.PROFILE_FETCH_REQUEST, (a: AnyAction) => handleFetchPerson(api, a.payload));
+  yield takeEvery(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_REQUEST, (a: AnyAction)=>handleFetchMemberships(api, a.payload));
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.
 export function* saga() {
-  yield all([fork(watchProfileFetch), fork(watchProfileUpdate)]);
+  yield all([fork(watchProfileFetch)]);
 }
 //#endregion

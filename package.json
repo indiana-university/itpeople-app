@@ -16,13 +16,16 @@
     "redux": "^4.0.0",
     "redux-form": "^7.4.2",
     "redux-saga": "^0.16.0",
-    "rivet-react": "0.6.0",
-    "rivet-uits": "^1.1.0",
+    "rivet-react": "0.7.1",
+    "rivet-uits": "^1.2.1",
     "typesafe-actions": "^2.0.4"
   },
   "scripts": {
     "json-server": "json-server --watch db.json --routes db.routes.json --port 3001",
     "dev": "yarn json-server & yarn start && kill 0",
+    "dev-admin": "yarn json-server -- --middlewares ./db.middleware.admin.js & yarn start && kill 0",
+    "dev-user": "yarn json-server -- --middlewares ./db.middleware.user.js & yarn start && kill 0",
+    "dev-slow": "yarn json-server -- --middlewares ./db.middleware.user.js ./db.middleware.slow.js & yarn start && kill 0",
     "tdd": "yarn json-server & jest --env=jsdom --watch && kill 0",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",

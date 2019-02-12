@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2018 The Trustees of Indiana University
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -9,15 +9,9 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { IApplicationState } from "../types";
 import Search from "./Presentation";
-import {
-  setCurrentList,
-  fetchRequest,
-  ISimpleSearchRequest,
-  IState,
-  submit
-} from "./store";
-import { Loader } from "../Loader";
+import { setCurrentList, submit as search, IState } from "./store";
 import { SearchLists } from "./Results";
+import { change } from "redux-form";
 
 interface ILocationProps {
   search: string;
@@ -28,19 +22,17 @@ interface ISearchProps {
 }
 
 interface IPropsFromDispatch {
-  searchRequest: typeof fetchRequest;
+  search: typeof search;
   setCurrentList: typeof setCurrentList;
-  submitSearch: typeof submit;
+  setSearchTerm: (q: string) => any;
 }
 
-interface ISimpleSearchContainerProps
-  extends IState,
-    ISearchProps,
-    IPropsFromDispatch {}
+interface ISimpleSearchContainerProps extends IState, ISearchProps, IPropsFromDispatch {}
 
 const executeSearch = (props: ISimpleSearchContainerProps) => {
   const queryParam = queryString.parse(props.location.search);
-  props.searchRequest({ term: queryParam.term });
+  props.setSearchTerm(queryParam.term);
+  return props.search(queryParam.term);
 };
 
 class Container extends React.Component<ISimpleSearchContainerProps> {
@@ -55,26 +47,16 @@ class Container extends React.Component<ISimpleSearchContainerProps> {
   }
 
   public render() {
-    return (
-      <Loader {...this.props} loadingMessage="Searching...">
-        {this.props.data && (
-          <Search
-            {...this.props.data}
-            submitSearch={this.props.submitSearch}
-            setCurrentList={this.props.setCurrentList}
-          />
-        )}
-      </Loader>
-    );
+    return <Search {...this.props} />;
   }
 }
 
 const mapStateToProps = (state: IApplicationState) => state.searchSimple;
 
 const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
-  searchRequest: (request: ISimpleSearchRequest) => dispatch(fetchRequest(request)),
+  search: (term: string) => dispatch(search(term)),
   setCurrentList: (list: SearchLists) => dispatch(setCurrentList(list)),
-  submitSearch: () => dispatch(submit())
+  setSearchTerm: (q: string) => dispatch(change("search", "term", q))
 });
 
 export default connect(

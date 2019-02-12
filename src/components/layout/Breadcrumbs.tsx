@@ -15,15 +15,13 @@ export const Breadcrumbs: React.SFC<IBreadcrumbsProps> = ({ crumbs }) => (
           <Rivet.List variant="plain" orientation="inline">
             {crumbs &&
               crumbs.length > 0 &&
-              crumbs.map((crumb, i) => (
+              crumbs.filter(c => c).map((crumb, i) => (
                 <li key={"crumb:" + i}>
                   {typeof crumb === "string" ? (
                     crumb
                   ) : crumb.href ? (
                     <a href={crumb.href}>{crumb.text}</a>
-                  ) : (
-                    crumb.text
-                  )}
+                  ) : (crumb.text)}
                 </li>
               ))}
           </Rivet.List>
