@@ -7,13 +7,11 @@ import { UnitList, Profile } from ".";
 
 export const View: React.SFC<IState> = ({ profile, memberUnits, supportingUnits }) => (
   <>
-    <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, "Departments", profile && profile.data ? profile.data.name: "loading..."]} />
+    <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, "Departments", profile && profile.data ? profile.data.name : "loading..."]} />
     <Content className="rvt-bg-white rvt-m-tb-xl rvt-p-tb-xl">
       <Row>
         <Col>
-          <Loader {...profile}>
-            {profile.data && <Profile {...profile.data} />}
-          </Loader>
+          <Loader {...profile}>{profile.data && <Profile {...profile.data} />}</Loader>
         </Col>
       </Row>
     </Content>
@@ -21,12 +19,14 @@ export const View: React.SFC<IState> = ({ profile, memberUnits, supportingUnits 
       <Row>
         <Col md={6} className="rvt-p-lr-md">
           <Loader {...supportingUnits}>
-            {supportingUnits.data && <UnitList units={supportingUnits.data.map(d => d.unit)} title="Supporting Units" />}
+            {supportingUnits.data && supportingUnits.data.length && (
+              <UnitList units={supportingUnits.data.map(r => r.unit).filter(u => u)} title="Supporting Units" />
+            )}
           </Loader>
         </Col>
         <Col md={6} last={true} className="rvt-p-lr-md">
           <Loader {...memberUnits}>
-            {memberUnits.data && <UnitList units={memberUnits.data} title="Member Units"/>}
+            {memberUnits.data && memberUnits.data.length > 0 && <UnitList units={memberUnits.data} title="Member Units" />}
           </Loader>
         </Col>
       </Row>
