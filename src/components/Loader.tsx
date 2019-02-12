@@ -4,6 +4,7 @@
  */
 
 import * as React from "react";
+import { ErrorMessage } from "./ErrorMessage";
 
 export const Loader = ({ loading, loadingMessage, data, error, children }: IProps) => (
   <>
@@ -14,7 +15,7 @@ export const Loader = ({ loading, loadingMessage, data, error, children }: IProp
       </>
     )}
     {!loading && data && children && <>{children}</>}
-    {!loading && error}
+    {!loading && error && <ErrorMessage error={error} />}
   </>
 );
 
