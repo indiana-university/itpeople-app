@@ -271,8 +271,14 @@ describe('Contracts', () => {
     const setPath = apiEndpoints.memberships()
     const itemPath = apiEndpoints.memberships(referenceUnitMember.id)
 
-    it('gets all memberships', async () =>
-      await getAll(resource, setPath, referenceUnitMemberRequest))
+    /*
+     * JFH: The 'gets all memberships' test was removed because Pact doesn't support nullable fields.
+     * Some of our test memberships are related to people, and some (vacancies) are not.
+     * The contract thus fails even though the API is doing the right thing.
+     * I'm leaving it here with this note in the event that some future developer (probably me) is tempted to add the test back.
+     */ 
+    // it('gets all memberships', async () =>
+    //   await getAll(resource, setPath, referenceUnitMemberRequest))
     it('gets a single membership', async () =>
       await getOne(resource, itemPath, referenceUnitMemberRequest))
     it('creates a new membership', async () =>

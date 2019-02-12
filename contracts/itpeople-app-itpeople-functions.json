@@ -159,42 +159,6 @@
       }
     },
     {
-      "description": "a GET request for all memberships",
-      "providerState": "at least one membership exists",
-      "request": {
-        "method": "GET",
-        "path": "/memberships",
-        "headers": {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        "body": [
-          {
-            "id": 1,
-            "unitId": 1,
-            "personId": 1,
-            "title": "title",
-            "role": "Leader",
-            "percentage": 100,
-            "permissions": "Viewer"
-          }
-        ],
-        "matchingRules": {
-          "$.body": {
-            "min": 1
-          },
-          "$.body[*].*": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
       "description": "a GET request for one membership",
       "providerState": "membership exists",
       "request": {
