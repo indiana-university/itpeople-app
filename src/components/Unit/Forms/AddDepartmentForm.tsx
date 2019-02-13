@@ -47,8 +47,6 @@ const addDepartmentForm: React.SFC<IFormProps> = props => {
             style={{ position: "relative", padding: 0 }}
           >
             {props.departments.map((unit: any, i: number) => {
-              // todo: circular reference check
-              // todo: check if relationship already exists
               return (
                 <div key={i}>
                   <Button

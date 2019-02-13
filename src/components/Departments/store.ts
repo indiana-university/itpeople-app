@@ -21,7 +21,7 @@ import { action } from 'typesafe-actions'
 
 export const fetchRequest = () => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_REQUEST)
 const fetchSuccess = (response: IApiResponse<IDepartment[]>) => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_SUCCESS, response)
-const fetchError = (error: string) => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_ERROR, error)
+const fetchError = (error: Error) => action(DepartmentsActionTypes.DEPARTMENTS_FETCH_ERROR, error)
 //#endregion
 
 //#region REDUCER

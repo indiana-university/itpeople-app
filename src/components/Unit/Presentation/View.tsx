@@ -22,7 +22,7 @@ interface IProps {
   unitChildren: IDefaultState<IEntity[]>;
 }
 const hasData = (result: IApiState<any, any>) => {
-  return result.loading || (Array.isArray(result.data) ? !!result.data.length : !!result.data);
+  return result.loading|| result.error || (Array.isArray(result.data) ? !!result.data.length : !!result.data);
 };
 
 const Presentation: React.SFC<IState & IProps> = props => {

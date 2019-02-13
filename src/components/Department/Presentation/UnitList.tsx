@@ -18,6 +18,6 @@ export const UnitList: React.SFC<IProps> = ({units, title}) =>
     </div>
 
 interface IProps {
-    units: IUnit[], // todo: is this a support relationships?
+    units: IUnit[],
     title?:string
  }

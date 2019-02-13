@@ -49,13 +49,13 @@ export const setCurrentList = (list: SearchLists) => action(SearchActionTypes.SE
 export const submit = (term: string) => action(SearchActionTypes.SEARCH_SIMPLE_SUBMIT, term);
 export const searchUnitsRequest = (term: string) => action(SearchActionTypes.SEARCH_UNITS_FETCH_REQUEST, term);
 export const searchUnitsSuccess = (resp: IApiResponse<IUnit[]>) => action(SearchActionTypes.SEARCH_UNITS_FETCH_SUCCESS, resp);
-export const searchUnitsError = (error: string) => action(SearchActionTypes.SEARCH_UNITS_FETCH_ERROR, error);
+export const searchUnitsError = (error: Error) => action(SearchActionTypes.SEARCH_UNITS_FETCH_ERROR, error);
 export const searchDepartmentsRequest = (term: string) => action(SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_REQUEST, term);
 export const searchDepartmentsSuccess = (resp: IApiResponse<IDepartment[]>) => action(SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_SUCCESS, resp);
-export const searchDepartmentsError = (error: string) => action(SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_ERROR, error);
+export const searchDepartmentsError = (error: Error) => action(SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_ERROR, error);
 export const searchPeopleRequest = (term: string) => action(SearchActionTypes.SEARCH_PEOPLE_FETCH_REQUEST, term);
 export const searchPeopleSuccess = (resp: IApiResponse<IPerson[]>) => action(SearchActionTypes.SEARCH_PEOPLE_FETCH_SUCCESS, resp);
-export const searchPeopleError = (error: string) => action(SearchActionTypes.SEARCH_PEOPLE_FETCH_ERROR, error);
+export const searchPeopleError = (error: Error) => action(SearchActionTypes.SEARCH_PEOPLE_FETCH_ERROR, error);
 //#endregion
 
 import { Reducer, AnyAction } from "redux";

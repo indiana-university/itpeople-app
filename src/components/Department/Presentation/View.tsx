@@ -7,7 +7,7 @@ import { UnitList, Profile } from ".";
 
 export const View: React.SFC<IState> = ({ profile, memberUnits, supportingUnits }) => (
   <>
-    <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, "Departments", profile && profile.data ? profile.data.name : "loading..."]} />
+    <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, "Departments", profile && profile.data ? profile.data.name : "..."]} />
     <Content className="rvt-bg-white rvt-m-tb-xl rvt-p-tb-xl">
       <Row>
         <Col>

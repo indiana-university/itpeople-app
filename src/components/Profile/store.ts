@@ -34,16 +34,16 @@ export interface IState {
 import { action } from "typesafe-actions";
 export const fetchRequest = (request: IEntityRequest) => action(ProfileActionTypes.PROFILE_FETCH_REQUEST, request);
 const fetchSuccess = (response: IApiResponse<IPerson>) => action(ProfileActionTypes.PROFILE_FETCH_SUCCESS, response);
-const fetchError = (error: string) => action(ProfileActionTypes.PROFILE_FETCH_ERROR, error);
+const fetchError = (error: Error) => action(ProfileActionTypes.PROFILE_FETCH_ERROR, error);
 // export const updateRequest = (request: IPersonRequest) => action(ProfileActionTypes.PROFILE_UPDATE_REQUEST, request);
 // export const updateSuccess = (data: IPersonProfile) => action(ProfileActionTypes.PROFILE_UPDATE_SUCCESS, data);
-// export const updateError = (error: string) => action(ProfileActionTypes.PROFILE_UPDATE_ERROR, error);
+// export const updateError = (error: Error) => action(ProfileActionTypes.PROFILE_UPDATE_ERROR, error);
 export const toggleUnit = (id: number) => action(ProfileActionTypes.PROFILE_TOGGLE_UNIT, id);
 
   // MEMBERSHIPS
 export const fetchMembershipsRequest = (request: IEntityRequest) => action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_REQUEST, request);
 const fetchMembershipsSuccess = (response: IApiResponse<IUnitMembership[]>) => action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_SUCCESS, response);
-const fetchMembershipsError = (error: string) => action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_ERROR, error);
+const fetchMembershipsError = (error: Error) => action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_ERROR, error);
 //#endregion
 
 //#region REDUCER

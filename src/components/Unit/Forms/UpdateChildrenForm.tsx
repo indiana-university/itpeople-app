@@ -49,8 +49,6 @@ const form: React.SFC<IFormProps> = props => {
         {filteredUnits && filteredUnits.length > 0 && (
           <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
             {filteredUnits.map((unit: any, i: number) => {
-              // todo: circular reference check
-              // todo: check if relationship already exists
               return (
                 <div key={i}>
                   <Button

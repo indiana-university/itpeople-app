@@ -37,9 +37,6 @@ export const call: IApiCall = async <T>(method: string, apiUrl: string, path: st
       }
       return resp.json().then(json => ({ permissions: getPermissions(resp.headers), data: json, url: apiUrl + path } as IApiResponse<T>));
     })
-    .catch((err: Error) => {
-      throw { ...err, errors: err.stack };
-    });
 
 export const restApi = (apiUrl = API_ENDPOINT, caller: IApiCall = callApiWithAuth): IApi => ({
   get: <T>(path: string) => caller<T>("get", apiUrl, path),

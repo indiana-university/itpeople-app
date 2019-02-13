@@ -21,7 +21,7 @@ import { action } from 'typesafe-actions'
 
 const fetchRequest = () => action(UnitsActionTypes.UNITS_FETCH_REQUEST)
 const fetchSuccess = (response: IApiResponse< IEntity[]>) => action(UnitsActionTypes.UNITS_FETCH_SUCCESS, response)
-const fetchError = (error: string) => action(UnitsActionTypes.UNITS_FETCH_ERROR, error)
+const fetchError = (error: Error) => action(UnitsActionTypes.UNITS_FETCH_ERROR, error)
 //#endregion
 
 //#region REDUCER

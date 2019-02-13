@@ -50,7 +50,6 @@ const form: React.SFC<IFormProps> = props => {
         {props.units && props.units.length > 0 && (
           <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
             {props.units.map((u: any, i: number) => {
-              // todo: circular reference check
               return (
                 <div key={i}>
                   <Button
