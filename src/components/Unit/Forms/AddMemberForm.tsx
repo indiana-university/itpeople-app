@@ -35,7 +35,6 @@ const form: React.SFC<IFormProps> = props => {
           {filteredUsers && filteredUsers.length > 0 && (
             <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
               {filteredUsers.map((user: any, i: number) => {
-                // todo: check if relationship already exists
                 return (
                   <div key={i}>
                     <Button
