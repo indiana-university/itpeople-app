@@ -1,5 +1,4 @@
 module.exports = (req, res, next) => {
-  // let's not mess with auth for now
   if (req.path == "/auth") {
     // login works 50% of the time
     if (Math.random() > 0.5) {
@@ -22,8 +21,8 @@ module.exports = (req, res, next) => {
     return res.sendStatus(404);
   }
 
-  if (Math.random() > 0.3) {
-    // 10% timeout
+  if (Math.random() > 0.6) {
+    // 10% timeout - empty response
     req.setTimeout(10);
     return setTimeout(next, 100);
   }
