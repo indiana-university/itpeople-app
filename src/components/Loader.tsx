@@ -9,10 +9,10 @@ import { ErrorMessage } from "./ErrorMessage";
 export const Loader = ({ loading, loadingMessage, data, error, children }: IProps) => (
   <>
     {loading && (
-      <>
-        <span className="rvt-loader rvt-loader--md" aria-label="Content loading" />
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <span className="rvt-loader rvt-loader--md rvt-m-all-sm" aria-label="Content loading" /> {" "}
         {loadingMessage && <span>{loadingMessage}</span>}
-      </>
+      </div>
     )}
     {!loading && data && children && <>{children}</>}
     {!loading && error && <ErrorMessage error={error} />}
