@@ -1,7 +1,6 @@
 {
   "version": "0.2.0",
   "configurations": [
-
     {
       "type": "chrome",
       "request": "launch",
@@ -20,8 +19,23 @@
       "internalConsoleOptions": "neverOpen",
       "disableOptimisticBPs": true,
       "windows": {
-        "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest"
       }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "json-server",
+      "program": "${workspaceFolder}/node_modules/.bin/json-server",
+      "args": [
+        "--watch", "db.json", 
+        "--routes", "db.routes.json", 
+        "--middlewares", "db.middleware.chaos.js", 
+        "--port", "3001"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true,
+      "cwd": "${workspaceFolder}"
     }
   ]
 }
