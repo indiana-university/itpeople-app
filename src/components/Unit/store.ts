@@ -79,6 +79,7 @@ export interface IState {
 //#region ACTIONS
 import { action } from "typesafe-actions";
 
+const lookupLimit = 15;
 const edit = () => action(UnitActionTypes.UNIT_EDIT, {});
 const cancel = () => action(UnitActionTypes.UNIT_CANCEL, {});
 const fetchUnit = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request);
@@ -91,9 +92,9 @@ const saveUnitParent = (request: IEntityRequest) => action(UnitActionTypes.UNIT_
 const deleteUnitParent = (request: IEntityRequest) => action(UnitActionTypes.UNIT_DELETE_PARENT_REQUEST, request);
 const saveMemberRequest = (member: IUnitMemberRequest) => action(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, member);
 const deleteMemberRequest = (member: IUnitMember) => action(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, member);
-const lookupUnit = (q: string) => lookup(q ? `/units?q=${q}` : "");
-const lookupDepartment = (q: string) => lookup(q ? `/departments?q=${q}` : "");
-const lookupUser = (q: string) => lookup(q ? `/people?q=${q}` : "");
+const lookupUnit = (q: string) => lookup(q ? `/units?q=${q}&_limit=${lookupLimit}` : "");
+const lookupDepartment = (q: string) => lookup(q ? `/departments?q=${q}&_limit=${lookupLimit}` : "");
+const lookupUser = (q: string) => lookup(q ? `/people?q=${q}&_limit=${lookupLimit}` : "");
 //#endregion
 
 //#region REDUCER
