@@ -3,13 +3,12 @@ import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { RivetInputField, RivetInput, required } from "../../form";
-import { IApplicationState, IEntity, IUnit} from "../../types";
+import { IApplicationState, IEntity, IUnit } from "../../types";
 import { lookupUnit } from "..";
 import { Dispatch } from "redux";
 import { closeModal, Modal } from "../../layout/Modal";
 import { ChildrenUnitsIcon, TrashCan } from "src/components/icons";
 import { deleteUnitChild, saveUnitChild } from "../store";
-
 
 interface IFormProps extends InjectedFormProps<any>, IUnit, IDispathProps, IProps {}
 
@@ -28,49 +27,47 @@ interface IProps {
 const form: React.SFC<IFormProps> = props => {
   const { closeModal, units, filteredUnits, addChild, removeChild, lookupUnit, unitId } = props;
   const addChildForm = (
-    <>
-      <form>
-        <div>
-          <RivetInputField
-            name="q"
-            component={RivetInput}
-            label="Search"
-            validate={[required]}
-            onChange={(e: any) => {
-              const q = e.target.value;
-              props.lookupUnit(q);
-            }}
-            onLoad={(e: any) => {
-              const q = e.target.value;
-              props.lookupUnit(q);
-            }}
-          />
+    <form>
+      <div>
+        <RivetInputField
+          name="q"
+          component={RivetInput}
+          label="Search"
+          validate={[required]}
+          onChange={(e: any) => {
+            const q = e.target.value;
+            props.lookupUnit(q);
+          }}
+          onLoad={(e: any) => {
+            const q = e.target.value;
+            props.lookupUnit(q);
+          }}
+        />
+      </div>
+      {filteredUnits && filteredUnits.length > 0 && (
+        <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
+          {filteredUnits.map((unit: any, i: number) => {
+            return (
+              <div key={i}>
+                <Button
+                  type="button"
+                  onClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    addChild({ ...unit, parentId: unitId });
+                    closeModal();
+                    props.reset();
+                    lookupUnit("");
+                  }}
+                >
+                  {unit && unit.name}
+                </Button>
+              </div>
+            );
+          })}
         </div>
-        {filteredUnits && filteredUnits.length > 0 && (
-          <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
-            {filteredUnits.map((unit: any, i: number) => {
-              return (
-                <div key={i}>
-                  <Button
-                    type="button"
-                    onClick={e => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      addChild({ ...unit, parentId: unitId });
-                      closeModal();
-                      props.reset();
-                      lookupUnit("");
-                    }}
-                  >
-                    {unit && unit.name}
-                  </Button>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </form>
-    </>
+      )}
+    </form>
   );
 
   return (
@@ -84,24 +81,19 @@ const form: React.SFC<IFormProps> = props => {
             return (
               <li key={index}>
                 <Row>
-                  <Col style={{ minWidth: 60, flexGrow: 0 }}>
+                  <Col sm={2}>
                     <ChildrenUnitsIcon width="100%" />
                   </Col>
                   <Col>
                     <h4>{unit.name}</h4>
+                    {unit.description && <p className="rvt-ts-14 rvt-m-top-remove">{unit.description}</p>}
                   </Col>
-                  <Col style={{ minWidth: 150, flexGrow: 0, textAlign: "right" }}>
+                  <Col style={{ minWidth: "auto", flexGrow: 0, padding: 0, textAlign: "right" }}>
                     <Button variant="plain" type="button" title="Remove Unit" onClick={() => removeChild(unit)}>
                       <TrashCan />
                     </Button>
                   </Col>
                 </Row>
-                {unit.description && (
-                  <Row className="rvt-grid">
-                    <Col style={{ minWidth: 60, flexGrow: 0 }} />
-                    <Col className="rvt-grid__item">{unit.description}</Col>
-                  </Row>
-                )}
               </li>
             );
           })}
