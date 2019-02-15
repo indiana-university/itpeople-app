@@ -10,6 +10,7 @@ const api = restApi();
 
 export const enum LookupActionTypes {
   LOOKUP = "LOOKUP",
+  LOOKUP_CLEAR_CURRENT = "LOOKUP_CLEAR_CURRENT",
   LOOKUP_FETCH_REQUESTED = "LOOKUP_FETCH_REQUESTED",
   LOOKUP_FETCH_SUCCESS = "LOOKUP_FETCH_SUCCESS",
   LOOKUP_FETCH_ERROR = "LOOKUP_FETCH_ERROR",
@@ -17,6 +18,7 @@ export const enum LookupActionTypes {
 }
 
 const lookup = (url: string) => action(LookupActionTypes.LOOKUP, url.trim());
+const clearCurrent = () => action(LookupActionTypes.LOOKUP_CLEAR_CURRENT);
 const lookupSuccess = (response: IApiResponse<any>) => action(LookupActionTypes.LOOKUP_FETCH_SUCCESS, response);
 const lookupFromCacheSuccess = (data: any) => action(LookupActionTypes.LOOKUP_GET_CACHED_SUCCESS, data);
 const lookupError = (error: Error) => action(LookupActionTypes.LOOKUP_FETCH_ERROR, error);
@@ -54,6 +56,8 @@ const reducer: Reducer = (state = initialState, action) => {
       return state;
     case LookupActionTypes.LOOKUP_GET_CACHED_SUCCESS:
       return { ...state, current: action.payload };
+    case LookupActionTypes.LOOKUP_CLEAR_CURRENT:
+      return { ...state, current: null };
     default:
       return state;
   }
@@ -61,15 +65,13 @@ const reducer: Reducer = (state = initialState, action) => {
 
 function* handleLookup(api: IApi, q: string) {
   const state = (yield select<IApplicationState>(s => s.lookup)) as ILookupState;
-  const action = isCached(state.cache, q)
-      ? lookupFromCacheSuccess(state.cache[q])
-      : yield lookupFromApi(q);
+  const action = isCached(state.cache, q) ? lookupFromCacheSuccess(state.cache[q]) : yield lookupFromApi(q);
   yield put(action);
 }
 
-const isCached = (cache : any, q: string) => cache && cache[q];
+const isCached = (cache: any, q: string) => cache && cache[q];
 
-function* lookupFromApi (q: string) {
+function* lookupFromApi(q: string) {
   return yield api
     .get<any>(q)
     .then(lookupSuccess)
@@ -85,4 +87,4 @@ function* saga() {
   yield all([fork(watchLookupFetch)]);
 }
 
-export { initialState, lookup, ILookupState, saga, reducer };
+export { initialState, lookup, clearCurrent, ILookupState, saga, reducer };

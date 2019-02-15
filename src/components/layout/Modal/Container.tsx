@@ -16,6 +16,7 @@ const Container: React.SFC<IElementProps> = ({ id, variant, size, modifier, inne
   const isOpen = id == current;
   const buttonProps = { variant, size, modifier, innerRef, title, style: buttonStyle, onClick: () => {openModal(id); onOpen && onOpen()}  };
   const modalProps = { title, children, current, isOpen, onDismiss };
+
   return (
     <>
       <Button type="button" {...buttonProps}>

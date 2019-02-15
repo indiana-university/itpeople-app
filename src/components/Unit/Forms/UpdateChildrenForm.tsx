@@ -2,18 +2,18 @@ import * as React from "react";
 import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
-import { RivetInputField, RivetInput, required } from "../../form";
 import { IApplicationState, IEntity, IUnit } from "../../types";
-import { lookupUnit } from "..";
+import { clearCurrent } from "../../lookup";
 import { Dispatch } from "redux";
 import { closeModal, Modal } from "../../layout/Modal";
 import { ChildrenUnitsIcon, TrashCan } from "src/components/icons";
 import { deleteUnitChild, saveUnitChild } from "../store";
+import AddChildForm from "./AddChildForm";
 
 interface IFormProps extends InjectedFormProps<any>, IUnit, IDispathProps, IProps {}
 
 interface IDispathProps {
-  lookupUnit: typeof lookupUnit;
+  clearCurrent: typeof clearCurrent;
   closeModal: typeof closeModal;
   addChild: typeof saveUnitChild;
   removeChild: typeof deleteUnitChild;
@@ -25,55 +25,22 @@ interface IProps {
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const { closeModal, units, filteredUnits, addChild, removeChild, lookupUnit, unitId } = props;
-  const addChildForm = (
-    <form>
-      <div>
-        <RivetInputField
-          name="q"
-          component={RivetInput}
-          label="Search"
-          validate={[required]}
-          onChange={(e: any) => {
-            const q = e.target.value;
-            props.lookupUnit(q);
-          }}
-          onLoad={(e: any) => {
-            const q = e.target.value;
-            props.lookupUnit(q);
-          }}
-        />
-      </div>
-      {filteredUnits && filteredUnits.length > 0 && (
-        <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
-          {filteredUnits.map((unit: any, i: number) => {
-            return (
-              <div key={i}>
-                <Button
-                  type="button"
-                  onClick={e => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    addChild({ ...unit, parentId: unitId });
-                    closeModal();
-                    props.reset();
-                    lookupUnit("");
-                  }}
-                >
-                  {unit && unit.name}
-                </Button>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </form>
-  );
+  const { units, removeChild, clearCurrent } = props;
+
+  
 
   return (
     <>
-      <Modal title="Add child unit" id="+ add child unit" buttonText="+ Add new child" variant="plain">
-        <ModalBody>{addChildForm}</ModalBody>
+      <Modal
+        title="Add child unit"
+        id="+ add child unit"
+        buttonText="+ Add new child"
+        variant="plain"
+        onOpen={clearCurrent}
+      >
+        <ModalBody>
+          <AddChildForm />
+        </ModalBody>
       </Modal>
       <List variant="plain">
         {units &&
@@ -115,7 +82,7 @@ UpdateChildrenForm = connect(
     return { id, filteredUnits };
   },
   (dispatch: Dispatch): IDispathProps => ({
-    lookupUnit: (q: string) => dispatch(lookupUnit(q)),
+    clearCurrent: () => dispatch(clearCurrent()),
     closeModal: () => dispatch(closeModal()),
     addChild: unit => dispatch(saveUnitChild(unit)),
     removeChild: (unit: any) => dispatch(deleteUnitChild(unit))
