@@ -7,7 +7,7 @@ import { clearCurrent } from "../../lookup";
 import { Dispatch } from "redux";
 import { closeModal, Modal } from "../../layout/Modal";
 import { ChildrenUnitsIcon, TrashCan } from "src/components/icons";
-import { deleteUnitChild, saveUnitChild } from "../store";
+import { deleteUnitChild } from "../store";
 import AddChildForm from "./AddChildForm";
 
 interface IFormProps extends InjectedFormProps<any>, IUnit, IDispathProps, IProps {}
@@ -15,7 +15,6 @@ interface IFormProps extends InjectedFormProps<any>, IUnit, IDispathProps, IProp
 interface IDispathProps {
   clearCurrent: typeof clearCurrent;
   closeModal: typeof closeModal;
-  addChild: typeof saveUnitChild;
   removeChild: typeof deleteUnitChild;
 }
 interface IProps {
@@ -25,9 +24,7 @@ interface IProps {
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const { units, removeChild, clearCurrent } = props;
-
-  
+  const { units, removeChild, clearCurrent, closeModal } = props;
 
   return (
     <>
@@ -39,7 +36,7 @@ const form: React.SFC<IFormProps> = props => {
         onOpen={clearCurrent}
       >
         <ModalBody>
-          <AddChildForm />
+          <AddChildForm onSubmit={closeModal} />
         </ModalBody>
       </Modal>
       <List variant="plain">
@@ -84,7 +81,6 @@ UpdateChildrenForm = connect(
   (dispatch: Dispatch): IDispathProps => ({
     clearCurrent: () => dispatch(clearCurrent()),
     closeModal: () => dispatch(closeModal()),
-    addChild: unit => dispatch(saveUnitChild(unit)),
     removeChild: (unit: any) => dispatch(deleteUnitChild(unit))
   })
 )(UpdateChildrenForm);
