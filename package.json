@@ -29,7 +29,8 @@
     "dev-slow": "yarn json-server -- --middlewares ./json_server/db.middleware.user.js ./json_server/db.middleware.slow.js & yarn start && kill 0",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
-    "test": "jest --env=jsdom",
+    "test": "jest --env=jsdom --testRegex \"(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$\"",
+    "pact": "CI=true jest --env=node --runInBand --testMatch \"**/*.pact.contract.ts\"",
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
