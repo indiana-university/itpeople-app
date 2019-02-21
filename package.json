@@ -21,16 +21,15 @@
     "typesafe-actions": "^2.0.4"
   },
   "scripts": {
-    "json-server": "json-server --watch db.json --routes db.routes.json --port 3001",
+    "json-server": "json-server --watch json_server/db.json --routes json_server/db.routes.json --port 3001",
     "dev": "yarn json-server & yarn start && kill 0",
-    "dev-admin": "yarn json-server -- --middlewares ./db.middleware.admin.js & yarn start && kill 0",
-    "dev-chaos": "yarn json-server -- --middlewares ./db.middleware.admin.js ./db.middleware.chaos.js & yarn start && kill 0",
-    "dev-user": "yarn json-server -- --middlewares ./db.middleware.user.js & yarn start && kill 0",
-    "dev-slow": "yarn json-server -- --middlewares ./db.middleware.user.js ./db.middleware.slow.js & yarn start && kill 0",
-    "tdd": "yarn json-server & jest --env=jsdom --watch && kill 0",
+    "dev-admin": "yarn json-server -- --middlewares ./json_server/db.middleware.admin.js & yarn start && kill 0",
+    "dev-chaos": "yarn json-server -- --middlewares ./json_server/db.middleware.admin.js ./db.middleware.chaos.js & yarn start && kill 0",
+    "dev-user": "yarn json-server -- --middlewares ./json_server/db.middleware.user.js & yarn start && kill 0",
+    "dev-slow": "yarn json-server -- --middlewares ./json_server/db.middleware.user.js ./json_server/db.middleware.slow.js & yarn start && kill 0",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
-    "test": "yarn json-server & jest --env=jsdom",
+    "test": "jest --env=jsdom",
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
