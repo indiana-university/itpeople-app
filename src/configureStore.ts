@@ -1,32 +1,31 @@
-/** 
+/**
  * Copyright (C) 2018 The Trustees of Indiana University
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import { connectRouter, routerMiddleware } from 'connected-react-router'
-import { History } from 'history'
-import { applyMiddleware, createStore, Store } from 'redux'
+import { connectRouter, routerMiddleware } from "connected-react-router";
+import { History } from "history";
+import { applyMiddleware, createStore, Store } from "redux";
 // We'll be using Redux Devtools. We can use the `composeWithDevTools()`
 // directive so we can pass our middleware along with it
-import { composeWithDevTools } from 'redux-devtools-extension'
-import createSagaMiddleware from 'redux-saga'
+import { composeWithDevTools } from "redux-devtools-extension";
+import createSagaMiddleware from "redux-saga";
 
 // Import the state interface and our combined reducers/sagas.
-import { loggerMiddleware } from './logger'
+import { loggerMiddleware } from "./logger";
 
+import { Action, AnyAction, combineReducers, Dispatch } from "redux";
+import { reducer as formReducer } from "redux-form";
+import { all, fork } from "redux-saga/effects";
+import { IApplicationState } from "src/components/types";
 
-import { Action, AnyAction, combineReducers, Dispatch } from 'redux'
-import { reducer as formReducer } from 'redux-form'
-import { all, fork } from 'redux-saga/effects'
-import { IApplicationState } from 'src/components/types';
-
-import * as Auth from './components/SignIn/store'
+import * as Auth from "./components/SignIn/store";
 import * as Department from "./components/Department/store";
 import * as Departments from "./components/Departments/store";
 import * as Lookup from "./components/lookup";
 import * as Modal from "./components/layout/Modal/store";
-import * as Profile from './components/Profile/store'
-import * as SearchSimple from './components/Search/store'
+import * as Profile from "./components/Profile/store";
+import * as SearchSimple from "./components/Search/store";
 import * as Unit from "./components/Unit/store";
 import * as Units from "./components/Units/store";
 
@@ -40,18 +39,18 @@ export const initialState: IApplicationState = {
   profile: Profile.initialState,
   searchSimple: SearchSimple.initialState,
   unit: Unit.initialState,
-  units: Units.initialState,
-}
+  units: Units.initialState
+};
 
 // Additional props for connected React components. This prop is passed by default with `connect()`
 export interface IConnectedReduxProps<A extends Action = AnyAction> {
-  dispatch: Dispatch<A>
+  dispatch: Dispatch<A>;
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property
 // using the reducer with the matching name. It's important that the names match exactly, and that
 // the reducer acts on the corresponding ApplicationState property type.
-export const rootReducer = combineReducers<IApplicationState>({
+export const appReducer = combineReducers<IApplicationState>({
   auth: Auth.reducer,
   department: Department.reducer,
   departments: Departments.reducer,
@@ -62,7 +61,16 @@ export const rootReducer = combineReducers<IApplicationState>({
   searchSimple: SearchSimple.reducer,
   unit: Unit.reducer,
   units: Units.reducer
-})
+});
+
+const rootReducer = (state: IApplicationState, action: AnyAction) => {
+  if (action.type === Auth.AuthActionTypes.SIGN_IN_REQUEST 
+    || action.type === Auth.AuthActionTypes.SIGN_OUT) {
+    state = initialState;
+  }
+
+  return appReducer(state, action);
+};
 
 // Here we use `redux-saga` to trigger actions asynchronously. `redux-saga` uses something called a
 // "generator function", which you can read about here:
@@ -76,44 +84,43 @@ export function* rootSaga() {
     fork(Profile.saga),
     fork(SearchSimple.saga),
     fork(Unit.saga),
-    fork(Units.saga),
-  ])
+    fork(Units.saga)
+  ]);
 }
-
 
 // Attempt to load persisted state from session storage.
 // Otherwise, return the default initial state.
 const loadState = (): IApplicationState => {
   try {
-    const serializedState = localStorage.getItem('state')
+    const serializedState = localStorage.getItem("state");
     if (serializedState) {
       console.log("Initializing state from session storage");
-      return JSON.parse(serializedState)
+      return JSON.parse(serializedState);
     } else {
       console.log("Initializing state from defaults");
-      return initialState
+      return initialState;
     }
   } catch (err) {
     console.log("Failed to load state from session storage", err);
-    return initialState
+    return initialState;
   }
-}
+};
 
 // Attempt to persist state to session storage.
 const saveState = (state: IApplicationState) => {
   try {
-    const serializedState = JSON.stringify(state)
-    localStorage.setItem('state', serializedState)
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem("state", serializedState);
   } catch (err) {
     // Ignore write errors
   }
-}
+};
 
 export default function configureStore(history: History): Store<IApplicationState> {
   // create the composing function for our middlewares
-  const composeEnhancers = composeWithDevTools({})
+  const composeEnhancers = composeWithDevTools({});
   // create the redux-saga middleware
-  const sagaMiddleware = createSagaMiddleware()
+  const sagaMiddleware = createSagaMiddleware();
 
   // We'll create our store with the combined reducers/sagas, and the initial Redux state that
   // we'll be passing from our entry point.
@@ -121,14 +128,14 @@ export default function configureStore(history: History): Store<IApplicationStat
     connectRouter(history)(rootReducer),
     loadState(),
     composeEnhancers(applyMiddleware(routerMiddleware(history), sagaMiddleware, loggerMiddleware))
-  )
+  );
 
   // Save the state on any changes
   store.subscribe(() => {
-    saveState(store.getState())
-  })
+    saveState(store.getState());
+  });
 
   // Don't forget to run the root saga, and return the store object.
-  sagaMiddleware.run(rootSaga)
-  return store
+  sagaMiddleware.run(rootSaga);
+  return store;
 }
