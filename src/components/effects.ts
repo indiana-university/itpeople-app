@@ -6,12 +6,13 @@ import { signInRequest } from "./SignIn/store";
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-const clearAuthToken = () => localStorage.removeItem("authToken");
+const clearApplicationData = () => localStorage.clear();
 
 const getAuthToken = () => localStorage.getItem("authToken");
 
 const setAuthToken = (token: string) =>
   localStorage.setItem("authToken", token);
+
 
 const redirectToLogin = () =>
   window.location.assign(
@@ -59,7 +60,7 @@ function signinIfUnauthorized(err: Error) {
 
 export {
   apiEndpoints,
-  clearAuthToken,
+  clearApplicationData,
   getAuthToken,
   setAuthToken,
   redirectToLogin,

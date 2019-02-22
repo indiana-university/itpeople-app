@@ -1,7 +1,7 @@
 import * as React from "react";
 import { reduxForm, InjectedFormProps, change, formValueSelector, Field } from "redux-form";
 import { Button } from "rivet-react";
-import { RivetInputField, RivetInput, RivetSelect, RivetSelectField, RivetCheckboxField, RivetCheckbox } from "src/components/form";
+import { RivetInputField, RivetInput, RivetSelect, RivetSelectField } from "src/components/form";
 import { connect } from "react-redux";
 import { IApplicationState } from "src/components/types";
 import { lookupUser } from "../store";
@@ -69,19 +69,11 @@ const form: React.SFC<IFormProps> = props => {
           </div>
           <div>
             <RivetInputField name="title" component={RivetInput} label="Title" />
-            <label>
-              <p>Display title in orgchart?</p>
-              <RivetCheckboxField name="showTitle" component={RivetCheckbox} label="Yes" />
-            </label>
           </div>
           <div>
             <RivetInputField name="percentage" component={RivetInput} label="Percentage" type="number" min="0" max="100" />
-            <label>
-              <p>Display percentage in orgchart?</p>
-              <RivetCheckboxField name="showPercentage" component={RivetCheckbox} label="Yes" />
-            </label>
           </div>
-          <div>
+          <div className="rvt-m-top-md">
             <Button type="submit" disabled={invalid && hasUser}>
               Add member
             </Button>
@@ -115,6 +107,7 @@ AddMemberForm = connect(
         dispatch(change("addMemberForm", "id", undefined));
         dispatch(change("addMemberForm", "person", person));
         dispatch(change("addMemberForm", "personId", person.id));
+        dispatch(change("addMemberForm", "percentage", 100));
       }
     };
   }

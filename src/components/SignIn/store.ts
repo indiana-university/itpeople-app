@@ -32,7 +32,7 @@ const signOutRequest = () => action(AuthActionTypes.SIGN_OUT);
 import * as JWT from "jwt-decode";
 import { push } from "react-router-redux";
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
-import { clearAuthToken, redirectToLogin, setAuthToken } from "../effects";
+import { redirectToLogin, setAuthToken, clearApplicationData } from "../effects";
 
 //#region REDUCERS
 import { Reducer, AnyAction } from 'redux'
@@ -70,7 +70,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 //#region SAGAS
 
 function* handleSignIn(){
-  yield call(clearAuthToken)
+  yield call(clearApplicationData)
   yield call(redirectToLogin)
 }
 
@@ -88,7 +88,7 @@ const handlePostSignInResponse = (resp: IApiResponse<IAuthResult>) => {
 }
 
 const handlePostSignInError = (err: any) => [
-  call(clearAuthToken),
+  call(clearApplicationData),
   put(postSignInError(err))
 ];
 
@@ -104,7 +104,7 @@ function* handlePostSignIn(api: IApi, req: IAuthRequest) {
 }
 
 function* handleSignOut() {
-  yield call(clearAuthToken)
+  yield call(clearApplicationData)
   yield put(push('/'))
 }
 
