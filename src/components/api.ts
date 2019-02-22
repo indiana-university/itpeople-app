@@ -23,20 +23,29 @@ export const call: IApiCall = async <T>(method: string, apiUrl: string, path: st
       ...headers
     },
     method
-  })
-    .then(resp => {
-      if (!resp.ok) {
+  }).then(resp => {
+    if (!resp.ok) {
+      return resp.json().then((body: any) => {
+        let message = "";
+        if(body && body.errors && body.errors.length){
+          message = ": " + body.errors.join(": ");
+        }
+
+        throw new Error(message)
+      }).catch((e:Error)=>{
+        let message = (e && e.message) || "";
         switch (resp.status) {
           case 401:
-            throw new NotAuthorizedError("User authentication is invalid or missing");
+            throw new NotAuthorizedError("User authentication is invalid or missing" + message);
           case 403:
-            throw new ForbiddenError("User does not have access to requested resource");
+            throw new ForbiddenError("There as an authorization problem" + message);
           default:
-            throw new Error(`Unable to complete request. The server returned ${resp.statusText} (${resp.status})`);
+            throw new Error(`Unable to complete request. The server returned ${resp.statusText} (${resp.status})${message}`);
         }
-      }
-      return resp.json().then(json => ({ permissions: getPermissions(resp.headers), data: json, url: apiUrl + path } as IApiResponse<T>));
-    })
+      });
+    }
+    return resp.json().then(json => ({ permissions: getPermissions(resp.headers), data: json, url: apiUrl + path } as IApiResponse<T>));
+  });
 
 export const restApi = (apiUrl = API_ENDPOINT, caller: IApiCall = callApiWithAuth): IApi => ({
   get: <T>(path: string) => caller<T>("get", apiUrl, path),
@@ -90,9 +99,9 @@ export interface IApiCall {
 
 const getAuthToken = () => localStorage.getItem("authToken");
 
-const getPermissions = (headers: Headers) : Permission[] =>
+const getPermissions = (headers: Headers): Permission[] =>
   (headers.get("X-User-Permissions") + "")
-  .split(",")
-  .map(v => v.trim().toUpperCase())
-  .map(Permissions.parse)
-  .filter(p => p !== undefined);
+    .split(",")
+    .map(v => v.trim().toUpperCase())
+    .map(Permissions.parse)
+    .filter(p => p !== undefined);
