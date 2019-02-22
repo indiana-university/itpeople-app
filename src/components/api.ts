@@ -44,6 +44,12 @@ export const call: IApiCall = async <T>(method: string, apiUrl: string, path: st
         }
       });
     }
+
+    // no content
+    if(resp.status == 204){
+      return (Promise.resolve({ permissions: getPermissions(resp.headers), url: apiUrl + path } as IApiResponse<T>));
+    }
+    
     return resp.json().then(json => ({ permissions: getPermissions(resp.headers), data: json, url: apiUrl + path } as IApiResponse<T>));
   });
 
