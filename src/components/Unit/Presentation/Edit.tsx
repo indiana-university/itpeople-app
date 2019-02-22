@@ -11,10 +11,10 @@ import { Breadcrumbs, Content } from "../../layout";
 import * as unit from "../store";
 import UpdateUnitForm from "../Forms/UpdateUnitForm";
 import UpdateMembersForm from "../Forms/UpdateMembersForm";
-import UpdateParentForm from "../Forms/UpdateParentForm";
 import UpdateChildrenForm from "../Forms/UpdateChildrenForm";
 import UpdateDepartmentsForm from "../Forms/UpdateDepartmentsForm";
 import { Loader } from "../../Loader";
+import Parent from "./Parent";
 
 interface IProps extends unit.IState {
   cancel: typeof unit.cancel;
@@ -50,15 +50,24 @@ export const Edit: React.SFC<IProps> = ({ profile, members, parent, unitChildren
             <div className="rvt-m-all-md">
               <div className="rvt-m-bottom-lg">
                 <Panel title="Parent and Children">
-                  <Loader {...profile}>
-                    <UpdateParentForm initialValues={parent.data} unit={profile.data} unitId={id} parent={parent.data} />
-                  </Loader>
+                  {(parent.loading || parent.data) && (
+                    <>
+                      <h2 className="rvt-text-bold">Parents</h2>
+                      <p className="rvt-m-top-remove">A parent is a step higher on the org chart.</p>
+                      <Parent {...parent} />
+                    </>
+                  )}
+                  <h2 className="rvt-text-bold">Children</h2>
+                  <p className="rvt-m-top-remove">
+                    A child is a step lower on the org chart. If this unit has groups associated with it, add those groups here.
+                  </p>
                   <Loader {...unitChildren}>
                     <UpdateChildrenForm initialValues={unitChildren.data} unitId={id} units={unitChildren.data} />
                   </Loader>
                 </Panel>
               </div>
               <Panel title="Supported Departments">
+                <p>Some units provide support for departments. If this unit supports other departments, add them here.</p>
                 <Loader {...departments}>
                   <UpdateDepartmentsForm unitId={id} initialValues={{ ...departments.data, unitId: id }} departments={departments.data} />
                 </Loader>

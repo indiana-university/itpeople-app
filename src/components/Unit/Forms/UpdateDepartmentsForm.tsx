@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { RivetInputField, RivetInput } from "../../form";
 import { IApplicationState, IEntity } from "../../types";
+import { clearCurrent } from "../../lookup";
 import { Dispatch } from "redux";
 import { lookupDepartment } from "..";
 import { Modal, closeModal } from "../../layout/Modal";
@@ -12,6 +13,7 @@ import { deleteUnitDepartment, saveUnitDepartment } from "../store";
 
 interface IFormProps extends InjectedFormProps<any>, IDispatchProps, IProps {}
 interface IDispatchProps {
+  clearCurrent: typeof clearCurrent;
   closeModal: typeof closeModal;
   addDepartment: typeof saveUnitDepartment;
   removeDepartment: typeof deleteUnitDepartment;
@@ -24,7 +26,7 @@ interface IProps {
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const { addDepartment, removeDepartment, departments, closeModal, filtered, reset, lookupDepartment, unitId } = props;
+  const { addDepartment, clearCurrent, removeDepartment, departments, closeModal, filtered, reset, lookupDepartment, unitId } = props;
   const handleChange = (e: any) => {
     const q = e.target.value;
     lookupDepartment(q);
@@ -69,7 +71,7 @@ const form: React.SFC<IFormProps> = props => {
 
   return (
     <>
-      <Modal id="add department to unit" title="+ add department" buttonText="+ add department" variant="plain">
+      <Modal id="add department to unit" title="+ add department" buttonText="+ add department" variant="plain" onOpen={clearCurrent}>
         <ModalBody>{addDepartmentForm}</ModalBody>
       </Modal>
       <List variant="plain">
@@ -115,8 +117,9 @@ UpdateDepartmentsForm = connect(
       lookupDepartment: (q: string) => {
         return dispatch(lookupDepartment(q));
       },
+      clearCurrent: () => dispatch(clearCurrent()),
       closeModal: () => dispatch(closeModal()),
-      addDepartment: department => dispatch(saveUnitDepartment(department)), 
+      addDepartment: department => dispatch(saveUnitDepartment(department)),
       removeDepartment: department => dispatch(deleteUnitDepartment(department))
     };
   }

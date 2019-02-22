@@ -2,14 +2,15 @@ import * as React from "react";
 import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, change } from "redux-form";
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
-import { saveMemberRequest, deleteMemberRequest,  } from "../store";
-import { UitsRole, ItProRole, IUnitMember,  IUnitMemberRequest } from "../../types";
+import { saveMemberRequest, deleteMemberRequest } from "../store";
+import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest } from "../../types";
 import { connect } from "react-redux";
 import { AddUser, Pencil, TrashCan, Eye } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
 import { Dispatch } from "redux";
 import AddMemberForm from "./AddMemberForm";
 import UpdateMemberForm from "./UpdateMemberForm";
+import { clearCurrent } from "src/components/lookup";
 
 interface IFormProps extends InjectedFormProps<IFormFields>, IDispatchProps, IFormFields {
   onSubmit: (e?: any) => any;
@@ -22,6 +23,7 @@ interface IFormFields {
 
 interface IDispatchProps {
   closeModal: typeof closeModal;
+  clearCurrent: typeof clearCurrent;
   removeMember: typeof deleteMemberRequest;
   save: typeof saveMemberRequest;
   editMember(member: any): any;
@@ -29,7 +31,7 @@ interface IDispatchProps {
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const { closeModal, editMember, addMember, removeMember, save, unitId } = props;
+  const { closeModal, clearCurrent, editMember, addMember, removeMember, save, unitId } = props;
   const renderMembers = ({ fields, input }: any) => {
     let members = fields.map(function(field: any, index: number) {
       let member = fields.get(index) as IUnitMember;
@@ -49,7 +51,7 @@ const form: React.SFC<IFormProps> = props => {
             </span>
           }
           buttonStyle={{ marginLeft: -14 }}
-          onOpen={() => addMember(unitId, role)}
+          onOpen={() => { addMember(unitId, role); clearCurrent();}} 
           variant="plain"
         >
           <ModalBody>
@@ -195,6 +197,7 @@ UpdateMembersForm = connect(
   (dispatch: Dispatch) => {
     return {
       closeModal: () => dispatch(closeModal()),
+      clearCurrent: () => dispatch(clearCurrent()),
       removeMember: (member: IUnitMember) => dispatch(deleteMemberRequest(member)),
       save: (member: IUnitMemberRequest) => dispatch(saveMemberRequest(member)),
       editMember: (member: IUnitMember) => {
