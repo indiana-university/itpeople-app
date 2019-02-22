@@ -2,25 +2,26 @@
  * Copyright (C) 2018 The Trustees of Indiana University
  * SPDX-License-Identifier: BSD-3-Clause
  */
+import 'jest-dom/extend-expect'
+import 'react-testing-library/cleanup-after-each'
 
-// import { mount } from 'enzyme';
-// import * as React from 'react';
-// import { BrowserRouter as Router } from 'react-router-dom';
-// import App from './App';
+import * as React from 'react'
+import { Router } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { createMemoryHistory } from 'history'
+import { render } from 'react-testing-library'
 
-it('renders without crashing', () => {
-  // mount(
-  //   <Router>
-  //     <App />
-  //   </Router>
-  // );
-});
+import App from './App'
+import configureStore from './configureStore'
 
-it('renders the home page by default', () => {
-  // const cut = mount(
-  //   <Router>
-  //     <App />
-  //   </Router>
-  // );
-  // expect(cut.find("h1").text()).toBe("Home")
-});
+it('renders the home page at /', () => {
+    const history = createMemoryHistory({ initialEntries: ['/'] })
+    const store = configureStore(history)
+    const { getByTestId } = render(
+        <Provider store={store}>
+            <Router history={history}>
+                <App />
+            </Router>
+        </Provider>)
+    expect(getByTestId('home-page')).toBeInTheDocument()
+})

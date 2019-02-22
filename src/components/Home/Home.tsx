@@ -17,7 +17,7 @@ const Component: React.SFC<IDispatchProps & IStateProps> = ({
   user
 }) => (
     <Content className="rvt-p-top-xl rvt-bg-white rvt-p-bottom-xl rvt-m-top-xxl rvt-m-bottom-xxl">
-      <PageTitle>IT People</PageTitle>
+      <PageTitle data-testid="home-page">IT People</PageTitle>
       { user 
         ? <Row>
             <Col lg={8} style={{ color: "#333" }}>
