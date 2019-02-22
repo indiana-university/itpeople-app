@@ -51,7 +51,7 @@ Component.displayName = "Search";
 
 function mapDispatchToProps(dispatch: Dispatch) {
   return {
-    submitSearch: () => dispatch(Search.submit())
+    submitSearch: (q:string) => dispatch(Search.submit(q))
   };
 }
 export default connect(

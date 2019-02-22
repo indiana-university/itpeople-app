@@ -6,13 +6,13 @@
 import * as React from "react";
 import { Row, Col } from "rivet-react";
 import { MemberList } from "./MemberList";
-import { IUnitMember, UitsRole } from "..";
+import { IUnitMember, UitsRole } from "../../types";
 
 export const MemberLists: React.SFC<IProps> = ({ members, title }) => {
   const leaders: IUnitMember[] = [];
   const related: IUnitMember[] = [];
   const team: IUnitMember[] = [];
-  members.forEach(m => {
+  members && members.forEach(m => {
     switch (m.role) {
       case UitsRole.Leader:
         leaders.push(m);

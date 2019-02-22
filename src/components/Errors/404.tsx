@@ -2,7 +2,6 @@
  * Copyright (C) 2018 The Trustees of Indiana University
  * SPDX-License-Identifier: BSD-3-Clause
  */
-
 import * as React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
@@ -29,7 +28,7 @@ const Component: React.SFC<IProps> = ({ submitSearch, error }) => (
             <h2 className="rvt-ts-46">Uh-oh, this is a 404.</h2>
             <p>
               This page can’t be found. The link may be broken or this page may
-              have been moved. Try clicking on the  IT People button at the top
+              have been moved. Try clicking on the IT People button at the top
               of the page, but if this happens again, please let someone know at
               {' '}<a href="mailto:dcdreq@iu.edu">dcdreq@iu.edu</a>.
             </p>
@@ -56,7 +55,7 @@ Component.displayName = "Error";
 
 function mapDispatchToProps(dispatch: Dispatch) {
   return {
-    submitSearch: () => dispatch(Search.submit())
+    submitSearch: (q:string) => dispatch(Search.submit(q))
   };
 }
 export default connect(

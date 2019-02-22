@@ -3,24 +3,15 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+import { TaskErrorReducer, IAuthUser, IAuthResult, IAuthRequest, IApiState, defaultState, TaskStartReducer } from '../types'
+
 //#region TYPES
-import { IApiState, IApplicationState } from '../types'
-
 export const enum AuthActionTypes {
-    SIGN_IN_REQUEST = '@@auth/SIGN_IN',
-    POST_SIGN_IN_REQUEST = '@@auth/POST_SIGN_IN',
-    POST_SIGN_IN_SUCCESS = '@@auth/POST_SIGN_IN_SUCCESS',
-    POST_SIGN_IN_ERROR = '@@auth/POST_SIGN_IN_ERROR',
-    SIGN_OUT = '@@auth/SIGN_OUT',
-}
-
-export interface IAuthRequest {
-    code: string
-}
-
-export interface IAuthUser {
-    user_name: string,
-    user_role: string
+  SIGN_IN_REQUEST = "@@auth/SIGN_IN",
+  POST_SIGN_IN_REQUEST = "@@auth/POST_SIGN_IN",
+  POST_SIGN_IN_SUCCESS = "@@auth/POST_SIGN_IN_SUCCESS",
+  POST_SIGN_IN_ERROR = "@@auth/POST_SIGN_IN_ERROR",
+  SIGN_OUT = "@@auth/SIGN_OUT"
 }
 
 // The name of the authorized user
@@ -28,26 +19,27 @@ export interface IState extends IApiState<IAuthRequest, IAuthUser> { }
 //#endregion
 
 //#region ACTIONS
-import { action } from 'typesafe-actions'
+import { action } from "typesafe-actions";
 
-const signInRequest = () => action(AuthActionTypes.SIGN_IN_REQUEST)
-const postSignInRequest = (request: IAuthRequest) => action(AuthActionTypes.POST_SIGN_IN_REQUEST, request)
-const postSignInSuccess = (data: IAuthUser) => action(AuthActionTypes.POST_SIGN_IN_SUCCESS, data)
-const postSignInError = (message: string) => action(AuthActionTypes.POST_SIGN_IN_ERROR, message)
-const signOutRequest = () => action(AuthActionTypes.SIGN_OUT)
+const signInRequest = () => action(AuthActionTypes.SIGN_IN_REQUEST);
+const postSignInRequest = (request: IAuthRequest) => action(AuthActionTypes.POST_SIGN_IN_REQUEST, request);
+const postSignInSuccess = (data: IAuthUser) => action(AuthActionTypes.POST_SIGN_IN_SUCCESS, data);
+const postSignInError = (message: string) => action(AuthActionTypes.POST_SIGN_IN_ERROR, message);
+const signOutRequest = () => action(AuthActionTypes.SIGN_OUT);
 //#endregion
 
+
+import * as JWT from "jwt-decode";
+import { push } from "react-router-redux";
+import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { redirectToLogin, setAuthToken, clearApplicationData } from "../effects";
+
 //#region REDUCERS
-import { Reducer } from 'redux'
-import { FetchErrorReducer, FetchRequestReducer, FetchSuccessReducer } from '../types'
+import { Reducer, AnyAction } from 'redux'
+import { restApi, IApiResponse, IApi } from '../api';
 
 // Type-safe initialState!
-const initialState: IState = {
-    data: undefined,
-    error: undefined,
-    loading: false,
-    request: undefined
-}
+const initialState: IState = defaultState()
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
 // everything will remain type-safe.
@@ -60,9 +52,9 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
         loading: false,
         request: undefined,
       }  
-    case AuthActionTypes.POST_SIGN_IN_REQUEST: return FetchRequestReducer(state, act)
-    case AuthActionTypes.POST_SIGN_IN_SUCCESS: return FetchSuccessReducer(state, act)
-    case AuthActionTypes.POST_SIGN_IN_ERROR: return FetchErrorReducer(state, act)
+    case AuthActionTypes.POST_SIGN_IN_REQUEST: return TaskStartReducer(state, act)
+    case AuthActionTypes.POST_SIGN_IN_SUCCESS: return {...state, data:act.payload}
+    case AuthActionTypes.POST_SIGN_IN_ERROR: return TaskErrorReducer(state, act)
     case AuthActionTypes.SIGN_OUT:
       return { ...state, 
           data: undefined,
@@ -75,43 +67,44 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 }
 //#endregion
 
-
-
 //#region SAGAS
-import * as JWT from 'jwt-decode'
-import { push } from 'react-router-redux';
-import { all, call, fork, put, select, takeEvery } from 'redux-saga/effects'
-import { callApi, clearAuthToken, handleError, redirectToLogin, setAuthToken } from '../effects'
-
-const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
 function* handleSignIn(){
-  yield call(clearAuthToken)
+  yield call(clearApplicationData)
   yield call(redirectToLogin)
 }
 
-function* handlePostSignIn() {
-  try {
-    const request = (yield select<IApplicationState>((s) => s.auth.request)) as IAuthRequest
-    const response = yield call(callApi, 'get', API_ENDPOINT, `/auth?oauth_code=${request.code}`)
+const handlePostSignInResponse = (resp: IApiResponse<IAuthResult>) => {
+  const authUser = resp.data;
+  if (!authUser || !authUser.access_token) {
+    throw new Error("No access token");
+  } else {
+    return [
+      call(setAuthToken, authUser.access_token),
+      put(postSignInSuccess(JWT<IAuthUser>(authUser.access_token))),
+      put(push(`/units`))
+    ];
+  }
+}
 
-    if (response.errors) {
-      yield call(clearAuthToken)
-      yield put(postSignInError(response.errors))
-    } else {
-      yield call(setAuthToken, response.access_token)
-      const decoded = JWT<IAuthUser>(response.access_token)
-      yield put(postSignInSuccess(decoded))
-      yield put(push(`/units`))
-    }
-  } catch (err) {
-    yield call(clearAuthToken)
-    yield handleError(err, postSignInError)
+const handlePostSignInError = (err: any) => [
+  call(clearApplicationData),
+  put(postSignInError(err))
+];
+
+function* handlePostSignIn(api: IApi, req: IAuthRequest) {
+  const postSignInEffects = yield api
+    .get<IAuthResult>(`/auth?oauth_code=${req.code}`)
+    .then(handlePostSignInResponse)
+    .catch(handlePostSignInError);
+
+  for (let i in postSignInEffects){
+    yield postSignInEffects[i]
   }
 }
 
 function* handleSignOut() {
-  yield call(clearAuthToken)
+  yield call(clearApplicationData)
   yield put(push('/'))
 }
 
@@ -122,7 +115,7 @@ function* watchSignIn() {
 }
 
 function* watchPostSignIn() {
-  yield takeEvery(AuthActionTypes.POST_SIGN_IN_REQUEST, handlePostSignIn)
+  yield takeEvery(AuthActionTypes.POST_SIGN_IN_REQUEST, (a:AnyAction) => handlePostSignIn(restApi(), a.payload))
 }
 
 function* watchSignOut() {
@@ -137,10 +130,10 @@ function* saga() {
 
 
 export {
+    signInRequest,
     postSignInRequest,
     postSignInSuccess,
     postSignInError,
-    signInRequest,
     signOutRequest,
     reducer,
     initialState,
