@@ -31,7 +31,7 @@ class Component extends React.Component<IState & IComponentProps & IDispatchProp
   public render() {
     return (
       <Content>
-        <div className="rvt-p-all-md" style={{ background: "#ffffff" }}>
+        <div data-testid="signin-page" className="rvt-p-all-md" style={{ background: "#ffffff" }}>
           <Loader {...this.props} loadingMessage="Signing in..." />
         </div>
       </Content>

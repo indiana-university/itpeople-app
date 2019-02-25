@@ -14,14 +14,45 @@ import { render } from 'react-testing-library'
 import App from './App'
 import configureStore from './configureStore'
 
-it('renders the home page at /', () => {
-    const history = createMemoryHistory({ initialEntries: ['/'] })
+import {GlobalWithFetchMock} from "jest-fetch-mock"
+ 
+const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock
+customGlobal.fetch = require('jest-fetch-mock')
+customGlobal.fetchMock = customGlobal.fetch
+
+const renderAppOn = (location: string) => {
+    const history = createMemoryHistory({ initialEntries: [location] })
     const store = configureStore(history)
-    const { getByTestId } = render(
+    const utils = render(
         <Provider store={store}>
             <Router history={history}>
                 <App />
             </Router>
         </Provider>)
+    return { ...utils }
+}
+
+it('renders the home page at /', () => {
+    const { getByTestId } = renderAppOn('/')
     expect(getByTestId('home-page')).toBeInTheDocument()
+})
+
+it('renders the signin page at "/signin"', () => {
+    const { getByTestId } = renderAppOn('/signin')
+    expect(getByTestId('signin-page')).toBeInTheDocument()
+})
+
+it('renders a profile page at "/people/:id"', () => {
+    const { getByTestId } = renderAppOn('/people/1')
+    expect(getByTestId("profile-page")).toBeInTheDocument()
+})
+
+it('renders a profile page at "/me"', () => {
+    const { getByTestId } = renderAppOn('/me')
+    expect(getByTestId("profile-page")).toBeInTheDocument()
+})
+
+it('renders a profile page at "/me"', () => {
+    const { getByTestId } = renderAppOn('/me')
+    expect(getByTestId("profile-page")).toBeInTheDocument()
 })
