@@ -6,10 +6,10 @@ import 'jest-dom/extend-expect'
 import 'react-testing-library/cleanup-after-each'
 
 import * as React from 'react'
-import { Router } from 'react-router-dom'
+import { ConnectedRouter  } from 'connected-react-router';
 import { Provider } from 'react-redux'
 import { createMemoryHistory } from 'history'
-import { render } from 'react-testing-library'
+import { render, RenderResult } from 'react-testing-library'
 
 import App from './App'
 import configureStore from './configureStore'
@@ -20,14 +20,15 @@ const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock
 customGlobal.fetch = require('jest-fetch-mock')
 customGlobal.fetchMock = customGlobal.fetch
 
-const renderAppOn = (location: string) => {
+
+  const renderAppOn = (location: string) => {
     const history = createMemoryHistory({ initialEntries: [location] })
     const store = configureStore(history)
-    const utils = render(
+    const utils: RenderResult = render(
         <Provider store={store}>
-            <Router history={history}>
+            <ConnectedRouter history={history}>
                 <App />
-            </Router>
+            </ConnectedRouter>
         </Provider>)
     return { ...utils }
 }
