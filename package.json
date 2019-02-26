@@ -37,7 +37,7 @@
     "@pact-foundation/pact": "^7.0.3",
     "@types/enzyme": "^3.1.13",
     "@types/enzyme-adapter-react-16": "^1.0.3",
-    "@types/jest": "^23.3.1",
+    "@types/jest": "^23.3.14",
     "@types/jwt-decode": "^2.2.1",
     "@types/lowdb": "^1.0.6",
     "@types/node": "^10.9.4",
