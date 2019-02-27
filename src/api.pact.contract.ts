@@ -1,14 +1,24 @@
 /**
-* Copyright (C) 2018 The Trustees of Indiana University
-* SPDX-License-Identifier: BSD-3-Clause
-*/
+ * Copyright (C) 2018 The Trustees of Indiana University
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
 
 import * as path from 'path'
 import { Pact, Matchers, Query } from '@pact-foundation/pact'
 import axios, { AxiosResponse } from 'axios'
 import * as traverse from 'traverse'
 import { apiEndpoints } from './components/effects';
-import { IEntity, ISupportRelationship, ISupportRelationshipRequest, IUnitMember, IUnitMemberRequest, IUnit, IPerson, IUnitMembership } from './components/types'
+import { 
+    IEntity, 
+    ISupportRelationship, 
+    ISupportRelationshipRequest, 
+    IUnitMember, 
+    IUnitMemberRequest, 
+    IUnit, 
+    IPerson, 
+    IUnitMembership } from './components/types'
+// import * as jsonDb from 'src/db.js'
+import * as examples from 'src/db.json'
 
 const deepMatchify = (obj: Object) => traverse(obj).map(
     function (this: traverse.TraverseContext, x: any) {
@@ -166,34 +176,11 @@ const delete_ = (name: string, path: string) =>
  * Reference Objects
  ************************/
 
-const referenceUnit: IUnit = {
-    id: 1,
-    name: "name",
-    description: "description",
-    parentId: undefined,
-    url: "url"
-};
+// const examples = jsonDb()
 
-const referenceDepartment: IEntity = {
-    id: 1,
-    name: "name",
-    description: "description"
-};
-
-const referencePerson: IPerson = {
-    id: 1,
-    name: "name",
-    netId: "netid",
-    campus: "campus",
-    campusEmail: "campus@email.com",
-    campusPhone: "812/856-1234",
-    position: "position",
-    tools: "tool1; tool2",
-    responsibilities: "rep1; rep2",
-    location: "location",
-    expertise: "exp1; exp2",
-    photoUrl: "http://photo.url"
-};
+const referenceUnit: IUnit = examples.units[0]
+const referenceDepartment: IEntity = examples.departments[0]
+const referencePerson: IPerson = examples.people[0]
 
 const referenceUnitMemberRequest: IUnitMemberRequest = {
     id: 1,
@@ -224,18 +211,6 @@ const referenceSupportRelationship: ISupportRelationship = {
     department: referenceDepartment,
     unit: referenceUnit
 };
-const fixtures = {
-    referenceUnit,
-    referenceDepartment,
-    referencePerson,
-    referenceUnitMemberRequest,
-    referenceUnitMember,
-    referenceUnitMembership,
-    referenceSupportRelationshipRequest,
-    referenceSupportRelationship
-}
-
-export default fixtures
 
 /************************
  * Tests

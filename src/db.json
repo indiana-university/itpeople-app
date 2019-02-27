@@ -2,87 +2,67 @@
   "auth": {
     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
   },
-  "people": [
-    {
-      "id": 1,
-      "name": "Ron Swanson",
-      "netId": "rswanso",
-      "position": "Parks and Rec Director",
-      "location": "Municipal Building, Office 123",
-      "campusPhone": "812-856-1234",
-      "campusEmail": "rswanso@iu.edu",
-      "campus": "Bloomington",
-      "tools": [
-        "Claw hammer",
-        "Chisel",
-        "Bureaucracy"
-      ],
-      "expertise": [
-        "Wood-working",
-        "fishing"
-      ],
-      "responsibilities": [
-        "IT Leadership",
-        "Other things"
-      ],
-      "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
-      "departmentId": 1
-    },
-    {
-      "id": 2,
-      "name": "Leslie Knope",
-      "netId": "lknope",
-      "position": "Parks and Rec project manager",
-      "location": "",
-      "campusPhone": "812-856-1234",
-      "campusEmail": "lknope@iu.edu",
-      "campus": "IUBLA",
-      "tools": [
-        "Clip board",
-        "Tenacity"
-      ],
-      "expertise": [
-        "Canvasing"
-      ],
-      "responsibilities": [
-        "IT Leadership"
-      ],
-      "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg",
-      "departmentId": 1
-    },
-    {
-      "id": 4,
-      "name": "Li’l Sebastian",
-      "netId": "lsebastian",
-      "position": "Pageant winner",
-      "location": "Stable #4",
-      "campusPhone": "812-856-1234",
-      "campusEmail": "lsebastian@iu.edu",
-      "campus": "IUBLA",
-      "role": "Manager",
-      "tools": [
-        "Hay",
-        "Shoes"
-      ],
-      "expertise": [
-        "Horsin' around"
-      ],
-      "responsibilities": [
-        "Being a horse"
-      ],
-      "departmentId": 1
-    },
-    {
-      "id": 5,
-      "name": "Jerry Gergich",
-      "netId": "garryg",
-      "position": "Parks and Rec Dude",
-      "location": "Municipal Building, Office 123",
-      "campusPhone": "812-856-1234",
-      "campusEmail": "terry@pawnee.in.us",
-      "campus": "Bloomington"
-    }
-  ],
+  "people": [{
+    "id": 1,
+    "name": "Ron Swanson",
+    "netId": "rswanso",
+    "position": "Parks and Rec Director",
+    "location": "Municipal Building, Office 123",
+    "campusPhone": "812-856-1234",
+    "campusEmail": "rswanso@iu.edu",
+    "campus": "Bloomington",
+    "tools": "Claw hammer",
+    "expertise": "Wood-working",
+    "responsibilities": "IT Leadership",
+    "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
+    "departmentId": 1
+},
+{
+    "id": 2,
+    "name": "Leslie Knope",
+    "netId": "lknope",
+    "position": "Parks and Rec project manager",
+    "location": "",
+    "campusPhone": "812-856-1234",
+    "campusEmail": "lknope@iu.edu",
+    "campus": "IUBLA",
+    "tools": "Clip board",
+    "expertise": "Canvasing",
+    "responsibilities": "IT Leadership",
+    "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg",
+    "departmentId": 1
+},
+{
+    "id": 4,
+    "name": "Li’l Sebastian",
+    "netId": "lsebastian",
+    "position": "Pageant winner",
+    "location": "Stable #4",
+    "campusPhone": "812-856-1234",
+    "campusEmail": "lsebastian@iu.edu",
+    "campus": "IUBLA",
+    "role": "Manager",
+    "tools": "Hay",
+    "expertise": "Horsin' around",
+    "responsibilities": "Being a horse",
+    "departmentId": 1
+},
+{
+    "id": 5,
+    "name": "Jerry Gergich",
+    "netId": "garryg",
+    "position": "Parks and Rec Dude",
+    "location": "Municipal Building, Office 123",
+    "campusPhone": "812-856-1234",
+    "campusEmail": "terry@pawnee.in.us",
+    "campus": "Bloomington",
+    "role": "who cares",
+    "tools": "self-pity",
+    "expertise": "screwing up",
+    "responsibilities": "butt of jokes",
+    "departmentId": 1
+}
+],
   "units": [
     {
       "id": 1,
@@ -94,7 +74,8 @@
     {
       "id": 2,
       "name": "City of Pawnee",
-      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
+      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax.",
+      "url": ""
     },
     {
       "id": 4,
@@ -106,12 +87,14 @@
     {
       "id": 6,
       "name": "Unit name",
-      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
+      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax.",
+      "url": ""
     },
     {
       "id": 7,
       "name": "Unit name",
-      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
+      "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax.",
+      "url": ""
     }
   ],
   "departments": [
