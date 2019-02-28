@@ -130,6 +130,7 @@
       "unitId": 1,
       "personId": 1,
       "percentage": 75,
+      "permissions": "Editor",
       "role": "Leader",
       "title": "Manager"
     },
@@ -138,6 +139,7 @@
       "unitId": 1,
       "personId": 2,
       "percentage": 100,
+      "permissions": "Editor",
       "role": "Member",
       "title": "Developer"
     },
@@ -146,6 +148,7 @@
       "unitId": 1,
       "personId": 4,
       "percentage": 100,
+      "permissions": "Viewer",
       "role": "Related",
       "title": "Outside consultant"
     },
@@ -154,6 +157,7 @@
       "unitId": 4,
       "personId": 1,
       "percentage": 25,
+      "permissions": "Editor",
       "role": "Leader",
       "title": "Manager"
     }
