@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { IApiState, defaultState, IPerson, IUnit, IDepartment } from 'src/components/types'
+import { IApiState, defaultState, IPerson, IUnit, IDepartment, IEntity, IEntityRequest } from 'src/components/types'
 import * as examples from 'src/db.json'
 import { render } from "src/testUtils"
 
@@ -9,15 +9,15 @@ describe('Results by list', () => {
     const examplePerson: IPerson = examples.people[0]
     const exampleUnit: IUnit = examples.units[0]
     const exampleDept: IDepartment = examples.departments[0]
-    const peeps: IApiState<null, IPerson[]> = { ...defaultState(), data: [examplePerson] }
-    const depts: IApiState<null, IDepartment[]> = { ...defaultState(), data: [exampleDept] }
-    const units: IApiState<null, IUnit[]> = { ...defaultState(), data: [exampleUnit] }
+    const peopleResults: IApiState<IEntityRequest, IEntity[]> = { ...defaultState(), data: [examplePerson] }
+    const deptsResults: IApiState<IEntityRequest, IDepartment[]> = { ...defaultState(), data: [exampleDept] }
+    const unitsResults: IApiState<IEntityRequest, IUnit[]> = { ...defaultState(), data: [exampleUnit] }
     const setCurrentList = (list: SearchLists) => { }
   
     test('for people', () => {
         const { getByText } = render(
             <Results
-                people={peeps}
+                people={peopleResults}
                 departments={defaultState()}
                 units={defaultState()}
                 selectedList={SearchLists.People}
@@ -33,7 +33,7 @@ describe('Results by list', () => {
             <Results
                 people={defaultState()}
                 departments={defaultState()}
-                units={units}
+                units={unitsResults}
                 selectedList={SearchLists.Units}
                 setCurrentList={setCurrentList}
             />
@@ -46,7 +46,7 @@ describe('Results by list', () => {
         const { getByText } = render(
             <Results
                 people={defaultState()}
-                departments={depts}
+                departments={deptsResults}
                 units={defaultState()}
                 selectedList={SearchLists.Departments}
                 setCurrentList={setCurrentList}
