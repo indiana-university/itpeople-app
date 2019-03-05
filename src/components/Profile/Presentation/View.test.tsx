@@ -9,7 +9,7 @@ import { initialState, toggleUnit } from "../store";
 import { defaultState, IPerson, IUnitMembership, IUnit } from 'src/components/types'
 import * as examples from 'src/db.json'
 
-const person1: IPerson = examples.people[0]
+const person1: IPerson = { ...examples.people[0] }
 
 test('displays the name of the person', () => {
     const person1State = { ...defaultState(), data: person1 }
@@ -38,9 +38,9 @@ test('shows a loading message while loading person', () => {
 })
 
 test('displays unit name for unit memberships for that person', () => {
-    const p1Unit: IUnit = examples.units[0]
+    const p1Unit: IUnit = {...examples.units[0] }
     const p1Memberships: Array<IUnitMembership> = [{ ...examples.memberships[0], unit: p1Unit }]
- 
+
     const { getByText } = render(
         <View {...initialState}
             toggleUnit={toggleUnit}

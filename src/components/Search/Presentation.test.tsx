@@ -6,14 +6,15 @@ import { render } from "src/testUtils"
 import { Results, SearchLists } from './Results'
 
 describe('Results by list', () => {
-    const examplePerson: IPerson = examples.people[0]
-    const exampleUnit: IUnit = examples.units[0]
-    const exampleDept: IDepartment = examples.departments[0]
+    const examplePerson: IPerson = { ...examples.people[0] }
+    const exampleUnit: IUnit = {...examples.units[0] }
+    const exampleDept: IDepartment = {...examples.departments[0] }
+    
     const peopleResults: IApiState<IEntityRequest, IEntity[]> = { ...defaultState(), data: [examplePerson] }
     const deptsResults: IApiState<IEntityRequest, IDepartment[]> = { ...defaultState(), data: [exampleDept] }
     const unitsResults: IApiState<IEntityRequest, IUnit[]> = { ...defaultState(), data: [exampleUnit] }
     const setCurrentList = (list: SearchLists) => { }
-  
+
     test('for people', () => {
         const { getByText } = render(
             <Results
