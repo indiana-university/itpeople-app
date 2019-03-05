@@ -17,8 +17,7 @@ test('displays the name of the person', () => {
     const { getByText } = render(
         <View {...initialState}
             toggleUnit={toggleUnit}
-            person={person1State} />,
-        { route: '/person/1' }
+            person={person1State} />
     )
 
     expect(getByText(person1.name)).toBeInTheDocument()
@@ -30,8 +29,7 @@ test('shows a loading message while loading person', () => {
     const { getByLabelText } = render(
         <View {...initialState}
             toggleUnit={toggleUnit}
-            person={person1State} />,
-        { route: '/person/1' }
+            person={person1State} />
     )
 
     expect(getByLabelText("Content loading")).toBeInTheDocument()
@@ -45,8 +43,7 @@ test('displays unit name for unit memberships for that person', () => {
         <View {...initialState}
             toggleUnit={toggleUnit}
             person={{ ...defaultState(), data: person1 }}
-            memberships={{ ...defaultState(), data: p1Memberships }} />,
-        { route: '/person/1' }
+            memberships={{ ...defaultState(), data: p1Memberships }} />
     )
 
     expect(getByText(p1Unit.name)).toBeInTheDocument()
