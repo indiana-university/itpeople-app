@@ -28,9 +28,9 @@
       "name": "json-server",
       "program": "${workspaceFolder}/node_modules/.bin/json-server",
       "args": [
-        "--watch", "db.json", 
-        "--routes", "db.routes.json", 
-        "--middlewares", "db.middleware.chaos.js", 
+        "--watch", "json_server/db.json", 
+        "--routes", "json_server/db.routes.json", 
+        "--middlewares", "json_server/db.middleware.chaos.js", 
         "--port", "3001"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
