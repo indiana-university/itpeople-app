@@ -6,7 +6,7 @@
 import * as React from "react";
 import { IDefaultState, IEntity } from "src/components/types";
 import { Loader } from "src/components/Loader";
-import { ChildrenCard } from "..";
+import { ChildrenCard } from ".";
 
 const Children: React.SFC<IDefaultState<IEntity[]>> = props => {
   const { data: units } = props;
