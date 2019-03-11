@@ -6,16 +6,19 @@ import { RivetInputField, RivetInput, RivetTextarea, RivetTextareaField, require
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { IUnit } from "src/components/types";
+import { closeModal } from "../layout/Modal";
 
 interface IDispatchActions {
-  save: (unit: any) => any;
+  save: typeof unit.addUnit;
+  closeModal: typeof closeModal;
 }
 
 interface IFormProps extends IUnit, IDispatchActions, InjectedFormProps<IUnit, IDispatchActions> { }
 
-let AddUnitForm: React.SFC<IFormProps> | any = ({ save, handleSubmit }: IFormProps) => {
+let AddUnitForm: React.SFC<IFormProps> | any = ({ save, closeModal, handleSubmit }: IFormProps) => {
   const doHandle = (values: IUnit) => {
     save(values);
+    closeModal();
   };
 
   return (
@@ -44,7 +47,8 @@ AddUnitForm = reduxForm<IUnit, IDispatchActions>({
 AddUnitForm = connect(
   undefined,
   (dispatch: Dispatch): IDispatchActions => ({
-    save: (newUnit: IUnit) => dispatch(unit.addUnit(newUnit))
+    save: (newUnit: IUnit) => dispatch(unit.addUnit(newUnit)),
+    closeModal: () => dispatch(closeModal())
   })
 )(AddUnitForm);
 

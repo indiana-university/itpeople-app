@@ -13,15 +13,13 @@ import { MemberLists } from ".";
 const Members: React.SFC<IDefaultState<IUnitMember[]>> = props => {
   const { data: members } = props;
   return (
-    <>
-      <Loader {...props}>
-        {members && (
-          <Section>
-            <MemberLists members={members} />
-          </Section>
-        )}
-      </Loader>
-    </>
+    <Loader {...props}>
+      {members && (
+        <Section>
+          <MemberLists members={members} />
+        </Section>
+      )}
+    </Loader>
   );
 };
 

@@ -11,9 +11,7 @@ export const enum UnitsActionTypes {
   UNITS_FETCH_SUCCESS = '@@units/FETCH_SUCCESS',
   UNITS_FETCH_ERROR = '@@units/FETCH_ERROR',
   UNITS_CREATE_REQUEST = "@@units/CREATE_REQUEST",
-  UNITS_CREATE_ERROR = "@@units/CREATE_ERROR",
-  UNITS_DELETE_REQUEST = "@@units/DELETE_REQUEST",
-  UNITS_DELETE_ERROR = "@@units/DELETE_ERROR",
+  UNITS_CREATE_ERROR = "@@units/CREATE_ERROR"
 }
 
 export interface IState extends IApiState<{}, IUnit[]> {
@@ -27,8 +25,6 @@ const fetchUnits = () => action(UnitsActionTypes.UNITS_FETCH_REQUEST);
 const fetchSuccess = (response: IApiResponse<IUnit[]>) => action(UnitsActionTypes.UNITS_FETCH_SUCCESS, response);
 const fetchError = (error: Error) => action(UnitsActionTypes.UNITS_FETCH_ERROR, error);
 const addUnit = (unit: IUnit) => action(UnitsActionTypes.UNITS_CREATE_REQUEST, unit);
-const deleteUnit = (unit: IUnit) => action(UnitsActionTypes.UNITS_DELETE_REQUEST, unit);
-
 
 //#endregion
 
@@ -48,8 +44,6 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitsActionTypes.UNITS_FETCH_ERROR: return TaskErrorReducer(state, act)
     case UnitsActionTypes.UNITS_CREATE_REQUEST: return TaskStartReducer(state, act)
     case UnitsActionTypes.UNITS_CREATE_ERROR: return TaskErrorReducer(state, act)
-    case UnitsActionTypes.UNITS_DELETE_REQUEST: return TaskStartReducer(state, act)
-    case UnitsActionTypes.UNITS_DELETE_ERROR: return TaskErrorReducer(state, act)
     default: return state
   }
 }
@@ -81,16 +75,6 @@ function* handleCreateUnit(api: IApi, unit: IUnit) {
   yield put(action);
 }
 
-const deleteUnitError = (error: Error) => action(UnitsActionTypes.UNITS_DELETE_ERROR, error);
-function* handleDeleteUnit(api: IApi, unit: IUnit) {
-  const request = api.delete(apiEndpoints.units.root(unit.id));
-  const action = yield request
-    .then(_ => fetchUnits())
-    .catch(signinIfUnauthorized)
-    .catch(deleteUnitError);
-  yield put(action);
-}
-
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchFetch() {
@@ -101,13 +85,9 @@ function* watchCreate() {
   yield takeEvery(UnitsActionTypes.UNITS_CREATE_REQUEST, (a:AnyAction) => handleCreateUnit(api, a.payload))
 }
 
-function* watchDelete() {
-  yield takeEvery(UnitsActionTypes.UNITS_DELETE_REQUEST, (a: AnyAction) => handleDeleteUnit(api, a.payload))
-}
-
 // We can also use `fork()` here to split our saga into multiple watchers.
 function* saga() {
-  yield all([fork(watchFetch), fork(watchCreate), fork(watchDelete)])
+  yield all([fork(watchFetch), fork(watchCreate)])
 }
 //#endregion
 
@@ -119,6 +99,5 @@ export {
   reducer,
   initialState,
   addUnit,
-  deleteUnit,
   saga
 }

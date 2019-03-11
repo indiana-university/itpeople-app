@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import { Col, Row, Section, Button } from "rivet-react";
+import { Col, Row, Section, Button, DismissibleAlert } from "rivet-react";
 import { Panel } from "../../Panel";
 import PageTitle from "../../layout/PageTitle";
 import { Breadcrumbs, Content } from "../../layout";
@@ -15,14 +15,23 @@ import UpdateChildrenForm from "../Forms/UpdateChildrenForm";
 import UpdateDepartmentsForm from "../Forms/UpdateDepartmentsForm";
 import { Loader } from "../../Loader";
 import Parent from "./Parent";
+import { TrashCan } from "src/components/icons";
+import { Permissions } from "src/components/types";
 
 interface IProps extends unit.IState {
   cancel: typeof unit.cancel;
   id: number;
+  deleteUnit: typeof unit.deleteUnit
 }
 
-export const Edit: React.SFC<IProps> = ({ profile, members, parent, unitChildren, departments, cancel, id }) => {
+export const Edit: React.SFC<IProps> = ({ profile, members, parent, unitChildren, departments, cancel, deleteUnit, id }) => {
   const pageName = profile && profile.data ? profile.data.name : "...";
+  const handleDelete = () => { 
+    if(profile && profile.data && confirm("You sure?")) {
+      deleteUnit(profile.data) 
+    }
+  };
+
   return (
     <>
       <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, { text: "Units", href: "/units" }, pageName, "Edit"]} />
@@ -76,6 +85,11 @@ export const Edit: React.SFC<IProps> = ({ profile, members, parent, unitChildren
           </Col>
         </Row>
       </Content>
+      {profile.data && Permissions.canDelete(profile.permissions) &&
+        <Content className="rvt-bg-white rvt-p-tb-xxl">
+          <Button variant="danger" onClick={handleDelete}> <span> Delete this unit {" "} <TrashCan /> </span></Button>
+        </Content>
+      }
     </>
   );
 };

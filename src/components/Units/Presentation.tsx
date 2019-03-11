@@ -4,32 +4,19 @@
  */
 
 import * as React from "react";
-import { Col, Row, ModalBody, Button } from "rivet-react";
-import { Permissions, IUnit } from "../types";
+import { Col, Row, ModalBody } from "rivet-react";
+import { Permissions } from "../types";
 import { Breadcrumbs, Content, PageTitle } from "../layout";
 import { IState } from "./store";
-import { Modal, closeModal } from "../layout/Modal";
+import { Modal } from "../layout/Modal";
 import AddUnitForm from "./AddUnitForm";
-import { TrashCan } from "../icons";
 
-interface IProps {
-  state: IState;
-  closeModal: typeof closeModal;
-  deleteUnit: (unit: IUnit) => any
-}
-
-// TODO: Add new unit form - modal?
-// TODO: check permissions
-// TODO: show "Add" button
-// TODO: Add modal
-// TODO: Dispatch to add unit
-
-const Presentation: React.SFC<IProps> = ({ state, closeModal, deleteUnit }) => (
+const Presentation: React.SFC<IState> = ({ permissions, data: units }) => (
   <>
     <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, "Units"]} />
 
     <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
-      {state && Permissions.canPost(state.permissions) && (
+      {Permissions.canPost(permissions) && (
         <Modal
           title="Add new unit"
           id="+ add new unit"
@@ -37,9 +24,7 @@ const Presentation: React.SFC<IProps> = ({ state, closeModal, deleteUnit }) => (
           buttonStyle={{ float: "right" }}
         >
           <ModalBody>
-            <AddUnitForm
-             
-            />
+            <AddUnitForm />
           </ModalBody>
         </Modal>
       )}
@@ -60,15 +45,13 @@ const Presentation: React.SFC<IProps> = ({ state, closeModal, deleteUnit }) => (
 
     <Content className="rvt-bg-white rvt-p-tb-xxl rvt-m-tb-lg">
       <Row style={{ justifyContent: "space-between" }}>
-        {state.data && state.data.map((r, i) => (
+        {units && units.map((r, i) => (
           <Col key={"unit:" + i} md={5} className="rvt-p-bottom-lg">
             <a href={`/units/${r.id}`} className="rvt-link-bold">
               {r.name}
             </a>
             <p className="rvt-m-top-remove">{r.description}</p>
-            {Permissions.canDelete(state.permissions) &&
-              <Button onClick={() => deleteUnit(r)}> <TrashCan /> </Button>
-            }
+
           </Col>
         ))}
       </Row>

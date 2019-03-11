@@ -63,7 +63,9 @@ export const enum UnitActionTypes {
   UNIT_DELETE_DEPARTMENT_REQUEST = "@@unit/DELETE_DEPARTMENT_REQUEST",
   UNIT_DELETE_DEPARTMENT_SUCCESS = "@@unit/DELETE_DEPARTMENT_SUCCESS",
   UNIT_DELETE_DEPARTMENT_ERROR = "@@unit/DELETE_DEPARTMENT_ERROR",
-  UNIT_CANCEL = "@@unit/UNIT_CANCEL"
+  UNIT_CANCEL = "@@unit/UNIT_CANCEL",
+  UNIT_DELETE_REQUEST = "@@unit/DELETE_REQUEST",
+  UNIT_DELETE_ERROR = "@@unit/DELETE_ERROR",
 }
 
 export interface IState {
@@ -83,6 +85,7 @@ const lookupLimit = 15;
 const edit = () => action(UnitActionTypes.UNIT_EDIT, {});
 const cancel = () => action(UnitActionTypes.UNIT_CANCEL, {});
 const fetchUnit = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request);
+const deleteUnit = (unit: IUnit) => action(UnitActionTypes.UNIT_DELETE_REQUEST, unit);
 const saveUnitProfileRequest = (request: IUnit) => action(UnitActionTypes.UNIT_SAVE_PROFILE_REQUEST, request);
 const saveUnitDepartment = (request: ISupportRelationshipRequest) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, request);
 const deleteUnitDepartment = (request: ISupportRelationshipRequest) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, request);
@@ -129,6 +132,8 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_SAVE_PROFILE_REQUEST: return { ...state, profile: TaskStartReducer(state.profile, act) };
     case UnitActionTypes.UNIT_SAVE_PROFILE_SUCCESS: return { ...state, profile: TaskSuccessReducer(state.profile, act) };
     case UnitActionTypes.UNIT_SAVE_PROFILE_ERROR: return { ...state, profile: TaskErrorReducer(state.profile, act) };
+    case UnitActionTypes.UNIT_DELETE_REQUEST: return { ...state, profile: TaskStartReducer(state.profile, act) }
+    case UnitActionTypes.UNIT_DELETE_ERROR: return { ...state, profile: TaskStartReducer(state.profile, act) }
     //
     case UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
     case UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS: return { ...state, members: TaskSuccessReducer(state.members, act) };
@@ -170,6 +175,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 import { all, fork, takeEvery, put } from "redux-saga/effects";
 import { apiEndpoints, signinIfUnauthorized } from "../effects";
 import { IApi, IApiResponse, restApi } from "../api";
+import { push } from "connected-react-router";
 
 function* handleFetchUnit(api: IApi, request: IEntityRequest) {
   yield put(fetchUnitProfile(request));
@@ -264,6 +270,17 @@ function* handleSaveUnit(api: IApi, unit: IUnit) {
     .catch(saveUnitError);
   yield put(action);
 }
+
+const deleteUnitError = (error: Error) => action(UnitActionTypes.UNIT_DELETE_ERROR, error);
+function* handleDeleteUnit(api: IApi, unit: IUnit) {
+  const request = api.delete(apiEndpoints.units.root(unit.id));
+  const action = yield request
+    .then(_ => push(apiEndpoints.units.root()))
+    .catch(signinIfUnauthorized)
+    .catch(deleteUnitError);
+  yield put(action);
+}
+
 const saveMemberError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error);
 function* handleSaveMember(api: IApi, member: IUnitMemberRequest) {
   const request = member.id ? api.put(apiEndpoints.memberships(member.id), member) : api.post(apiEndpoints.memberships(member.id), member);
@@ -354,6 +371,7 @@ function* watchUnitSave() {
 }
 
 function* watchUnitDelete() {
+  yield takeEvery(UnitActionTypes.UNIT_DELETE_REQUEST, (a: AnyAction) => handleDeleteUnit(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, (a: AnyAction) => handleDeleteMember(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, (a: AnyAction) => handleDeleteSupportRelationship(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_DELETE_CHILD_REQUEST, (a: AnyAction) => handleRemoveChild(api, a.payload));
@@ -371,6 +389,7 @@ export {
   edit,
   cancel,
   fetchUnit,
+  deleteUnit,
   saveMemberRequest,
   deleteMemberRequest,
   saveUnitDepartment,
