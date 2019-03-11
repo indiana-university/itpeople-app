@@ -38,7 +38,7 @@ const Presentation: React.SFC<IState & IProps> = props => {
       <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, { text: "Units", href: "/units" }, name]} />
       <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
         <div style={{ display: "flex", justifyContent: "space-between", float: "right" }}>
-          {profile && Permissions.canDelete(profile.permissions) && (
+          {profile && profile.data && Permissions.canDelete(profile.permissions) && (
             <Button onClick={handleDelete} className="rvt-m-right-xs" title={`Delete: ${name}`} variant="danger">
               <TrashCan />
             </Button>
