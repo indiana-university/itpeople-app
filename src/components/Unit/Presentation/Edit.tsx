@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import { Col, Row, Section, Button, DismissibleAlert } from "rivet-react";
+import { Col, Row, Section, Button } from "rivet-react";
 import { Panel } from "../../Panel";
 import PageTitle from "../../layout/PageTitle";
 import { Breadcrumbs, Content } from "../../layout";
