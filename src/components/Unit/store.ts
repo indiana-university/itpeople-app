@@ -133,7 +133,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_SAVE_PROFILE_SUCCESS: return { ...state, profile: TaskSuccessReducer(state.profile, act) };
     case UnitActionTypes.UNIT_SAVE_PROFILE_ERROR: return { ...state, profile: TaskErrorReducer(state.profile, act) };
     case UnitActionTypes.UNIT_DELETE_REQUEST: return { ...state, profile: TaskStartReducer(state.profile, act) }
-    case UnitActionTypes.UNIT_DELETE_ERROR: return { ...state, profile: TaskStartReducer(state.profile, act) }
+    case UnitActionTypes.UNIT_DELETE_ERROR: return { ...state, profile: TaskErrorReducer(state.profile, act) }
     //
     case UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
     case UnitActionTypes.UNIT_FETCH_MEMBERS_SUCCESS: return { ...state, members: TaskSuccessReducer(state.members, act) };
