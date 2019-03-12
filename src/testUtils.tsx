@@ -5,7 +5,7 @@ import { createMemoryHistory } from 'history'
 import { render as rtlRender } from 'react-testing-library'
 import configureStore from 'src/configureStore'
 import { GlobalWithFetchMock } from "jest-fetch-mock"
-import { IApiState, defaultState, IPerson, IUnit, IDepartment, IEntity, IEntityRequest } from 'src/components/types'
+import { IPerson, IUnit, IDepartment } from 'src/components/types'
 import * as examples from 'src/db.json'
 
 // expressive expectation methods for dom queries
