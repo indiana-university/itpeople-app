@@ -94,14 +94,14 @@ const loadState = (): IApplicationState => {
   try {
     const serializedState = localStorage.getItem("state");
     if (serializedState) {
-      console.log("Initializing state from session storage");
+    //   console.log("Initializing state from session storage");
       return JSON.parse(serializedState);
     } else {
-      console.log("Initializing state from defaults");
+    //   console.log("Initializing state from defaults");
       return initialState;
     }
   } catch (err) {
-    console.log("Failed to load state from session storage", err);
+    // console.log("Failed to load state from session storage", err);
     return initialState;
   }
 };
