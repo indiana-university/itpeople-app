@@ -5,6 +5,8 @@ import { createMemoryHistory } from 'history'
 import { render as rtlRender } from 'react-testing-library'
 import configureStore from 'src/configureStore'
 import { GlobalWithFetchMock } from "jest-fetch-mock"
+import { IApiState, defaultState, IPerson, IUnit, IDepartment, IEntity, IEntityRequest } from 'src/components/types'
+import * as examples from 'src/db.json'
 
 // expressive expectation methods for dom queries
 import 'jest-dom/extend-expect'
@@ -26,4 +28,10 @@ export function render(ui: any, options = { route:'' }) {
             </ConnectedRouter>
         </Provider>
     )
+}
+
+export const typedExamples = {
+    examplePerson: { ...examples.people[0] } as IPerson,
+    exampleUnit: {...examples.units[0] } as IUnit,
+    exampleDept: {...examples.departments[0] } as IDepartment
 }
