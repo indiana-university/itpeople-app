@@ -13,7 +13,7 @@ import { Loader } from "../Loader";
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface IDispatchProps {
-  fetchRequest: typeof units.fetchRequest;
+  fetchRequest: typeof units.fetchUnits;
 }
 
 // tslint:disable-next-line:max-classes-per-file
@@ -25,7 +25,7 @@ class Container extends React.Component<units.IState & IDispatchProps> {
   public render() {
     return (
       <Loader {...this.props}>
-        {this.props.data && <Units units={this.props.data} />}
+        {this.props.data && <Units {...this.props} />}
       </Loader>
     );
   }
@@ -40,7 +40,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
-  fetchRequest: () => dispatch(units.fetchRequest())
+  fetchRequest: () => dispatch(units.fetchUnits())
 });
 
 // Now let's connect our component!

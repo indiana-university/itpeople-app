@@ -20,6 +20,7 @@ interface IContainerProps {
 interface IDispatchProps {
   fetchUnit: typeof unit.fetchUnit;
   save: typeof unit.saveUnitProfileRequest;
+  deleteUnit: typeof unit.deleteUnit; //TODO
   edit: typeof unit.edit;
   cancel: typeof unit.cancel;
 }
@@ -31,7 +32,7 @@ interface ICurrentUser {
 // tslint:disable-next-line:max-classes-per-file
 class Container extends React.Component<
   unit.IState & ICurrentUser & IContainerProps & IDispatchProps
-> {
+  > {
   public componentDidMount() {
     const request = this.props.match.params;
     this.props.fetchUnit(request);
@@ -75,8 +76,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
   fetchUnit: request => dispatch(unit.fetchUnit(request)),
   edit: () => dispatch(unit.edit()),
-  save: (updated:IUnit) => dispatch(unit.saveUnitProfileRequest(updated)),
-  cancel: () => dispatch(unit.cancel())
+  save: (u: IUnit) => dispatch(unit.saveUnitProfileRequest(u)),
+  cancel: () => dispatch(unit.cancel()),
+  deleteUnit: (u: IUnit) => dispatch(unit.deleteUnit(u))
 });
 
 // Now let's connect our component!

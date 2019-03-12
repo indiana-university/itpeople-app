@@ -2,7 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "build/dist",
-    "module": "esnext",
+    "module": "commonjs",
+    "resolveJsonModule": true,
     "target": "es5",
     "lib": ["es6", "dom"],
     "sourceMap": true,
@@ -26,8 +27,9 @@
     "acceptance-tests",
     "webpack",
     "jest",
+    "coverage",
+    "json_server",
     "src/setupTests.ts",
-    "jest.config.js",
-    "jest.env.js"
+    "jest.config.js"
   ]
 }

@@ -9,7 +9,7 @@ export const View: React.SFC<IProps> = ({ person, memberships, visuallyExpandedU
   <>
     <Loader {...person}>{person && person.data && <PersonBanner {...person.data} />}</Loader>
     <Content className="rvt-bg-white">
-      <Row className="rvt-p-top-lg">
+      <Row data-testid="profile-page" className="rvt-p-top-lg">
         <Col md={6} className="rvt-p-all-lg">
           <Loader {...person}>{person && person.data && <PersonDetails {...person.data} />}</Loader>
         </Col>
