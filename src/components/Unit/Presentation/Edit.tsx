@@ -15,7 +15,7 @@ import UpdateChildrenForm from "../Forms/UpdateChildrenForm";
 import UpdateDepartmentsForm from "../Forms/UpdateDepartmentsForm";
 import { Loader } from "../../Loader";
 import Parent from "./Parent";
-import { TrashCan } from "src/components/icons";
+import { TrashCan, CloseX } from "src/components/icons";
 import { Permissions } from "src/components/types";
 
 interface IProps extends unit.IState {
@@ -36,8 +36,8 @@ export const Edit: React.SFC<IProps> = ({ profile, members, parent, unitChildren
     <>
       <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, { text: "Units", href: "/units" }, pageName, "Edit"]} />
       <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
-        <Button onClick={cancel} type="button" style={{ float: "right" }} variant="plain">
-          Cancel
+        <Button onClick={cancel} type="button" style={{ float: "right" }} variant="plain" title="Close edit view">
+          <CloseX />
         </Button>
         <PageTitle>Edit</PageTitle>
         <Section>
