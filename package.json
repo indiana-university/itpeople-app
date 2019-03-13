@@ -14,7 +14,7 @@
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^4.0.8",
     "redux": "^4.0.0",
-    "redux-form": "^7.4.2",
+    "redux-form": "^8.1.0",
     "redux-saga": "^0.16.0",
     "rivet-react": "0.7.1",
     "rivet-uits": "^1.2.1",
