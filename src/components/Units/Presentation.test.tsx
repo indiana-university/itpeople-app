@@ -6,13 +6,15 @@ import Presentation from './Presentation'
 
 describe('Units', () => {
     describe('adding unit', () => {
+        const addUnitText = /add new unit/i
+        
         test('admins can', () => {
             const state = { ...defaultState(), permissions: [Permissions.Post] }
             const { getByText } = render(
                 <Presentation
                     {...state} />
             )
-            expect(getByText(/add new unit/i)).toBeInTheDocument()
+            expect(getByText(addUnitText)).toBeInTheDocument()
         })
         test('non-admins cannot', () => {
             const state = { ...defaultState(), permissions: [] }
@@ -20,7 +22,7 @@ describe('Units', () => {
                 <Presentation
                     {...state} />
             )
-            expect(queryByText(/add new unit/i)).not.toBeInTheDocument()
+            expect(queryByText(addUnitText)).not.toBeInTheDocument()
         })
     })
 })
