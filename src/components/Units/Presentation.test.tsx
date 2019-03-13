@@ -1,15 +1,26 @@
 import * as React from 'react'
 import { render } from "src/testUtils"
-import { initialState } from "./store";
+import { defaultState, Permissions } from 'src/components/types'
 
 import Presentation from './Presentation'
 
 describe('Units', () => {
-    test('adding a unit', () => {
-        const { getByText } = render(
-            <Presentation 
-            {...initialState}/>
-        )
-        expect(getByText('blah')).toBeInTheDocument()
+    describe('adding unit', () => {
+        test('admins can', () => {
+            const state = { ...defaultState(), permissions: [Permissions.Post] }
+            const { getByText } = render(
+                <Presentation
+                    {...state} />
+            )
+            expect(getByText('Add new unit')).toBeInTheDocument()
+        })
+        test('non-admins cannot', () => {
+            const state = { ...defaultState(), permissions: [] }
+            const { queryByText } = render(
+                <Presentation
+                    {...state} />
+            )
+            expect(queryByText('Add new unit')).not.toBeInTheDocument()
+        })
     })
 })
