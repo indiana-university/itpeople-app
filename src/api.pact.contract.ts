@@ -178,7 +178,7 @@ const delete_ = (name: string, path: string) =>
 
 // const examples = jsonDb()
 
-const referenceUnit: IUnit = examples.units[0]
+const referenceUnit: IUnit = examples.units[0] as IUnit
 const referenceDepartment: IEntity = examples.departments[0]
 const referencePerson: IPerson = examples.people[0]
 

@@ -38,7 +38,7 @@ test('shows a loading message while loading person', () => {
 })
 
 test('displays unit name for unit memberships for that person', () => {
-    const p1Unit: IUnit = {...examples.units[0] }
+    const p1Unit: IUnit = {...examples.units[0] } as IUnit;
     const p1Memberships: Array<IUnitMembership> = [{ ...examples.memberships[0], unit: p1Unit }]
 
     const { getByText } = render(
