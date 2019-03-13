@@ -12,7 +12,7 @@ describe('Units', () => {
                 <Presentation
                     {...state} />
             )
-            expect(getByText('Add new unit')).toBeInTheDocument()
+            expect(getByText(/add new unit/i)).toBeInTheDocument()
         })
         test('non-admins cannot', () => {
             const state = { ...defaultState(), permissions: [] }
@@ -20,7 +20,7 @@ describe('Units', () => {
                 <Presentation
                     {...state} />
             )
-            expect(queryByText('Add new unit')).not.toBeInTheDocument()
+            expect(queryByText(/add new unit/i)).not.toBeInTheDocument()
         })
     })
 })
