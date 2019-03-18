@@ -5,10 +5,10 @@ import { defaultState, Permissions } from 'src/components/types'
 import Presentation from './Presentation'
 
 describe('Units', () => {
-    describe('adding unit', () => {
+    describe('adding a unit', () => {
         const addUnitText = /add new unit/i
-        
-        test('admins can', () => {
+
+        test('with POST permission can add', () => {
             const state = { ...defaultState(), permissions: [Permissions.Post] }
             const { getByText } = render(
                 <Presentation
@@ -16,7 +16,7 @@ describe('Units', () => {
             )
             expect(getByText(addUnitText)).toBeInTheDocument()
         })
-        test('non-admins cannot', () => {
+        test('without POST permission cannot add', () => {
             const state = { ...defaultState(), permissions: [] }
             const { queryByText } = render(
                 <Presentation
