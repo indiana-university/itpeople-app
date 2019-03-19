@@ -22,15 +22,17 @@ export enum SearchLists {
   Units = "units",
   Departments = "departments"
 }
-
+const hasResults = (response: IDefaultState<any[]>) => {
+  return response.data && response.data.length > 0;
+};
 export const Results: React.SFC<IProps> = ({ departments, setCurrentList, selectedList, units, people }) => {
   const showDepartments = () => setCurrentList(SearchLists.Departments);
   const showUnits = () => setCurrentList(SearchLists.Units);
   const showPeople = () => setCurrentList(SearchLists.People);
-
+  const hasNoResults = !hasResults(people) && !hasResults(units) && !hasResults(departments);
   return (
     <>
-      <div style={{position:"relative"}}>
+      <div style={{ position: "relative" }}>
         <span style={{ position: "absolute", right: 0 }}>
           <Loader
             loading={departments.loading || units.loading || people.loading}
@@ -41,21 +43,21 @@ export const Results: React.SFC<IProps> = ({ departments, setCurrentList, select
       <Row>
         <Col className="rvt-m-bottom-lg search-list-button">
           <ul className="rvt-list rvt-plain-list rvt-inline-list">
-            {people && people.data && people.data.length > 0 && (
+            {hasResults(people) && people.data && (
               <li>
                 <button onClick={showPeople} className={"rvt-button--plain" + (selectedList == SearchLists.People ? " selected" : "")}>
                   People ({people.data.length})
                 </button>
               </li>
             )}
-            {units && units.data && units.data.length > 0 && (
+            {hasResults(units) && units.data && (
               <li>
                 <button onClick={showUnits} className={"rvt-button--plain" + (selectedList == SearchLists.Units ? " selected" : "")}>
                   Units ({units.data.length})
                 </button>
               </li>
             )}
-            {departments && departments.data && departments.data.length > 0 && (
+            {hasResults(departments) && departments.data && (
               <li>
                 <button
                   onClick={showDepartments}
@@ -102,6 +104,12 @@ export const Results: React.SFC<IProps> = ({ departments, setCurrentList, select
                 </li>
               ))}
             </List>
+          </Col>
+        )}
+        
+        {hasNoResults && (
+          <Col>
+            <div>No results found</div>
           </Col>
         )}
       </Row>
