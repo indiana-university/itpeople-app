@@ -1,3 +1,8 @@
+/** 
+ * Copyright (C) 2018 The Trustees of Indiana University
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 import * as React from 'react'
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux'
@@ -18,7 +23,7 @@ const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock
 customGlobal.fetch = require('jest-fetch-mock')
 customGlobal.fetchMock = customGlobal.fetch
 
-export function render(ui: any, options = { route:'' }) {
+export function render(ui: any, options = { route: '' }) {
     const history = createMemoryHistory({ initialEntries: [options.route] })
     const store = configureStore(history)
     return rtlRender(
@@ -32,7 +37,7 @@ export function render(ui: any, options = { route:'' }) {
 
 export const Examples = {
     person: { ...examples.people[0] } as IPerson,
-    unit: {...examples.units[0] } as IUnit,
-    member: {...examples.memberships[0]} as IUnitMember,
-    department: {...examples.departments[0] } as IDepartment
+    unit: { ...examples.units[0] } as IUnit,
+    member: { ...examples.memberships[0] } as IUnitMember,
+    department: { ...examples.departments[0] } as IDepartment
 }

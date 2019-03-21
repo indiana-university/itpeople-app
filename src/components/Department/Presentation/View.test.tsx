@@ -3,22 +3,24 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 import * as React from 'react'
-import { render } from 'src/testUtils'
+import { render, Examples } from 'src/testUtils'
 import { View } from './View'
 import { initialState } from "../store";
-import { defaultState, IDepartment } from 'src/components/types'
-import * as examples from 'src/db.json'
+import { defaultState } from 'src/components/types'
 
-const dept1: IDepartment = examples.people[0]
-
-test('displays the name of the person', () => {
-    const department1State = { ...defaultState(), data: dept1 }
+test('displays the name of the department', () => {
+    const testState = {
+        ...initialState,
+        profile: {
+            ...defaultState(),
+            data: Examples.department
+        }
+    }
 
     const { getByText } = render(
-        <View {...initialState}
-            profile={department1State} />
+        <View {...testState} />
     )
 
-    expect(getByText(dept1.name)).toBeInTheDocument()
+    expect(getByText(Examples.department.name)).toBeInTheDocument()
 })
 

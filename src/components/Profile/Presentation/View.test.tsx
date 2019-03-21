@@ -2,50 +2,66 @@
  * Copyright (C) 2018 The Trustees of Indiana University
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 import * as React from 'react'
-import { render } from 'src/testUtils'
+import { render, Examples } from 'src/testUtils'
 import { View } from './View'
 import { initialState, toggleUnit } from "../store";
-import { defaultState, IPerson, IUnitMembership, IUnit } from 'src/components/types'
-import * as examples from 'src/db.json'
+import { defaultState } from 'src/components/types'
 
-const person1: IPerson = { ...examples.people[0] }
+const testState = {
+    ...initialState,
+    person: {
+        ...defaultState(),
+        data: Examples.person
+    },
+    toggleUnit: toggleUnit
+}
 
 test('displays the name of the person', () => {
-    const person1State = { ...defaultState(), data: person1 }
 
     const { getByText } = render(
-        <View {...initialState}
-            toggleUnit={toggleUnit}
-            person={person1State} />
+        <View {...testState}
+        />
     )
 
-    expect(getByText(person1.name)).toBeInTheDocument()
+    expect(getByText(Examples.person.name)).toBeInTheDocument()
 })
 
-test('shows a loading message while loading person', () => {
-    const person1State = { ...defaultState(), data: person1, loading: true }
+test('shows a loading message while loading', () => {
+    const loadingState = {
+        ...testState,
+        person: {
+            ...testState.person,
+            loading: true
+        }
+    }
 
     const { getByLabelText } = render(
-        <View {...initialState}
-            toggleUnit={toggleUnit}
-            person={person1State} />
+        <View {...loadingState} />
     )
 
-    expect(getByLabelText("Content loading")).toBeInTheDocument()
+    expect(getByLabelText(/content loading/i)).toBeInTheDocument()
 })
 
-test('displays unit name for unit memberships for that person', () => {
-    const p1Unit: IUnit = {...examples.units[0] }
-    const p1Memberships: Array<IUnitMembership> = [{ ...examples.memberships[0], unit: p1Unit }]
+test('displays unit name person is member of', () => {
 
+    const memberState = {
+        ...testState,
+        memberships: {
+            ...defaultState(),
+            data:
+                [{
+                    ...Examples.member,
+                    unit: { ...Examples.unit }
+                }]
+        }
+    }
     const { getByText } = render(
-        <View {...initialState}
-            toggleUnit={toggleUnit}
-            person={{ ...defaultState(), data: person1 }}
-            memberships={{ ...defaultState(), data: p1Memberships }} />
+        <View {...memberState}
+        />
     )
 
-    expect(getByText(p1Unit.name)).toBeInTheDocument()
+    expect(getByText(Examples.unit.name)).toBeInTheDocument()
 })
 

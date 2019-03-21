@@ -1,5 +1,11 @@
+/** 
+ * Copyright (C) 2018 The Trustees of Indiana University
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 import * as React from 'react'
 import { render, Examples } from "src/testUtils"
+import { fireEvent } from "react-testing-library"
 import { defaultState, Permissions } from 'src/components/types'
 
 import { Edit } from './Edit'
@@ -12,6 +18,10 @@ interface IProps extends unit.IState {
     deleteUnit: typeof unit.deleteUnit
 }
 
+// bypass confirmation
+declare let global: any
+global.confirm = jest.fn(() => true)
+
 describe('Unit', () => {
     describe('deleting a unit', () => {
         const deleteUnitText = /delete this unit/i
@@ -19,12 +29,15 @@ describe('Unit', () => {
         const testState: IProps = {
             ...initialState,
             id: Examples.unit.id,
-            profile: { ...defaultState(), data: Examples.unit },
+            profile: {
+                ...defaultState(),
+                data: Examples.unit
+            },
             cancel: unit.cancel,
             deleteUnit: unit.deleteUnit
         }
 
-        test('without permission cannot delete', () => {
+        test('without permission: show no delete ui', () => {
             const state = testState
             const { queryByText } = render(
                 <Edit
@@ -32,7 +45,7 @@ describe('Unit', () => {
             )
             expect(queryByText(deleteUnitText)).not.toBeInTheDocument()
         })
-        test('with permission can delete', () => {
+        test('with permission: can delete with confirm', async () => {
             const state = {
                 ...testState,
                 profile: {
@@ -45,6 +58,8 @@ describe('Unit', () => {
                     {...state} />
             )
             expect(getByText(deleteUnitText)).toBeInTheDocument()
+            fireEvent.click(getByText(deleteUnitText))
+            expect(window.confirm).toBeCalled()
         })
     })
 })
