@@ -12,12 +12,6 @@ import { Edit } from './Edit'
 import * as unit from "../store";
 import { initialState } from 'src/components/Unit';
 
-interface IProps extends unit.IState {
-    cancel: typeof unit.cancel;
-    id: number;
-    deleteUnit: typeof unit.deleteUnit
-}
-
 // bypass confirmation
 declare let global: any
 global.confirm = jest.fn(() => true)
@@ -26,7 +20,7 @@ describe('Unit', () => {
     describe('deleting a unit', () => {
         const deleteUnitText = /delete this unit/i
 
-        const testState: IProps = {
+        const testState = {
             ...initialState,
             id: Examples.unit.id,
             profile: {
