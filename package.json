@@ -31,7 +31,11 @@
     "build": "react-scripts-ts build",
     "test": "jest --env=jsdom --testRegex \"(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$\"",
     "pact": "CI=true jest --env=node --runInBand --testMatch \"**/*.pact.contract.ts\"",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "e2e": "server-test 3000 cy:open",
+    "ci": "server-test 3000 cy:run"
   },
   "devDependencies": {
     "@pact-foundation/pact": "^7.0.3",
@@ -53,6 +57,7 @@
     "@types/redux-saga": "^0.10.5",
     "@types/traverse": "^0.6.32",
     "axios": "^0.18.0",
+    "cypress": "^3.2.0",
     "dom-storage": "^2.1.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
@@ -64,6 +69,7 @@
     "react-testing-library": "4.1.9",
     "redux-devtools-extension": "^2.13.5",
     "redux-saga-test-plan": "^3.7.0",
+    "start-server-and-test": "^1.7.12",
     "traverse": "^0.6.6",
     "typescript": "^3.0.3"
   }
