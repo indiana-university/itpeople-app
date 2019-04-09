@@ -190,7 +190,6 @@ export interface IPerson {
   departmentId?: number;
   department?: IDepartment;
   // vvv none of this matters yet vvv
-  tools: string;
   expertise: string;
   responsibilities: string;
   photoUrl?: string;
@@ -205,4 +204,12 @@ export interface IAuthResult {
 export interface IAuthUser {
   user_name: string,
   user_id: number
+}
+
+export interface ITool extends IEntity {
+  enabled: boolean;
+}
+
+export interface IToolGroup extends IEntity {
+  tools: Array<ITool>;
 }

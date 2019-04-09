@@ -11,7 +11,6 @@
     "campusPhone": "812-856-1234",
     "campusEmail": "rswanso@iu.edu",
     "campus": "Bloomington",
-    "tools": "Claw hammer",
     "expertise": "Wood-working",
     "responsibilities": "IT Leadership",
     "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
@@ -26,7 +25,6 @@
     "campusPhone": "812-856-1234",
     "campusEmail": "lknope@iu.edu",
     "campus": "IUBLA",
-    "tools": "Clip board",
     "expertise": "Canvasing",
     "responsibilities": "IT Leadership",
     "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg",
@@ -41,7 +39,6 @@
     "campusPhone": "812-856-1234",
     "campusEmail": "lsebastian@iu.edu",
     "campus": "IUBLA",
-    "tools": "Hay",
     "expertise": "Horsin' around",
     "responsibilities": "Being a horse",
     "departmentId": 1
@@ -55,7 +52,6 @@
     "campusPhone": "812-856-1234",
     "campusEmail": "terry@pawnee.in.us",
     "campus": "Bloomington",
-    "tools": "self-pity",
     "expertise": "screwing up",
     "responsibilities": "butt of jokes",
     "departmentId": 1
@@ -175,6 +171,77 @@
       "departmentId": 3,
       "unitId": 1,
       "id": 3
+    }
+  ],
+  "toolGroups": [
+    {
+      "id": 1,
+      "name": "Woodworking Tools"
+    },
+    {
+      "id": 2,
+      "name": "Organizing Tools"
+    }
+  ],
+  "tools": [{
+      "id": 1,
+      "toolGroupId": 1,
+      "name": "Hammer"
+    },
+    {
+      "id": 2,
+      "toolGroupId": 1,
+      "name": "Saw"
+    },
+    {
+      "id": 3,
+      "toolGroupId": 1,
+      "name": "Chisel"
+    },
+    { 
+      "id": 4, 
+      "toolGroupId": 2,
+      "name": "Clipboard" },
+    { 
+      "id": 5, 
+      "toolGroupId": 2,
+      "name": "Pen" },
+    { 
+      "id": 6, 
+      "toolGroupId": 2,
+      "name": "Survey" 
+    }
+  ],
+  "memberTools": [
+    {
+      "id": 1,
+      "membershipId": 1,
+      "toolId": 1
+    },
+    {
+      "id": 2,
+      "membershipId": 1,
+      "toolId": 2
+    },
+    {
+      "id": 3,
+      "membershipId": 1,
+      "toolId": 3
+    },
+    {
+      "id": 4,
+      "membershipId": 2,
+      "toolId": 4
+    },
+    {
+      "id": 5,
+      "membershipId": 2,
+      "toolId": 5
+    },
+    {
+      "id": 6,
+      "membershipId": 2,
+      "toolId": 6
     }
   ],
   "search": {

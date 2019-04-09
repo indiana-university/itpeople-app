@@ -5,12 +5,13 @@ import { Modal, closeModal } from "../../layout/Modal";
 import { saveMemberRequest, deleteMemberRequest } from "../store";
 import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest } from "../../types";
 import { connect } from "react-redux";
-import { AddUser, Pencil, TrashCan, Eye } from "src/components/icons";
+import { AddUser, Pencil, TrashCan, Eye, Gear } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
 import { Dispatch } from "redux";
 import AddMemberForm from "./AddMemberForm";
 import UpdateMemberForm from "./UpdateMemberForm";
 import { clearCurrent } from "src/components/lookup";
+import { UpdateMemberTools } from "./UpdateMemberToolsForm";
 
 interface IFormProps extends InjectedFormProps<IFormFields>, IDispatchProps, IFormFields {
   onSubmit: (e?: any) => any;
@@ -31,9 +32,12 @@ interface IDispatchProps {
 }
 
 const form: React.SFC<IFormProps> = props => {
+  // TODO
+  let canEditPermisions = () => true;
+
   const { closeModal, clearCurrent, editMember, addMember, removeMember, save, unitId } = props;
   const renderMembers = ({ fields, input }: any) => {
-    let members = fields.map(function(field: any, index: number) {
+    let members = fields.map(function (field: any, index: number) {
       let member = fields.get(index) as IUnitMember;
       return { ...member, index };
     }) as IUnitMember[];
@@ -51,7 +55,7 @@ const form: React.SFC<IFormProps> = props => {
             </span>
           }
           buttonStyle={{ marginLeft: -14 }}
-          onOpen={() => { addMember(unitId, role); clearCurrent();}} 
+          onOpen={() => { addMember(unitId, role); clearCurrent(); }}
           variant="plain"
         >
           <ModalBody>
@@ -68,7 +72,7 @@ const form: React.SFC<IFormProps> = props => {
         </Modal>
       </div>
     );
-    const renderMember = function(member: IUnitMember) {
+    const renderMember = function (member: IUnitMember) {
       const remove = () => removeMember(member);
       const person = member.person;
       return (
@@ -111,6 +115,21 @@ const form: React.SFC<IFormProps> = props => {
               )}
             </Col>
             <div style={{ textAlign: "right" }}>
+              {canEditPermisions() && (
+                <span style={{ textAlign: "left" }}>
+                  <Modal
+                    id={`Edit tools permissions: ${member.id}`}
+                    buttonText={<Gear />}
+                    variant="plain"
+                    title={`Edit tools permissions: ${person ? person.name : "Vacancy"}`}
+                  >
+                    <ModalBody>
+                      <UpdateMemberTools />
+                    </ModalBody>
+                  </Modal>
+                </span>
+              )}
+
               <span style={{ textAlign: "left" }}>
                 <Modal
                   id={`Edit member: ${member.id}`}
@@ -130,6 +149,7 @@ const form: React.SFC<IFormProps> = props => {
                   </ModalBody>
                 </Modal>
               </span>
+
               <Button variant="plain" type="button" title="Remove member" onClick={remove}>
                 <TrashCan />
               </Button>
