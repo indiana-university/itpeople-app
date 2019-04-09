@@ -7,8 +7,8 @@
     "connected-react-router": "^4.4.1",
     "jwt-decode": "^2.2.0",
     "query-string": "^6.1.0",
-    "react": "^16.5.0",
-    "react-dom": "^16.5.0",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
     "react-helmet": "^5.2.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
@@ -20,13 +20,20 @@
     "rivet-uits": "^1.2.1",
     "typesafe-actions": "^2.0.4"
   },
+  "config":{
+      "dbport": "3001"
+  },
   "scripts": {
-    "json-server": "json-server --watch src/db.json --routes json_server/db.routes.json --port 3001",
-    "dev": "yarn json-server & yarn start && kill 0",
-    "dev-admin": "yarn json-server -- --middlewares ./json_server/db.middleware.admin.js & yarn start && kill 0",
-    "dev-chaos": "yarn json-server -- --middlewares ./json_server/db.middleware.admin.js ./db.middleware.chaos.js & yarn start && kill 0",
-    "dev-user": "yarn json-server -- --middlewares ./json_server/db.middleware.user.js & yarn start && kill 0",
-    "dev-slow": "yarn json-server -- --middlewares ./json_server/db.middleware.user.js ./json_server/db.middleware.slow.js & yarn start && kill 0",
+    "db": "json-server --watch src/db.json --routes json_server/db.routes.json --port $npm_package_config_dbport",
+    "db-admin": "yarn db --middlewares ./json_server/db.middleware.admin.js",
+    "db-chaos": "yarn db --middlewares ./json_server/db.middleware.admin.js ./db.middleware.chaos.js",
+    "db-user": "yarn db --middlewares ./json_server/db.middleware.user.js",
+    "db-slow": "yarn db --middlewares ./json_server/db.middleware.user.js ./json_server/db.middleware.slow.js",
+    "dev": "server-test db $npm_package_config_dbport start",
+    "dev-admin": "server-test db-admin $npm_package_config_dbport start",
+    "dev-chaos": "server-test db-chaos $npm_package_config_dbport start",
+    "dev-user": "server-test db-user $npm_package_config_dbport start",
+    "dev-slow": "server-test db-slow $npm_package_config_dbport start",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "jest --env=jsdom --testRegex \"(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$\"",
@@ -34,10 +41,11 @@
     "eject": "react-scripts-ts eject",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "e2e": "server-test 3000 cy:open",
-    "ci": "server-test 3000 cy:run"
+    "e2e": "server-test dev 3000 cy:open",
+    "ci": "server-test dev 3000 cy:run"
   },
   "devDependencies": {
+    "@cypress/webpack-preprocessor": "^4.0.3",
     "@pact-foundation/pact": "^7.0.3",
     "@types/enzyme": "^3.1.13",
     "@types/enzyme-adapter-react-16": "^1.0.3",

@@ -1,10 +1,11 @@
 {
+    // "extends": "../tsconfig.json",
     "compilerOptions": {
       "strict": true,
-      "baseUrl": "../node_modules",
+      "baseUrl": "../",
       "target": "es5",
       "lib": ["es5", "dom"],
-      "types": ["cypress"]
+      "types": ["cypress", "cypress-testing-library", "node"]
     },
     "include": [
       "**/*.ts"
