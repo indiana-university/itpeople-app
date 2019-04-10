@@ -1,88 +1,61 @@
 import * as React from "react";
-import { List } from "rivet-react";
-import { ITool, IToolGroup } from "src/components/types";
-import { reduxForm } from "redux-form";
+import { IToolGroup, ITool } from "src/components/types";
+import { reduxForm, FieldArray, InjectedFormProps, Field, WrappedFieldArrayProps, WrappedFieldProps } from "redux-form";
+import { List, Button } from "rivet-react";
+import { RivetCheckboxField, RivetCheckbox } from "src/components/form";
 
-const form: React.SFC<any> = props => {
+interface IFormProps extends InjectedFormProps<IForm> { }
+interface IForm {
+  tools: IToolGroup[]
+}
+
+const form: React.SFC<IFormProps> = props => {
 
   return (
     <>
-      {toolGroups.map(group => (
       <form onSubmit={props.handleSubmit}>
-          <h2>{group.name}</h2>
-          <p>{group.description}</p>
-          <List variant="plain" padding={{ left: "lg", bottom: "md" }}>
-            {group.tools.map((tool: ITool) => (
-              <li>
-                {/* TODO: add redux form */}
-                {/* <RivetCheckboxField name={"tool-" + tool.id} value={tool.id} checked={tool.enabled} label={tool.name} /> */}
-
-                {tool.name} 
-              </li>
-            ))}
-          </List>
-        </form>
-      ))}
-    </>);
+        {console.log("TOOL GROUPS PROPS: " + JSON.stringify(props))}
+        <FieldArray name="tools" component={renderTools} />
+        <Button type="button">Update</Button>
+      </form>
+    </>
+  );
 }
 
+const renderTools: any = (props: WrappedFieldArrayProps<IToolGroup>) => {
 
-// let canEditPermisions = () => true;
-let toolGroups: IToolGroup[] = [
-  {
-    id: 0,
-    name: "Box o' tools",
-    tools: [
-      {
-        enabled: true,
-        name: "Wrench",
-        id: 0
-      },
-      {
-        enabled: false,
-        name: "Hammer",
-        id: 0
-      },
-      {
-        enabled: true,
-        name: "Delta 18-900L Laser Drill Press",
-        id: 0
-      },
-      {
-        enabled: true,
-        name: "Delta 46-460 Variable Speed Lathe",
-        id: 0
-      }
-    ]
-  },
-  {
-    id: 0,
-    name: "Other tools",
-    tools: [
-      {
-        enabled: true,
-        name: "Screwdriver",
-        id: 0
-      },
-      {
-        enabled: false,
-        name: "Superpass",
-        id: 0
-      }
-    ]
-  }
-];
+  return (
+    // {/* TODO: add redux form */}
+    // {/* <RivetCheckboxField name={"tool-" + tool.id} value={tool.id} checked={tool.enabled} label={tool.name} /> */}
+    // {/* <Field name={tool} type="checkbox" component={renderTool} /> */}
+    <List variant="plain">
+      {props.fields.map((name: string, index: number) => (
+        <li>
+          <Field name={name} component={renderTool} />
+        </li>
+      ))}
+    </List>
+  );
+}
 
-let UpdateMemberTools: any = reduxForm<IToolGroup[]>({
+const renderTool = ({ input: { value: toolGroup } }: WrappedFieldProps) => (
+  <div>
+    <h3>{toolGroup.name}</h3>
+    <List variant="plain" padding={{left:"md"}}>
+      {toolGroup.tools.map(({ id, name }: ITool, i: number) => {
+        return (
+          <li key={"" + toolGroup.name + i}>
+            <RivetCheckboxField name={"tool"+id}  component={RivetCheckbox} label={name} />
+          </li>
+        )
+      })}
+    </List>
+  </div>
+)
+
+let UpdateMemberTools: any = reduxForm<IForm>({
   form: "updateMemberTools",
   enableReinitialize: true
 })(form);
-
-// let selector = formValueSelector("updateMemberForm");
-// UpdateMemberTools = connect()(UpdateMemberTools);
-
-// Question: should this trigger an API call to fetch latest tools
-// TODO: Get master list of tools - from redux store? Unit store?
-// TODO: Get this user's enabled tools - List of IDs appended to Membership record or separate endpoint?
 
 export { UpdateMemberTools };

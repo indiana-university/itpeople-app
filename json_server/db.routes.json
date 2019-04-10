@@ -10,5 +10,6 @@
   "/departments/:id/members": "/people?departmentId=:id",
   "/departments/:id/memberUnits": "/units?id=1&id=2&id=4",
   "/departments/:id/supportingUnits": "/supportRelationships?departmentId=:id&_expand=unit",
-  "/memberships/:id/tools": "/memberTools?membershipId=:id"
+  "/memberships/:id/tools": "/memberTools?membershipId=:id",
+  "/toolGroups": "/toolGroups?_embed=tools"
 }

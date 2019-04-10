@@ -13,7 +13,8 @@ import {
   ISupportRelationship,
   IUnitMemberRequest,
   ISupportRelationshipRequest,
-  defaultState
+  defaultState,
+  IToolGroup
 } from "../types";
 import { lookup } from "../lookup";
 
@@ -26,6 +27,9 @@ export const enum UnitActionTypes {
   UNIT_FETCH_MEMBERS_REQUEST = "@@unit/FETCH_MEMBERS_REQUEST",
   UNIT_FETCH_MEMBERS_SUCCESS = "@@unit/FETCH_MEMBERS_SUCCESS",
   UNIT_FETCH_MEMBERS_ERROR = "@@unit/FETCH_MEMBERS_ERROR",
+  // UNIT_FETCH_MEMBER_TOOLS_REQUEST = "@@unit/FETCH_MEMBER_TOOLS_REQUEST",
+  // UNIT_FETCH_MEMBER_TOOLS_SUCCESS = "@@unit/FETCH_MEMBER_TOOLS_SUCCESS",
+  // UNIT_FETCH_MEMBER_TOOLS_ERROR = "@@unit/FETCH_MEMBER_TOOLS_ERROR",
   UNIT_FETCH_CHILDREN_REQUEST = "@@unit/FETCH_CHILDREN_REQUEST",
   UNIT_FETCH_CHILDREN_SUCCESS = "@@unit/FETCH_CHILDREN_SUCCESS",
   UNIT_FETCH_CHILDREN_ERROR = "@@unit/FETCH_CHILDREN_ERROR",
@@ -35,6 +39,9 @@ export const enum UnitActionTypes {
   UNIT_FETCH_DEPARTMENTS_REQUEST = "@@unit/FETCH_DEPARTMENTS_REQUEST",
   UNIT_FETCH_DEPARTMENTS_SUCCESS = "@@unit/FETCH_DEPARTMENTS_SUCCESS",
   UNIT_FETCH_DEPARTMENTS_ERROR = "@@unit/FETCH_DEPARTMENTS_ERROR",
+  UNIT_FETCH_TOOL_GROUPS_REQUEST = "@@unit/FETCH_TOOL_GROUPS_REQUEST",
+  UNIT_FETCH_TOOL_GROUPS_SUCCESS = "@@unit/FETCH_TOOL_GROUPS_SUCCESS",
+  UNIT_FETCH_TOOL_GROUPS_ERROR = "@@unit/FETCH_TOOL_GROUPS_ERROR",
   UNIT_EDIT = "@@unit/UNIT_EDIT",
   UNIT_SAVE_PROFILE_REQUEST = "@@unit/SAVE_PROFILE_REQUEST",
   UNIT_SAVE_PROFILE_SUCCESS = "@@unit/SAVE_PROFILE_SUCCESS",
@@ -45,6 +52,12 @@ export const enum UnitActionTypes {
   UNIT_DELETE_MEMBER_REQUEST = "@@unit/UNIT_DELETE_MEMBER_REQUEST",
   UNIT_DELETE_MEMBER_SUCCESS = "@@unit/UNIT_DELETE_MEMBER_SUCCESS",
   UNIT_DELETE_MEMBER_ERROR = "@@unit/UNIT_DELETE_MEMBER_ERROR",
+  // UNIT_SAVE_MEMBER_TOOLS_REQUEST = "@@unit/SAVE_MEMBER_TOOLS_REQUEST",
+  // UNIT_SAVE_MEMBER_TOOLS_SUCCESS = "@@unit/SAVE_MEMBER_TOOLS_SUCCESS",
+  // UNIT_SAVE_MEMBER_TOOLS_ERROR = "@@unit/SAVE_MEMBER_TOOLS_ERROR",
+  // UNIT_DELETE_MEMBER_TOOLS_REQUEST = "@@unit/UNIT_DELETE_MEMBER_TOOLS_REQUEST",
+  // UNIT_DELETE_MEMBER_TOOLS_SUCCESS = "@@unit/UNIT_DELETE_MEMBER_TOOLS_SUCCESS",
+  // UNIT_DELETE_MEMBER_TOOLS_ERROR = "@@unit/UNIT_DELETE_MEMBER_TOOLS_ERROR",
   UNIT_SAVE_CHILD_REQUEST = "@@unit/SAVE_CHILD_REQUEST",
   UNIT_SAVE_CHILD_SUCCESS = "@@unit/SAVE_CHILD_SUCCESS",
   UNIT_SAVE_CHILD_ERROR = "@@unit/SAVE_CHILD_ERROR",
@@ -65,12 +78,13 @@ export const enum UnitActionTypes {
   UNIT_DELETE_DEPARTMENT_ERROR = "@@unit/DELETE_DEPARTMENT_ERROR",
   UNIT_CANCEL = "@@unit/UNIT_CANCEL",
   UNIT_DELETE_REQUEST = "@@unit/DELETE_REQUEST",
-  UNIT_DELETE_ERROR = "@@unit/DELETE_ERROR",
+  UNIT_DELETE_ERROR = "@@unit/DELETE_ERROR"
 }
 
 export interface IState {
   profile: IApiState<IEntityRequest, IUnit>;
   members: IApiState<IEntityRequest, IUnitMember[]>;
+  toolGroups: IApiState<IEntityRequest, IToolGroup[]>;
   unitChildren: IApiState<IEntityRequest, IEntity[]>; // children conflicts with react props 😟
   parent: IApiState<IEntityRequest, IEntity>;
   departments: IApiState<IEntityRequest, ISupportRelationship[]>;
@@ -108,6 +122,7 @@ import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from "../types
 const initialState: IState = {
   profile: defaultState(),
   members: defaultState(),
+  toolGroups: defaultState(),
   unitChildren: defaultState(),
   parent: defaultState(),
   departments: defaultState(),
@@ -142,6 +157,17 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_SAVE_MEMBER_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
     case UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
     case UnitActionTypes.UNIT_DELETE_MEMBER_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
+    //
+    case UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_REQUEST: return { ...state, toolGroups: TaskStartReducer(state.toolGroups, act) };
+    case UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_SUCCESS: return { ...state, toolGroups: TaskSuccessReducer(state.toolGroups, act) };
+    case UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_ERROR: return { ...state, toolGroups: TaskErrorReducer(state.toolGroups, act) };
+    // case UnitActionTypes.UNIT_FETCH_MEMBER_TOOLS_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
+    // case UnitActionTypes.UNIT_FETCH_MEMBER_TOOLS_SUCCESS: return { ...state, members: TaskSuccessReducer(state.members, act) };
+    // case UnitActionTypes.UNIT_FETCH_MEMBER_TOOLS_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
+    // case UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
+    // case UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
+    // case UnitActionTypes.UNIT_DELETE_MEMBER_TOOLS_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
+    // case UnitActionTypes.UNIT_DELETE_MEMBER_TOOLS_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
     //
     case UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST: return { ...state, unitChildren: TaskStartReducer(state.unitChildren, act) };
     case UnitActionTypes.UNIT_FETCH_CHILDREN_SUCCESS: return { ...state, unitChildren: TaskSuccessReducer(state.unitChildren, act) };
@@ -182,6 +208,9 @@ function* handleFetchUnit(api: IApi, request: IEntityRequest) {
   yield put(fetchUnitMembers(request));
   yield put(fetchUnitChildren(request));
   yield put(fetchUnitSupportedDepartments(request));
+  yield put(fetchUnitToolGroups(request));
+
+  // TODO: fetch master tool list
 }
 function* handleFetchProfileSuccess(api: IApi, request: IEntityRequest) {
   yield put(fetchUnitParentRequest(request));
@@ -251,6 +280,18 @@ function* handleFetchUnitParent(api: IApi, unit?: IUnit) {
   } else {
     yield put(fetchUnitParentSuccess({ data: undefined, url: "", permissions: [] }));
   }
+}
+
+const fetchUnitToolGroups = (response: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_REQUEST, response);
+const fetchUnitToolGroupsSuccess = (response: IApiResponse<IToolGroup[]>) => action(UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_SUCCESS, response);
+const fetchUnitToolGroupsError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_ERROR, error);
+function* handleFetchUnitToolGroups(api: IApi, request:IEntityRequest) {
+  const action = yield api
+    .get<IToolGroup[]>(apiEndpoints.toolGroups())
+    .then(fetchUnitToolGroupsSuccess)
+    .catch(signinIfUnauthorized)
+    .catch(fetchUnitToolGroupsError);
+  yield put(action);
 }
 
 /* 
@@ -356,6 +397,7 @@ function* watchUnitFetch() {
   yield takeEvery(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, (a: AnyAction) => handleFetchUnitMembers(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, (a: AnyAction) => handleFetchUnitDepartments(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, (a: AnyAction) => handleFetchUnitChildren(api, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_REQUEST, (a: AnyAction) => handleFetchUnitToolGroups(api, a.payload));
   // The unit parent is defined by a parentId on the unit record, so we must await the unit record fetch.
   yield takeEvery(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, (a: AnyAction) => handleFetchUnitParent(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_PROFILE_SUCCESS, (a: AnyAction) => handleFetchProfileSuccess(api, a.payload.data));

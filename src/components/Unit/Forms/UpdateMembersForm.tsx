@@ -3,7 +3,7 @@ import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, cha
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
 import { saveMemberRequest, deleteMemberRequest } from "../store";
-import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest } from "../../types";
+import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest, IToolGroup } from "../../types";
 import { connect } from "react-redux";
 import { AddUser, Pencil, TrashCan, Eye, Gear } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
@@ -28,6 +28,7 @@ interface IDispatchProps {
   removeMember: typeof deleteMemberRequest;
   save: typeof saveMemberRequest;
   editMember(member: any): any;
+  editMemberTools(x?: any): any;
   addMember(unitId: number, role?: UitsRole): any;
 }
 
@@ -35,7 +36,7 @@ const form: React.SFC<IFormProps> = props => {
   // TODO
   let canEditPermisions = () => true;
 
-  const { closeModal, clearCurrent, editMember, addMember, removeMember, save, unitId } = props;
+  const { closeModal, clearCurrent, editMember, addMember, removeMember, save, editMemberTools, unitId } = props;
   const renderMembers = ({ fields, input }: any) => {
     let members = fields.map(function (field: any, index: number) {
       let member = fields.get(index) as IUnitMember;
@@ -122,6 +123,7 @@ const form: React.SFC<IFormProps> = props => {
                     buttonText={<Gear />}
                     variant="plain"
                     title={`Edit tools permissions: ${person ? person.name : "Vacancy"}`}
+                    onOpen={editMemberTools}
                   >
                     <ModalBody>
                       <UpdateMemberTools />
@@ -224,6 +226,12 @@ UpdateMembersForm = connect(
         for (const key in member) {
           dispatch(change("updateMemberForm", key, member[key]));
         }
+      },
+      editMemberTools: (
+        tools: IToolGroup[] = [{ id: 1, name: "Group 1", tools: [{ id: 1, name: "test tool 1" }, { id: 2, name: "test tool 2" }] },{ id: 1, name: "Group 2", tools: [{ id: 3, name: "test tool 3" }, { id: 4, name: "test tool 4" }] }]
+      ) => {
+        // TODO: get member's tool permissions /membership/:id/tools
+        dispatch(change("updateMemberTools", "tools", tools));
       },
       addMember: (unitId: number, role?: UitsRole) => {
         dispatch(change("addMemberForm", "unitId", unitId));

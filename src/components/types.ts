@@ -207,7 +207,6 @@ export interface IAuthUser {
 }
 
 export interface ITool extends IEntity {
-  enabled: boolean;
 }
 
 export interface IToolGroup extends IEntity {
