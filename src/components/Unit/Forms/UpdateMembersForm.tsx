@@ -3,7 +3,7 @@ import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, cha
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
 import { saveMemberRequest, deleteMemberRequest } from "../store";
-import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest, IToolGroup } from "../../types";
+import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest, IToolGroup, ITool, IApiState } from "../../types";
 import { connect } from "react-redux";
 import { AddUser, Pencil, TrashCan, Eye, Gear } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
@@ -12,6 +12,8 @@ import AddMemberForm from "./AddMemberForm";
 import UpdateMemberForm from "./UpdateMemberForm";
 import { clearCurrent } from "src/components/lookup";
 import { UpdateMemberTools } from "./UpdateMemberToolsForm";
+import { restApi, IApiResponse } from "src/components/api";
+import { Loader } from "src/components/Loader";
 
 interface IFormProps extends InjectedFormProps<IFormFields>, IDispatchProps, IFormFields {
   onSubmit: (e?: any) => any;
@@ -28,15 +30,16 @@ interface IDispatchProps {
   removeMember: typeof deleteMemberRequest;
   save: typeof saveMemberRequest;
   editMember(member: any): any;
-  editMemberTools(x?: any): any;
+  editMemberTools(id: any, toolGroups: IToolGroup[]): any;
   addMember(unitId: number, role?: UitsRole): any;
+  toolGroups: IApiState<any, IToolGroup[]>
 }
 
 const form: React.SFC<IFormProps> = props => {
   // TODO
   let canEditPermisions = () => true;
 
-  const { closeModal, clearCurrent, editMember, addMember, removeMember, save, editMemberTools, unitId } = props;
+  const { closeModal, clearCurrent, editMember, addMember, removeMember, save, editMemberTools, unitId, toolGroups } = props;
   const renderMembers = ({ fields, input }: any) => {
     let members = fields.map(function (field: any, index: number) {
       let member = fields.get(index) as IUnitMember;
@@ -116,20 +119,25 @@ const form: React.SFC<IFormProps> = props => {
               )}
             </Col>
             <div style={{ textAlign: "right" }}>
-              {canEditPermisions() && (
-                <span style={{ textAlign: "left" }}>
-                  <Modal
-                    id={`Edit tools permissions: ${member.id}`}
-                    buttonText={<Gear />}
-                    variant="plain"
-                    title={`Edit tools permissions: ${person ? person.name : "Vacancy"}`}
-                    onOpen={editMemberTools}
-                  >
-                    <ModalBody>
-                      <UpdateMemberTools />
-                    </ModalBody>
-                  </Modal>
-                </span>
+              {canEditPermisions() && toolGroups && toolGroups.data && (
+                <Loader {...toolGroups}>
+                  <span style={{ textAlign: "left" }}>
+                    <Modal
+                      id={`Edit tools permissions: ${member.id}`}
+                      buttonText={<Gear />}
+                      variant="plain"
+                      title={`Edit tools permissions: ${person ? person.name : "Vacancy"}`}
+                      onOpen={() => { editMemberTools(member.id, toolGroups.data || []) }}
+                    >
+                      <ModalBody>
+                        <UpdateMemberTools onSubmit={(x: any) => {
+                          console.log("***tool update", x);
+                          // TODO: send to action that updates the permissions
+                        }} />
+                      </ModalBody>
+                    </Modal>
+                  </span>
+                </Loader>
               )}
 
               <span style={{ textAlign: "left" }}>
@@ -205,16 +213,17 @@ const form: React.SFC<IFormProps> = props => {
   );
 };
 
+let api = restApi();
+let selector = formValueSelector("updateMembersForm");
 let UpdateMembersForm: any = reduxForm<IFormFields>({
   form: "updateMembersForm"
 })(form);
-
-let selector = formValueSelector("updateMembersForm");
 UpdateMembersForm = connect(
   (state: IApplicationState) => ({
     title: selector(state, "title"),
     role: selector(state, "role"),
-    unitId: selector(state, "unitId")
+    unitId: selector(state, "unitId"),
+    toolGroups: state.unit.toolGroups
   }),
   (dispatch: Dispatch) => {
     return {
@@ -227,11 +236,23 @@ UpdateMembersForm = connect(
           dispatch(change("updateMemberForm", key, member[key]));
         }
       },
-      editMemberTools: (
-        tools: IToolGroup[] = [{ id: 1, name: "Group 1", tools: [{ id: 1, name: "test tool 1" }, { id: 2, name: "test tool 2" }] },{ id: 1, name: "Group 2", tools: [{ id: 3, name: "test tool 3" }, { id: 4, name: "test tool 4" }] }]
-      ) => {
+      editMemberTools: (id: string, toolGroups: IToolGroup[] = []) => {
         // TODO: get member's tool permissions /membership/:id/tools
-        dispatch(change("updateMemberTools", "tools", tools));
+        dispatch(change("updateMemberTools", "toolGroups", []));
+        dispatch(change("updateMemberTools", "error", undefined));
+
+        api.get(`/memberships/${id}/tools`)
+          .then((response: IApiResponse<ITool[]>) => {
+            const memberTools = response.data || [];
+            const mappedGroups = toolGroups.map((group) => {
+              const mappedGroup = { ...group, tools: [...group.tools.map((tool) => { return { ...tool, enabled: memberTools.some(t => t.id == tool.id) }; })] };
+              return mappedGroup;
+            });
+            dispatch(change("updateMemberTools", "toolGroups", mappedGroups));
+            dispatch(change("updateMemberTools", "loaded", true));
+          }).catch((ex) => {
+            dispatch(change("updateMemberTools", "error", ex));
+          })
       },
       addMember: (unitId: number, role?: UitsRole) => {
         dispatch(change("addMemberForm", "unitId", unitId));

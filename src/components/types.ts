@@ -41,10 +41,10 @@ export enum Permissions {
 }
 export namespace Permissions {
   export const canGet = (permissions: Permissions[]) => permissions.indexOf(Permissions.Get) > -1;
-  export const canPost = (permissions: Permissions[]) =>  permissions.indexOf(Permissions.Post) > -1;
+  export const canPost = (permissions: Permissions[]) => permissions.indexOf(Permissions.Post) > -1;
   export const canPut = (permissions: Permissions[]) => permissions.indexOf(Permissions.Put) > -1;
   export const canDelete = (permissions: Permissions[]) => permissions.indexOf(Permissions.Delete) > -1;
-  export const parse = (s:string) => s as Permissions;
+  export const parse = (s: string) => s as Permissions;
 }
 
 // action = {type; payload: IApiResponse}
@@ -68,7 +68,7 @@ export const defaultState = () => {
     error: undefined,
     loading: false,
     request: undefined
-  }
+  };
 };
 
 import { AnyAction } from "redux";
@@ -85,7 +85,7 @@ export const TaskSuccessReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, act
   ...state,
   // TODO: set payload type to IApiRepsonse or handle other payload types
   permissions: action.payload.permissions,
-  data: action.payload.data, 
+  data: action.payload.data,
   error: undefined,
   loading: false,
   request: undefined
@@ -98,7 +98,6 @@ export const TaskErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, actio
   loading: false,
   request: undefined
 });
-
 
 export interface IEntityRequest {
   id: number;
@@ -125,8 +124,7 @@ export interface IUnit extends IEntity, IUrl {
   parentId?: number;
 }
 
-export interface IDepartment extends IEntity {
-}
+export interface IDepartment extends IEntity {}
 
 export enum ItProRole {
   Admin = "Admin",
@@ -175,7 +173,7 @@ export interface ISupportRelationshipRequest {
 
 export interface ISupportRelationship extends ISupportRelationshipRequest {
   unit: IUnit;
-  department: IDepartment
+  department: IDepartment;
 }
 
 export interface IPerson {
@@ -196,17 +194,18 @@ export interface IPerson {
 }
 
 export interface IAuthRequest {
-  code: string
+  code: string;
 }
 export interface IAuthResult {
-  access_token: string
+  access_token: string;
 }
 export interface IAuthUser {
-  user_name: string,
-  user_id: number
+  user_name: string;
+  user_id: number;
 }
 
 export interface ITool extends IEntity {
+  enabled?: boolean;
 }
 
 export interface IToolGroup extends IEntity {
