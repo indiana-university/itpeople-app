@@ -186,7 +186,9 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     // case UnitActionTypes.UNIT_FETCH_MEMBER_TOOLS_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
     // case UnitActionTypes.UNIT_FETCH_MEMBER_TOOLS_SUCCESS: return { ...state, members: TaskSuccessReducer(state.members, act) };
     // case UnitActionTypes.UNIT_FETCH_MEMBER_TOOLS_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
-    // case UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
+    case UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_REQUEST: 
+      console.log("TODO: save member's tools",act)
+      return { ...state };
     // case UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
     // case UnitActionTypes.UNIT_DELETE_MEMBER_TOOLS_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
     // case UnitActionTypes.UNIT_DELETE_MEMBER_TOOLS_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
