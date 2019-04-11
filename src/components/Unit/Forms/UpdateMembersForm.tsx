@@ -130,9 +130,12 @@ const form: React.SFC<IFormProps> = props => {
                       onOpen={() => { editMemberTools(member.id, toolGroups.data || []) }}
                     >
                       <ModalBody>
-                        <UpdateMemberTools onSubmit={(x: any) => {
-                          console.log("***tool update", x);
+                        <UpdateMemberTools onSubmit={({ toolGroups }: { toolGroups: IToolGroup[] }) => {
+                          const toolIds: any[] = [];
+                          toolGroups.forEach(g => g.tools.forEach(t => (t.enabled) && toolIds.push(t.id)));
+                          console.log("***tool Ids", toolIds);
                           // TODO: send to action that updates the permissions
+                          closeModal();
                         }} />
                       </ModalBody>
                     </Modal>
