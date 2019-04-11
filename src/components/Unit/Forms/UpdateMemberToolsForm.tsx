@@ -10,14 +10,12 @@ interface IForm {
   loading?: boolean
 }
 
-const form: React.SFC<IFormProps> = props => (
-  <>
-    <form onSubmit={props.handleSubmit}>
-      <FieldArray name="toolGroups" component={renderGroups} />
-      <Field name="loaded" component={renderSubmitButton} />
-    </form>
-  </>
-)
+const form: React.SFC<IFormProps> = props => (<>
+  <form onSubmit={props.handleSubmit}>
+    <FieldArray name="toolGroups" component={renderGroups} />
+    <Field name="loaded" component={renderSubmitButton} />
+  </form>
+</>)
 
 const renderSubmitButton: any = ({ input: { value: loaded } }: WrappedFieldProps) => (<>
   {loaded ? <Button type="submit">Update</Button> : <>Loading...</>}
@@ -31,29 +29,22 @@ const renderGroups: any = (props: WrappedFieldArrayProps<IToolGroup>) => (<>
       </li>
     ))}
   </List>
-</>
-)
+</>)
 
-const renderGroup = (fieldProps: WrappedFieldProps) => (
-  <div>
-    <h3>{fieldProps.input.value.name}</h3>
-    <FieldArray name={fieldProps.input.name + "tools"} component={renderTools} />
-  </div>
-)
+const renderGroup = (fieldProps: WrappedFieldProps) => (<div>
+  <h3>{fieldProps.input.value.name}</h3>
+  <FieldArray name={fieldProps.input.name + "tools"} component={renderTools} />
+</div>)
 
-const renderTools: any = (props: WrappedFieldArrayProps<ITool>) => (
-  <List variant="plain" padding={{ left: "md" }}>
-    {props.fields.map((name, i: number) => (
-      <li key={name + i}>
-        <Field name={name} component={renderTool} />
-      </li>
-    ))}
-  </List>
-)
+const renderTools: any = (props: WrappedFieldArrayProps<ITool>) => (<List variant="plain" padding={{ left: "md" }}>
+  {props.fields.map((name, i: number) => (
+    <li key={name + i}>
+      <Field name={name} component={renderTool} />
+    </li>
+  ))}
+</List>)
 
-const renderTool = ({ input: { name, value: { name: toolName } } }: WrappedFieldProps) => (
-  <RivetCheckboxField name={name + "enabled"} component={RivetCheckbox} label={toolName} />
-)
+const renderTool = ({ input: { name, value: { name: toolName } } }: WrappedFieldProps) => (<RivetCheckboxField name={name + "enabled"} component={RivetCheckbox} label={toolName} />)
 
 let UpdateMemberTools: any = reduxForm<IForm>({
   form: "updateMemberTools",

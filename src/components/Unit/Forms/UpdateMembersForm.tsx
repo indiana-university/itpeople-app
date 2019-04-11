@@ -2,7 +2,7 @@ import * as React from "react";
 import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, change } from "redux-form";
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
-import { saveMemberRequest, deleteMemberRequest } from "../store";
+import { saveMemberRequest, deleteMemberRequest, saveMemberTools } from "../store";
 import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest, IToolGroup, ITool, IApiState } from "../../types";
 import { connect } from "react-redux";
 import { AddUser, Pencil, TrashCan, Eye, Gear } from "src/components/icons";
@@ -31,6 +31,7 @@ interface IDispatchProps {
   save: typeof saveMemberRequest;
   editMember(member: any): any;
   editMemberTools(id: any, toolGroups: IToolGroup[]): any;
+  saveMemberTools: typeof saveMemberTools;
   addMember(unitId: number, role?: UitsRole): any;
   toolGroups: IApiState<any, IToolGroup[]>
 }
@@ -39,7 +40,7 @@ const form: React.SFC<IFormProps> = props => {
   // TODO
   let canEditPermisions = () => true;
 
-  const { closeModal, clearCurrent, editMember, addMember, removeMember, save, editMemberTools, unitId, toolGroups } = props;
+  const { closeModal, clearCurrent, editMember, addMember, removeMember, save, editMemberTools, saveMemberTools, unitId, toolGroups } = props;
   const renderMembers = ({ fields, input }: any) => {
     let members = fields.map(function (field: any, index: number) {
       let member = fields.get(index) as IUnitMember;
@@ -133,8 +134,7 @@ const form: React.SFC<IFormProps> = props => {
                         <UpdateMemberTools onSubmit={({ toolGroups }: { toolGroups: IToolGroup[] }) => {
                           const toolIds: any[] = [];
                           toolGroups.forEach(g => g.tools.forEach(t => (t.enabled) && toolIds.push(t.id)));
-                          console.log("***tool Ids", toolIds);
-                          // TODO: send to action that updates the permissions
+                          saveMemberTools(member.id || -1, toolIds);
                           closeModal();
                         }} />
                       </ModalBody>
@@ -240,10 +240,8 @@ UpdateMembersForm = connect(
         }
       },
       editMemberTools: (id: string, toolGroups: IToolGroup[] = []) => {
-        // TODO: get member's tool permissions /membership/:id/tools
         dispatch(change("updateMemberTools", "toolGroups", []));
         dispatch(change("updateMemberTools", "error", undefined));
-
         api.get(`/memberships/${id}/tools`)
           .then((response: IApiResponse<ITool[]>) => {
             const memberTools = response.data || [];
@@ -257,6 +255,7 @@ UpdateMembersForm = connect(
             dispatch(change("updateMemberTools", "error", ex));
           })
       },
+      saveMemberTools: (memberId: number, ids: number[]) => dispatch(saveMemberTools(memberId, ids)),
       addMember: (unitId: number, role?: UitsRole) => {
         dispatch(change("addMemberForm", "unitId", unitId));
         dispatch(change("addMemberForm", "role", role || UitsRole.Member));
