@@ -11,7 +11,7 @@ import { Results, SearchLists } from './Results'
 
 describe('Results by list', () => {
     const examplePerson: IPerson = { ...examples.people[0] }
-    const exampleUnit: IUnit = {...examples.units[0] }
+    const exampleUnit: IUnit = {...examples.units[0] } as IUnit;
     const exampleDept: IDepartment = {...examples.departments[0] }
     
     const peopleResults: IApiState<IEntityRequest, IEntity[]> = { ...defaultState(), data: [examplePerson] }

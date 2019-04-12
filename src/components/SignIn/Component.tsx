@@ -24,8 +24,9 @@ interface IDispatchProps {
 
 class Component extends React.Component<IState & IComponentProps & IDispatchProps> {
   public componentDidMount() {
-    const queryParam = queryString.parse(this.props.location.search);
-    this.props.postSignInRequest({ code: queryParam.code });
+    const queryCode = queryString.parse(this.props.location.search).code;
+    const code = (queryCode instanceof Array ? queryCode.join("") : queryCode) || "";
+    this.props.postSignInRequest({ code });
   }
 
   public render() {

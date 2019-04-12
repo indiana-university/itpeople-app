@@ -45,7 +45,6 @@ test('shows a loading message while loading', () => {
 })
 
 test('displays unit name person is member of', () => {
-
     const memberState = {
         ...testState,
         memberships: {

@@ -30,9 +30,10 @@ interface IPropsFromDispatch {
 interface ISimpleSearchContainerProps extends IState, ISearchProps, IPropsFromDispatch {}
 
 const executeSearch = (props: ISimpleSearchContainerProps) => {
-  const queryParam = queryString.parse(props.location.search);
-  props.setSearchTerm(queryParam.term);
-  return props.search(queryParam.term);
+  const qTerm = queryString.parse(props.location.search).term;
+  const term = (qTerm instanceof Array ? qTerm.join("") : qTerm) || "";
+  props.setSearchTerm(term);
+  return props.search(term);
 };
 
 class Container extends React.Component<ISimpleSearchContainerProps> {
