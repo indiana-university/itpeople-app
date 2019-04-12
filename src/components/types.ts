@@ -39,6 +39,7 @@ export enum Permissions {
   Put = "PUT",
   Delete = "DELETE"
 }
+
 export namespace Permissions {
   export const canGet = (permissions: Permissions[]) => permissions.indexOf(Permissions.Get) > -1;
   export const canPost = (permissions: Permissions[]) => permissions.indexOf(Permissions.Post) > -1;
@@ -157,8 +158,15 @@ export interface IUnitMemberRequest {
   showPercentage?: boolean;
 }
 
+export interface IUnitMemberTool {
+  id: number
+  membershipId: number
+  toolId: number
+}
+
 export interface IUnitMember extends IUnitMemberRequest {
   person?: IPerson;
+  memberTools: IUnitMemberTool[]
 }
 
 export interface IUnitMembership extends IUnitMemberRequest {

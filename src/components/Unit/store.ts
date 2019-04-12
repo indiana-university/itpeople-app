@@ -14,7 +14,8 @@ import {
   IUnitMemberRequest,
   ISupportRelationshipRequest,
   defaultState,
-  IToolGroup
+  IToolGroup,
+  IUnitMemberTool
 } from "../types";
 import { lookup } from "../lookup";
 
@@ -39,9 +40,9 @@ export const enum UnitActionTypes {
   UNIT_FETCH_DEPARTMENTS_REQUEST = "@@unit/FETCH_DEPARTMENTS_REQUEST",
   UNIT_FETCH_DEPARTMENTS_SUCCESS = "@@unit/FETCH_DEPARTMENTS_SUCCESS",
   UNIT_FETCH_DEPARTMENTS_ERROR = "@@unit/FETCH_DEPARTMENTS_ERROR",
-  UNIT_FETCH_TOOL_GROUPS_REQUEST = "@@unit/FETCH_TOOL_GROUPS_REQUEST",
-  UNIT_FETCH_TOOL_GROUPS_SUCCESS = "@@unit/FETCH_TOOL_GROUPS_SUCCESS",
-  UNIT_FETCH_TOOL_GROUPS_ERROR = "@@unit/FETCH_TOOL_GROUPS_ERROR",
+  UNIT_FETCH_TOOLS_REQUEST = "@@unit/FETCH_TOOLS_REQUEST",
+  UNIT_FETCH_TOOLS_SUCCESS = "@@unit/FETCH_TOOLS_SUCCESS",
+  UNIT_FETCH_TOOLS_ERROR = "@@unit/FETCH_TOOLS_ERROR",
   UNIT_EDIT = "@@unit/UNIT_EDIT",
   UNIT_SAVE_PROFILE_REQUEST = "@@unit/SAVE_PROFILE_REQUEST",
   UNIT_SAVE_PROFILE_SUCCESS = "@@unit/SAVE_PROFILE_SUCCESS",
@@ -53,11 +54,7 @@ export const enum UnitActionTypes {
   UNIT_DELETE_MEMBER_SUCCESS = "@@unit/UNIT_DELETE_MEMBER_SUCCESS",
   UNIT_DELETE_MEMBER_ERROR = "@@unit/UNIT_DELETE_MEMBER_ERROR",
   UNIT_SAVE_MEMBER_TOOLS_REQUEST = "@@unit/SAVE_MEMBER_TOOLS_REQUEST",
-  // UNIT_SAVE_MEMBER_TOOLS_SUCCESS = "@@unit/SAVE_MEMBER_TOOLS_SUCCESS",
-  // UNIT_SAVE_MEMBER_TOOLS_ERROR = "@@unit/SAVE_MEMBER_TOOLS_ERROR",
-  // UNIT_DELETE_MEMBER_TOOLS_REQUEST = "@@unit/UNIT_DELETE_MEMBER_TOOLS_REQUEST",
-  // UNIT_DELETE_MEMBER_TOOLS_SUCCESS = "@@unit/UNIT_DELETE_MEMBER_TOOLS_SUCCESS",
-  // UNIT_DELETE_MEMBER_TOOLS_ERROR = "@@unit/UNIT_DELETE_MEMBER_TOOLS_ERROR",
+  UNIT_SAVE_MEMBER_TOOLS_ERROR = "@@unit/SAVE_MEMBER_TOOLS_ERROR",
   UNIT_SAVE_CHILD_REQUEST = "@@unit/SAVE_CHILD_REQUEST",
   UNIT_SAVE_CHILD_SUCCESS = "@@unit/SAVE_CHILD_SUCCESS",
   UNIT_SAVE_CHILD_ERROR = "@@unit/SAVE_CHILD_ERROR",
@@ -112,8 +109,7 @@ const saveUnitChild = (request: IEntityRequest) => action(UnitActionTypes.UNIT_S
 const saveUnitDepartment = (request: ISupportRelationshipRequest) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, request);
 const saveUnitParent = (request: IEntityRequest) => action(UnitActionTypes.UNIT_SAVE_PARENT_REQUEST, request);
 const saveUnitProfileRequest = (request: IUnit) => action(UnitActionTypes.UNIT_SAVE_PROFILE_REQUEST, request);
-// TODO: handle saving member tools
-const saveMemberTools = (memberId: number, toolIds: number[]) => action(UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_REQUEST, { memberId, toolIds });
+const saveMemberTools = (member: IUnitMember, tools: number[]) => action(UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_REQUEST, { member, tools });
 //#endregion
 
 //#region REDUCER
@@ -177,18 +173,16 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_DELETE_MEMBER_ERROR:
       return { ...state, members: TaskErrorReducer(state.members, act) };
     //
-    case UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_REQUEST:
+    case UnitActionTypes.UNIT_FETCH_TOOLS_REQUEST:
       return { ...state, toolGroups: TaskStartReducer(state.toolGroups, act) };
-    case UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_SUCCESS:
+    case UnitActionTypes.UNIT_FETCH_TOOLS_SUCCESS:
       return { ...state, toolGroups: TaskSuccessReducer(state.toolGroups, act) };
-    case UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_ERROR:
+    case UnitActionTypes.UNIT_FETCH_TOOLS_ERROR:
       return { ...state, toolGroups: TaskErrorReducer(state.toolGroups, act) };
     // case UnitActionTypes.UNIT_FETCH_MEMBER_TOOLS_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
     // case UnitActionTypes.UNIT_FETCH_MEMBER_TOOLS_SUCCESS: return { ...state, members: TaskSuccessReducer(state.members, act) };
     // case UnitActionTypes.UNIT_FETCH_MEMBER_TOOLS_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
-    case UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_REQUEST: 
-      console.log("TODO: save member's tools",act)
-      return { ...state };
+    // case UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_REQUEST: return { ...state };
     // case UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
     // case UnitActionTypes.UNIT_DELETE_MEMBER_TOOLS_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
     // case UnitActionTypes.UNIT_DELETE_MEMBER_TOOLS_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
@@ -327,13 +321,13 @@ function* handleFetchUnitParent(api: IApi, unit?: IUnit) {
   }
 }
 
-const fetchUnitToolGroups = (response: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_REQUEST, response);
+const fetchUnitToolGroups = (response: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_TOOLS_REQUEST, response);
 const fetchUnitToolGroupsSuccess = (response: IApiResponse<IToolGroup[]>) =>
-  action(UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_SUCCESS, response);
-const fetchUnitToolGroupsError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_ERROR, error);
+  action(UnitActionTypes.UNIT_FETCH_TOOLS_SUCCESS, response);
+const fetchUnitToolGroupsError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_TOOLS_ERROR, error);
 function* handleFetchUnitToolGroups(api: IApi, request: IEntityRequest) {
   const action = yield api
-    .get<IToolGroup[]>(apiEndpoints.toolGroups())
+    .get<IToolGroup[]>(apiEndpoints.units.tools(request.id))
     .then(fetchUnitToolGroupsSuccess)
     .catch(signinIfUnauthorized)
     .catch(fetchUnitToolGroupsError);
@@ -370,7 +364,9 @@ function* handleDeleteUnit(api: IApi, unit: IUnit) {
 
 const saveMemberError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error);
 function* handleSaveMember(api: IApi, member: IUnitMemberRequest) {
-  const request = member.id ? api.put(apiEndpoints.memberships(member.id), member) : api.post(apiEndpoints.memberships(member.id), member);
+  const request = member.id
+    ? api.put(apiEndpoints.memberships(member.id), member)
+    : api.post(apiEndpoints.memberships(member.id), member);
   const action = yield request
     .then(_ => fetchUnitMembers({ id: member.unitId }))
     .catch(signinIfUnauthorized)
@@ -433,6 +429,34 @@ function* handleDeleteSupportRelationship(api: IApi, supportRelationship: ISuppo
   yield put(action);
 }
 
+type SaveMemberToolsRequest = {member:IUnitMember, tools:number[]}
+const saveMemberToolsError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_ERROR, error);
+function* handleSaveMemberTools(api: IApi, {member, tools}: SaveMemberToolsRequest) {
+  console.log("*** handleSaveMemberTools ***");
+  console.log("Member:", member);
+  console.log("New tools:", tools)
+  
+  // Find all the tools to add
+  const oldToolIds = new Set(member.memberTools.map(tool => tool.id));
+  const addPromises : Promise<any>[] = 
+    tools
+      .filter(id => !oldToolIds.has(id))
+      .map(id => ({id: 0, membershipId: member.id||0, toolId: id}))
+      .map(body => api.post<IUnitMemberTool>(apiEndpoints.memberTools(), body)); // /memberTools/
+  // Find all the tools to delete
+  const newToolIds = new Set(tools)
+  const deletePromises : Promise<any>[]= 
+    member.memberTools
+      .filter(tool => !newToolIds.has(tool.id))
+      .map(tool => api.delete(apiEndpoints.memberTools(tool.id))); // /memberTools/
+  // Merge all the posts/deletes as a single promise
+  const action = yield Promise.all(addPromises.concat(deletePromises))
+      .then(_ => fetchUnitMembers({ id: member.unitId }))
+      .catch(signinIfUnauthorized)
+      .catch(saveMemberToolsError);
+  yield put(action);
+}
+
 const api = restApi();
 
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
@@ -443,7 +467,7 @@ function* watchUnitFetch() {
   yield takeEvery(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, (a: AnyAction) => handleFetchUnitMembers(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, (a: AnyAction) => handleFetchUnitDepartments(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, (a: AnyAction) => handleFetchUnitChildren(api, a.payload));
-  yield takeEvery(UnitActionTypes.UNIT_FETCH_TOOL_GROUPS_REQUEST, (a: AnyAction) => handleFetchUnitToolGroups(api, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_TOOLS_REQUEST, (a: AnyAction) => handleFetchUnitToolGroups(api, a.payload));
   // The unit parent is defined by a parentId on the unit record, so we must await the unit record fetch.
   yield takeEvery(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, (a: AnyAction) => handleFetchUnitParent(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_PROFILE_SUCCESS, (a: AnyAction) => handleFetchProfileSuccess(api, a.payload.data));
@@ -456,6 +480,7 @@ function* watchUnitSave() {
   yield takeEvery(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, (a: AnyAction) => handleSaveMember(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, (a: AnyAction) => handleSaveSupportRelationship(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_SAVE_CHILD_REQUEST, (a: AnyAction) => handleAddChild(api, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_REQUEST, (a: AnyAction) => handleSaveMemberTools(api, a.payload));
 }
 
 function* watchUnitDelete() {

@@ -34,6 +34,7 @@ const apiEndpoints = {
     members: (unitId: number) => `/units/${unitId}/members`,
     children: (unitId: number) => `/units/${unitId}/children`,
     supportedDepartments: (unitId: number) => `/units/${unitId}/supportedDepartments`,
+    tools: (unitId:number) => `/units/${unitId}/tools`,
     search: (term: string) => `/units?q=${term}`
   },
   people: {
@@ -42,8 +43,8 @@ const apiEndpoints = {
     search: (term: string) => `/people?q=${term}`
   },
   memberships: (id?: number) => (id ? `/memberships/${id}` : "/memberships"),
-  supportRelationships: (id?: number) => (id ? `/supportRelationships/${id}` : "/supportRelationships"),
-  toolGroups: () => "/toolGroups"
+  memberTools: (id?: number) => (id ? `/memberTools/${id}` : "/memberTools"),
+  supportRelationships: (id?: number) => (id ? `/supportRelationships/${id}` : "/supportRelationships")
 };
 /**
  * Handle a request that results in an exception.

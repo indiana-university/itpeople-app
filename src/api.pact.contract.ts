@@ -193,7 +193,8 @@ const referenceUnitMemberRequest: IUnitMemberRequest = {
 };
 const referenceUnitMember: IUnitMember = {
     ...referenceUnitMemberRequest,
-    person: referencePerson
+    person: referencePerson,
+    memberTools: []
 };
 const referenceUnitMembership: IUnitMembership = {
     ...referenceUnitMemberRequest,

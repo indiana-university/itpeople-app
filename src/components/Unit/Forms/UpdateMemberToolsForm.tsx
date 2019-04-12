@@ -13,12 +13,8 @@ interface IForm {
 const form: React.SFC<IFormProps> = props => (<>
   <form onSubmit={props.handleSubmit}>
     <FieldArray name="toolGroups" component={renderGroups} />
-    <Field name="loaded" component={renderSubmitButton} />
+    <Button type="submit">Update</Button>
   </form>
-</>)
-
-const renderSubmitButton: any = ({ input: { value: loaded } }: WrappedFieldProps) => (<>
-  {loaded ? <Button type="submit">Update</Button> : <>Loading...</>}
 </>)
 
 const renderGroups: any = (props: WrappedFieldArrayProps<IToolGroup>) => (<>
