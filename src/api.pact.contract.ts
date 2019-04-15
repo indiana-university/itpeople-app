@@ -178,7 +178,7 @@ const delete_ = (name: string, path: string) =>
  * Reference Objects
  ************************/
 
-const referenceUnit: IUnit = examples.units[0]
+const referenceUnit: IUnit = { ...examples.units[0], parentId:undefined }
 const referenceDepartment: IEntity = examples.departments[0]
 const referencePerson: IPerson = examples.people[0]
 const referenceTool: ITool = examples.tools[0];
