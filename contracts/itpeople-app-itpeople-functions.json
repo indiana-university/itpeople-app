@@ -31,10 +31,9 @@
             "campusPhone": "812-856-1234",
             "campusEmail": "rswanso@iu.edu",
             "campus": "Bloomington",
-            "tools": "Claw hammer",
             "expertise": "Wood-working",
             "responsibilities": "IT Leadership",
-            "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
+            "photoUrl": "https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/p-parks-and-recreation-nick-offerman.jpg",
             "departmentId": 1
           }
         ],
@@ -72,10 +71,9 @@
           "campusPhone": "812-856-1234",
           "campusEmail": "rswanso@iu.edu",
           "campus": "Bloomington",
-          "tools": "Claw hammer",
           "expertise": "Wood-working",
           "responsibilities": "IT Leadership",
-          "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
+          "photoUrl": "https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/p-parks-and-recreation-nick-offerman.jpg",
           "departmentId": 1
         },
         "matchingRules": {
@@ -101,9 +99,6 @@
             "match": "type"
           },
           "$.body.campus": {
-            "match": "type"
-          },
-          "$.body.tools": {
             "match": "type"
           },
           "$.body.expertise": {
@@ -592,12 +587,18 @@
               "campusPhone": "812-856-1234",
               "campusEmail": "rswanso@iu.edu",
               "campus": "Bloomington",
-              "tools": "Claw hammer",
               "expertise": "Wood-working",
               "responsibilities": "IT Leadership",
-              "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
+              "photoUrl": "https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/p-parks-and-recreation-nick-offerman.jpg",
               "departmentId": 1
-            }
+            },
+            "memberTools": [
+              {
+                "id": 1,
+                "membershipId": 1,
+                "toolId": 5
+              }
+            ]
           }
         ],
         "matchingRules": {
@@ -806,6 +807,164 @@
       }
     },
     {
+      "description": "a GET request for all unit member toolss",
+      "providerState": "at least one unit member tools exists",
+      "request": {
+        "method": "GET",
+        "path": "/memberTools",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "membershipId": 1,
+            "toolId": 1
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for one unit member tools",
+      "providerState": "unit member tools exists",
+      "request": {
+        "method": "GET",
+        "path": "/memberTools/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "membershipId": 1,
+          "toolId": 1
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.membershipId": {
+            "match": "type"
+          },
+          "$.body.toolId": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a POST request to create a unit member tools",
+      "providerState": "unit member tools may be created",
+      "request": {
+        "method": "POST",
+        "path": "/memberTools",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "membershipId": 1,
+          "toolId": 1
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+        },
+        "body": {
+          "id": 1,
+          "membershipId": 1,
+          "toolId": 1
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.membershipId": {
+            "match": "type"
+          },
+          "$.body.toolId": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a PUT request to update a unit member tools",
+      "providerState": "unit member tools exists",
+      "request": {
+        "method": "PUT",
+        "path": "/memberTools/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "membershipId": 1,
+          "toolId": 1
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "id": 1,
+          "membershipId": 1,
+          "toolId": 1
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.membershipId": {
+            "match": "type"
+          },
+          "$.body.toolId": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a DELETE request to delete a unit member tools",
+      "providerState": "unit member tools exists",
+      "request": {
+        "method": "DELETE",
+        "path": "/memberTools/1",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ",
+          "Content-Type": "application/json; charset=utf-8"
+        }
+      },
+      "response": {
+        "status": 204,
+        "headers": {
+        }
+      }
+    },
+    {
       "description": "a GET request for all unit childs",
       "providerState": "at least one unit child exists",
       "request": {
@@ -827,6 +986,44 @@
             "description": "This page is under construction",
             "url": "http://pawneeindiana.com/information-technology/",
             "parentId": 2
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for all unit tool groupss",
+      "providerState": "at least one unit tool groups exists",
+      "request": {
+        "method": "GET",
+        "path": "/units/1/tools",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOiIxOTE1NTQ0NjQzIiwidXNlcl9pZCI6IjEiLCJ1c2VyX25hbWUiOiJqb2huZG9lIn0.9uerDlhPKrtBrMMHuRoxbJ5x0QA7KOulDEHx9DKXpnQ"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "name": "Woodworking Tools",
+            "tools": [
+              {
+                "id": 1,
+                "toolGroupId": 1,
+                "name": "Hammer"
+              }
+            ]
           }
         ],
         "matchingRules": {

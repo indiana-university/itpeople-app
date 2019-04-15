@@ -216,6 +216,13 @@ const referenceSupportRelationship: ISupportRelationship = {
     unit: referenceUnit
 };
 
+const referenceMemberToolRequest: IUnitMemberTool = {
+    id: 1,
+    membershipId: referenceUnitMember.id||0,
+    toolId: referenceTool.id
+};
+
+
 /************************
  * Tests
  ************************/
@@ -361,6 +368,23 @@ describe('Contracts', () => {
         it('updates an existing support relationships', async () =>
             await update(resource, itemPath, referenceSupportRelationshipRequest))
         it('deletes an existing support relationships', async () =>
+            await delete_(resource, itemPath))
+    })
+
+    describe('Member Tools', () => {
+        const resource = "unit member tools"
+        const setPath = apiEndpoints.memberTools()
+        const itemPath = apiEndpoints.memberTools(referenceMemberTool.id)
+
+        it('gets all unit member tools', async () =>
+            await getAll(resource, setPath, referenceMemberToolRequest))
+        it('gets a single unit member tool', async () =>
+            await getOne(resource, itemPath, referenceMemberToolRequest))
+        it('creates a new unit member tool', async () =>
+            await create(resource, setPath, referenceMemberToolRequest))
+        it('updates an existing unit member tool', async () =>
+            await update(resource, itemPath, referenceMemberToolRequest))
+        it('deletes an existing unit member tool', async () =>
             await delete_(resource, itemPath))
     })
 

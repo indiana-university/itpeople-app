@@ -158,10 +158,13 @@ export interface IUnitMemberRequest {
   showPercentage?: boolean;
 }
 
-export interface IUnitMemberTool {
-  id: number
+export interface IUnitMemberToolRequest {
   membershipId: number
   toolId: number
+}
+
+export interface IUnitMemberTool extends IUnitMemberToolRequest {
+  id: number
 }
 
 export interface IUnitMember extends IUnitMemberRequest {
