@@ -432,10 +432,6 @@ function* handleDeleteSupportRelationship(api: IApi, supportRelationship: ISuppo
 type SaveMemberToolsRequest = {member:IUnitMember, tools:number[]}
 const saveMemberToolsError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_ERROR, error);
 function* handleSaveMemberTools(api: IApi, {member, tools}: SaveMemberToolsRequest) {
-  console.log("*** handleSaveMemberTools ***");
-  console.log("Member:", member);
-  console.log("New tools:", tools)
-  
   // Find all the tools to add
   const oldToolIds = new Set(member.memberTools.map(tool => tool.id));
   const addPromises : Promise<any>[] = 
