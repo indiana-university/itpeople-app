@@ -363,8 +363,9 @@ describe('Contracts', () => {
             await getAll(resource, setPath, referenceSupportRelationshipRequest))
         it('gets a single support relationship', async () =>
             await getOne(resource, itemPath, referenceSupportRelationshipRequest))
+        // JFH: Set unitId:2 to prevent 409 conflict when creating new support relationship.
         it('creates a new support relationships', async () =>
-            await create(resource, setPath, referenceSupportRelationshipRequest))
+            await create(resource, setPath, { ...referenceSupportRelationshipRequest, unitId: 2 }))
         it('updates an existing support relationships', async () =>
             await update(resource, itemPath, referenceSupportRelationshipRequest))
         it('deletes an existing support relationships', async () =>
