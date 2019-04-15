@@ -16,8 +16,10 @@ import {
     IUnitMemberRequest, 
     IUnit, 
     IPerson, 
-    IUnitMembership } from './components/types'
-// import * as jsonDb from 'src/db.js'
+    IUnitMembership, 
+    ITool,
+    IToolGroup,
+    IUnitMemberTool} from './components/types'
 import * as examples from 'src/db.json'
 
 const deepMatchify = (obj: Object) => traverse(obj).map(
@@ -176,11 +178,12 @@ const delete_ = (name: string, path: string) =>
  * Reference Objects
  ************************/
 
-// const examples = jsonDb()
-
 const referenceUnit: IUnit = examples.units[0]
 const referenceDepartment: IEntity = examples.departments[0]
 const referencePerson: IPerson = examples.people[0]
+const referenceTool: ITool = examples.tools[0];
+const referenceToolGroup: IToolGroup = { ... examples.toolGroups[0], tools: [ referenceTool ] };
+const referenceMemberTool: IUnitMemberTool = examples.memberTools[0]
 
 const referenceUnitMemberRequest: IUnitMemberRequest = {
     id: 1,
@@ -194,7 +197,7 @@ const referenceUnitMemberRequest: IUnitMemberRequest = {
 const referenceUnitMember: IUnitMember = {
     ...referenceUnitMemberRequest,
     person: referencePerson,
-    memberTools: []
+    memberTools: [ referenceMemberTool ]
 };
 const referenceUnitMembership: IUnitMembership = {
     ...referenceUnitMemberRequest,
@@ -370,4 +373,11 @@ describe('Contracts', () => {
             await getAll(resource, setPath, referenceUnit))
     })
 
+    describe("Unit Tool Groups", () => {
+      const resource = "unit tool groups";
+      const setPath = apiEndpoints.units.tools(referenceUnit.id);
+
+      it("gets all unit tool groups", async () => 
+        await getAll(resource, setPath, referenceToolGroup));
+    });
 });
