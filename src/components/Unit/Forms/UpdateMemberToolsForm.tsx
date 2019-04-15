@@ -18,7 +18,7 @@ const form: React.SFC<IFormProps> = props => (<>
 </>)
 
 const renderGroups: any = (props: WrappedFieldArrayProps<IToolGroup>) => (<>
-  <List variant="plain">
+  <List variant="plain" padding={{ bottom: "md" }}>
     {props.fields.map((name: string, index: number) => (
       <li>
         <Field name={name} component={renderGroup} />
