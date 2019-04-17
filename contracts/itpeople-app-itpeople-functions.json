@@ -588,7 +588,7 @@
               {
                 "id": 1,
                 "membershipId": 1,
-                "toolId": 5
+                "toolId": 1
               }
             ]
           }
@@ -990,8 +990,8 @@
       }
     },
     {
-      "description": "a GET request for all unit tool groupss",
-      "providerState": "at least one unit tool groups exists",
+      "description": "a GET request for all unit toolss",
+      "providerState": "at least one unit tools exists",
       "request": {
         "method": "GET",
         "path": "/units/1/tools",
@@ -1007,14 +1007,7 @@
         "body": [
           {
             "id": 1,
-            "name": "Woodworking Tools",
-            "tools": [
-              {
-                "id": 1,
-                "toolGroupId": 1,
-                "name": "Hammer"
-              }
-            ]
+            "name": "Hammer"
           }
         ],
         "matchingRules": {

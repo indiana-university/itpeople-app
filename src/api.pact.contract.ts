@@ -18,7 +18,6 @@ import {
     IPerson, 
     IUnitMembership, 
     ITool,
-    IToolGroup,
     IUnitMemberTool} from './components/types'
 import * as examples from 'src/db.json'
 
@@ -182,7 +181,6 @@ const referenceUnit: IUnit = { ...examples.units[0], parentId:undefined }
 const referenceDepartment: IEntity = examples.departments[0]
 const referencePerson: IPerson = examples.people[0]
 const referenceTool: ITool = examples.tools[0];
-const referenceToolGroup: IToolGroup = { ... examples.toolGroups[0], tools: [ referenceTool ] };
 const referenceMemberTool: IUnitMemberTool = examples.memberTools[0]
 
 const referenceUnitMemberRequest: IUnitMemberRequest = {
@@ -398,11 +396,11 @@ describe('Contracts', () => {
             await getAll(resource, setPath, referenceUnit))
     })
 
-    describe("Unit Tool Groups", () => {
-      const resource = "unit tool groups";
+    describe("Unit Tools", () => {
+      const resource = "unit tools";
       const setPath = apiEndpoints.units.tools(referenceUnit.id);
 
-      it("gets all unit tool groups", async () => 
-        await getAll(resource, setPath, referenceToolGroup));
+      it("gets all unit tools", async () => 
+        await getAll(resource, setPath, referenceTool));
     });
 });

@@ -3,7 +3,7 @@ import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, cha
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
 import { saveMemberRequest, deleteMemberRequest, saveMemberTools } from "../store";
-import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest, IToolGroup, IApiState, Permissions, ITool } from "../../types";
+import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest, IApiState, Permissions, ITool } from "../../types";
 import { connect } from "react-redux";
 import { AddUser, Pencil, TrashCan, Eye, Gear } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
@@ -29,15 +29,15 @@ interface IDispatchProps {
   removeMember: typeof deleteMemberRequest;
   save: typeof saveMemberRequest;
   editMember(member: any): any;
-  editMemberTools(id: any, toolGroups: IToolGroup[]): any;
+  editMemberTools(id: any, unitTools: ITool[]): any;
   saveMemberTools: typeof saveMemberTools;
   addMember(unitId: number, role?: UitsRole): any;
-  toolGroups: IApiState<any, IToolGroup[]>;
+  tools: IApiState<any, ITool[]>;
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const { closeModal, clearCurrent, editMember, addMember, removeMember, save, editMemberTools, saveMemberTools, unitId, toolGroups } = props;
-  let canEditMemberTools = () => Permissions.canPut(toolGroups.permissions);
+  const { closeModal, clearCurrent, editMember, addMember, removeMember, save, editMemberTools, saveMemberTools, unitId, tools } = props;
+  let canEditMemberTools = () => Permissions.canPut(tools.permissions);
   const renderMembers = ({ fields, input }: any) => {
     let members = fields.map(function (field: any, index: number) {
       let member = fields.get(index) as IUnitMember;
@@ -117,8 +117,8 @@ const form: React.SFC<IFormProps> = props => {
               )}
             </Col>
             <div style={{ textAlign: "right" }}>
-              <Loader {...toolGroups}>
-                {canEditMemberTools() && toolGroups && toolGroups.data && (
+              <Loader {...tools}>
+                {canEditMemberTools() && tools && tools.data && (
 
                   <span style={{ textAlign: "left" }}>
                     <Modal
@@ -126,14 +126,12 @@ const form: React.SFC<IFormProps> = props => {
                       buttonText={<Gear />}
                       variant="plain"
                       title={`Edit tools permissions: ${person ? person.name : "Vacancy"}`}
-                      onOpen={() => { editMemberTools(member, toolGroups.data || []) }}
+                      onOpen={() => { editMemberTools(member, tools.data || []) }}
                     >
                       <ModalBody>
-                        <UpdateMemberTools onSubmit={({ toolGroups }: { toolGroups: IToolGroup[] }) => {
-                          const accumulator: ITool[] = []
+                        <UpdateMemberTools onSubmit={({ tools }: { tools: ITool[] }) => {
                           const newToolIds =
-                            toolGroups
-                              .reduce((acc, val) => acc.concat(val.tools), accumulator)
+                            tools
                               .filter(tool => tool.enabled)
                               .map(tool => tool.id)
                           saveMemberTools(member, newToolIds);
@@ -227,7 +225,7 @@ UpdateMembersForm = connect(
     title: selector(state, "title"),
     role: selector(state, "role"),
     unitId: selector(state, "unitId"),
-    toolGroups: state.unit.toolGroups
+    tools: state.unit.tools
   }),
   (dispatch: Dispatch) => {
     return {
@@ -240,17 +238,10 @@ UpdateMembersForm = connect(
           dispatch(change("updateMemberForm", key, member[key]));
         }
       },
-      editMemberTools: (member: IUnitMember, toolGroups: IToolGroup[]) => {
-        const memberTools = member.memberTools || [];
+      editMemberTools: (member: IUnitMember, tools: ITool[]) => {
         const memberToolIds = new Set(member.memberTools.map(t => t.toolId))
-
-        const mappedGroups = toolGroups.map((group) => {
-          const tools = group.tools.map((tool) => ({ ...tool, enabled: memberToolIds.has(tool.id)}));
-          return { ...group, tools };
-        });
-        
-        console.log("memberTools, mappedGroups, member:",memberTools, mappedGroups, member);
-        dispatch(change("updateMemberTools", "toolGroups", mappedGroups));
+        const toolCheckboxState = tools.map(tool => ({ ...tool, enabled: memberToolIds.has(tool.id) }));
+        dispatch(change("updateMemberTools", "tools", toolCheckboxState));
       },
       saveMemberTools: (member: IUnitMember, newToolIds: number[]) => dispatch(saveMemberTools(member, newToolIds)),
       addMember: (unitId: number, role?: UitsRole) => {

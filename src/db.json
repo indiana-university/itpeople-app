@@ -174,45 +174,29 @@
       "id": 3
     }
   ],
-  "toolGroups": [
-    {
-      "id": 1,
-      "name": "Woodworking Tools"
-    },
-    {
-      "id": 2,
-      "name": "Organizing Tools"
-    }
-  ],
   "tools": [
     {
       "id": 1,
-      "toolGroupId": 1,
       "name": "Hammer"
     },
     {
       "id": 2,
-      "toolGroupId": 1,
       "name": "Saw"
     },
     {
       "id": 3,
-      "toolGroupId": 1,
       "name": "Chisel"
     },
     {
       "id": 4,
-      "toolGroupId": 2,
       "name": "Clipboard"
     },
     {
       "id": 5,
-      "toolGroupId": 2,
       "name": "Pen"
     },
     {
       "id": 6,
-      "toolGroupId": 2,
       "name": "Survey"
     }
   ],
@@ -220,17 +204,17 @@
     {
       "id": 1,
       "membershipId": 1,
-      "toolId": 5
+      "toolId": 1
     },
     {
       "id": 2,
       "membershipId": 1,
-      "toolId": 6
+      "toolId": 2
     },
     {
       "id": 3,
       "membershipId": 1,
-      "toolId": 4
+      "toolId": 3
     },
     {
       "id": 4,

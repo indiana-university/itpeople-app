@@ -14,8 +14,8 @@ import {
   IUnitMemberRequest,
   ISupportRelationshipRequest,
   defaultState,
-  IToolGroup,
-  IUnitMemberTool
+  IUnitMemberTool,
+  ITool
 } from "../types";
 import { lookup } from "../lookup";
 
@@ -81,7 +81,7 @@ export const enum UnitActionTypes {
 export interface IState {
   profile: IApiState<IEntityRequest, IUnit>;
   members: IApiState<IEntityRequest, IUnitMember[]>;
-  toolGroups: IApiState<IEntityRequest, IToolGroup[]>;
+  tools: IApiState<IEntityRequest, ITool[]>;
   unitChildren: IApiState<IEntityRequest, IEntity[]>; // children conflicts with react props 😟
   parent: IApiState<IEntityRequest, IEntity>;
   departments: IApiState<IEntityRequest, ISupportRelationship[]>;
@@ -120,7 +120,7 @@ import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from "../types
 const initialState: IState = {
   profile: defaultState(),
   members: defaultState(),
-  toolGroups: defaultState(),
+  tools: defaultState(),
   unitChildren: defaultState(),
   parent: defaultState(),
   departments: defaultState(),
@@ -174,11 +174,11 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
       return { ...state, members: TaskErrorReducer(state.members, act) };
     //
     case UnitActionTypes.UNIT_FETCH_TOOLS_REQUEST:
-      return { ...state, toolGroups: TaskStartReducer(state.toolGroups, act) };
+      return { ...state, tools: TaskStartReducer(state.tools, act) };
     case UnitActionTypes.UNIT_FETCH_TOOLS_SUCCESS:
-      return { ...state, toolGroups: TaskSuccessReducer(state.toolGroups, act) };
+      return { ...state, tools: TaskSuccessReducer(state.tools, act) };
     case UnitActionTypes.UNIT_FETCH_TOOLS_ERROR:
-      return { ...state, toolGroups: TaskErrorReducer(state.toolGroups, act) };
+      return { ...state, tools: TaskErrorReducer(state.tools, act) };
     // case UnitActionTypes.UNIT_FETCH_MEMBER_TOOLS_REQUEST: return { ...state, members: TaskStartReducer(state.members, act) };
     // case UnitActionTypes.UNIT_FETCH_MEMBER_TOOLS_SUCCESS: return { ...state, members: TaskSuccessReducer(state.members, act) };
     // case UnitActionTypes.UNIT_FETCH_MEMBER_TOOLS_ERROR: return { ...state, members: TaskErrorReducer(state.members, act) };
@@ -247,7 +247,7 @@ function* handleFetchUnit(api: IApi, request: IEntityRequest) {
   yield put(fetchUnitMembers(request));
   yield put(fetchUnitChildren(request));
   yield put(fetchUnitSupportedDepartments(request));
-  yield put(fetchUnitToolGroups(request));
+  yield put(fetchUnitTools(request));
 
   // TODO: fetch master tool list
 }
@@ -321,16 +321,15 @@ function* handleFetchUnitParent(api: IApi, unit?: IUnit) {
   }
 }
 
-const fetchUnitToolGroups = (response: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_TOOLS_REQUEST, response);
-const fetchUnitToolGroupsSuccess = (response: IApiResponse<IToolGroup[]>) =>
-  action(UnitActionTypes.UNIT_FETCH_TOOLS_SUCCESS, response);
-const fetchUnitToolGroupsError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_TOOLS_ERROR, error);
-function* handleFetchUnitToolGroups(api: IApi, request: IEntityRequest) {
+const fetchUnitTools = (response: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_TOOLS_REQUEST, response);
+const fetchUnitToolsSuccess = (response: IApiResponse<ITool[]>) => action(UnitActionTypes.UNIT_FETCH_TOOLS_SUCCESS, response);
+const fetchUnitToolsError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_TOOLS_ERROR, error);
+function* handleFetchUnitTools(api: IApi, request: IEntityRequest) {
   const action = yield api
-    .get<IToolGroup[]>(apiEndpoints.units.tools(request.id))
-    .then(fetchUnitToolGroupsSuccess)
+    .get<ITool[]>(apiEndpoints.units.tools(request.id))
+    .then(fetchUnitToolsSuccess)
     .catch(signinIfUnauthorized)
-    .catch(fetchUnitToolGroupsError);
+    .catch(fetchUnitToolsError);
   yield put(action);
 }
 
@@ -463,7 +462,7 @@ function* watchUnitFetch() {
   yield takeEvery(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, (a: AnyAction) => handleFetchUnitMembers(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, (a: AnyAction) => handleFetchUnitDepartments(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, (a: AnyAction) => handleFetchUnitChildren(api, a.payload));
-  yield takeEvery(UnitActionTypes.UNIT_FETCH_TOOLS_REQUEST, (a: AnyAction) => handleFetchUnitToolGroups(api, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_TOOLS_REQUEST, (a: AnyAction) => handleFetchUnitTools(api, a.payload));
   // The unit parent is defined by a parentId on the unit record, so we must await the unit record fetch.
   yield takeEvery(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, (a: AnyAction) => handleFetchUnitParent(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_PROFILE_SUCCESS, (a: AnyAction) => handleFetchProfileSuccess(api, a.payload.data));
