@@ -432,7 +432,7 @@ type SaveMemberToolsRequest = {member:IUnitMember, tools:number[]}
 const saveMemberToolsError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_ERROR, error);
 function* handleSaveMemberTools(api: IApi, {member, tools}: SaveMemberToolsRequest) {
   // Find all the tools to add
-  const oldToolIds = new Set(member.memberTools.map(tool => tool.id));
+  const oldToolIds = new Set(member.memberTools.map(mt => mt.toolId));
   const addPromises : Promise<any>[] = 
     tools
       .filter(id => !oldToolIds.has(id))
