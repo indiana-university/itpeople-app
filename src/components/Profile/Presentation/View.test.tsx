@@ -6,7 +6,7 @@ import * as React from 'react'
 import { render } from 'src/testUtils'
 import { View } from './View'
 import { initialState, toggleUnit } from "../store";
-import { defaultState, IPerson, IUnitMembership, IUnit } from 'src/components/types'
+import { defaultState, IPerson } from 'src/components/types'
 import * as examples from 'src/db.json'
 
 const person1: IPerson = { ...examples.people[0] }
@@ -37,18 +37,18 @@ test('shows a loading message while loading person', () => {
     expect(getByLabelText("Content loading")).toBeInTheDocument()
 })
 
-test('displays unit name for unit memberships for that person', () => {
-    const p1Unit: IUnit = {...examples.units[0] }
-    const p1Memberships: Array<IUnitMembership> = [{ ...examples.memberships[0], unit: p1Unit }]
+// test('displays unit name for unit memberships for that person', () => {
+//     const p1Unit: IUnit = {...examples.units[0] }
+//     const p1Memberships: Array<IUnitMembership> = [{ ...examples.memberships[0], unit: p1Unit }]
 
-    const { getByText } = render(
-        <View {...initialState}
-            toggleUnit={toggleUnit}
-            person={{ ...defaultState(), data: person1 }}
-            memberships={{ ...defaultState(), data: p1Memberships }} />,
-        { route: '/person/1' }
-    )
+//     const { getByText } = render(
+//         <View {...initialState}
+//             toggleUnit={toggleUnit}
+//             person={{ ...defaultState(), data: person1 }}
+//             memberships={{ ...defaultState(), data: p1Memberships }} />,
+//         { route: '/person/1' }
+//     )
 
-    expect(getByText(p1Unit.name)).toBeInTheDocument()
-})
+//     expect(getByText(p1Unit.name)).toBeInTheDocument()
+// })
 

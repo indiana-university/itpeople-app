@@ -3,7 +3,7 @@ import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, cha
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
 import { saveMemberRequest, deleteMemberRequest, saveMemberTools } from "../store";
-import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest, IApiState, Permissions, ITool } from "../../types";
+import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest, IApiState, Permissions, ITool, UnitMemberComparer } from "../../types";
 import { connect } from "react-redux";
 import { AddUser, Pencil, TrashCan, Eye, Gear } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
@@ -42,7 +42,7 @@ const form: React.SFC<IFormProps> = props => {
     let members = fields.map(function (field: any, index: number) {
       let member = fields.get(index) as IUnitMember;
       return { ...member, index };
-    }) as IUnitMember[];
+    }).sort(UnitMemberComparer) as IUnitMember[];
     let leaders = members.filter(m => m.role == ItProRole.Admin || m.role == UitsRole.Leader);
     let standardMember = members.filter(m => m.role == ItProRole.Pro || m.role == UitsRole.Member || m.role == UitsRole.Sublead);
     let others = members.filter(m => m.role == ItProRole.Aux || m.role == UitsRole.Related);

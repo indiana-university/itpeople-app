@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { Col, Row } from 'rivet-react'
-import { IEntity } from "../../types";
+import { IEntity, EntityComparer } from "../../types";
 import { ChildrenUnitsIcon } from '../../icons';
 
 interface IProps {
@@ -17,7 +17,9 @@ export const ChildrenCard: React.SFC<IProps> = (props) => {
         <>
             {
                 children &&
-                children.map((child, i) => (
+                children
+                    .sort(EntityComparer)
+                    .map((child, i) => (
                     <Row key={i}>
                         <Col sm={2}><ChildrenUnitsIcon width="100%" /></Col>
                         <Col>

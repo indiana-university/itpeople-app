@@ -159,17 +159,17 @@ export interface IUnitMemberRequest {
 }
 
 export interface IUnitMemberToolRequest {
-  membershipId: number
-  toolId: number
+  membershipId: number;
+  toolId: number;
 }
 
 export interface IUnitMemberTool extends IUnitMemberToolRequest {
-  id: number
+  id: number;
 }
 
 export interface IUnitMember extends IUnitMemberRequest {
   person?: IPerson;
-  memberTools: IUnitMemberTool[]
+  memberTools: IUnitMemberTool[];
 }
 
 export interface IUnitMembership extends IUnitMemberRequest {
@@ -217,3 +217,17 @@ export interface IAuthUser {
 export interface ITool extends IEntity {
   enabled?: boolean;
 }
+
+// Comparers
+
+export const EntityComparer = (a: IEntity, b: IEntity) => 
+  (a.name === b.name ? 0 : a.name < b.name ? -1 : 1);
+
+export const UnitMemberComparer = (a: IUnitMember, b: IUnitMember) => {
+  if (!a.person) { return -1; }
+  if (!b.person) { return 1; }
+  return EntityComparer(a.person, b.person);
+};
+
+export const SupportRelationshipComparer = (a: ISupportRelationship, b: ISupportRelationship) =>
+  EntityComparer(a.department, b.department);

@@ -6,7 +6,7 @@
 import * as React from "react";
 import { Row, Col } from "rivet-react";
 import { List } from "rivet-react/build/dist/components/List/List";
-import { IEntity, IDefaultState } from "../types";
+import { IEntity, IDefaultState, EntityComparer } from "../types";
 import { ProfileList } from "../Profile/ProfileList";
 import { Loader } from "../Loader";
 
@@ -30,7 +30,7 @@ export const Results: React.SFC<IProps> = ({ departments, setCurrentList, select
 
   return (
     <>
-      <div style={{position:"relative"}}>
+      <div style={{ position: "relative" }}>
         <span style={{ position: "absolute", right: 0 }}>
           <Loader
             loading={departments.loading || units.loading || people.loading}
@@ -73,7 +73,7 @@ export const Results: React.SFC<IProps> = ({ departments, setCurrentList, select
         {people && people.data && people.data.length > 0 && selectedList === SearchLists.People && (
           <Col>
             <h2 className="sr-only">People</h2>
-            <ProfileList users={people.data} />
+            <ProfileList users={people.data.sort(EntityComparer)} />
           </Col>
         )}
 
@@ -81,7 +81,7 @@ export const Results: React.SFC<IProps> = ({ departments, setCurrentList, select
           <Col>
             <h2 className="sr-only">Units</h2>
             <List variant="plain" className="list-dividers">
-              {units.data.map((r, i) => (
+              {units.data.sort(EntityComparer).map((r, i) => (
                 <li key={"unit-results:" + i} className="rvt-p-tb-lg">
                   <a href={`/units/${r.id}`}>{r.name}</a>
                   {r.description && <p>{r.description}</p>}
@@ -95,7 +95,7 @@ export const Results: React.SFC<IProps> = ({ departments, setCurrentList, select
           <Col>
             <h2 className="sr-only">Departments</h2>
             <List variant="plain" className="list-dividers">
-              {departments.data.map((r, i) => (
+              {departments.data.sort(EntityComparer).map((r, i) => (
                 <li className="rvt-p-tb-lg" key={"department-result:" + i}>
                   <a href={`/departments/${r.id}`}>{r.name}</a>
                   {r.description && <p>{r.description}</p>}

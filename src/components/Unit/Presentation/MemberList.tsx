@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import { MemberListItem } from "./MemberListItem";
-import { IUnitMember } from "../../types";
+import { IUnitMember, UnitMemberComparer } from "../../types";
 import { Section } from "rivet-react";
 
 export const MemberList: React.SFC<IProps> = ({
@@ -19,7 +19,9 @@ export const MemberList: React.SFC<IProps> = ({
         </h3>}
     <div className="list-dividers list-dividers--show-last">
         {members &&
-          members.map((m, i) => (
+          members
+            .sort(UnitMemberComparer)
+            .map((m, i) => (
             <MemberListItem key={i} {...m} showImage={showImages} />
           ))}
       </div>
