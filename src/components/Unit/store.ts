@@ -442,7 +442,7 @@ function* handleSaveMemberTools(api: IApi, {member, tools}: SaveMemberToolsReque
   const newToolIds = new Set(tools)
   const deletePromises : Promise<any>[]= 
     member.memberTools
-      .filter(tool => !newToolIds.has(tool.id))
+      .filter(mt => !newToolIds.has(mt.toolId))
       .map(tool => api.delete(apiEndpoints.memberTools(tool.id))); // /memberTools/
   // Merge all the posts/deletes as a single promise
   const action = yield Promise.all(addPromises.concat(deletePromises))
