@@ -27,7 +27,7 @@ let form: React.SFC<IProps> = ({ search }) => (
         name="term"
         className="rvt-input-group__input"
         component={"input"}
-        onChange={e => {
+        onChange={(e: React.ChangeEvent<any>) => {
           if (isSearchPage() && e && e.target && e.target.value) {
             search(e.target.value);
           }

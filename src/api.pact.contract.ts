@@ -16,8 +16,9 @@ import {
     IUnitMemberRequest, 
     IUnit, 
     IPerson, 
-    IUnitMembership } from './components/types'
-// import * as jsonDb from 'src/db.js'
+    IUnitMembership, 
+    ITool,
+    IUnitMemberTool} from './components/types'
 import * as examples from 'src/db.json'
 
 const deepMatchify = (obj: Object) => traverse(obj).map(
@@ -176,11 +177,11 @@ const delete_ = (name: string, path: string) =>
  * Reference Objects
  ************************/
 
-// const examples = jsonDb()
-
-const referenceUnit: IUnit = examples.units[0]
+const referenceUnit: IUnit = { ...examples.units[0], parentId:undefined }
 const referenceDepartment: IEntity = examples.departments[0]
 const referencePerson: IPerson = examples.people[0]
+const referenceTool: ITool = examples.tools[0];
+const referenceMemberTool: IUnitMemberTool = examples.memberTools[0]
 
 const referenceUnitMemberRequest: IUnitMemberRequest = {
     id: 1,
@@ -193,7 +194,8 @@ const referenceUnitMemberRequest: IUnitMemberRequest = {
 };
 const referenceUnitMember: IUnitMember = {
     ...referenceUnitMemberRequest,
-    person: referencePerson
+    person: referencePerson,
+    memberTools: [ referenceMemberTool ]
 };
 const referenceUnitMembership: IUnitMembership = {
     ...referenceUnitMemberRequest,
@@ -211,6 +213,13 @@ const referenceSupportRelationship: ISupportRelationship = {
     department: referenceDepartment,
     unit: referenceUnit
 };
+
+const referenceMemberToolRequest: IUnitMemberTool = {
+    id: 1,
+    membershipId: referenceUnitMember.id||0,
+    toolId: referenceTool.id
+};
+
 
 /************************
  * Tests
@@ -352,11 +361,29 @@ describe('Contracts', () => {
             await getAll(resource, setPath, referenceSupportRelationshipRequest))
         it('gets a single support relationship', async () =>
             await getOne(resource, itemPath, referenceSupportRelationshipRequest))
+        // JFH: Set unitId:2 to prevent 409 conflict when creating new support relationship.
         it('creates a new support relationships', async () =>
-            await create(resource, setPath, referenceSupportRelationshipRequest))
+            await create(resource, setPath, { ...referenceSupportRelationshipRequest, unitId: 2 }))
         it('updates an existing support relationships', async () =>
             await update(resource, itemPath, referenceSupportRelationshipRequest))
         it('deletes an existing support relationships', async () =>
+            await delete_(resource, itemPath))
+    })
+
+    describe('Member Tools', () => {
+        const resource = "unit member tools"
+        const setPath = apiEndpoints.memberTools()
+        const itemPath = apiEndpoints.memberTools(referenceMemberTool.id)
+
+        it('gets all unit member tools', async () =>
+            await getAll(resource, setPath, referenceMemberToolRequest))
+        it('gets a single unit member tool', async () =>
+            await getOne(resource, itemPath, referenceMemberToolRequest))
+        it('creates a new unit member tool', async () =>
+            await create(resource, setPath, referenceMemberToolRequest))
+        it('updates an existing unit member tool', async () =>
+            await update(resource, itemPath, referenceMemberToolRequest))
+        it('deletes an existing unit member tool', async () =>
             await delete_(resource, itemPath))
     })
 
@@ -369,4 +396,11 @@ describe('Contracts', () => {
             await getAll(resource, setPath, referenceUnit))
     })
 
+    describe("Unit Tools", () => {
+      const resource = "unit tools";
+      const setPath = apiEndpoints.units.tools(referenceUnit.id);
+
+      it("gets all unit tools", async () => 
+        await getAll(resource, setPath, referenceTool));
+    });
 });
