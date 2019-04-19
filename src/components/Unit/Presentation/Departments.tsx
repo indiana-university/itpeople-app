@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import { IDefaultState } from "src/components/types";
+import { IDefaultState, SupportRelationshipComparer } from "src/components/types";
 import { Loader } from "src/components/Loader";
 import { List } from "rivet-react";
 import { ISupportRelationship } from "../../types";
@@ -16,7 +16,9 @@ const Departments: React.SFC<IDefaultState<ISupportRelationship[]>> = props => {
       <Loader {...props}>
         {departments && (
           <List variant="plain">
-            {departments.map(({ department }, i) => (
+            {departments
+              .sort(SupportRelationshipComparer)
+              .map(({ department }, i) => (
                 <li key={i}>
                   <a href={`/departments/${department.id}`}>{department.name}</a> <br /> {department.description}
                 </li>
