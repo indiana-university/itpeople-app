@@ -29,11 +29,13 @@
     "db-chaos": "yarn db --middlewares ./json_server/db.middleware.admin.js ./db.middleware.chaos.js",
     "db-user": "yarn db --middlewares ./json_server/db.middleware.user.js",
     "db-slow": "yarn db --middlewares ./json_server/db.middleware.user.js ./json_server/db.middleware.slow.js",
+    "db-switch": "yarn db --middlewares ./json_server/middleware.switcher.js",
     "dev": "server-test db $npm_package_config_dbport start",
     "dev-admin": "server-test db-admin $npm_package_config_dbport start",
     "dev-chaos": "server-test db-chaos $npm_package_config_dbport start",
     "dev-user": "server-test db-user $npm_package_config_dbport start",
     "dev-slow": "server-test db-slow $npm_package_config_dbport start",
+    "dev-switch": "server-test db-switch $npm_package_config_dbport start",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "jest --env=jsdom --testRegex \"(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$\"",
@@ -41,7 +43,7 @@
     "eject": "react-scripts-ts eject",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "e2e": "server-test dev 3000 cy:open",
+    "e2e": "server-test dev-switch 3000 cy:open",
     "ci": "server-test dev 3000 cy:run"
   },
   "devDependencies": {
