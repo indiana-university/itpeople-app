@@ -1,5 +1,3 @@
-import { createYield } from "typescript";
-
 describe('admin using the app', () => {
 
     it('creates new unit and deletes it', () => {
