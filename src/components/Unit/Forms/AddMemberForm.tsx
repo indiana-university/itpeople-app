@@ -87,7 +87,7 @@ const form: React.SFC<IFormProps> = props => {
   );
 };
 
-let AddMemberForm: any = reduxForm<IUnitMember>({
+let AddMemberForm: any = reduxForm<IUnitMemberRequest>({
   form: "addMemberForm",
   enableReinitialize: true
 })(form);

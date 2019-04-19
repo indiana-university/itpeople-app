@@ -43,7 +43,7 @@ describe('unit memberships', () => {
         title: "Mr Manager", 
         role: "Leader", 
         permissions: UnitPermissions.Viewer, 
-        percentage: 100 
+        percentage: 100,
     };
 
     const expectedSuccessDispatch = unit.UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST;

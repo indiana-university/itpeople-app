@@ -2,15 +2,17 @@ import * as React from "react";
 import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, change } from "redux-form";
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
-import { saveMemberRequest, deleteMemberRequest } from "../store";
-import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest } from "../../types";
+import { saveMemberRequest, deleteMemberRequest, saveMemberTools } from "../store";
+import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest, IApiState, Permissions, ITool, UnitMemberComparer } from "../../types";
 import { connect } from "react-redux";
-import { AddUser, Pencil, TrashCan, Eye } from "src/components/icons";
+import { AddUser, Pencil, TrashCan, Eye, Gear } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
 import { Dispatch } from "redux";
 import AddMemberForm from "./AddMemberForm";
 import UpdateMemberForm from "./UpdateMemberForm";
 import { clearCurrent } from "src/components/lookup";
+import { UpdateMemberTools } from "./UpdateMemberToolsForm";
+import { Loader } from "src/components/Loader";
 
 interface IFormProps extends InjectedFormProps<IFormFields>, IDispatchProps, IFormFields {
   onSubmit: (e?: any) => any;
@@ -27,16 +29,20 @@ interface IDispatchProps {
   removeMember: typeof deleteMemberRequest;
   save: typeof saveMemberRequest;
   editMember(member: any): any;
+  editMemberTools(id: any, unitTools: ITool[]): any;
+  saveMemberTools: typeof saveMemberTools;
   addMember(unitId: number, role?: UitsRole): any;
+  tools: IApiState<any, ITool[]>;
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const { closeModal, clearCurrent, editMember, addMember, removeMember, save, unitId } = props;
+  const { closeModal, clearCurrent, editMember, addMember, removeMember, save, editMemberTools, saveMemberTools, unitId, tools } = props;
+  let canEditMemberTools = () => Permissions.canPut(tools.permissions);
   const renderMembers = ({ fields, input }: any) => {
-    let members = fields.map(function(field: any, index: number) {
+    let members = fields.map(function (field: any, index: number) {
       let member = fields.get(index) as IUnitMember;
       return { ...member, index };
-    }) as IUnitMember[];
+    }).sort(UnitMemberComparer) as IUnitMember[];
     let leaders = members.filter(m => m.role == ItProRole.Admin || m.role == UitsRole.Leader);
     let standardMember = members.filter(m => m.role == ItProRole.Pro || m.role == UitsRole.Member || m.role == UitsRole.Sublead);
     let others = members.filter(m => m.role == ItProRole.Aux || m.role == UitsRole.Related);
@@ -51,7 +57,7 @@ const form: React.SFC<IFormProps> = props => {
             </span>
           }
           buttonStyle={{ marginLeft: -14 }}
-          onOpen={() => { addMember(unitId, role); clearCurrent();}} 
+          onOpen={() => { addMember(unitId, role); clearCurrent(); }}
           variant="plain"
         >
           <ModalBody>
@@ -68,7 +74,7 @@ const form: React.SFC<IFormProps> = props => {
         </Modal>
       </div>
     );
-    const renderMember = function(member: IUnitMember) {
+    const renderMember = function (member: IUnitMember) {
       const remove = () => removeMember(member);
       const person = member.person;
       return (
@@ -111,6 +117,32 @@ const form: React.SFC<IFormProps> = props => {
               )}
             </Col>
             <div style={{ textAlign: "right" }}>
+              <Loader {...tools}>
+                {canEditMemberTools() && tools && tools.data && (
+
+                  <span style={{ textAlign: "left" }}>
+                    <Modal
+                      id={`Edit tools permissions: ${member.id}`}
+                      buttonText={<Gear />}
+                      variant="plain"
+                      title={`Edit tools permissions: ${person ? person.name : "Vacancy"}`}
+                      onOpen={() => { editMemberTools(member, tools.data || []) }}
+                    >
+                      <ModalBody>
+                        <UpdateMemberTools onSubmit={({ tools }: { tools: ITool[] }) => {
+                          const newToolIds =
+                            tools
+                              .filter(tool => tool.enabled)
+                              .map(tool => tool.id)
+                          saveMemberTools(member, newToolIds);
+                          closeModal();
+                        }} />
+                      </ModalBody>
+                    </Modal>
+                  </span>
+                )}
+              </Loader>
+
               <span style={{ textAlign: "left" }}>
                 <Modal
                   id={`Edit member: ${member.id}`}
@@ -130,6 +162,7 @@ const form: React.SFC<IFormProps> = props => {
                   </ModalBody>
                 </Modal>
               </span>
+
               <Button variant="plain" type="button" title="Remove member" onClick={remove}>
                 <TrashCan />
               </Button>
@@ -183,16 +216,16 @@ const form: React.SFC<IFormProps> = props => {
   );
 };
 
+let selector = formValueSelector("updateMembersForm");
 let UpdateMembersForm: any = reduxForm<IFormFields>({
   form: "updateMembersForm"
 })(form);
-
-let selector = formValueSelector("updateMembersForm");
 UpdateMembersForm = connect(
   (state: IApplicationState) => ({
     title: selector(state, "title"),
     role: selector(state, "role"),
-    unitId: selector(state, "unitId")
+    unitId: selector(state, "unitId"),
+    tools: state.unit.tools
   }),
   (dispatch: Dispatch) => {
     return {
@@ -205,6 +238,12 @@ UpdateMembersForm = connect(
           dispatch(change("updateMemberForm", key, member[key]));
         }
       },
+      editMemberTools: (member: IUnitMember, tools: ITool[]) => {
+        const memberToolIds = new Set(member.memberTools.map(t => t.toolId))
+        const toolCheckboxState = tools.map(tool => ({ ...tool, enabled: memberToolIds.has(tool.id) }));
+        dispatch(change("updateMemberTools", "tools", toolCheckboxState));
+      },
+      saveMemberTools: (member: IUnitMember, newToolIds: number[]) => dispatch(saveMemberTools(member, newToolIds)),
       addMember: (unitId: number, role?: UitsRole) => {
         dispatch(change("addMemberForm", "unitId", unitId));
         dispatch(change("addMemberForm", "role", role || UitsRole.Member));

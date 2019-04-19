@@ -12,10 +12,9 @@
       "campusPhone": "812-856-1234",
       "campusEmail": "rswanso@iu.edu",
       "campus": "Bloomington",
-      "tools": "Claw hammer",
       "expertise": "Wood-working",
       "responsibilities": "IT Leadership",
-      "photoUrl": "http://flavorwire.files.wordpress.com/2011/11/ron-swanson.jpg",
+      "photoUrl": "https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/p-parks-and-recreation-nick-offerman.jpg",
       "departmentId": 1
     },
     {
@@ -27,7 +26,6 @@
       "campusPhone": "812-856-1234",
       "campusEmail": "lknope@iu.edu",
       "campus": "IUBLA",
-      "tools": "Clip board",
       "expertise": "Canvasing",
       "responsibilities": "IT Leadership",
       "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg",
@@ -42,7 +40,6 @@
       "campusPhone": "812-856-1234",
       "campusEmail": "lsebastian@iu.edu",
       "campus": "IUBLA",
-      "tools": "Hay",
       "expertise": "Horsin' around",
       "responsibilities": "Being a horse",
       "departmentId": 1
@@ -176,6 +173,64 @@
       "departmentId": 3,
       "unitId": 1,
       "id": 3
+    }
+  ],
+  "tools": [
+    {
+      "id": 1,
+      "name": "Hammer"
+    },
+    {
+      "id": 2,
+      "name": "Saw"
+    },
+    {
+      "id": 3,
+      "name": "Chisel"
+    },
+    {
+      "id": 4,
+      "name": "Clipboard"
+    },
+    {
+      "id": 5,
+      "name": "Pen"
+    },
+    {
+      "id": 6,
+      "name": "Survey"
+    }
+  ],
+  "memberTools": [
+    {
+      "id": 1,
+      "membershipId": 1,
+      "toolId": 1
+    },
+    {
+      "id": 2,
+      "membershipId": 1,
+      "toolId": 2
+    },
+    {
+      "id": 3,
+      "membershipId": 1,
+      "toolId": 3
+    },
+    {
+      "id": 4,
+      "membershipId": 2,
+      "toolId": 4
+    },
+    {
+      "id": 5,
+      "membershipId": 2,
+      "toolId": 5
+    },
+    {
+      "id": 6,
+      "membershipId": 2,
+      "toolId": 6
     }
   ],
   "search": {

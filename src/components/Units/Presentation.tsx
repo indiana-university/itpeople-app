@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import { Col, Row, ModalBody } from "rivet-react";
-import { Permissions } from "../types";
+import { Permissions, EntityComparer } from "../types";
 import { Breadcrumbs, Content, PageTitle } from "../layout";
 import { IState } from "./store";
 import { Modal } from "../layout/Modal";
@@ -45,7 +45,9 @@ const Presentation: React.SFC<IState> = ({ permissions, data: units }) => (
 
     <Content className="rvt-bg-white rvt-p-tb-xxl rvt-m-tb-lg">
       <Row style={{ justifyContent: "space-between" }}>
-        {units && units.map((r, i) => (
+        {units && units
+          .sort(EntityComparer)
+          .map((r, i) => (
           <Col key={"unit:" + i} md={5} className="rvt-p-bottom-lg">
             <a href={`/units/${r.id}`} className="rvt-link-bold">
               {r.name}
