@@ -32,6 +32,9 @@ commands:
          name: Test SPA app
          command: yarn test -w 1 --coverage
       - run: 
+         name: E2E test React app
+         command: yarn ci
+      - run: 
           name: Configure build parameters
           command: cp .env.<<parameters.environment>> .env.production.local
       - run: 
