@@ -13,6 +13,9 @@ import { apiEndpoints } from '../effects';
 import { UnitPermissions, IUnitMemberRequest, ISupportRelationshipRequest, IUnit } from '../types';
 import { IApiCall, restApi } from '../api';
 
+// provide a localStorage mock
+import "jest-localstorage-mock"
+
 const sagaApiHappyPath = async (saga: any, request: any, expectedMethod: string, expectedPath: string, expectedDispatch: string, expectedPayload: any) => {
     const apiCaller: IApiCall = (m, u, p, d, h): Promise<any> => {
         expect(m).toEqual(expectedMethod);

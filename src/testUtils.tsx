@@ -4,7 +4,6 @@ import { Provider } from 'react-redux'
 import { createMemoryHistory } from 'history'
 import { render as rtlRender } from 'react-testing-library'
 import configureStore from 'src/configureStore'
-import { GlobalWithFetchMock } from "jest-fetch-mock"
 import { IPerson, IUnit, IDepartment, IUnitMember, ITool, IUnitMemberTool, ISupportRelationship } from 'src/components/types'
 import * as examples from 'src/db.json'
 
@@ -12,11 +11,6 @@ import * as examples from 'src/db.json'
 import 'jest-dom/extend-expect'
 // unmount all components after each test
 import 'react-testing-library/cleanup-after-each'
-
-// provide jest-fetch-mock as a global drop-in replacement for fetch
-const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock
-customGlobal.fetch = require('jest-fetch-mock')
-customGlobal.fetchMock = customGlobal.fetch
 
 export function render(ui: any, options = { route: '' }) {
     const history = createMemoryHistory({ initialEntries: [options.route] })
