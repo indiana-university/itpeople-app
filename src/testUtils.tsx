@@ -24,9 +24,9 @@ export function render(ui: any, options = { route: '' }) {
     )
 }
 
-// static tests that fixtures conform to types by setting type with 
-// object literal to force Typescript to check all members for exact
-// conformation to type
+// type checking of fixtures - set type with 
+// object literal to force Typescript to check all exemplars for exact
+// conformation; no extra members allowed
 
 export const Examples = {
     person: { ...examples.people[0] } as IPerson,
