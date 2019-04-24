@@ -24,8 +24,8 @@ export function render(ui: any, options = { route: '' }) {
     )
 }
 
-// type checking of fixtures - set type with 
-// object literal to force Typescript to check all exemplars for exact
+// type checking of fixtures - setting type with 
+// object literal makes Typescript check all examples for exact
 // conformation; no extra members allowed
 
 export const Examples = {
@@ -33,7 +33,8 @@ export const Examples = {
     unit: { ...examples.units[0] } as IUnit,
     member: { ...examples.memberships[0] } as IUnitMember,
     department: { ...examples.departments[0] } as IDepartment,
-    tools: { ...examples.tools[0] } as ITool,
+    tool: { ...examples.tools[0] } as ITool,
+    tools: examples.tools as ITool[],
     memberTool: { ...examples.memberTools[0] } as IUnitMemberTool, 
     supportRelationship: {...examples.supportRelationships[0] } as ISupportRelationship
 }
