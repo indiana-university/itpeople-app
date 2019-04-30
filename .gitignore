@@ -336,3 +336,7 @@ ASALocalRun/
 build
 .DS_Store
 *.local
+
+# cypress e2e test run videos
+cypress/videos
+cypress/screenshots

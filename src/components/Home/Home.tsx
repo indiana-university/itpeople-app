@@ -41,7 +41,7 @@ const Component: React.SFC<IDispatchProps & IStateProps> = ({
             <Row>
               <Col className="rvt-m-top-lg">
                 <button className="rvt-button" onClick={signInRequest}>
-                  Login
+                  Log In
                 </button>
               </Col>
             </Row>
