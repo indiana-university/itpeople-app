@@ -4,7 +4,14 @@ import { Provider } from 'react-redux'
 import { createMemoryHistory } from 'history'
 import { render as rtlRender } from 'react-testing-library'
 import configureStore from 'src/configureStore'
-import { IPerson, IUnit, IDepartment, IUnitMember, ITool, IUnitMemberTool, ISupportRelationship } from 'src/components/types'
+import { 
+    IPerson, 
+    IUnit, 
+    IDepartment, 
+    IUnitMember, 
+    ITool, 
+    IUnitMemberTool, 
+    ISupportRelationship } from 'src/components/types'
 import * as examples from 'src/db.json'
 
 // expressive expectation methods for dom queries
@@ -24,9 +31,9 @@ export function render(ui: any, options = { route: '' }) {
     )
 }
 
-// type checking of fixtures - setting type with 
-// object literal makes Typescript check all examples for exact
-// conformation; no extra members allowed
+// type checking of fixtures - setting type on an 
+// object literal member makes Typescript check all members
+// for exact conformation; no extra members allowed
 
 export const Examples = {
     person: { ...examples.people[0] } as IPerson,

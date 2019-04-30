@@ -2,6 +2,9 @@
 // React needs requestAnimationFrame even in test environments
 import 'raf/polyfill'
 
+//localStorage mock
+import 'jest-localstorage-mock'
+
 // provide jest-fetch-mock as a global drop-in replacement for fetch
 import { GlobalWithFetchMock } from "jest-fetch-mock"
 
