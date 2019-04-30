@@ -75,7 +75,7 @@ const form: React.SFC<IFormProps> = props => {
           </div>
           <div className="rvt-m-top-md">
             <Button type="submit" disabled={invalid && hasUser}>
-              Add member
+              Submit addition
             </Button>
             <Button type="button" variant="plain" onClick={reset}>
               Reset
