@@ -13,7 +13,7 @@ describe('admin using the app', () => {
         cy.getByTitle(/Delete:/).click()
         cy.queryByText('Test unit').should('not.exist')
     })
-    it.only('adds unit member & tool auth -> removes tool auth then member', () => {
+    it('adds unit member & tool auth -> removes tool auth then member', () => {
         cy.visit('/')
         cy.getByText(/log in/i).click()
         cy.visit('/units/2')
