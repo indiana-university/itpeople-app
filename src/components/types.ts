@@ -150,6 +150,7 @@ export interface IUnitMemberRequest {
   id?: number;
   unitId: number;
   personId?: number;
+  netid?: string;
   title: string;
   showTitle?: boolean;
   role: ItProRole | UitsRole | string;

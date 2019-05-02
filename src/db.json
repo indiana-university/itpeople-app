@@ -155,6 +155,15 @@
       "permissions": "Editor",
       "role": "Leader",
       "title": "Manager"
+    },
+    {
+      "unitId": "4",
+      "netid": "garryg",
+      "personId": 5,
+      "title": "Person",
+      "role": "Member",
+      "percentage": 100,
+      "id": 6
     }
   ],
   "supportRelationships": [
