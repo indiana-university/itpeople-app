@@ -116,7 +116,7 @@ const getOne = (name: string, path: string, body: any) =>
         .then(getFromPactServer(path))
         .then(expectOK);
 
-const create = (name: string, path: string, body: any) =>
+const create = (name: string, path: string, body: any, responseBody?: any) =>
     pactServer
         .addInteraction({
             state: `${name} may be created`,
@@ -129,13 +129,13 @@ const create = (name: string, path: string, body: any) =>
             },
             willRespondWith: {
                 status: 201,
-                body: deepMatchify(body)
+                body: deepMatchify(responseBody || body)
             }
         })
         .then(postToPactServer(path, body))
         .then(expectCreated);
 
-const update = (name: string, path: string, body: any) =>
+const update = (name: string, path: string, body: any, responseBody?: any) =>
     pactServer
         .addInteraction({
             state: `${name} exists`,
@@ -151,7 +151,7 @@ const update = (name: string, path: string, body: any) =>
                 body: deepMatchify(body)
             }
         })
-        .then(putToPactServer(path, body))
+        .then(putToPactServer(path, responseBody || body))
         .then(expectOK);
 
 
@@ -192,6 +192,16 @@ const referenceUnitMemberRequest: IUnitMemberRequest = {
     percentage: 100,
     permissions: "Viewer"
 };
+const referenceUnitMemberRequestByNetId: IUnitMemberRequest = {
+    id: 1,
+    unitId: referenceUnit.id,
+    netId: referencePerson.netId,
+    title: "title",
+    role: "Leader",
+    percentage: 100,
+    permissions: "Viewer"
+};
+
 const referenceUnitMember: IUnitMember = {
     ...referenceUnitMemberRequest,
     person: referencePerson,
@@ -279,6 +289,13 @@ describe('Contracts', () => {
             await update(resource, itemPath, referenceUnitMemberRequest))
         it('deletes an existing membership', async () =>
             await delete_(resource, itemPath))
+
+        const resourceByNetId = 'membership from netID'
+        // With netId instead of personId
+        it('creates a new membership from netID', async () =>
+            await create(resourceByNetId, setPath, referenceUnitMemberRequestByNetId, referenceUnitMemberRequest))
+        it('updates an existing membership', async () =>
+            await update(resourceByNetId, itemPath, referenceUnitMemberRequestByNetId, referenceUnitMemberRequest))
     })
 
     describe('Departments', () => {
