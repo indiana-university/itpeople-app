@@ -17,19 +17,20 @@ declare let global: any
 global.confirm = jest.fn(() => true)
 
 describe('Unit', () => {
-    describe('deleting a unit', () => {
-        const deleteUnitText = /delete this unit/i
 
-        const testState = {
-            ...initialState,
-            id: Examples.unit.id,
-            profile: {
-                ...defaultState(),
-                data: Examples.unit
-            },
-            cancel: unit.cancel,
-            deleteUnit: unit.deleteUnit
-        }
+    const testState = {
+        ...initialState,
+        id: Examples.unit.id,
+        profile: {
+            ...defaultState(),
+            data: Examples.unit
+        },
+        cancel: unit.cancel,
+        deleteUnit: unit.deleteUnit
+    }
+
+    describe('deleting', () => {
+        const deleteUnitText = /delete this unit/i
 
         test('without permission: show no delete ui', () => {
             const state = testState

@@ -8,7 +8,7 @@ import { lookupUser } from "../store";
 import { Dispatch } from "redux";
 import { UitsRole, IPerson, IUnitMember, IUnitMemberRequest } from "../../types";
 
-interface IFormProps extends InjectedFormProps<IUnitMemberRequest>, IUnitMember, IDispatchProps, IStateProps {}
+interface IFormProps extends InjectedFormProps<IUnitMemberRequest>, IUnitMember, IDispatchProps, IStateProps { }
 
 interface IDispatchProps {
   lookupUser: typeof lookupUser;
@@ -46,7 +46,8 @@ const form: React.SFC<IFormProps> = props => {
                         setPerson(user);
                       }}
                     >
-                      {user && user.name}
+                      {user && user.name} 
+                      {user && user.netId && <>  ({user.netId}) </>}
                     </Button>
                   </div>
                 );
@@ -75,7 +76,7 @@ const form: React.SFC<IFormProps> = props => {
           </div>
           <div className="rvt-m-top-md">
             <Button type="submit" disabled={invalid && hasUser}>
-              Add member
+              Submit addition
             </Button>
             <Button type="button" variant="plain" onClick={reset}>
               Reset

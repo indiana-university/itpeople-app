@@ -1,27 +1,23 @@
-/** 
- * Copyright (C) 2018 The Trustees of Indiana University
- * SPDX-License-Identifier: BSD-3-Clause
- */
-
 import * as React from 'react'
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux'
 import { createMemoryHistory } from 'history'
 import { render as rtlRender } from 'react-testing-library'
 import configureStore from 'src/configureStore'
-import { GlobalWithFetchMock } from "jest-fetch-mock"
-import { IPerson, IUnit, IDepartment, IUnitMember } from 'src/components/types'
+import { 
+    IPerson, 
+    IUnit, 
+    IDepartment, 
+    IUnitMember, 
+    ITool, 
+    IUnitMemberTool, 
+    ISupportRelationship } from 'src/components/types'
 import * as examples from 'src/db.json'
 
 // expressive expectation methods for dom queries
 import 'jest-dom/extend-expect'
 // unmount all components after each test
 import 'react-testing-library/cleanup-after-each'
-
-// provide jest-fetch-mock as a global drop-in replacement for fetch
-const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock
-customGlobal.fetch = require('jest-fetch-mock')
-customGlobal.fetchMock = customGlobal.fetch
 
 export function render(ui: any, options = { route: '' }) {
     const history = createMemoryHistory({ initialEntries: [options.route] })
@@ -35,9 +31,17 @@ export function render(ui: any, options = { route: '' }) {
     )
 }
 
+// type checking of fixtures - setting type on an 
+// object literal member makes Typescript check all members
+// for exact conformation; no extra members allowed
+
 export const Examples = {
     person: { ...examples.people[0] } as IPerson,
     unit: { ...examples.units[0] } as IUnit,
     member: { ...examples.memberships[0] } as IUnitMember,
-    department: { ...examples.departments[0] } as IDepartment
+    department: { ...examples.departments[0] } as IDepartment,
+    tool: { ...examples.tools[0] } as ITool,
+    tools: examples.tools as ITool[],
+    memberTool: { ...examples.memberTools[0] } as IUnitMemberTool, 
+    supportRelationship: {...examples.supportRelationships[0] } as ISupportRelationship
 }
