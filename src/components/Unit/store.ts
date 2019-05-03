@@ -103,7 +103,7 @@ const edit = () => action(UnitActionTypes.UNIT_EDIT, {});
 const fetchUnit = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request);
 const lookupDepartment = (q: string) => lookup(q ? `/departments?q=${q}&_limit=${lookupLimit}` : "");
 const lookupUnit = (q: string) => lookup(q ? `/units?q=${q}&_limit=${lookupLimit}` : "");
-const lookupUser = (q: string) => lookup(q ? `/people?q=${q}&_limit=${lookupLimit}` : "");
+const lookupUser = (q: string) => lookup(q ? `/people-lookup?q=${q}&_limit=${lookupLimit}` : "");
 const saveMemberRequest = (member: IUnitMemberRequest) => action(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, member);
 const saveUnitChild = (request: IEntityRequest) => action(UnitActionTypes.UNIT_SAVE_CHILD_REQUEST, request);
 const saveUnitDepartment = (request: ISupportRelationshipRequest) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, request);
@@ -365,7 +365,7 @@ const saveMemberError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_MEMBE
 function* handleSaveMember(api: IApi, member: IUnitMemberRequest) {
   const request = member.id
     ? api.put(apiEndpoints.memberships(member.id), member)
-    : api.post(apiEndpoints.memberships(member.id), member);
+    : api.post(apiEndpoints.memberships(), member);
   const action = yield request
     .then(_ => fetchUnitMembers({ id: member.unitId }))
     .catch(signinIfUnauthorized)
