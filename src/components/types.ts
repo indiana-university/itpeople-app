@@ -142,8 +142,10 @@ export enum UitsRole {
 }
 
 export enum UnitPermissions {
-  Editor = "Editor",
-  Viewer = "Viewer"
+  Owner = "Owner",
+  Viewer = "Viewer",
+  ManageMembers = "ManageMembers",
+  ManageTools = "ManageTools"
 }
 
 export interface IUnitMemberRequest {
@@ -221,14 +223,16 @@ export interface ITool extends IEntity {
 
 // Comparers
 
-export const EntityComparer = (a: IEntity, b: IEntity) => 
-  (a.name === b.name ? 0 : a.name < b.name ? -1 : 1);
+export const EntityComparer = (a: IEntity, b: IEntity) => (a.name === b.name ? 0 : a.name < b.name ? -1 : 1);
 
 export const UnitMemberComparer = (a: IUnitMember, b: IUnitMember) => {
-  if (!a.person) { return -1; }
-  if (!b.person) { return 1; }
+  if (!a.person) {
+    return -1;
+  }
+  if (!b.person) {
+    return 1;
+  }
   return EntityComparer(a.person, b.person);
 };
 
-export const SupportRelationshipComparer = (a: ISupportRelationship, b: ISupportRelationship) =>
-  EntityComparer(a.department, b.department);
+export const SupportRelationshipComparer = (a: ISupportRelationship, b: ISupportRelationship) => EntityComparer(a.department, b.department);
