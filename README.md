@@ -17,10 +17,10 @@ yarn dev
 
 ### Other run options
 ```sh
-yarn dev-user # permission and authorization rules
-yarn dev-admin # admin permissions
-yarn dev-slow # slow and random API response times
-yarn dev-chaos # random errors (404,403,500, timeouts) to emulate unstable API server
+yarn dev:user # permission and authorization rules
+yarn dev:admin # admin permissions
+yarn dev:slow # slow and random API response times
+yarn dev:chaos # random errors (404,403,500, timeouts) to emulate unstable API server
 ```
 
 ## Test
