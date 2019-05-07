@@ -3,7 +3,7 @@ import { reduxForm, InjectedFormProps, change, formValueSelector, Field } from "
 import { Button } from "rivet-react";
 import { RivetInputField, RivetInput, RivetSelect, RivetSelectField } from "src/components/form";
 import { connect } from "react-redux";
-import { IApplicationState } from "src/components/types";
+import { IApplicationState, UnitPermissions } from "src/components/types";
 import { lookupUser } from "../store";
 import { Dispatch } from "redux";
 import { UitsRole, IPerson, IUnitMember, IUnitMemberRequest } from "../../types";
@@ -46,7 +46,7 @@ const form: React.SFC<IFormProps> = props => {
                         setPerson(user);
                       }}
                     >
-                      {user && user.name} 
+                      {user && user.name}
                       {user && user.netId && <>  ({user.netId}) </>}
                     </Button>
                   </div>
@@ -66,6 +66,14 @@ const form: React.SFC<IFormProps> = props => {
               <option value={UitsRole.Leader}>Leader</option>
               <option value={UitsRole.Sublead}>Sublead</option>
               <option value={UitsRole.Related}>Related</option>
+            </RivetSelectField>
+          </div>
+          <div>
+            <RivetSelectField name="permissions" component={RivetSelect} label="Unit permissions">
+              <option value={UnitPermissions.Viewer}>Viewer</option>
+              <option value={UnitPermissions.Owner}>Owner</option>
+              <option value={UnitPermissions.ManageMembers}>Manage Members</option>
+              <option value={UnitPermissions.ManageTools}>Manage Tools</option>
             </RivetSelectField>
           </div>
           <div>
