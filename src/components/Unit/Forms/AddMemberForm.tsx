@@ -7,6 +7,7 @@ import { IApplicationState, UnitPermissions } from "src/components/types";
 import { lookupUser } from "../store";
 import { Dispatch } from "redux";
 import { UitsRole, IPerson, IUnitMember, IUnitMemberRequest } from "../../types";
+import { debounce } from "lodash";
 
 interface IFormProps extends InjectedFormProps<IUnitMemberRequest>, IUnitMember, IDispatchProps, IStateProps { }
 
@@ -16,6 +17,7 @@ interface IDispatchProps {
 }
 interface IStateProps {
   filteredUsers?: IPerson[];
+  searching?:boolean
 }
 
 const form: React.SFC<IFormProps> = props => {
@@ -23,14 +25,16 @@ const form: React.SFC<IFormProps> = props => {
     const q = e.target.value;
     props.lookupUser(q);
   };
-  const { person, filteredUsers, lookupUser, setPerson, reset, invalid, handleSubmit } = props;
+  const handleSearchDebounced = debounce(handleSearch, 400);
+  const { person, filteredUsers, lookupUser, setPerson, reset, invalid, handleSubmit, searching } = props;
   const hasUser = !!person;
   return (
     <>
       {!hasUser && (
         <>
           <div>
-            <RivetInputField name="search" component={RivetInput} label="Search" onChange={handleSearch} onLoad={handleSearch} />
+            <RivetInputField name="search" component={RivetInput} label="Search" onChange={handleSearchDebounced} onLoad={handleSearch} />
+            {searching && <div className="rvt-loader" aria-label="Content loading" style={{float:"right", margin:"-2em 1em 0 0"}} />}
           </div>
           {filteredUsers && filteredUsers.length > 0 && (
             <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
@@ -106,8 +110,9 @@ const selector = formValueSelector("addMemberForm"); // <-- same as form name
 AddMemberForm = connect(
   (state: IApplicationState) => {
     const filteredUsers = state.lookup.current;
+    const searching = state.lookup.loading;
     const person = selector(state, "person");
-    return { filteredUsers, person };
+    return { filteredUsers, person, searching };
   },
   (dispatch: Dispatch) => {
     return {
