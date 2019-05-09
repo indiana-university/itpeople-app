@@ -1,8 +1,8 @@
 import * as React from "react";
 import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { Button } from "rivet-react";
-import { RivetInputField, RivetInput, RivetSelect, RivetSelectField, RivetCheckboxField, RivetCheckbox } from "src/components/form";
-import { UitsRole, IUnitMember } from "../../types";
+import { RivetInputField, RivetInput, RivetSelect, RivetSelectField } from "src/components/form";
+import { UitsRole, IUnitMember, UnitPermissions } from "../../types";
 import { connect } from "react-redux";
 
 interface IFormProps extends InjectedFormProps<IUnitMember>, IUnitMember {}
@@ -22,20 +22,20 @@ const form: React.SFC<IFormProps> = props => {
           </RivetSelectField>
         </div>
         <div>
+          <RivetSelectField name="permissions" component={RivetSelect} label="Unit permissions">
+            <option value={UnitPermissions.Viewer}>Viewer</option>
+            <option value={UnitPermissions.Owner}>Owner</option>
+            <option value={UnitPermissions.ManageMembers}>Manage Members</option>
+            <option value={UnitPermissions.ManageTools}>Manage Tools</option>
+          </RivetSelectField>
+        </div>
+        <div>
           <RivetInputField name="title" component={RivetInput} label="Title" />
-          <label>
-            <p>Display title in orgchart?</p>
-            <RivetCheckboxField name="showTitle" component={RivetCheckbox} label="Yes" />
-          </label>
         </div>
         <div>
           <RivetInputField name="percentage" component={RivetInput} label="Percentage" type="number" min="0" max="100" />
-          <label>
-            <p>Display percentage in orgchart? {props.showPercentage}</p>
-            <RivetCheckboxField name="showPercentage" component={RivetCheckbox} label="Yes" />
-          </label>
         </div>
-        <div>
+        <div className="rvt-m-top-md">
           <Button type="submit">Save</Button>
         </div>
       </form>

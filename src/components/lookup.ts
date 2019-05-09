@@ -27,11 +27,13 @@ interface ILookupState {
   cache: {};
   q?: string;
   current?: any;
+  loading: boolean;
 }
 
 const initialState: ILookupState = {
   cache: {},
   q: "",
+  loading: false,
   current: null
 };
 
@@ -41,23 +43,23 @@ const reducer: Reducer = (state = initialState, action) => {
       if (action.payload == "") {
         return { ...state, current: null, q: "" };
       }
-      return { ...state, q: action.payload };
+      return { ...state, loading: true, q: action.payload };
     case LookupActionTypes.LOOKUP_FETCH_REQUESTED:
       return state;
     case LookupActionTypes.LOOKUP_FETCH_SUCCESS:
       let { data, url } = action.payload;
       url = new URL(url);
       const path = url.pathname + decodeURI(url.search);
-      let s = { ...state, current: data, cache: state.cache || {} };
+      let s = { ...state, current: data, loading: false, cache: state.cache || {} };
       s.cache[path] = data;
       return s;
     case LookupActionTypes.LOOKUP_FETCH_ERROR:
       // todo: action.payload is a caught exception Error object
-      return state;
+      return { ...state, loading: false };
     case LookupActionTypes.LOOKUP_GET_CACHED_SUCCESS:
-      return { ...state, current: action.payload };
+      return { ...state, current: action.payload, loading: false };
     case LookupActionTypes.LOOKUP_CLEAR_CURRENT:
-      return { ...state, current: null };
+      return { ...state, current: null, loading: false };
     default:
       return state;
   }

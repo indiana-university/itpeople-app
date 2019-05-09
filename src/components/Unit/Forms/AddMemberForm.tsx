@@ -3,10 +3,11 @@ import { reduxForm, InjectedFormProps, change, formValueSelector, Field } from "
 import { Button } from "rivet-react";
 import { RivetInputField, RivetInput, RivetSelect, RivetSelectField } from "src/components/form";
 import { connect } from "react-redux";
-import { IApplicationState } from "src/components/types";
+import { IApplicationState, UnitPermissions } from "src/components/types";
 import { lookupUser } from "../store";
 import { Dispatch } from "redux";
 import { UitsRole, IPerson, IUnitMember, IUnitMemberRequest } from "../../types";
+import { debounce } from "lodash";
 
 interface IFormProps extends InjectedFormProps<IUnitMemberRequest>, IUnitMember, IDispatchProps, IStateProps { }
 
@@ -16,6 +17,7 @@ interface IDispatchProps {
 }
 interface IStateProps {
   filteredUsers?: IPerson[];
+  searching?:boolean
 }
 
 const form: React.SFC<IFormProps> = props => {
@@ -23,14 +25,16 @@ const form: React.SFC<IFormProps> = props => {
     const q = e.target.value;
     props.lookupUser(q);
   };
-  const { person, filteredUsers, lookupUser, setPerson, reset, invalid, handleSubmit } = props;
+  const handleSearchDebounced = debounce(handleSearch, 400);
+  const { person, filteredUsers, lookupUser, setPerson, reset, invalid, handleSubmit, searching } = props;
   const hasUser = !!person;
   return (
     <>
       {!hasUser && (
         <>
           <div>
-            <RivetInputField name="search" component={RivetInput} label="Search" onChange={handleSearch} onLoad={handleSearch} />
+            <RivetInputField name="search" component={RivetInput} label="Search" onChange={handleSearchDebounced} onLoad={handleSearch} />
+            {searching && <div className="rvt-loader" aria-label="Content loading" style={{float:"right", margin:"-2em 1em 0 0"}} />}
           </div>
           {filteredUsers && filteredUsers.length > 0 && (
             <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
@@ -46,7 +50,7 @@ const form: React.SFC<IFormProps> = props => {
                         setPerson(user);
                       }}
                     >
-                      {user && user.name} 
+                      {user && user.name}
                       {user && user.netId && <>  ({user.netId}) </>}
                     </Button>
                   </div>
@@ -66,6 +70,14 @@ const form: React.SFC<IFormProps> = props => {
               <option value={UitsRole.Leader}>Leader</option>
               <option value={UitsRole.Sublead}>Sublead</option>
               <option value={UitsRole.Related}>Related</option>
+            </RivetSelectField>
+          </div>
+          <div>
+            <RivetSelectField name="permissions" component={RivetSelect} label="Unit permissions">
+              <option value={UnitPermissions.Viewer}>Viewer</option>
+              <option value={UnitPermissions.Owner}>Owner</option>
+              <option value={UnitPermissions.ManageMembers}>Manage Members</option>
+              <option value={UnitPermissions.ManageTools}>Manage Tools</option>
             </RivetSelectField>
           </div>
           <div>
@@ -98,8 +110,9 @@ const selector = formValueSelector("addMemberForm"); // <-- same as form name
 AddMemberForm = connect(
   (state: IApplicationState) => {
     const filteredUsers = state.lookup.current;
+    const searching = state.lookup.loading;
     const person = selector(state, "person");
-    return { filteredUsers, person };
+    return { filteredUsers, person, searching };
   },
   (dispatch: Dispatch) => {
     return {

@@ -124,28 +124,28 @@
       "id": 1,
       "unitId": 1,
       "personId": 1,
-      "percentage": 75,
-      "permissions": "Editor",
+      "title": "Manager",
       "role": "Leader",
-      "title": "Manager"
+      "permissions": "Owner",
+      "percentage": 75
     },
     {
       "id": 2,
       "unitId": 1,
       "personId": 2,
-      "percentage": 100,
-      "permissions": "Editor",
+      "title": "Developer",
       "role": "Member",
-      "title": "Developer"
+      "permissions": "ManageTools",
+      "percentage": 100
     },
     {
       "id": 4,
       "unitId": 1,
       "personId": 4,
-      "percentage": 100,
-      "permissions": "Viewer",
+      "title": "Outside consultant",
       "role": "Related",
-      "title": "Outside consultant"
+      "permissions": "Viewer",
+      "percentage": "100"
     },
     {
       "id": 5,
@@ -163,6 +163,10 @@
       "role": "Member",
       "percentage": 100,
       "id": 6
+    },
+    {
+      "permissions": "Owner",
+      "id": 7
     }
   ],
   "supportRelationships": [
