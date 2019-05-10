@@ -8,8 +8,9 @@ import { render, Examples } from "src/testUtils"
 import { fireEvent } from "react-testing-library"
 import { defaultState, Permissions } from 'src/components/types'
 
-import { Edit } from './Edit'
-import * as unit from "../store";
+import { IProps, Edit } from './Edit'
+import * as unit from "../store"
+import { IDispatchProps } from "../Container"
 import { initialState } from 'src/components/Unit';
 
 // bypass confirmation
@@ -18,39 +19,57 @@ global.confirm = jest.fn(() => true)
 
 describe('Unit', () => {
 
-    const testState = {
+    const testState: unit.IState = {
         ...initialState,
-        id: Examples.unit.id,
         profile: {
             ...defaultState(),
             data: Examples.unit
         },
-        cancel: unit.cancel,
-        deleteUnit: unit.deleteUnit
+        members: {
+            ...defaultState(),
+            data: [Examples.member]
+        }
+    }
+
+    const testProps: IProps = {
+        ...testState,
+        id: Examples.unit.id,
+        cancel: jest.fn(),
+        deleteUnit: jest.fn()
+    }
+
+    const testDispatchProps: IDispatchProps = {
+        fetchUnit: jest.fn(),
+        edit: jest.fn(),
+        save: jest.fn(),
+        cancel: jest.fn(),
+        deleteUnit: jest.fn()
     }
 
     describe('deleting', () => {
         const deleteUnitText = /delete this unit/i
 
-        test('without permission: show no delete ui', () => {
-            const state = testState
+        it('cannot delete without permission', () => {
+            const props = { ...testDispatchProps, ...testProps, ...testState }
             const { queryByText } = render(
                 <Edit
-                    {...state} />
+                    {...props} />
             )
             expect(queryByText(deleteUnitText)).not.toBeInTheDocument()
         })
-        test('with permission: can delete with confirm', async () => {
-            const state = {
+        it('can delete with permission', async () => {
+            const stateWithDeletePermissions = {
                 ...testState,
                 profile: {
                     ...testState.profile,
                     permissions: [Permissions.Delete]
                 }
             }
+            const props = { ...testDispatchProps, ...testProps, ...stateWithDeletePermissions }
+
             const { getByText } = render(
                 <Edit
-                    {...state} />
+                    {...props} />
             )
             expect(getByText(deleteUnitText)).toBeInTheDocument()
             fireEvent.click(getByText(deleteUnitText))
