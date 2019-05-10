@@ -17,7 +17,7 @@ interface IContainerProps {
 }
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
-interface IDispatchProps {
+export interface IDispatchProps {
   fetchUnit: typeof unit.fetchUnit;
   save: typeof unit.saveUnitProfileRequest;
   deleteUnit: typeof unit.deleteUnit; //TODO

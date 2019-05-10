@@ -1,4 +1,4 @@
-describe('admin using the app', () => {
+describe('admin user', () => {
 
     it('creates new unit and deletes it', () => {
         cy.visit('/')
@@ -13,7 +13,8 @@ describe('admin using the app', () => {
         cy.getByTitle(/Delete:/).click()
         cy.queryByText('Test unit').should('not.exist')
     })
-    it('adds unit member & tool auth -> removes tool auth then member', () => {
+
+    it('adds unit member & tool -> removes them', () => {
         cy.visit('/')
         cy.getByText(/log in/i).click()
         cy.visit('/units/2')
@@ -35,5 +36,30 @@ describe('admin using the app', () => {
         cy.getByText(/update/i).click()
         cy.getByTitle(/remove member/i).click()
         cy.queryByText(/sebastian/i).should("not.be.visible")
+    })
+})
+describe('standard user', () => {
+
+    it('cannot edit or delete a unit', () => {
+        cy.visit('/')
+        cy.getByText(/log in/i).click()
+        cy.visit('/units/1')
+        cy.queryByTitle(/edit:/i).should("not.be.visible")
+        cy.queryByTitle(/delete:/i).should("not.be.visible")
+    })
+})
+
+describe('unit leader', () => {
+
+    it('can edit unit, members & tools', () => {
+        cy.visit('/')
+        cy.getByText(/log in/i).click()
+        cy.visit('/units/4')
+        cy.queryByTitle(/delete:/i).should("not.be.visible")
+        cy.getByTitle(/edit:/i).click()
+        cy.getByTitle(/add leader/i).should("be.visible")
+        cy.getByTitle(/add members/i).should("be.visible")
+        cy.getByTitle(/add others/i).should("be.visible")
+        cy.getByTitle(/edit tools/i).should("be.visible")
     })
 })

@@ -18,7 +18,7 @@ import Parent from "./Parent";
 import { TrashCan, CloseX } from "src/components/icons";
 import { Permissions } from "src/components/types";
 
-interface IProps extends unit.IState {
+export interface IProps extends unit.IState {
   cancel: typeof unit.cancel;
   id: number;
   deleteUnit: typeof unit.deleteUnit
