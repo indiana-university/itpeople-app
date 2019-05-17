@@ -24,5 +24,6 @@ module.exports = {
   // setting an actual url for jsdom rather than default of "about:config"
   // to avoid SecurityError
   "testURL": "https://localhost:3000",
-  "setupFiles": [ "<rootDir>/src/setupTests.ts" ]
+  "setupFiles": [ "<rootDir>/src/setupTests.ts" ],
+  "clearMocks": true
 }
