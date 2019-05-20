@@ -106,7 +106,7 @@ workflows:
             branches:
               ignore: gh-pages
       - cypress/run:
-          start: yarn server-test dev:switch 3000
+          start: server-test dev:switch 3000
           wait-on: 'http://localhost:3000'
           yarn: true
 #      - deploy_to_test:
