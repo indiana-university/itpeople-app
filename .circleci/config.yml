@@ -46,9 +46,6 @@ commands:
           root: /tmp/workspace
           paths:
             - <<parameters.environment>>
-      - cypress/run:
-          start: yarn server-test dev:switch 3000
-          wait-on: 'http://localhost:3000'
   deploy:
     description: "Deploy app assets to target environment"
     parameters:
@@ -108,6 +105,10 @@ workflows:
           filters:
             branches:
               ignore: gh-pages
+      - cypress/run:
+          start: yarn server-test dev:switch 3000
+          wait-on: 'http://localhost:3000'
+
 #      - deploy_to_test:
 #          requires: 
 #            - build_for_test
