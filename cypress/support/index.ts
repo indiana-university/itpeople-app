@@ -4,5 +4,5 @@ import './commands'
 // reset json-server db before each test
 
 beforeEach(() => {
-    cy.exec('git co src/db.json')
+    cy.exec('git checkout src/db.json')
 })
