@@ -46,9 +46,6 @@ commands:
           root: /tmp/workspace
           paths:
             - <<parameters.environment>>
-      - run:
-          name: E2E test SPA app
-          command: yarn server-test dev:switch 3000 cy:run
   deploy:
     description: "Deploy app assets to target environment"
     parameters:
@@ -108,9 +105,9 @@ workflows:
           filters:
             branches:
               ignore: gh-pages
-      # - cypress/run:
-      #     command: 'yarn server-test dev:switch 3000 cy:run'
-      #     yarn: true
+      - cypress/run:
+          command: 'yarn server-test dev:switch 3000 cy:run'
+          yarn: true
 #      - deploy_to_test:
 #          requires: 
 #            - build_for_test
