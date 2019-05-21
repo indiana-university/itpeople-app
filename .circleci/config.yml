@@ -109,7 +109,6 @@ workflows:
           start: 'yarn dev:switch'
           wait-on: 'http://localhost:3000'
           yarn: true
-          record: true
 #      - deploy_to_test:
 #          requires: 
 #            - build_for_test
