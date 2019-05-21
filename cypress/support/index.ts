@@ -3,6 +3,6 @@ import './commands'
 
 // reset json-server db before each test
 
-// beforeEach(() => {
-//     cy.exec('git checkout src/db.json')
-// })
+beforeEach(() => {
+    cy.exec('git checkout src/db.json')
+})
