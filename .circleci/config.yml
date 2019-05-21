@@ -108,6 +108,7 @@ workflows:
       - cypress/run:
           command: 'yarn server-test dev:switch 3000 cy:run'
           yarn: true
+          record: true
 #      - deploy_to_test:
 #          requires: 
 #            - build_for_test
