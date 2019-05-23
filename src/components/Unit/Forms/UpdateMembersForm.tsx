@@ -67,8 +67,8 @@ const form: React.SFC<IFormProps> = props => {
               onSubmit={(values: IUnitMember) => {
                 const netId = values.person ? values.person.netId : undefined;
                 const personId = values.person ? values.person.id : undefined;
-                const { title, showTitle, role, permissions, percentage, showPercentage } = values;
-                save({ unitId, netId, personId, title, showTitle, role, permissions, percentage, showPercentage });
+                const { title, showTitle, role, permissions, percentage, showPercentage, notes } = values;
+                save({ unitId, netId, personId, title, showTitle, role, permissions, percentage, showPercentage, notes });
                 closeModal();
               }}
             />
