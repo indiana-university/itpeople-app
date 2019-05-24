@@ -127,7 +127,8 @@
       "title": "Manager",
       "role": "Leader",
       "permissions": "Owner",
-      "percentage": 75
+      "percentage": 75,
+      "notes": "This guy gets a note!"
     },
     {
       "id": 2,
