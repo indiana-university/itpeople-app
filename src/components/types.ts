@@ -202,8 +202,8 @@ export interface IPerson {
   departmentId?: number;
   department?: IDepartment;
   // vvv none of this matters yet vvv
-  expertise: string;
-  responsibilities: string;
+  interests: string;
+  jobClasses: string;
   photoUrl?: string;
 }
 

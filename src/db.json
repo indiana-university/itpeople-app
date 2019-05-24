@@ -12,8 +12,8 @@
       "campusPhone": "812-856-1234",
       "campusEmail": "rswanso@iu.edu",
       "campus": "Bloomington",
-      "expertise": "Wood-working",
-      "responsibilities": "IT Leadership",
+      "interests": "Wood-working;;;;Fishing;;",
+      "jobClasses": "IT Leadership;;;;Manager;Leader;",
       "photoUrl": "https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/p-parks-and-recreation-nick-offerman.jpg",
       "departmentId": 1
     },
@@ -26,8 +26,8 @@
       "campusPhone": "812-856-1234",
       "campusEmail": "lknope@iu.edu",
       "campus": "IUBLA",
-      "expertise": "Canvasing",
-      "responsibilities": "IT Leadership",
+      "interests": "Canvasing,Organizing",
+      "jobClasses": "IT Leadership",
       "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg",
       "departmentId": 1
     },
@@ -40,8 +40,8 @@
       "campusPhone": "812-856-1234",
       "campusEmail": "lsebastian@iu.edu",
       "campus": "IUBLA",
-      "expertise": "Horsin' around",
-      "responsibilities": "Being a horse",
+      "interests": "Horsin' around",
+      "jobClasses": "Being a horse",
       "departmentId": 1
     },
     {
@@ -53,8 +53,8 @@
       "campusPhone": "812-856-1234",
       "campusEmail": "terry@pawnee.in.us",
       "campus": "Bloomington",
-      "expertise": "screwing up",
-      "responsibilities": "butt of jokes",
+      "interests": "screwing up",
+      "jobClasses": "butt of jokes",
       "departmentId": 1
     }
   ],
