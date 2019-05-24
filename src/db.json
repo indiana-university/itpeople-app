@@ -12,10 +12,17 @@
       "campusPhone": "812-856-1234",
       "campusEmail": "rswanso@iu.edu",
       "campus": "Bloomington",
-      "interests": "Wood-working;;;;Fishing;;",
-      "jobClasses": "IT Leadership;;;;Manager;Leader;",
+      "interests": "Wood-working;javascript;c#;mysql;unit-testing",
+      "jobClasses": "BizSysAnalysis;DataAdminAnalysis;DatabaseArchDesign;InstructionalTech;ItProjectMgt;ItSecurityPrivacy",
       "photoUrl": "https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/p-parks-and-recreation-nick-offerman.jpg",
-      "departmentId": 1
+      "departmentId": 1,
+      "department": {
+        "id": 1,
+        "name": "Parks and Recreation Department",
+        "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+      },
+      "interest": "Wood-working;Fishing;javascript",
+      "personId": 1
     },
     {
       "id": 2,

@@ -14,9 +14,9 @@ export const enum ProfileActionTypes {
   LOOKUP_TAG_REQUEST = "@@profile/LOOKUP_TAG_REQUEST",
   LOOKUP_TAG_SUCCESS = "@@profile/LOOKUP_TAG_SUCCESS",
   LOOKUP_TAG_ERROR = "@@profile/LOOKUP_TAG_ERROR",
-  // PROFILE_UPDATE_REQUEST = "@@profile/PROFILE_UPDATE_REQUEST",
-  // PROFILE_UPDATE_SUCCESS = "@@profile/PROFILE_UPDATE_SUCCESS",
-  // PROFILE_UPDATE_ERROR = "@@profile/PROFILE_UPDATE_ERROR",
+  PROFILE_SAVE_REQUEST = "@@profile/PROFILE_SAVE_REQUEST",
+  PROFILE_SAVE_SUCCESS = "@@profile/PROFILE_SAVE_SUCCESS",
+  PROFILE_SAVE_ERROR = "@@profile/PROFILE_SAVE_ERROR",
   PROFILE_TOGGLE_UNIT = "PROFILE_TOGGLE_UNIT",
   PROFILE_MEMBERSHIPS_FETCH_REQUEST = "@@profile/PROFILE_MEMBERSHIPS_FETCH_REQUEST",
   PROFILE_MEMBERSHIPS_FETCH_SUCCESS = "@@profile/PROFILE_MEMBERSHIPS_FETCH_SUCCESS",
@@ -37,9 +37,9 @@ import { action } from "typesafe-actions";
 export const fetchRequest = (request: IEntityRequest) => action(ProfileActionTypes.PROFILE_FETCH_REQUEST, request);
 const fetchSuccess = (response: IApiResponse<IPerson>) => action(ProfileActionTypes.PROFILE_FETCH_SUCCESS, response);
 const fetchError = (error: Error) => action(ProfileActionTypes.PROFILE_FETCH_ERROR, error);
-// export const updateRequest = (request: IPersonRequest) => action(ProfileActionTypes.PROFILE_UPDATE_REQUEST, request);
-// export const updateSuccess = (data: IPersonProfile) => action(ProfileActionTypes.PROFILE_UPDATE_SUCCESS, data);
-// export const updateError = (error: Error) => action(ProfileActionTypes.PROFILE_UPDATE_ERROR, error);
+export const savePerson = (person: IPerson) => action(ProfileActionTypes.PROFILE_SAVE_REQUEST, person);
+export const savePersonSuccess = (response: IApiResponse<IPerson>) => action(ProfileActionTypes.PROFILE_SAVE_SUCCESS, response);
+export const savePersonError = (error: Error) => action(ProfileActionTypes.PROFILE_SAVE_ERROR, error);
 export const toggleUnit = (id: number) => action(ProfileActionTypes.PROFILE_TOGGLE_UNIT, id);
 
 // MEMBERSHIPS
@@ -150,12 +150,22 @@ function* handleLookupTags(api: IApi, q: string) {
   yield put(nextAction);
 }
 
+function* handleSavePerson(api: IApi, person: IPerson) {
+  const nextAction = yield api
+    .put<IPerson>(`/people/${person.id}`, person)
+    .then(savePersonSuccess)
+    .then(() => fetchRequest({ id: person.id }))
+    .catch(signinIfUnauthorized)
+    .catch(savePersonError);
+  yield put(nextAction);
+}
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchProfileFetch() {
   yield takeEvery(ProfileActionTypes.PROFILE_FETCH_REQUEST, (a: AnyAction) => handleFetchPerson(api, a.payload));
   yield takeEvery(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_REQUEST, (a: AnyAction) => handleFetchMemberships(api, a.payload));
   yield takeEvery(ProfileActionTypes.LOOKUP_TAG_REQUEST, (a: AnyAction) => handleLookupTags(api, a.payload));
+  yield takeEvery(ProfileActionTypes.PROFILE_SAVE_REQUEST, (a: AnyAction) => handleSavePerson(api, a.payload));
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.

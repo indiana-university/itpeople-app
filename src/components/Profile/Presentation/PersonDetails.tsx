@@ -8,7 +8,8 @@ import EditInterests from "../Forms/EditInterests";
 import { EditJobClasses } from "../Forms/EditJobClasses";
 
 export const PersonDetails: React.SFC<IProps> = (props) => {
-  const { location, campus, campusEmail, campusPhone, department, interests, jobClasses, canEdit, editJobClasses, closeModal } = props;
+  const { person, canEdit, editJobClasses, closeModal, save  } = props;
+  const {location, campus, campusEmail, campusPhone, department, interests, jobClasses} = person;
   const interestList = interests.split(";").filter(s => !!s.trim())
   const jobClassList = jobClasses.split(";").filter(s => !!s.trim())
   return <>
@@ -58,7 +59,8 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
                       jobClasses={jobClassList}
                       onSubmit={({ jobClasses }: any) => {
                         const jobClassNames = jobClasses.filter((c: any) => c.enabled).map((c: any) => c.name);
-                        console.log("jobClassNames",jobClassNames)
+                        const updated: IPerson = {...person, jobClasses: jobClassNames.join(";")}
+                        save(updated)
                         closeModal();
                       }}
                     />
@@ -80,8 +82,10 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
                   <ModalBody>
                     <EditInterests
                       interests={interestList}
-                      onSubmit={(interests: any) => {
+                      onSubmit={(interests: string[]) => {
                         console.log("interests", interests)
+                        const updated: IPerson = {...person, interests: interests.join(";")}
+                        save(updated)
                         closeModal();
                       }}
                     />
@@ -92,7 +96,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
             <h2 className="rvt-ts-23 rvt-text-bold">Professional interests</h2>
             <p>Professional interests are topics or skills that are commonly shared throughout this industry. Select a topic below to see who else has the same interests.</p>
             <List variant="plain" orientation="inline">
-              {interestList.map((interest) => (<li key={`${interest}-badge`}><Badge>{interest}</Badge></li>))}
+              {interestList.map((interest: string) => (<li key={`${interest}-badge`}><Badge>{interest}</Badge></li>))}
             </List>
           </div>
         )}
@@ -101,10 +105,12 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
   </>
 }
 
-interface IProps extends IPerson {
+interface IProps {
+  person: IPerson;
   canEdit?: boolean;
   editJobClasses: (jobClasses: string[]) => any;
-  closeModal: () => any
+  closeModal: () => any;
+  save: (person:IPerson)=>any
 }
 
 // todo: endpoint for Responsibility list

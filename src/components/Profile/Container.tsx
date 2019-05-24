@@ -6,13 +6,14 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { IApplicationState, IEntityRequest } from "../types";
+import { IApplicationState, IEntityRequest, IPerson } from "../types";
 import { View } from "./Presentation";
 import {
   fetchRequest,
   fetchMembershipsRequest,
   IState,
-  toggleUnit
+  toggleUnit,
+  savePerson
 } from "./store";
 import { change } from "redux-form";
 import { closeModal } from "../layout/Modal";
@@ -27,12 +28,11 @@ interface IPropsFromDispatch {
   // profileUpdateRequest: typeof updateRequest;
   toggleUnit: typeof toggleUnit;
   editJobClasses: (j: string[]) => any,
-  closeModal: typeof closeModal
+  closeModal: typeof closeModal,
+  save: typeof savePerson
 }
 
-class Container extends React.Component<
-  IState & IProfileProps & IPropsFromDispatch
-  > {
+class Container extends React.Component<IState & IProfileProps & IPropsFromDispatch> {
   public isMyProfile() {
     return this.props.match.params.id === undefined;
   }
@@ -61,6 +61,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
     dispatch(change("updateJobClasses", "jobClasses", jobClassFields));
   },
   closeModal: () => dispatch(closeModal()),
+  save: (person:IPerson)=> dispatch(savePerson(person))
 });
 const JobClassList = ["None", "ItLeadership", "BizSysAnalysis", "DataAdminAnalysis", "DatabaseArchDesign", "InstructionalTech", "ItProjectMgt", "ItSecurityPrivacy", "ItUserSupport", "ItMultiDiscipline", "Networks", "SoftwareAdminAnalysis", "SoftwareDevEng", "SystemDevEng", "UserExperience", "WebAdminDevEng"]
 
