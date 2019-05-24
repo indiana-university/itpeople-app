@@ -11,7 +11,7 @@ export const View: React.SFC<IProps> = ({ person, memberships, visuallyExpandedU
     <Content className="rvt-bg-white">
       <Row data-testid="profile-page" className="rvt-p-top-lg">
         <Col md={6} className="rvt-p-all-lg">
-          <Loader {...person}>{person && person.data && <PersonDetails {...person.data} />}</Loader>
+          <Loader {...person}>{person && person.data && <PersonDetails {...person.data} canEdit={true}/>}</Loader>
         </Col>
         <Col md={6} className="rvt-p-all-lg">
           <Loader {...memberships}>
