@@ -6,6 +6,7 @@ import { RivetInputField, RivetInput, required } from "../../form";
 import { IApplicationState, IUnit, IPerson } from "../../types";
 import { Dispatch } from "redux";
 import { TrashCan } from "src/components/icons";
+import { lookupTag } from "../store";
 
 const Component: React.SFC<IFormProps> = ({ interests, onSubmit, tags, lookupTags }) => (
   <>
@@ -29,7 +30,7 @@ const Component: React.SFC<IFormProps> = ({ interests, onSubmit, tags, lookupTag
         label="Search"
         validate={[required]}
         onChange={(e: any) => {
-          const q = e.target.value;
+          const q = (e.target.value + "").toLowerCase();
           lookupTags(q);
         }}
       />
@@ -74,11 +75,11 @@ const EditInterests: any = reduxForm<IFormProps>({
 })(
   connect(
     (state: IApplicationState) => {
-      const tags = ["javascript", "F#", "node.js"];
+      const tags = state.profile.tags || [];
       return { tags };
     },
     (dispatch: Dispatch) => ({
-      lookupTags: console.log,
+      lookupTags: (q: string) => dispatch(lookupTag(q)),
     })
   )(Component)
 );
