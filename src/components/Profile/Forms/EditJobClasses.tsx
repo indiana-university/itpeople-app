@@ -27,9 +27,9 @@ const renderJobClasses: any = (props: WrappedFieldArrayProps<string>) =>
 const renderTool = ({ input: { name, value: { name: toolName } } }: WrappedFieldProps) =>
   <RivetCheckboxField name={name + "enabled"} component={RivetCheckbox} label={toolName} />
 
-let UpdateJobClasses: any = reduxForm<IForm>({
+let EditJobClasses: any = reduxForm<IForm>({
   form: "updateJobClasses",
   enableReinitialize: false
 })(form);
 
-export { UpdateJobClasses };
+export { EditJobClasses };

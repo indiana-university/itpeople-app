@@ -5,10 +5,10 @@ import { Badge, List, ModalBody } from "rivet-react";
 import { Pencil } from "src/components/icons";
 import { Modal } from "src/components/layout/Modal";
 import EditInterests from "../Forms/EditInterests";
-import { UpdateJobClasses } from "../Forms/UpdateJobClasses";
+import { EditJobClasses } from "../Forms/EditJobClasses";
 
 export const PersonDetails: React.SFC<IProps> = (props) => {
-  const { location, campus, campusEmail, campusPhone, department, interests, jobClasses, canEdit, editJobClasses } = props;
+  const { location, campus, campusEmail, campusPhone, department, interests, jobClasses, canEdit, editJobClasses, closeModal } = props;
   const interestList = interests.split(";").filter(s => !!s.trim())
   const jobClassList = jobClasses.split(";").filter(s => !!s.trim())
   return <>
@@ -54,9 +54,13 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
                   onOpen={() => { editJobClasses && editJobClasses(jobClassList) }}
                 >
                   <ModalBody>
-                    <UpdateJobClasses
+                    <EditJobClasses
                       jobClasses={jobClassList}
-                      onSubmit={({ jobClasses }: any) => console.log(jobClasses)}
+                      onSubmit={({ jobClasses }: any) => {
+                        const jobClassNames = jobClasses.filter((c: any) => c.enabled).map((c: any) => c.name);
+                        console.log("jobClassNames",jobClassNames)
+                        closeModal();
+                      }}
                     />
                   </ModalBody>
                 </Modal>
@@ -73,7 +77,15 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
             {canEdit &&
               <div style={{ float: "right" }}>
                 <Modal id="Edit interests" title="Edit interests" buttonText={<Pencil />} variant="plain">
-                  <ModalBody><EditInterests person={props} interests={interestList} /> </ModalBody>
+                  <ModalBody>
+                    <EditInterests
+                      interests={interestList}
+                      onSubmit={(interests: any) => {
+                        console.log("interests", interests)
+                        closeModal();
+                      }}
+                    />
+                  </ModalBody>
                 </Modal>
               </div>
             }
@@ -92,6 +104,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
 interface IProps extends IPerson {
   canEdit?: boolean;
   editJobClasses: (jobClasses: string[]) => any;
+  closeModal: () => any
 }
 
 // todo: endpoint for Responsibility list

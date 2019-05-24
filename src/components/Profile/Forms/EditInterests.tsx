@@ -7,10 +7,20 @@ import { IApplicationState, IUnit, IPerson } from "../../types";
 import { Dispatch } from "redux";
 import { TrashCan } from "src/components/icons";
 
-const Component: React.SFC<IFormProps> = ({ interests, onSubmit, tags, saveInterests, lookupTags }) => (
+const Component: React.SFC<IFormProps> = ({ interests, onSubmit, tags, lookupTags }) => (
   <>
     <List orientation="inline">
-      {interests && interests.map((i) => (<Badge key={i+"-interest"}>{i} <Button variant="plain" padding="xxs" style={{ height: "auto" }} title="remove" onClick={() => { saveInterests(interests.filter(x => x != i)) }}><TrashCan /></Button></Badge>))}
+      {interests && interests.map((i) => (
+        <Badge key={i + "-interest"}>
+          {i}
+          <Button
+            variant="plain"
+            padding="xxs"
+            style={{ height: "auto" }}
+            title="remove"
+            onClick={() => onSubmit(interests.filter(x => x != i))}><TrashCan />
+          </Button>
+        </Badge>))}
     </List>
     <div>
       <RivetInputField
@@ -33,7 +43,7 @@ const Component: React.SFC<IFormProps> = ({ interests, onSubmit, tags, saveInter
                 onClick={e => {
                   e.stopPropagation();
                   e.preventDefault();
-                  saveInterests([...interests, tag])
+                  onSubmit([...interests, tag])
                 }}>
                 {tag}
               </Button>
@@ -51,12 +61,11 @@ interface IFormProps extends InjectedFormProps<any>, IUnit, IProps, IDispatchPro
 }
 
 interface IProps {
-  onSubmit(): any;
+  onSubmit(intertest: string[]): any;
   tags: string[]
 }
 interface IDispatchProps {
   lookupTags(q: string): any;
-  saveInterests(interests: string[]): any;
 }
 
 const EditInterests: any = reduxForm<IFormProps>({
@@ -70,7 +79,6 @@ const EditInterests: any = reduxForm<IFormProps>({
     },
     (dispatch: Dispatch) => ({
       lookupTags: console.log,
-      saveInterests: console.log,
     })
   )(Component)
 );

@@ -16,7 +16,8 @@ const testState = {
         data: Examples.person
     },
     toggleUnit: toggleUnit,
-    editJobClasses: (x:string[])=>{}
+    editJobClasses: (x: string[]) => { },
+    closeModal: () => { }
 }
 
 test('displays the name of the person', () => {

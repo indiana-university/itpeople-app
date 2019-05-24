@@ -15,6 +15,7 @@ import {
   toggleUnit
 } from "./store";
 import { change } from "redux-form";
+import { closeModal } from "../layout/Modal";
 
 interface IProfileProps {
   match: any;
@@ -25,7 +26,8 @@ interface IPropsFromDispatch {
   fetchMembershipsRequest: typeof fetchMembershipsRequest;
   // profileUpdateRequest: typeof updateRequest;
   toggleUnit: typeof toggleUnit;
-  editJobClasses: (j: string[]) => any
+  editJobClasses: (j: string[]) => any,
+  closeModal: typeof closeModal
 }
 
 class Container extends React.Component<
@@ -55,9 +57,10 @@ const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
   fetchMembershipsRequest: (request: IEntityRequest) => dispatch(fetchMembershipsRequest(request)),
   toggleUnit: (id: number) => dispatch(toggleUnit(id)),
   editJobClasses: (jobClasses: string[]) => {
-    const jobClassFields = JobClassList.map((name) => ({ name, selected: jobClasses.includes(name) }));
+    const jobClassFields = JobClassList.map((name) => ({ name, enabled: jobClasses.includes(name) }));
     dispatch(change("updateJobClasses", "jobClasses", jobClassFields));
-  }
+  },
+  closeModal: () => dispatch(closeModal()),
 });
 const JobClassList = ["None", "ItLeadership", "BizSysAnalysis", "DataAdminAnalysis", "DatabaseArchDesign", "InstructionalTech", "ItProjectMgt", "ItSecurityPrivacy", "ItUserSupport", "ItMultiDiscipline", "Networks", "SoftwareAdminAnalysis", "SoftwareDevEng", "SystemDevEng", "UserExperience", "WebAdminDevEng"]
 
