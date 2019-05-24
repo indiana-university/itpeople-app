@@ -156,8 +156,8 @@ const form: React.SFC<IFormProps> = props => {
                   <ModalBody>
                     <UpdateMemberForm
                       onSubmit={(values: IUnitMember) => {
-                        const { id, unitId, personId, title, showTitle, role, permissions, percentage, showPercentage } = values;
-                        save({ id, unitId, personId, title, showTitle, role, permissions, percentage, showPercentage });
+                        const { id, unitId, personId, title, showTitle, role, permissions, percentage, showPercentage, notes } = values;
+                        save({ id, unitId, personId, title, showTitle, role, permissions, percentage, showPercentage, notes });
                         closeModal();
                       }}
                     />
