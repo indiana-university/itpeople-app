@@ -5,9 +5,10 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Launch Chrome",
+      "name": "Debug in Chrome",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "start"
     },
     {
       "type": "node",

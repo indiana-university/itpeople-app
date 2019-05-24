@@ -1,14 +1,18 @@
 import * as React from "react";
 import { Panel } from "../../Panel";
 import { IPerson } from "../../types";
-import { Button, Badge, List, ModalBody } from "rivet-react";
+import { Badge, List, ModalBody } from "rivet-react";
 import { Pencil } from "src/components/icons";
 import { Modal } from "src/components/layout/Modal";
 import EditInterests from "../Forms/EditInterests";
+import { UpdateJobClasses } from "../Forms/UpdateJobClasses";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 
-export const PersonDetails: React.SFC<IProps> = (props) => {
+let PersonDetailsComponent: React.SFC<IProps> = (props) => {
   const { location, campus, campusEmail, campusPhone, department, interests, jobClasses, canEdit } = props;
   const interestList = interests.split(";").filter(s => !!s.trim())
+  const jobClassList = jobClasses.split(";").filter(s => !!s.trim())
   return <>
     <Panel title="Contact Information">
       <div className="list-dividers">
@@ -44,14 +48,15 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
           <div>
             {canEdit &&
               <div style={{ float: "right" }}>
-                <Button variant="plain"><Pencil /></Button>
+                <Modal id="Edit responsibilities" title="Edit interests" buttonText={<Pencil />} variant="plain">
+                  <ModalBody><UpdateJobClasses jobClasses={jobClassList} /> </ModalBody>
+                </Modal>
               </div>
             }
             <h2 className="rvt-ts-23 rvt-text-bold">Responsibilities</h2>
-            {jobClasses
-              .split(';')
-              .filter(s => s.trim())
-              .map((r) => (<div>{r}</div>))}
+            <List variant="plain">
+              {jobClassList.map((r) => (<li key={`${r}-responsibility`}>{r}</li>))}
+            </List>
           </div>
         )}
         {(interests || canEdit) && (
@@ -78,3 +83,15 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
 interface IProps extends IPerson {
   canEdit?: boolean
 }
+// todo: endpoint for Responsibility list
+// todo: endpoint to save profile
+
+
+const PersonDetails = connect(
+  undefined, 
+  (dispatch: Dispatch) => { 
+    // todo: redux dispatch to load forms
+    editResponsibities: () => console.log
+  })(PersonDetailsComponent)
+
+export { PersonDetails }
