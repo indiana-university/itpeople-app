@@ -159,6 +159,7 @@ export interface IUnitMemberRequest {
   permissions: UnitPermissions | string;
   percentage: number;
   showPercentage?: boolean;
+  notes?: string;
 }
 
 export interface IUnitMemberToolRequest {
