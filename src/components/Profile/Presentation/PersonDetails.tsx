@@ -6,11 +6,9 @@ import { Pencil } from "src/components/icons";
 import { Modal } from "src/components/layout/Modal";
 import EditInterests from "../Forms/EditInterests";
 import { UpdateJobClasses } from "../Forms/UpdateJobClasses";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 
-let PersonDetailsComponent: React.SFC<IProps> = (props) => {
-  const { location, campus, campusEmail, campusPhone, department, interests, jobClasses, canEdit } = props;
+export const PersonDetails: React.SFC<IProps> = (props) => {
+  const { location, campus, campusEmail, campusPhone, department, interests, jobClasses, canEdit, editJobClasses } = props;
   const interestList = interests.split(";").filter(s => !!s.trim())
   const jobClassList = jobClasses.split(";").filter(s => !!s.trim())
   return <>
@@ -48,8 +46,19 @@ let PersonDetailsComponent: React.SFC<IProps> = (props) => {
           <div>
             {canEdit &&
               <div style={{ float: "right" }}>
-                <Modal id="Edit responsibilities" title="Edit interests" buttonText={<Pencil />} variant="plain">
-                  <ModalBody><UpdateJobClasses jobClasses={jobClassList} /> </ModalBody>
+                <Modal
+                  id="Edit responsibilities"
+                  title="Edit interests"
+                  buttonText={<Pencil />}
+                  variant="plain"
+                  onOpen={() => { editJobClasses && editJobClasses(jobClassList) }}
+                >
+                  <ModalBody>
+                    <UpdateJobClasses
+                      jobClasses={jobClassList}
+                      onSubmit={({ jobClasses }: any) => console.log(jobClasses)}
+                    />
+                  </ModalBody>
                 </Modal>
               </div>
             }
@@ -81,17 +90,9 @@ let PersonDetailsComponent: React.SFC<IProps> = (props) => {
 }
 
 interface IProps extends IPerson {
-  canEdit?: boolean
+  canEdit?: boolean;
+  editJobClasses: (jobClasses: string[]) => any;
 }
+
 // todo: endpoint for Responsibility list
 // todo: endpoint to save profile
-
-
-const PersonDetails = connect(
-  undefined, 
-  (dispatch: Dispatch) => { 
-    // todo: redux dispatch to load forms
-    editResponsibities: () => console.log
-  })(PersonDetailsComponent)
-
-export { PersonDetails }

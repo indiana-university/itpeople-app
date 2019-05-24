@@ -15,7 +15,8 @@ const testState = {
         ...defaultState(),
         data: Examples.person
     },
-    toggleUnit: toggleUnit
+    toggleUnit: toggleUnit,
+    editJobClasses: (x:string[])=>{}
 }
 
 test('displays the name of the person', () => {

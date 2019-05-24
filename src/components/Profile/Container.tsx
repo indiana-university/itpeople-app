@@ -7,13 +7,14 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { IApplicationState, IEntityRequest } from "../types";
-import {View} from "./Presentation";
+import { View } from "./Presentation";
 import {
   fetchRequest,
   fetchMembershipsRequest,
   IState,
   toggleUnit
 } from "./store";
+import { change } from "redux-form";
 
 interface IProfileProps {
   match: any;
@@ -24,11 +25,12 @@ interface IPropsFromDispatch {
   fetchMembershipsRequest: typeof fetchMembershipsRequest;
   // profileUpdateRequest: typeof updateRequest;
   toggleUnit: typeof toggleUnit;
+  editJobClasses: (j: string[]) => any
 }
 
 class Container extends React.Component<
   IState & IProfileProps & IPropsFromDispatch
-> {
+  > {
   public isMyProfile() {
     return this.props.match.params.id === undefined;
   }
@@ -51,8 +53,13 @@ const mapStateToProps = (state: IApplicationState) => state.profile;
 const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
   profileFetchRequest: (request: IEntityRequest) => dispatch(fetchRequest(request)),
   fetchMembershipsRequest: (request: IEntityRequest) => dispatch(fetchMembershipsRequest(request)),
-  toggleUnit: (id: number) => dispatch(toggleUnit(id))
+  toggleUnit: (id: number) => dispatch(toggleUnit(id)),
+  editJobClasses: (jobClasses: string[]) => {
+    const jobClassFields = JobClassList.map((name) => ({ name, selected: jobClasses.includes(name) }));
+    dispatch(change("updateJobClasses", "jobClasses", jobClassFields));
+  }
 });
+const JobClassList = ["None", "ItLeadership", "BizSysAnalysis", "DataAdminAnalysis", "DatabaseArchDesign", "InstructionalTech", "ItProjectMgt", "ItSecurityPrivacy", "ItUserSupport", "ItMultiDiscipline", "Networks", "SoftwareAdminAnalysis", "SoftwareDevEng", "SystemDevEng", "UserExperience", "WebAdminDevEng"]
 
 export default connect(
   mapStateToProps,

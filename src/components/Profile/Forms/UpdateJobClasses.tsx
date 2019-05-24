@@ -9,28 +9,23 @@ interface IForm {
   loading?: boolean
 }
 
-const form: React.SFC<IFormProps> = props => {
-  const { jobClasses } = props;
-  return <form onSubmit={props.handleSubmit}>
+const form: React.SFC<IFormProps> = ({ jobClasses, handleSubmit }) =>
+  <form onSubmit={handleSubmit}>
     <FieldArray name="jobClasses" component={renderJobClasses} />
     <Button type="submit">Update</Button>
-    {jobClasses.map(j => <div key={j}>{j}</div>)}
   </form>
-}
-const renderJobClasses: any = (props: WrappedFieldArrayProps<string>) => {
-  console.log("***props", props)
-  return (
-    <List variant="plain" padding={{ left: "md" }}>
-      {props.fields.map((name, i: number) => (
-        <li key={name + i}>
-          <Field name={name} component={renderTool} />
-        </li>
-      ))}
-    </List>)
-}
 
-const renderTool = ({ input: { name, value: { name: toolName } } }: WrappedFieldProps) => (
-  <RivetCheckboxField name={name + "enabled"} component={RivetCheckbox} label={toolName} />)
+const renderJobClasses: any = (props: WrappedFieldArrayProps<string>) =>
+  <List variant="plain" padding={{ left: "md" }}>
+    {props.fields.map((name, i: number) => (
+      <li key={name + i}>
+        <Field name={name} component={renderTool} />
+      </li>
+    ))}
+  </List>
+
+const renderTool = ({ input: { name, value: { name: toolName } } }: WrappedFieldProps) =>
+  <RivetCheckboxField name={name + "enabled"} component={RivetCheckbox} label={toolName} />
 
 let UpdateJobClasses: any = reduxForm<IForm>({
   form: "updateJobClasses",
