@@ -5,6 +5,8 @@
 import * as React from 'react'
 import { render } from 'src/testUtils'
 import App from './App'
+import { create } from 'react-test-renderer'
+import { PageTitle } from './components/layout';
 
 it('renders the home page at /', () => {
     const { getByTestId } = render(
@@ -39,4 +41,11 @@ it('renders a profile page at "/me"', () => {
         <App />,
         { route: '/me' })
     expect(getByTestId("profile-page")).toBeInTheDocument()
+})
+
+it ('renders the page title right', () => {
+    const rendered = create(
+                <PageTitle>Test</PageTitle>
+                )
+    expect(rendered).toMatchSnapshot()
 })
