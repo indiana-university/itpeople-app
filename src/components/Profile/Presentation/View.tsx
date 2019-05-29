@@ -16,7 +16,7 @@ export const View: React.SFC<IProps> = ({ person, memberships, visuallyExpandedU
         </Col>
         <Col md={6} className="rvt-p-all-lg">
           <Loader {...memberships}>
-            {memberships && memberships.data && (
+            {memberships && memberships.data && memberships.data.length > 0  && (
               <Memberships memberships={...memberships.data} visuallyExpandedUnits={visuallyExpandedUnits} toggleUnit={toggleUnit} />
             )}
           </Loader>
