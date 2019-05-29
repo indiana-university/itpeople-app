@@ -100,7 +100,6 @@ export const reducer: Reducer<IState> = (state = initialState, act): IState => {
       if (act.payload.data.items) {
         tags = act.payload.data.items.map((item: any) => item.name);
       }
-      console.log(act.payload);
       return { ...state, tags };
     // case ProfileActionTypes.LOOKUP_TAG_ERROR:
     // return { ...state };
