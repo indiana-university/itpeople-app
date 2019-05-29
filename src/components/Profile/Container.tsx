@@ -8,13 +8,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { IApplicationState, IEntityRequest, IPerson } from "../types";
 import { View } from "./Presentation";
-import {
-  fetchRequest,
-  fetchMembershipsRequest,
-  IState,
-  toggleUnit,
-  savePerson
-} from "./store";
+import { fetchRequest, IState, toggleUnit, savePerson } from "./store";
 import { change } from "redux-form";
 import { closeModal } from "../layout/Modal";
 
@@ -24,8 +18,6 @@ interface IProfileProps {
 }
 interface IPropsFromDispatch {
   profileFetchRequest: typeof fetchRequest;
-  fetchMembershipsRequest: typeof fetchMembershipsRequest;
-  // profileUpdateRequest: typeof updateRequest;
   toggleUnit: typeof toggleUnit;
   editJobClasses: (j: string[]) => any,
   closeModal: typeof closeModal,
@@ -40,7 +32,6 @@ class Container extends React.Component<IState & IProfileProps & IPropsFromDispa
   public componentDidMount() {
     const id = this.isMyProfile() ? 0 : this.props.match.params.id;
     this.props.profileFetchRequest({ id });
-    this.props.fetchMembershipsRequest({ id });
   }
 
   public render() {
@@ -54,7 +45,6 @@ const mapStateToProps = (state: IApplicationState) => state.profile;
 
 const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
   profileFetchRequest: (request: IEntityRequest) => dispatch(fetchRequest(request)),
-  fetchMembershipsRequest: (request: IEntityRequest) => dispatch(fetchMembershipsRequest(request)),
   toggleUnit: (id: number) => dispatch(toggleUnit(id)),
   editJobClasses: (jobClasses: string[]) => {
     const jobClassFields = JobClassList.map((name) => ({ name, enabled: jobClasses.includes(name) }));

@@ -127,6 +127,10 @@ function* handleFetchPerson(api: IApi, person: IEntityRequest) {
   yield put(nextAction);
 }
 
+function* handleFetchProfileSuccess(api: IApi, person: IEntityRequest) {
+  yield put(fetchMembershipsRequest(person));
+}
+
 function* handleFetchMemberships(api: IApi, person: IEntityRequest) {
   const nextAction = yield api
     .get<IUnitMembership[]>(`/people/${person.id}/memberships`)
@@ -166,6 +170,7 @@ function* watchProfileFetch() {
   yield takeEvery(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_REQUEST, (a: AnyAction) => handleFetchMemberships(api, a.payload));
   yield takeEvery(ProfileActionTypes.LOOKUP_TAG_REQUEST, (a: AnyAction) => handleLookupTags(api, a.payload));
   yield takeEvery(ProfileActionTypes.PROFILE_SAVE_REQUEST, (a: AnyAction) => handleSavePerson(api, a.payload));
+  yield takeEvery(ProfileActionTypes.PROFILE_FETCH_SUCCESS, (a: AnyAction) => handleFetchProfileSuccess(api, a.payload.data));
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.
