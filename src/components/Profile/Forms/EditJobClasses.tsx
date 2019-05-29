@@ -6,17 +6,17 @@ import { JobClassDisplayNames } from "../Container";
 
 interface IFormProps extends InjectedFormProps<IForm>, IForm { }
 interface IForm {
-  jobClasses: string[],
+  responsibilities: string[],
   loading?: boolean
 }
 
-const form: React.SFC<IFormProps> = ({ jobClasses, handleSubmit }) =>
+const form: React.SFC<IFormProps> = ({ responsibilities, handleSubmit }) =>
   <form onSubmit={handleSubmit}>
-    <FieldArray name="jobClasses" component={renderJobClasses} />
+    <FieldArray name="responsibilities" component={renderResponsibilities} />
     <Button type="submit">Update</Button>
   </form>
 
-const renderJobClasses: any = (props: WrappedFieldArrayProps<string>) =>
+const renderResponsibilities: any = (props: WrappedFieldArrayProps<string>) =>
   <List variant="plain" padding={{ left: "md" }}>
     {props.fields.map((name, i: number) => (
       <li key={name + i}>
@@ -29,7 +29,7 @@ const renderTool = ({ input: { name, value: { name: toolName } } }: WrappedField
   <RivetCheckboxField name={name + "enabled"} component={RivetCheckbox} label={JobClassDisplayNames[toolName] || toolName} />
 
 let EditJobClasses: any = reduxForm<IForm>({
-  form: "updateJobClasses",
+  form: "updateResponsibilities",
   enableReinitialize: false
 })(form);
 

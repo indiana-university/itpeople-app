@@ -46,9 +46,9 @@ const mapStateToProps = (state: IApplicationState) => state.profile;
 const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
   profileFetchRequest: (request: IEntityRequest) => dispatch(fetchRequest(request)),
   toggleUnit: (id: number) => dispatch(toggleUnit(id)),
-  editJobClasses: (jobClasses: string[]) => {
-    const jobClassFields = JobClassList.map((name) => ({ name, enabled: jobClasses.includes(name) }));
-    dispatch(change("updateJobClasses", "jobClasses", jobClassFields));
+  editJobClasses: (responsibilities: string[]) => {
+    const jobClassFields = JobClassList.map((name) => ({ name, enabled: responsibilities.includes(name) }));
+    dispatch(change("updateResponsibilities", "responsibilities", jobClassFields));
   },
   closeModal: () => dispatch(closeModal()),
   save: (person: IPerson) => dispatch(savePerson(person))

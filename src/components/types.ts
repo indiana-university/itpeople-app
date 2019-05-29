@@ -203,8 +203,8 @@ export interface IPerson {
   departmentId?: number;
   department?: IDepartment;
   // vvv none of this matters yet vvv
-  interests: string;
-  jobClasses: string;
+  expertise: string;
+  responsibilities: string;
   photoUrl?: string;
 }
 

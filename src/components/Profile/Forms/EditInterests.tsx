@@ -8,10 +8,10 @@ import { Dispatch } from "redux";
 import { TrashCan } from "src/components/icons";
 import { lookupTag } from "../store";
 
-const Component: React.SFC<IFormProps> = ({ interests, onSubmit, tags, lookupTags }) => (
+const Component: React.SFC<IFormProps> = ({ expertise, onSubmit, tags, lookupTags }) => (
   <>
     <List orientation="inline">
-      {interests && interests.map((i) => (
+      {expertise && expertise.map((i) => (
         <Badge key={i + "-interest"}>
           {i}
           <Button
@@ -19,7 +19,7 @@ const Component: React.SFC<IFormProps> = ({ interests, onSubmit, tags, lookupTag
             padding="xxs"
             style={{ height: "auto" }}
             title="remove"
-            onClick={() => onSubmit(interests.filter(x => x != i))}><TrashCan />
+            onClick={() => onSubmit(expertise.filter(x => x != i))}><TrashCan />
           </Button>
         </Badge>))}
     </List>
@@ -44,7 +44,7 @@ const Component: React.SFC<IFormProps> = ({ interests, onSubmit, tags, lookupTag
                 onClick={e => {
                   e.stopPropagation();
                   e.preventDefault();
-                  onSubmit([...interests, tag])
+                  onSubmit([...expertise, tag])
                 }}>
                 {tag}
               </Button>
@@ -57,7 +57,7 @@ const Component: React.SFC<IFormProps> = ({ interests, onSubmit, tags, lookupTag
 );
 
 interface IFormProps extends InjectedFormProps<any>, IUnit, IProps, IDispatchProps {
-  interests: string[];
+  expertise: string[];
   person: IPerson;
 }
 

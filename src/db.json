@@ -12,8 +12,8 @@
       "campusPhone": "812-856-1234",
       "campusEmail": "rswanso@iu.edu",
       "campus": "Bloomington",
-      "interests": "Wood-working;javascript;c#;mysql;unit-testing",
-      "jobClasses": "BizSysAnalysis;DataAdminAnalysis;DatabaseArchDesign;InstructionalTech;ItProjectMgt;ItSecurityPrivacy",
+      "expertise": "Wood-working;javascript;c#;mysql;unit-testing",
+      "responsibilities": "BizSysAnalysis;DataAdminAnalysis;DatabaseArchDesign;InstructionalTech;ItProjectMgt;ItSecurityPrivacy",
       "photoUrl": "https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/p-parks-and-recreation-nick-offerman.jpg",
       "departmentId": 1,
       "department": {
@@ -33,8 +33,8 @@
       "campusPhone": "812-856-1234",
       "campusEmail": "lknope@iu.edu",
       "campus": "IUBLA",
-      "interests": "Canvasing,Organizing",
-      "jobClasses": "IT Leadership",
+      "expertise": "Canvasing,Organizing",
+      "responsibilities": "IT Leadership",
       "photoUrl": "http://pawneeindiana.com/wp-content/themes/g6f07bu02zdv3txfv7a8t621759/files/images/parks-and-recreation/leslie-knope.jpg",
       "departmentId": 1
     },
@@ -47,8 +47,8 @@
       "campusPhone": "812-856-1234",
       "campusEmail": "lsebastian@iu.edu",
       "campus": "IUBLA",
-      "interests": "Horsin' around",
-      "jobClasses": "Being a horse",
+      "expertise": "Horsin' around",
+      "responsibilities": "Being a horse",
       "departmentId": 1
     },
     {
@@ -60,8 +60,8 @@
       "campusPhone": "812-856-1234",
       "campusEmail": "terry@pawnee.in.us",
       "campus": "Bloomington",
-      "interests": "screwing up",
-      "jobClasses": "butt of jokes",
+      "expertise": "screwing up",
+      "responsibilities": "butt of jokes",
       "departmentId": 1
     },
     {
@@ -73,8 +73,8 @@
       "campusPhone": "555-555-1234",
       "campusEmail": "johndoe@pawnee.in.us",
       "campus": "Bloomington",
-      "interests": "java;function;facebook;twitter;button",
-      "jobClasses": "ItLeadership;BizSysAnalysis;DataAdminAnalysis;DatabaseArchDesign;InstructionalTech;ItProjectMgt;ItSecurityPrivacy;Networks",
+      "expertise": "java;function;facebook;twitter;button",
+      "responsibilities": "ItLeadership;BizSysAnalysis;DataAdminAnalysis;DatabaseArchDesign;InstructionalTech;ItProjectMgt;ItSecurityPrivacy;Networks",
       "departmentId": 1,
       "department": {
         "id": 1,

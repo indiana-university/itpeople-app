@@ -10,9 +10,9 @@ import { JobClassDisplayNames } from "../Container";
 
 export const PersonDetails: React.SFC<IProps> = (props) => {
   const { person, canEdit, editJobClasses, closeModal, save } = props;
-  const { location, campus, campusEmail, campusPhone, department, interests = "", jobClasses = "" } = person;
-  const interestList = interests.split(";").filter(s => !!s.trim())
-  const jobClassList = jobClasses.split(";").filter(s => !!s.trim())
+  const { location, campus, campusEmail, campusPhone, department, expertise = "", responsibilities = "" } = person;
+  const interestList = expertise.split(";").filter(s => !!s.trim())
+  const jobClassList = responsibilities.split(";").filter(s => !!s.trim())
   return <>
     <Panel title="Contact Information">
       <div className="list-dividers">
@@ -44,7 +44,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
               <a href={`/departments/${department.id}`}>{department.name}</a>
             </div>}
         </div>
-        {(jobClasses || canEdit) && (
+        {(responsibilities || canEdit) && (
           <div>
             {canEdit &&
               <div style={{ float: "right" }}>
@@ -57,10 +57,10 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
                 >
                   <ModalBody>
                     <EditJobClasses
-                      jobClasses={jobClassList}
-                      onSubmit={({ jobClasses }: any) => {
-                        const jobClassNames = jobClasses.filter((c: any) => c.enabled).map((c: any) => c.name);
-                        const updated: IPerson = { ...person, jobClasses: jobClassNames.join(";") }
+                      responsibilities={jobClassList}
+                      onSubmit={({ responsibilities }: any) => {
+                        const jobClassNames = responsibilities.filter((c: any) => c.enabled).map((c: any) => c.name);
+                        const updated: IPerson = { ...person, responsibilities: jobClassNames.join(";") }
                         save(updated)
                         closeModal();
                       }}
@@ -75,17 +75,17 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
             </List>
           </div>
         )}
-        {(interests || canEdit) && (
+        {(expertise || canEdit) && (
           <div>
             {canEdit &&
               <div style={{ float: "right" }}>
                 <Modal id="Edit interests" title="Edit interests" buttonText={<Pencil />} variant="plain">
                   <ModalBody>
                     <EditInterests
-                      interests={interestList}
+                      expertise={interestList}
                       onSubmit={(interests: string[]) => {
                         console.log("interests", interests)
-                        const updated: IPerson = { ...person, interests: interests.join(";") }
+                        const updated: IPerson = { ...person, expertise: interests.join(";") }
                         save(updated)
                         closeModal();
                       }}
@@ -109,7 +109,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
 interface IProps {
   person: IPerson;
   canEdit?: boolean;
-  editJobClasses: (jobClasses: string[]) => any;
+  editJobClasses: (responsibilities: string[]) => any;
   closeModal: () => any;
   save: (person: IPerson) => any
 }
