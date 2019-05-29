@@ -1,5 +1,11 @@
-const db = require("../src/db.json");
 module.exports = (req, res, next) => {
+  const db = getDb();
+
+  // GET /people/**
+  if (req.method != "GET") {
+    return next();
+  }
+
   if (req.path.startsWith("/people/")) {
     const pathParts = req.path.split("/");
     const username = pathParts[2];
@@ -16,11 +22,20 @@ module.exports = (req, res, next) => {
       .map(m => {
         return { ...m, unit: db.units.find(u => (u.id = m.unitId)) };
       });
-    if (pathParts[3] == "memberships") res.send(memberships);
+    if (pathParts[3] == "memberships") return res.send(memberships);
 
     // "/people/:id": "/people/:id?_expand=department",
     person.department = db.departments.find(d => (d.id = person.departmentId));
-    if (!pathParts[3]) res.send(person);
+    if (!pathParts[3]) return res.send(person);
   }
-  next();
+
+  return next();
 };
+
+function getDb() {
+  const fs = require("fs");
+  var path = require('path');
+  var jsonPath = path.join(__dirname, '..', 'src', 'db.json');
+  let rawdata = fs.readFileSync(jsonPath);
+  return JSON.parse(rawdata);
+}

@@ -73,9 +73,15 @@
       "campusPhone": "555-555-1234",
       "campusEmail": "johndoe@pawnee.in.us",
       "campus": "Bloomington",
-      "interests": "things",
-      "jobClasses": "stuff",
-      "departmentId": 1
+      "interests": "things;java;function",
+      "jobClasses": "BizSysAnalysis;DataAdminAnalysis;DatabaseArchDesign;InstructionalTech;ItProjectMgt",
+      "departmentId": 1,
+      "department": {
+        "id": 1,
+        "name": "Parks and Recreation Department",
+        "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+      },
+      "personId": 7
     }
   ],
   "units": [
