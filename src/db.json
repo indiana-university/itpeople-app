@@ -63,6 +63,19 @@
       "interests": "screwing up",
       "jobClasses": "butt of jokes",
       "departmentId": 1
+    },
+    {
+      "id": 7,
+      "name": "John Doe",
+      "netId": "johndoe",
+      "position": "Parks and Rec Dude",
+      "location": "Municipal Building, Office 123",
+      "campusPhone": "555-555-1234",
+      "campusEmail": "johndoe@pawnee.in.us",
+      "campus": "Bloomington",
+      "interests": "things",
+      "jobClasses": "stuff",
+      "departmentId": 1
     }
   ],
   "units": [
