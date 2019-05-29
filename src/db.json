@@ -73,7 +73,7 @@
       "campusPhone": "555-555-1234",
       "campusEmail": "johndoe@pawnee.in.us",
       "campus": "Bloomington",
-      "interests": "things;java;function",
+      "interests": "java;function;facebook;twitter;button",
       "jobClasses": "BizSysAnalysis;DataAdminAnalysis;DatabaseArchDesign;InstructionalTech;ItProjectMgt",
       "departmentId": 1,
       "department": {

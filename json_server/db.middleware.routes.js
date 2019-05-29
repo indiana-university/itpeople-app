@@ -1,10 +1,11 @@
 module.exports = (req, res, next) => {
-  const db = getDb();
 
   // GET /people/**
   if (req.method != "GET") {
     return next();
   }
+
+  const db = getDb();
 
   if (req.path.startsWith("/people/")) {
     const pathParts = req.path.split("/");
