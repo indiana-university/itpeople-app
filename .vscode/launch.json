@@ -26,12 +26,12 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "json-server chaos",
+      "name": "json-server",
       "program": "${workspaceFolder}/node_modules/.bin/json-server",
       "args": [
-        "--watch", "json_server/db.json", 
+        "--watch", "${workspaceFolder}/src/db.json", 
         "--routes", "json_server/db.routes.json", 
-        "--middlewares", "json_server/db.middleware.chaos.js", 
+        "--middlewares", "json_server/db.middleware.routes.js", 
         "--port", "3001"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",

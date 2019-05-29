@@ -34,7 +34,7 @@ class Container extends React.Component<
   }
 
   public componentDidMount() {
-    const id = this.isMyProfile() ? 0 : Number(this.props.match.params.id);
+    const id = this.isMyProfile() ? 0 : this.props.match.params.id;
     this.props.profileFetchRequest({ id });
     this.props.fetchMembershipsRequest({ id });
   }
