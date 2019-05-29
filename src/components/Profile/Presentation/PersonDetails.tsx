@@ -6,6 +6,7 @@ import { Pencil } from "src/components/icons";
 import { Modal } from "src/components/layout/Modal";
 import EditInterests from "../Forms/EditInterests";
 import { EditJobClasses } from "../Forms/EditJobClasses";
+import { JobClassDisplayNames } from "../Container";
 
 export const PersonDetails: React.SFC<IProps> = (props) => {
   const { person, canEdit, editJobClasses, closeModal, save } = props;
@@ -70,7 +71,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
             }
             <h2 className="rvt-ts-23 rvt-text-bold">Responsibilities</h2>
             <List variant="plain">
-              {jobClassList.map((r) => (<li key={`${r}-responsibility`}>{r}</li>))}
+              {jobClassList.map((r) => (<li key={`${r}-responsibility`}>{JobClassDisplayNames[r] || r}</li>))}
             </List>
           </div>
         )}

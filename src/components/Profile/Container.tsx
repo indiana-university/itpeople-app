@@ -61,9 +61,29 @@ const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
     dispatch(change("updateJobClasses", "jobClasses", jobClassFields));
   },
   closeModal: () => dispatch(closeModal()),
-  save: (person:IPerson)=> dispatch(savePerson(person))
+  save: (person: IPerson) => dispatch(savePerson(person))
 });
-const JobClassList = ["None", "ItLeadership", "BizSysAnalysis", "DataAdminAnalysis", "DatabaseArchDesign", "InstructionalTech", "ItProjectMgt", "ItSecurityPrivacy", "ItUserSupport", "ItMultiDiscipline", "Networks", "SoftwareAdminAnalysis", "SoftwareDevEng", "SystemDevEng", "UserExperience", "WebAdminDevEng"]
+
+// TODO: retrieve from Database?
+export const JobClassList = ["None", "ItLeadership", "BizSysAnalysis", "DataAdminAnalysis", "DatabaseArchDesign", "InstructionalTech", "ItProjectMgt", "ItSecurityPrivacy", "ItUserSupport", "ItMultiDiscipline", "Networks", "SoftwareAdminAnalysis", "SoftwareDevEng", "SystemDevEng", "UserExperience", "WebAdminDevEng"]
+export const JobClassDisplayNames = {
+  "None": "",
+  "ItLeadership": "IT Leadership",
+  "BizSysAnalysis": "Business System Analysis",
+  "DataAdminAnalysis": "Data Administration and Analysis",
+  "DatabaseArchDesign": "Database Architecture and Design",
+  "InstructionalTech": "Instructional",
+  "ItProjectMgt": "IT Project Management",
+  "ItSecurityPrivacy": "IT Security and Privacy",
+  "ItUserSupport": "IT User Support",
+  "ItMultiDiscipline": "IT Multiple Discipline",
+  "Networks": "Networks",
+  "SoftwareAdminAnalysis": "SoftwareAdminAnalysis",
+  "SoftwareDevEng": "Software Developer/Engineer",
+  "SystemDevEng": "Systems Developer/Engineer",
+  "UserExperience": "User Experience",
+  "WebAdminDevEng": "Web Developer/Engineer",
+}
 
 export default connect(
   mapStateToProps,
