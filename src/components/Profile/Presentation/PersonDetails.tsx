@@ -84,7 +84,8 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
                     <EditInterests
                       expertise={interestList}
                       onSubmit={(interests: string[]) => {
-                        const updated: IPerson = { ...person, expertise: interests.join(";") }
+                        const expertise = Array.from(new Set(interests)).join(";");
+                        const updated: IPerson = { ...person, expertise }
                         save(updated)
                         closeModal();
                       }}
