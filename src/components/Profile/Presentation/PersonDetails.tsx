@@ -8,8 +8,8 @@ import EditInterests from "../Forms/EditInterests";
 import { EditJobClasses } from "../Forms/EditJobClasses";
 
 export const PersonDetails: React.SFC<IProps> = (props) => {
-  const { person, canEdit, editJobClasses, closeModal, save  } = props;
-  const {location, campus, campusEmail, campusPhone, department, interests, jobClasses} = person;
+  const { person, canEdit, editJobClasses, closeModal, save } = props;
+  const { location, campus, campusEmail, campusPhone, department, interests = "", jobClasses = "" } = person;
   const interestList = interests.split(";").filter(s => !!s.trim())
   const jobClassList = jobClasses.split(";").filter(s => !!s.trim())
   return <>
@@ -59,7 +59,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
                       jobClasses={jobClassList}
                       onSubmit={({ jobClasses }: any) => {
                         const jobClassNames = jobClasses.filter((c: any) => c.enabled).map((c: any) => c.name);
-                        const updated: IPerson = {...person, jobClasses: jobClassNames.join(";")}
+                        const updated: IPerson = { ...person, jobClasses: jobClassNames.join(";") }
                         save(updated)
                         closeModal();
                       }}
@@ -84,7 +84,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
                       interests={interestList}
                       onSubmit={(interests: string[]) => {
                         console.log("interests", interests)
-                        const updated: IPerson = {...person, interests: interests.join(";")}
+                        const updated: IPerson = { ...person, interests: interests.join(";") }
                         save(updated)
                         closeModal();
                       }}
@@ -110,7 +110,7 @@ interface IProps {
   canEdit?: boolean;
   editJobClasses: (jobClasses: string[]) => any;
   closeModal: () => any;
-  save: (person:IPerson)=>any
+  save: (person: IPerson) => any
 }
 
 // todo: endpoint for Responsibility list
