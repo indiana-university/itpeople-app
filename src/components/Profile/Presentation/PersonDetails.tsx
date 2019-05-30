@@ -71,6 +71,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
               </div>
             }
             <h2 className="rvt-ts-23 rvt-text-bold">Responsibilities</h2>
+            <p>What kinds of work do you do on a day-to-day basis?</p>
             <List variant="plain">
               {jobClassList.map((r) => (<li key={`${r}-responsibility`}>{JobClassDisplayNames[r] || r}</li>))}
             </List>
@@ -96,7 +97,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
               </div>
             }
             <h2 className="rvt-ts-23 rvt-text-bold">Professional interests</h2>
-            <p>Professional interests are topics or skills that are commonly shared throughout the industry.</p>
+            <p>What kinds of skills, technologies, or languages do you want to work with or learn about?</p>
             <List variant="plain" orientation="inline">
               {interestList.map((interest: string) => (<li key={`${interest}-badge`}><Badge>{interest}</Badge></li>))}
             </List>
