@@ -73,7 +73,7 @@
       "campusPhone": "555-555-1234",
       "campusEmail": "johndoe@pawnee.in.us",
       "campus": "Bloomington",
-      "expertise": "java;function;facebook;twitter;button",
+      "expertise": "html,custom,javascript",
       "responsibilities": "ItLeadership;BizSysAnalysis;DataAdminAnalysis;DatabaseArchDesign;InstructionalTech;ItProjectMgt;ItSecurityPrivacy;Networks",
       "departmentId": 1,
       "department": {
