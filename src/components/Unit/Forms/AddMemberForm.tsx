@@ -1,7 +1,7 @@
 import * as React from "react";
 import { reduxForm, InjectedFormProps, change, formValueSelector, Field } from "redux-form";
 import { Button } from "rivet-react";
-import { RivetInputField, RivetInput, RivetSelect, RivetSelectField } from "src/components/form";
+import { RivetInputField, RivetInput, RivetSelect, RivetSelectField, RivetTextareaField, RivetTextarea } from "src/components/form";
 import { connect } from "react-redux";
 import { IApplicationState, UnitPermissions } from "src/components/types";
 import { lookupUser } from "../store";
@@ -85,6 +85,9 @@ const form: React.SFC<IFormProps> = props => {
           </div>
           <div>
             <RivetInputField name="percentage" component={RivetInput} label="Percentage" type="number" min="0" max="100" />
+          </div>
+          <div>
+            <RivetTextareaField name="notes" component={RivetTextarea} label="Notes" />
           </div>
           <div className="rvt-m-top-md">
             <Button type="submit" disabled={invalid && hasUser}>
