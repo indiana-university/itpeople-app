@@ -96,7 +96,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
               </div>
             }
             <h2 className="rvt-ts-23 rvt-text-bold">Professional interests</h2>
-            <p>Professional interests are topics or skills that are commonly shared throughout this industry. Select a topic below to see who else has the same interests.</p>
+            <p>Professional interests are topics or skills that are commonly shared throughout the industry.</p>
             <List variant="plain" orientation="inline">
               {interestList.map((interest: string) => (<li key={`${interest}-badge`}><Badge>{interest}</Badge></li>))}
             </List>
