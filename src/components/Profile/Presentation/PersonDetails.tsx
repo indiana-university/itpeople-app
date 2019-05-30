@@ -11,8 +11,9 @@ import { JobClassDisplayNames } from "../Container";
 export const PersonDetails: React.SFC<IProps> = (props) => {
   const { person, canEdit, editJobClasses, closeModal, save } = props;
   const { location, campus, campusEmail, campusPhone, department, expertise = "", responsibilities = "" } = person;
-  const interestList = expertise.split(";").filter(s => !!s.trim())
-  const jobClassList = responsibilities.split(";").filter(s => !!s.trim())
+  const splitListItems = (str: string) => str.split(",").map(s => s.trim()).filter(s => !!s.trim())
+  const interestList = splitListItems(expertise)
+  const jobClassList = splitListItems(responsibilities)
   return <>
     <Panel title="Contact Information">
       <div className="list-dividers">
@@ -60,7 +61,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
                       responsibilities={jobClassList}
                       onSubmit={({ responsibilities }: any) => {
                         const jobClassNames = responsibilities.filter((c: any) => c.enabled).map((c: any) => c.name);
-                        const updated: IPerson = { ...person, responsibilities: jobClassNames.join(";") }
+                        const updated: IPerson = { ...person, responsibilities: jobClassNames.join(",") }
                         save(updated)
                         closeModal();
                       }}
@@ -70,6 +71,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
               </div>
             }
             <h2 className="rvt-ts-23 rvt-text-bold">Responsibilities</h2>
+            <p>What kinds of work do you do on a day-to-day basis?</p>
             <List variant="plain">
               {jobClassList.map((r) => (<li key={`${r}-responsibility`}>{JobClassDisplayNames[r] || r}</li>))}
             </List>
@@ -84,7 +86,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
                     <EditInterests
                       expertise={interestList}
                       onSubmit={(interests: string[]) => {
-                        const expertise = Array.from(new Set(interests)).join(";");
+                        const expertise = Array.from(new Set(interests)).join(",");
                         const updated: IPerson = { ...person, expertise }
                         save(updated)
                         closeModal();
@@ -95,7 +97,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
               </div>
             }
             <h2 className="rvt-ts-23 rvt-text-bold">Professional interests</h2>
-            <p>Professional interests are topics or skills that are commonly shared throughout this industry. Select a topic below to see who else has the same interests.</p>
+            <p>What kinds of skills, technologies, or languages do you want to work with or learn about?</p>
             <List variant="plain" orientation="inline">
               {interestList.map((interest: string) => (<li key={`${interest}-badge`}><Badge>{interest}</Badge></li>))}
             </List>
