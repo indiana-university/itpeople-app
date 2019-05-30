@@ -18,9 +18,9 @@ const form: React.SFC<IFormProps> = props => (
   </form>
 </>)
 
-const renderTools: any = (props: WrappedFieldArrayProps<ITool>) => (
+const renderTools: any = ({fields}: WrappedFieldArrayProps<ITool>) => (
   <List variant="plain" padding={{ left: "md" }}>
-    {props.fields.map((name, i: number) => (
+    {fields.map((name, i: number) => (
       <li key={name + i}>
         <Field name={name} component={renderTool} />
       </li>
