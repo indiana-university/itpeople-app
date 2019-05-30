@@ -29,8 +29,7 @@ describe('admin user', () => {
         cy.getByText(/update/i).click()
         cy.wait(50) // wait to give list time to populate
         cy.queryByTitle(/edit tools/i).click()
-        cy.queryByLabelText(/survey/i).should("be.checked")
-        cy.queryByLabelText(/survey/i).uncheck()
+        cy.queryByLabelText(/survey/i).uncheck({ force: true })
         cy.getByText(/update/i).click()
         cy.wait(50)
         cy.queryByTitle(/edit tools/i).click()
