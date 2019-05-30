@@ -11,8 +11,8 @@ import { JobClassDisplayNames } from "../Container";
 export const PersonDetails: React.SFC<IProps> = (props) => {
   const { person, canEdit, editJobClasses, closeModal, save } = props;
   const { location, campus, campusEmail, campusPhone, department, expertise = "", responsibilities = "" } = person;
-  const interestList = expertise.split(";").filter(s => !!s.trim())
-  const jobClassList = responsibilities.split(";").filter(s => !!s.trim())
+  const interestList = expertise.split(",").filter(s => !!s.trim())
+  const jobClassList = responsibilities.split(",").filter(s => !!s.trim())
   return <>
     <Panel title="Contact Information">
       <div className="list-dividers">
@@ -60,7 +60,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
                       responsibilities={jobClassList}
                       onSubmit={({ responsibilities }: any) => {
                         const jobClassNames = responsibilities.filter((c: any) => c.enabled).map((c: any) => c.name);
-                        const updated: IPerson = { ...person, responsibilities: jobClassNames.join(";") }
+                        const updated: IPerson = { ...person, responsibilities: jobClassNames.join(",") }
                         save(updated)
                         closeModal();
                       }}
@@ -84,7 +84,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
                     <EditInterests
                       expertise={interestList}
                       onSubmit={(interests: string[]) => {
-                        const expertise = Array.from(new Set(interests)).join(";");
+                        const expertise = Array.from(new Set(interests)).join(",");
                         const updated: IPerson = { ...person, expertise }
                         save(updated)
                         closeModal();
