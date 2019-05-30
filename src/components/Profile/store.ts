@@ -147,7 +147,7 @@ const caller: IApiCall = async <T>(method: string, apiUrl: string, path: string)
 const apiTags = restApi("https://api.stackexchange.com/2.2/tags", caller);
 function* handleLookupTags(api: IApi, q: string) {
   const nextAction = yield apiTags
-    .get(`?order=desc&site=stackoverflow&min=10000&sort=popular&inname=${encodeURIComponent(q)}`)
+    .get(`?order=desc&site=stackoverflow&min=4000&sort=popular&inname=${encodeURIComponent(q)}`)
     .then(lookupTagSuccess)
     .catch(lookupTagError);
   yield put(nextAction);
