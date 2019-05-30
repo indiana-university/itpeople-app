@@ -58,7 +58,7 @@ const Component: React.SFC<IFormProps> = ({ expertise, onSubmit, tags, tagSearch
             </Button>
           </div>
 
-          {tags && tags.length > 0 && tags.filter(t=> t!= tagSearch ).map((tag, i: number) => {
+          {tags && tags.length > 0 && tags.filter(t => t != tagSearch).map((tag, i: number) => {
             return (
               <div key={`${tag}(${i})`}>
                 <Button
