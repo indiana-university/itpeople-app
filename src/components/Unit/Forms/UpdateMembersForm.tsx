@@ -77,7 +77,8 @@ const form: React.SFC<IFormProps> = props => {
       </div>
     );
     const renderMember = function (member: IUnitMember) {
-      const remove = () => removeMember(member);
+      const { name = "this member" } = member.person || {};
+      const remove = () => confirm(`Are you sure you want to remove ${name} from this unit?`) && removeMember(member);
       const person = member.person;
       return (
         <li key={member.id}>
