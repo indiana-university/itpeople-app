@@ -11,8 +11,9 @@ import { JobClassDisplayNames } from "../Container";
 export const PersonDetails: React.SFC<IProps> = (props) => {
   const { person, canEdit, editJobClasses, closeModal, save } = props;
   const { location, campus, campusEmail, campusPhone, department, expertise = "", responsibilities = "" } = person;
-  const interestList = expertise.split(",").filter(s => !!s.trim())
-  const jobClassList = responsibilities.split(",").filter(s => !!s.trim())
+  const splitListItems = (str: string) => str.split(",").map(s => s.trim()).filter(s => !!s.trim())
+  const interestList = splitListItems(expertise)
+  const jobClassList = splitListItems(responsibilities)
   return <>
     <Panel title="Contact Information">
       <div className="list-dividers">
