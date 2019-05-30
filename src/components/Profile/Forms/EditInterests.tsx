@@ -43,7 +43,8 @@ const Component: React.SFC<IFormProps> = ({ expertise, onSubmit, tags, tagSearch
             onClick={e => {
               e.stopPropagation();
               e.preventDefault();
-              onSubmit([...expertise, tagSearch])
+              const tag = tagSearch.toLowerCase().replace(/\s+/g, '-').substr(0,50);
+              onSubmit([...expertise, tag])
             }}>
             {tagSearch}
           </Button>
