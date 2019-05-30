@@ -8,7 +8,7 @@ import { Dispatch } from "redux";
 import { TrashCan } from "src/components/icons";
 import { lookupTag } from "../store";
 
-const Component: React.SFC<IFormProps> = ({ expertise, onSubmit, tags, lookupTags }) => (
+const Component: React.SFC<IFormProps> = ({ expertise, onSubmit, tags, tagSearch, lookupTags }) => (
   <>
     <List orientation="inline">
       {expertise && expertise.map((i) => (
@@ -35,9 +35,21 @@ const Component: React.SFC<IFormProps> = ({ expertise, onSubmit, tags, lookupTag
         }}
       />
     </div>
-    {tags && tags.length > 0 && (
+
+    {tagSearch &&
       <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
-        {tags.map((tag, i: number) => {
+        <div>
+          <Button
+            onClick={e => {
+              e.stopPropagation();
+              e.preventDefault();
+              onSubmit([...expertise, tagSearch])
+            }}>
+            {tagSearch}
+          </Button>
+        </div>
+
+        {tags && tags.length > 0 && tags.map((tag, i: number) => {
           return (
             <div key={`${tag}(${i})`}>
               <Button
@@ -52,7 +64,7 @@ const Component: React.SFC<IFormProps> = ({ expertise, onSubmit, tags, lookupTag
           );
         })}
       </div>
-    )}
+    }
   </>
 );
 
@@ -63,7 +75,8 @@ interface IFormProps extends InjectedFormProps<any>, IUnit, IProps, IDispatchPro
 
 interface IProps {
   onSubmit(intertest: string[]): any;
-  tags: string[]
+  tags: string[],
+  tagSearch: string
 }
 interface IDispatchProps {
   lookupTags(q: string): any;
@@ -76,7 +89,8 @@ const EditInterests: any = reduxForm<IFormProps>({
   connect(
     (state: IApplicationState) => {
       const tags = state.profile.tags || [];
-      return { tags };
+      const tagSearch = state.profile.tagSearch || "";
+      return { tags, tagSearch };
     },
     (dispatch: Dispatch) => ({
       lookupTags: (q: string) => dispatch(lookupTag(q)),

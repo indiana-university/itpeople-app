@@ -25,6 +25,7 @@ export const enum ProfileActionTypes {
 
 export interface IState {
   tags: string[];
+  tagSearch: string;
   person: IApiState<IEntityRequest, IPerson>;
   memberships: IApiState<IEntityRequest, IUnitMembership[]>;
   visuallyExpandedUnits: number[];
@@ -64,7 +65,8 @@ export const initialState: IState = {
   person: defaultState(),
   memberships: defaultState(),
   visuallyExpandedUnits: [],
-  tags: []
+  tags: [],
+  tagSearch: ""
 };
 
 const doToggleUnit = (state: IState, toggledId: number): IState => {
@@ -94,8 +96,8 @@ export const reducer: Reducer<IState> = (state = initialState, act): IState => {
       return doToggleUnit(state, act.payload);
 
     //TODO: tag lookup
-    // case ProfileActionTypes.LOOKUP_TAG_REQUEST:
-    //   return { ...state, tags:[]};
+    case ProfileActionTypes.LOOKUP_TAG_REQUEST:
+      return { ...state, tagSearch: act.payload };
     case ProfileActionTypes.LOOKUP_TAG_SUCCESS:
       if (act.payload.data.items) {
         tags = act.payload.data.items.map((item: any) => item.name);
