@@ -103,7 +103,9 @@ export const TaskErrorReducer = <TReq, TRes>(state: IApiState<TReq, TRes>, actio
 export interface IEntityRequest {
   id: number;
 }
-
+export interface IEntityStringRequest {
+  id: string;
+}
 export interface IEntity extends IEntityRequest {
   name: string;
   description?: string;
