@@ -57,8 +57,9 @@ const Presentation: React.SFC<IProps> = ({ units: { data: units, permissions }, 
           </Row>
         </>
       }
+
+      <h2 className="rvt-ts-md rvt-p-bottom-md">All Units</h2>
       <Row style={{ justifyContent: "space-between" }}>
-        <h2 className="rvt-ts-md rvt-p-bottom-md">All Units</h2>
         {units && units
           .sort(EntityComparer)
           .map((r, i) => (
