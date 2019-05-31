@@ -46,15 +46,16 @@ const Presentation: React.SFC<IProps> = ({ units: { data: units, permissions }, 
       {memberships && memberships.data &&
         <>
           <h2 className="rvt-ts-md rvt-p-bottom-md">My Units</h2>
-          <Row className="rvt-m-bottom-lg">
-            {memberships.data.map(m => (
+          {memberships.data.map(m => (
+            <Row className="rvt-m-bottom-lg">
               <Col className="rvt-p-bottom-lg">
                 <a href={`/units/${m.unitId}`} className="rvt-link-bold">
                   {m.unit ? m.unit.name : "Unit"}
                 </a>
                 <p className="rvt-m-top-remove">{m.unit && m.unit.description}</p>
-              </Col>))}
-          </Row>
+              </Col>
+            </Row>
+          ))}
         </>
       }
 
