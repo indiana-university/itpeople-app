@@ -56,7 +56,7 @@ const Presentation: React.SFC<IProps> = ({ units: { data: units, permissions }, 
               </Col>
             </Row>
           ))}
-        <div/>
+        </div>
       }
 
       <h2 className="rvt-ts-md rvt-p-bottom-md">All Units</h2>
