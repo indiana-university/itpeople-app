@@ -44,10 +44,10 @@ const Presentation: React.SFC<IProps> = ({ units: { data: units, permissions }, 
 
     <Content className="rvt-bg-white rvt-p-tb-xxl rvt-m-tb-lg">
       {memberships && memberships.data &&
-        <>
+        <div className="rvt-m-bottom-lg">
           <h2 className="rvt-ts-md rvt-p-bottom-md">My Units</h2>
           {memberships.data.map(m => (
-            <Row className="rvt-m-bottom-lg">
+            <Row>
               <Col className="rvt-p-bottom-lg">
                 <a href={`/units/${m.unitId}`} className="rvt-link-bold">
                   {m.unit ? m.unit.name : "Unit"}
@@ -56,7 +56,7 @@ const Presentation: React.SFC<IProps> = ({ units: { data: units, permissions }, 
               </Col>
             </Row>
           ))}
-        </>
+        <div/>
       }
 
       <h2 className="rvt-ts-md rvt-p-bottom-md">All Units</h2>
