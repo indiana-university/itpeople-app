@@ -27,11 +27,11 @@ export interface IProps extends unit.IState {
 export const Edit: React.SFC<IProps> = ({ profile, members, parent, unitChildren, departments, cancel, deleteUnit, id }) => {
   const pageName = profile && profile.data ? profile.data.name : "...";
   const handleDelete = () => { 
-    if(profile && profile.data && confirm("You sure?")) {
-      deleteUnit(profile.data) 
+    if (profile && profile.data && confirm(`Are you sure you want to delete ${profile.data.name}? This can't be undone.`)) {
+      deleteUnit(profile.data);
     }
   };
-
+  
   return (
     <>
       <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, { text: "Units", href: "/units" }, pageName, "Edit"]} />

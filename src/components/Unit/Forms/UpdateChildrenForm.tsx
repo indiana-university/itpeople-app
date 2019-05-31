@@ -10,7 +10,7 @@ import { ChildrenUnitsIcon, TrashCan } from "src/components/icons";
 import { deleteUnitChild } from "../store";
 import AddChildForm from "./AddChildForm";
 
-interface IFormProps extends InjectedFormProps<any>, IUnit, IDispathProps, IProps {}
+interface IFormProps extends InjectedFormProps<any>, IUnit, IDispathProps, IProps { }
 
 interface IDispathProps {
   clearCurrent: typeof clearCurrent;
@@ -53,7 +53,7 @@ const form: React.SFC<IFormProps> = props => {
                     {unit.description && <p className="rvt-ts-14 rvt-m-top-remove">{unit.description}</p>}
                   </Col>
                   <Col style={{ minWidth: "auto", flexGrow: 0, padding: 0, textAlign: "right" }}>
-                    <Button variant="plain" type="button" title="Remove Unit" onClick={() => removeChild(unit)}>
+                    <Button variant="plain" type="button" title="Remove Unit" onClick={() => confirm(`Are you sure you want to remove ${unit.name} as child of this unit?`) && removeChild(unit)}>
                       <TrashCan />
                     </Button>
                   </Col>

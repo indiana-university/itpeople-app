@@ -4,7 +4,7 @@
  */
 
 //#region TYPES
-import { IApiState, IEntityRequest, IPerson, IUnitMembership, defaultState } from "../types";
+import { IApiState, IEntityRequest, IPerson, IUnitMembership, defaultState, IEntityStringRequest } from "../types";
 
 export const enum ProfileActionTypes {
   PROFILE_FETCH_REQUEST = "@@profile/PROFILE_FETCH_REQUEST",
@@ -44,7 +44,8 @@ export const savePersonError = (error: Error) => action(ProfileActionTypes.PROFI
 export const toggleUnit = (id: number) => action(ProfileActionTypes.PROFILE_TOGGLE_UNIT, id);
 
 // MEMBERSHIPS
-export const fetchMembershipsRequest = (request: IEntityRequest) => action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_REQUEST, request);
+export const fetchMembershipsRequest = (request: IEntityRequest | IEntityStringRequest) =>
+  action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_REQUEST, request);
 const fetchMembershipsSuccess = (response: IApiResponse<IUnitMembership[]>) =>
   action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_SUCCESS, response);
 const fetchMembershipsError = (error: Error) => action(ProfileActionTypes.PROFILE_MEMBERSHIPS_FETCH_ERROR, error);

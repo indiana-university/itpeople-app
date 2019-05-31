@@ -6,41 +6,56 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { IApplicationState } from "../types";
+import { IApplicationState, IUnitMembership, IAuthUser, IApiState } from "../types";
 import Units from "./Presentation";
-import * as units from "./store";
+import { fetchUnits, IState } from "./store";
 import { Loader } from "../Loader";
+import { fetchMembershipsRequest } from "../Profile/store";
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
-interface IDispatchProps {
-  fetchRequest: typeof units.fetchUnits;
-}
 
 // tslint:disable-next-line:max-classes-per-file
-class Container extends React.Component<units.IState & IDispatchProps> {
+class Container extends React.Component<IProps> {
   public componentDidMount() {
-    this.props.fetchRequest();
+    const { fetchRequest, fetchMembershipsRequest, user } = this.props;
+    fetchRequest();
+    fetchMembershipsRequest({ id: user.user_name });
   }
 
   public render() {
+    const { units, memberships } = this.props;
     return (
-      <Loader {...this.props}>
-        {this.props.data && <Units {...this.props} />}
-      </Loader>
+        <Loader {...units}>
+          {units.data && <Units units={units} memberships={memberships} />}
+        </Loader>
     );
   }
+}
+interface IDispatchProps {
+  fetchRequest: typeof fetchUnits;
+  fetchMembershipsRequest: typeof fetchMembershipsRequest
+}
+interface IProps extends IDispatchProps {
+  units: IState,
+  memberships: IApiState<any, IUnitMembership[]>,
+  user: IAuthUser
 }
 
 // Although if necessary, you can always include multiple contexts. Just make sure to
 // separate them from each other to prevent prop conflicts.
 const mapStateToProps = (state: IApplicationState) => ({
-  ...state.units
+  units: state.units,
+  memberships: state.profile.memberships,
+  user: state.auth.data
 });
 
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
-  fetchRequest: () => dispatch(units.fetchUnits())
+  fetchRequest: () => dispatch(fetchUnits()),
+  fetchMembershipsRequest: (req) => {
+    return dispatch(fetchMembershipsRequest(req))
+  }
 });
 
 // Now let's connect our component!
