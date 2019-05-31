@@ -14,18 +14,25 @@ describe('Units', () => {
         const addUnitText = /add new unit/i
 
         test('with POST permission can add', () => {
-            const state = { ...defaultState(), permissions: [Permissions.Post] }
+            const props = {
+                units: { ...defaultState(), permissions: [Permissions.Post] },
+                memberships: defaultState()
+            }
             const { getByText } = render(
                 <Presentation
-                    {...state} />
+                    {...props} />
             )
             expect(getByText(addUnitText)).toBeInTheDocument()
         })
         test('without POST permission cannot add', () => {
-            const state = { ...defaultState(), permissions: [] }
+            const props = {
+                units: { ...defaultState(), permissions: [] },
+                memberships: defaultState()
+            }
+
             const { queryByText } = render(
                 <Presentation
-                    {...state} />
+                    {...props} />
             )
             expect(queryByText(addUnitText)).not.toBeInTheDocument()
         })

@@ -194,6 +194,16 @@
     {
       "permissions": "Owner",
       "id": 7
+    },
+    {
+      "unitId": "4",
+      "netId": "johndoe",
+      "personId": 7,
+      "title": "Employee",
+      "role": "Leader",
+      "permissions": "Owner",
+      "percentage": 100,
+      "id": 8
     }
   ],
   "supportRelationships": [
