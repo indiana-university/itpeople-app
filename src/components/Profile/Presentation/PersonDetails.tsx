@@ -51,7 +51,7 @@ export const PersonDetails: React.SFC<IProps> = (props) => {
               <div style={{ float: "right" }}>
                 <Modal
                   id="Edit responsibilities"
-                  title="Edit interests"
+                  title="Edit responsibilities"
                   buttonText={<Pencil />}
                   variant="plain"
                   onOpen={() => { editJobClasses && editJobClasses(jobClassList) }}
