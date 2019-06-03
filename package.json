@@ -1,6 +1,6 @@
 {
   "name": "itpeople-app",
-  "version": "2019.6.0",
+  "version": "2019.8.0",
   "private": true,
   "license": "BSD-3-Clause",
   "dependencies": {

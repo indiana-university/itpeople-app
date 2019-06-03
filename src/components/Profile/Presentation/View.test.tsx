@@ -7,7 +7,7 @@ import * as React from 'react'
 import { render, Examples } from 'src/testUtils'
 import { View } from './View'
 import { initialState, toggleUnit } from "../store";
-import { defaultState } from 'src/components/types'
+import { defaultState, IPerson } from 'src/components/types'
 
 const testState = {
     ...initialState,
@@ -15,7 +15,10 @@ const testState = {
         ...defaultState(),
         data: Examples.person
     },
-    toggleUnit: toggleUnit
+    toggleUnit: toggleUnit,
+    editJobClasses: (x: string[]) => { },
+    closeModal: () => { },
+    save: (p:IPerson) => { }
 }
 
 test('displays the name of the person', () => {

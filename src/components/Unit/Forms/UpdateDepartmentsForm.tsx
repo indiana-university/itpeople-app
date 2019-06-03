@@ -84,7 +84,7 @@ const form: React.SFC<IFormProps> = props => {
                   <h4 className="rvt-text-bold">{department.name}</h4>
                 </Col>
                 <Col style={{ flexGrow: 0, minWidth: 150, textAlign: "right" }}>
-                  <Button variant="plain" type="button" title="Remove Department" onClick={() => removeDepartment(relationship)}>
+                  <Button variant="plain" type="button" title="Remove Department" onClick={() => confirm(`Are you sure you want to remove ${department.name} as a supported department?`) && removeDepartment(relationship)}>
                     <TrashCan />
                   </Button>
                 </Col>

@@ -6,14 +6,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { IApplicationState, IEntityRequest } from "../types";
-import {View} from "./Presentation";
-import {
-  fetchRequest,
-  fetchMembershipsRequest,
-  IState,
-  toggleUnit
-} from "./store";
+import { IApplicationState, IEntityRequest, IPerson } from "../types";
+import { View } from "./Presentation";
+import { fetchRequest, IState, toggleUnit, savePerson } from "./store";
+import { change } from "redux-form";
+import { closeModal } from "../layout/Modal";
 
 interface IProfileProps {
   match: any;
@@ -21,14 +18,13 @@ interface IProfileProps {
 }
 interface IPropsFromDispatch {
   profileFetchRequest: typeof fetchRequest;
-  fetchMembershipsRequest: typeof fetchMembershipsRequest;
-  // profileUpdateRequest: typeof updateRequest;
   toggleUnit: typeof toggleUnit;
+  editJobClasses: (j: string[]) => any,
+  closeModal: typeof closeModal,
+  save: typeof savePerson
 }
 
-class Container extends React.Component<
-  IState & IProfileProps & IPropsFromDispatch
-> {
+class Container extends React.Component<IState & IProfileProps & IPropsFromDispatch> {
   public isMyProfile() {
     return this.props.match.params.id === undefined;
   }
@@ -36,7 +32,6 @@ class Container extends React.Component<
   public componentDidMount() {
     const id = this.isMyProfile() ? 0 : this.props.match.params.id;
     this.props.profileFetchRequest({ id });
-    this.props.fetchMembershipsRequest({ id });
   }
 
   public render() {
@@ -50,9 +45,35 @@ const mapStateToProps = (state: IApplicationState) => state.profile;
 
 const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
   profileFetchRequest: (request: IEntityRequest) => dispatch(fetchRequest(request)),
-  fetchMembershipsRequest: (request: IEntityRequest) => dispatch(fetchMembershipsRequest(request)),
-  toggleUnit: (id: number) => dispatch(toggleUnit(id))
+  toggleUnit: (id: number) => dispatch(toggleUnit(id)),
+  editJobClasses: (responsibilities: string[]) => {
+    const jobClassFields = JobClassList.map((name) => ({ name, enabled: responsibilities.includes(name) }));
+    dispatch(change("updateResponsibilities", "responsibilities", jobClassFields));
+  },
+  closeModal: () => dispatch(closeModal()),
+  save: (person: IPerson) => dispatch(savePerson(person))
 });
+
+// TODO: retrieve from Database?
+export const JobClassList = ["None", "ItLeadership", "BizSysAnalysis", "DataAdminAnalysis", "DatabaseArchDesign", "InstructionalTech", "ItProjectMgt", "ItSecurityPrivacy", "ItUserSupport", "ItMultiDiscipline", "Networks", "SoftwareAdminAnalysis", "SoftwareDevEng", "SystemDevEng", "UserExperience", "WebAdminDevEng"]
+export const JobClassDisplayNames = {
+  "None": "",
+  "ItLeadership": "IT Leadership",
+  "BizSysAnalysis": "Business System Analysis",
+  "DataAdminAnalysis": "Data Administration and Analysis",
+  "DatabaseArchDesign": "Database Architecture and Design",
+  "InstructionalTech": "Instructional",
+  "ItProjectMgt": "IT Project Management",
+  "ItSecurityPrivacy": "IT Security and Privacy",
+  "ItUserSupport": "IT User Support",
+  "ItMultiDiscipline": "IT Multiple Discipline",
+  "Networks": "Networks",
+  "SoftwareAdminAnalysis": "SoftwareAdminAnalysis",
+  "SoftwareDevEng": "Software Developer/Engineer",
+  "SystemDevEng": "Systems Developer/Engineer",
+  "UserExperience": "User Experience",
+  "WebAdminDevEng": "Web Developer/Engineer",
+}
 
 export default connect(
   mapStateToProps,
