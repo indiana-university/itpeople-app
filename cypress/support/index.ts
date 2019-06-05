@@ -7,9 +7,3 @@ import * as effects from '../../src/components/effects'
 beforeEach(() => {
     cy.exec('git checkout src/db.json')
 })
-
-beforeEach(() => {           
-    cy.stub(effects, 'redirectToLogin', () => {
-        window.location.assign('http://localhost:3000/signin?code=secret')
-  })
-})
