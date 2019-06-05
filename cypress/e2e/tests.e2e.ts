@@ -34,7 +34,7 @@ describe('admin user', () => {
         cy.getByLabelText(/survey/i).uncheck({ force: true })
         cy.getByText(/update/i).click()
         cy.wait(50)
-        cy.queryByTitle(/edit tools/i).click()
+        cy.queryByTitle(/edit tools/i).click({force: true})
         cy.getByLabelText(/survey/i).should("exist")
         cy.getByLabelText(/survey/i).should("not.be.checked")
         cy.getByText(/update/i).click()
