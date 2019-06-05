@@ -28,13 +28,13 @@ describe('admin user', () => {
         cy.queryByTitle(/edit tools/i).click()
         cy.getByLabelText(/survey/i).check({ force: true })
         cy.getByText(/update/i).click()
-        cy.wait(50) // wait to give list time to populate
+        cy.wait(150) // wait to give list time to populate
         cy.queryByTitle(/edit tools/i).click()
         cy.getByLabelText(/survey/i).should("be.checked")
         cy.getByLabelText(/survey/i).uncheck({ force: true })
         cy.getByText(/update/i).click()
-        cy.wait(50)
-        cy.queryByTitle(/edit tools/i).click({force: true})
+        cy.wait(250)
+        cy.queryByTitle(/edit tools/i).click()
         cy.getByLabelText(/survey/i).should("exist")
         cy.getByLabelText(/survey/i).should("not.be.checked")
         cy.getByText(/update/i).click()
