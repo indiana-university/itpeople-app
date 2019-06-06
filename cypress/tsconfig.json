@@ -3,6 +3,7 @@
     "compilerOptions": {
       "strict": true,
       "baseUrl": "../",
+      "rootDir": "../src",
       "target": "es5",
       "lib": ["es5", "dom"],
       "types": ["cypress", "cypress-testing-library", "node"]
