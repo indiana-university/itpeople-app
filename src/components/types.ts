@@ -5,7 +5,8 @@
 
 import * as Department from "../components/Department/store";
 import * as Departments from "../components/Departments/store";
-import * as People from "../components/Profile/store";
+import * as Profile from "../components/Profile/store";
+import * as People from "../components/People/store";
 import * as SearchSimple from "../components/Search/store";
 import * as Auth from "../components/SignIn/store";
 import * as Unit from "../components/Unit/store";
@@ -15,7 +16,8 @@ import * as Units from "../components/Units/store";
 export interface IApplicationState {
   auth: Auth.IState;
   lookup: ILookupState;
-  profile: People.IState;
+  profile: Profile.IState;
+  people: People.IState;
   searchSimple: SearchSimple.IState;
   unit: Unit.IState;
   units: Units.IState;
@@ -223,6 +225,49 @@ export interface IAuthUser {
 export interface ITool extends IEntity {
   enabled?: boolean;
 }
+
+export interface IPeopleRequest {
+
+}
+
+export const JobClassList = [
+  "None", 
+  "ItLeadership", 
+  "BizSysAnalysis", 
+  "DataAdminAnalysis", 
+  "DatabaseArchDesign", 
+  "InstructionalTech", 
+  "ItProjectMgt", 
+  "ItSecurityPrivacy", 
+  "ItUserSupport", 
+  "ItMultiDiscipline", 
+  "Networks", 
+  "SoftwareAdminAnalysis", 
+  "SoftwareDevEng", 
+  "SystemDevEng", 
+  "UserExperience", 
+  "WebAdminDevEng"
+]
+
+export const JobClassDisplayNames = {
+  "None": "",
+  "ItLeadership": "IT Leadership",
+  "BizSysAnalysis": "Business System Analysis",
+  "DataAdminAnalysis": "Data Administration and Analysis",
+  "DatabaseArchDesign": "Database Architecture and Design",
+  "InstructionalTech": "Instructional",
+  "ItProjectMgt": "IT Project Management",
+  "ItSecurityPrivacy": "IT Security and Privacy",
+  "ItUserSupport": "IT User Support",
+  "ItMultiDiscipline": "IT Multiple Discipline",
+  "Networks": "Networks",
+  "SoftwareAdminAnalysis": "SoftwareAdminAnalysis",
+  "SoftwareDevEng": "Software Developer/Engineer",
+  "SystemDevEng": "Systems Developer/Engineer",
+  "UserExperience": "User Experience",
+  "WebAdminDevEng": "Web Developer/Engineer",
+}
+
 
 // Comparers
 

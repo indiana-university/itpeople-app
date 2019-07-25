@@ -2,7 +2,7 @@ import * as React from "react";
 import { reduxForm, FieldArray, InjectedFormProps, Field, WrappedFieldArrayProps, WrappedFieldProps } from "redux-form";
 import { List, Button } from "rivet-react";
 import { RivetCheckboxField, RivetCheckbox } from "src/components/form";
-import { JobClassDisplayNames } from "../Container";
+import { JobClassDisplayNames } from "src/components/types";
 
 interface IFormProps extends InjectedFormProps<IForm>, IForm { }
 interface IForm {
@@ -25,8 +25,8 @@ const renderResponsibilities: any = (props: WrappedFieldArrayProps<string>) =>
     ))}
   </List>
 
-const renderTool = ({ input: { name, value: { name: toolName } } }: WrappedFieldProps) =>
-  <RivetCheckboxField name={name + "enabled"} component={RivetCheckbox} label={JobClassDisplayNames[toolName] || toolName} />
+const renderTool = ({ input: { name, value: { name: jobClass } } }: WrappedFieldProps) =>
+  <RivetCheckboxField name={name + "enabled"} component={RivetCheckbox} label={JobClassDisplayNames[jobClass] || jobClass} />
 
 let EditJobClasses: any = reduxForm<IForm>({
   form: "updateResponsibilities",

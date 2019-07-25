@@ -25,6 +25,7 @@ import * as Departments from "./components/Departments/store";
 import * as Lookup from "./components/lookup";
 import * as Modal from "./components/layout/Modal/store";
 import * as Profile from "./components/Profile/store";
+import * as People from "./components/People/store";
 import * as SearchSimple from "./components/Search/store";
 import * as Unit from "./components/Unit/store";
 import * as Units from "./components/Units/store";
@@ -37,6 +38,7 @@ export const initialState: IApplicationState = {
   lookup: Lookup.initialState,
   modal: "",
   profile: Profile.initialState,
+  people: People.initialState,
   searchSimple: SearchSimple.initialState,
   unit: Unit.initialState,
   units: Units.initialState
@@ -58,6 +60,7 @@ export const appReducer = combineReducers<IApplicationState>({
   lookup: Lookup.reducer,
   modal: Modal.reducer,
   profile: Profile.reducer,
+  people: People.reducer,
   searchSimple: SearchSimple.reducer,
   unit: Unit.reducer,
   units: Units.reducer
@@ -82,6 +85,7 @@ export function* rootSaga() {
     fork(Departments.saga),
     fork(Lookup.saga),
     fork(Profile.saga),
+    fork(People.saga),
     fork(SearchSimple.saga),
     fork(Unit.saga),
     fork(Units.saga)
