@@ -271,27 +271,27 @@ export const JobClassDisplayNames = {
 }
 
 export const CampusList = [
-  "BL",
-  "IN",
-  "CO",
-  "EA",
-  "FW",
-  "KO",
-  "NW",
-  "SB",
-  "SE"
+  "Bloomington",
+  "Indianapolis",
+  "Columbus",
+  "East",
+  "Fort Wayne",
+  "Kokomo",
+  "Northwest",
+  "South Bend",
+  "Southeast"
 ]
 
 export const CampusDisplayNames = {
-  "BL": "Bloomington",
-  "IN": "IUPUI (Indianapolis)",
-  "CO": "IUPUC (Columbus)",
-  "EA": "East (Richmond)",
-  "FW": "Fort Wayne",
-  "KO": "Kokomo",
-  "NW": "Northwest (Gary)",
-  "SB": "South Bend",
-  "SE": "Southeast (New Albany)"
+  "Bloomington": "Bloomington",
+  "Indianapolis": "IUPUI (Indianapolis)",
+  "Columbus": "IUPUC (Columbus)",
+  "East": "East (Richmond)",
+  "Fort Wayne": "Fort Wayne",
+  "Kokomo": "Kokomo",
+  "Northwest": "Northwest (Gary)",
+  "South Bend": "South Bend",
+  "Southeast": "Southeast (New Albany)"
 }
 
 export const RoleList = [
