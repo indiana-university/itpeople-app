@@ -12,7 +12,7 @@
       "campusPhone": "812-856-1234",
       "campusEmail": "rswanso@iu.edu",
       "campus": "Bloomington",
-      "expertise": "Wood-working;javascript;c#;mysql;unit-testing",
+      "expertise": "Wood-working,javascript,c#,mysql,unit-testing",
       "responsibilities": "BizSysAnalysis;DataAdminAnalysis;DatabaseArchDesign;InstructionalTech;ItProjectMgt;ItSecurityPrivacy",
       "photoUrl": "https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/p-parks-and-recreation-nick-offerman.jpg",
       "departmentId": 1,

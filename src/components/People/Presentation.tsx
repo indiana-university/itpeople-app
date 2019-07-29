@@ -43,10 +43,14 @@ const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions }
         {people
           .sort(EntityComparer)
           .map((r, i) => (
-            <Col key={"unit:" + i} md={5} className="rvt-p-bottom-lg">
-              <a href={`/units/${r.id}`} className="rvt-link-bold">
+            <Col key={"people:" + i} md={5} className="rvt-p-bottom-lg">
+              <a href={`/people/${r.id}`} className="rvt-link-bold">
                 {r.name}
-              </a> ({r.netId}; {r.department && r.department.name})
+              </a> {r.department && `(${r.department.name})` }
+              <p>
+                {r.position && <><em>Position</em>: {r.position}<br/></>}             
+                {r.expertise && <><em>Interests</em>: {r.expertise.replace(/,/g, ", ")}</>}
+              </p>              
             </Col>
           ))}
       </Row>
