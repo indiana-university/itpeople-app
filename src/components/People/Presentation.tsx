@@ -37,7 +37,7 @@ const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions }
       </Content>
     }
 
-    { people && people.length > 0 && 
+    { people && people.length > 0 && people[0].name !== "default" && 
       <Content className="rvt-bg-white rvt-p-tb-xxl rvt-m-tb-lg">
       <Row style={{ justifyContent: "space-between" }}>
         {people
@@ -50,7 +50,7 @@ const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions }
             </Col>
           ))}
       </Row>
-    </Content>
+      </Content> 
     }
   </>
 );

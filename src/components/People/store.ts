@@ -29,10 +29,11 @@ const fetchError = (error: Error) => action(PeopleActionTypes.PEOPLE_FETCH_ERROR
 import { Reducer, AnyAction } from 'redux'
 import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from '../types'
 
+const defaultPerson = {name:"default"} as IPerson
 // Type-safe initialState!
 const initialState: IApiState<{}, IPerson[]> = {
   permissions: [],
-  data: undefined,
+  data: [defaultPerson],
   error: undefined,
   loading: false,
   request: undefined
