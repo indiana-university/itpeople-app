@@ -18,9 +18,9 @@ class Container extends React.Component<IProps> {
   public render() {
     const { people } = this.props;
     return (
-        <Loader {...people}>
-          {people.data && <People people={people} />}
-        </Loader>
+          <Loader {...people}>
+            {people.data && <People people={people} />}
+          </Loader>
     );
   }
 }

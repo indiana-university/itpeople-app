@@ -26,13 +26,13 @@ const fetchError = (error: Error) => action(PeopleActionTypes.PEOPLE_FETCH_ERROR
 //#endregion
 
 //#region REDUCER
-import { Reducer } from 'redux'
+import { Reducer, AnyAction } from 'redux'
 import { TaskErrorReducer, TaskStartReducer, TaskSuccessReducer } from '../types'
 
 // Type-safe initialState!
 const initialState: IApiState<{}, IPerson[]> = {
   permissions: [],
-  data: [],
+  data: undefined,
   error: undefined,
   loading: false,
   request: undefined
@@ -56,9 +56,17 @@ import { all, fork, takeEvery, put } from 'redux-saga/effects'
 import { restApi, IApi, IApiResponse } from '../api';
 import { signinIfUnauthorized, apiEndpoints } from '../effects';
 
+const param = (name: string, values: string[]) : string =>
+  values.length == 0 ? "" : `${name}=${values.join(",")}`
+  
 const api = restApi();
-function* handleFetchPeople(api: IApi) {
-  const request = api.get<IPerson[]>(apiEndpoints.people.root())
+function* handleFetchPeople(api: IApi, req: IPeopleRequest) {
+  console.log("*** People Request:", req)
+  const roles = param("role", req.roles)
+  const classes = param("class", req.classes)
+  const campuses = param("campus", req.campuses)
+  const query = [roles, classes, campuses].filter (x => x != "").join("&")
+  const request = api.get<IPerson[]>(apiEndpoints.people.search(query))
   const action = yield request
     .then(fetchSuccess)
     .catch(signinIfUnauthorized)
@@ -69,7 +77,7 @@ function* handleFetchPeople(api: IApi) {
 // This is our watcher function. We use `take*()` functions to watch Redux for a specific action
 // type, and run our saga, for example the `handleFetch()` saga above.
 function* watchFetch() {
-  yield takeEvery(PeopleActionTypes.PEOPLE_FETCH_REQUEST, () => handleFetchPeople(api))
+  yield takeEvery(PeopleActionTypes.PEOPLE_FETCH_REQUEST, (a: AnyAction) => handleFetchPeople(api, a.payload))
 }
 // We can also use `fork()` here to split our saga into multiple watchers.
 function* saga() {
