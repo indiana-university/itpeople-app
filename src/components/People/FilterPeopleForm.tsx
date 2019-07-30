@@ -40,10 +40,10 @@ let FilterPeopleForm: React.SFC<IFormProps> | any = ({ filter, handleSubmit }: I
       <Dropdown modifier="secondary" label="Role" margin={{ right: "md" }}>
         <FieldArray name="role" component={renderRoles} />
       </Dropdown>
-      <Dropdown modifier="secondary" label="Job Class" margin={{ right: "md" }}>
+      <Dropdown modifier="secondary" menuClass="people-filter-menu--class" label="Job Class" margin={{ right: "md" }}>
         <FieldArray name="responsibilities" component={renderJobClasses} />
       </Dropdown>
-      <Dropdown modifier="secondary" label="Campus" margin={{ right: "md" }}>
+      <Dropdown modifier="secondary" menuClass="people-filter-menu--campus" label="Campus" margin={{ right: "md" }}>
         <FieldArray name="campuses" component={renderCampuses} />
       </Dropdown>
       <Button type="submit">Update</Button>
