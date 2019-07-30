@@ -5,14 +5,26 @@
 
 import * as React from "react";
 import { Col, Row } from "rivet-react";
+import { CSVLink } from "react-csv";
 import { EntityComparer } from "../types";
 import { Breadcrumbs, Content, PageTitle } from "../layout";
 import { IState } from "./store";
 import FilterPeopleForm from "./FilterPeopleForm";
 
+const headers = [
+  { label: "Name", key: "name" },
+  { label: "NetID", key: "netId" },
+  { label: "Email", key: "campusEmail" },
+  { label: "Phone", key: "campusPhone" },
+  { label: "Campus", key: "campus" },
+  { label: "Department", key: "department.name" },
+  { label: "Position", key: "position" },
+  { label: "Interests", key: "expertise" }
+];
+
 const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions } }) => (
   <>
-    <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, "Units"]} />
+    <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, "People"]} />
     <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
 
       <Row>
@@ -37,16 +49,28 @@ const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions }
       </Content>
     }
 
-    { people && people.length > 0 && people[0].name !== "default" && 
+    { people && people.length > 0 && people[0].name !== "default" &&     
       <Content className="rvt-bg-white rvt-p-tb-xxl rvt-m-tb-lg">
+      <Row>
+        <Col className="rvt-p-bottom-lg">
+          <CSVLink headers={headers}
+            data={people}
+            enclosingCharacter={`"`}
+            filename={"it-people.csv"}
+            className="rvt-button rvt-button--success"
+            target="_blank">
+            Export CSV
+          </CSVLink>
+        </Col>
+      </Row>
       <Row style={{ justifyContent: "space-between" }}>
         {people
           .sort(EntityComparer)
           .map((r, i) => (
-            <Col key={"people:" + i} md={5} className="rvt-p-bottom-lg">
+            <Col key={"people:" + i} md={5} className="rvt-p-bottom-sm">
               <a href={`/people/${r.id}`} className="rvt-link-bold">
                 {r.name}
-              </a> {r.department && <>({r.department.name})<br/></> }
+              </a> {r.department && <>({r.department.name})</>}<br/>
               {r.position && <><em>Position</em>: {r.position}<br/></>}             
               {r.expertise && <><em>Interests</em>: {r.expertise.replace(/,/g, ", ")}</>}
             </Col>
