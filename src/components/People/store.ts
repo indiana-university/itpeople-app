@@ -62,7 +62,6 @@ const param = (name: string, values: string[]) : string =>
   
 const api = restApi();
 function* handleFetchPeople(api: IApi, req: IPeopleRequest) {
-  console.log("*** People Request:", req)
   const roles = param("role", req.roles)
   const classes = param("class", req.classes)
   const campuses = param("campus", req.campuses)

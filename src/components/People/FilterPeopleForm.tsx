@@ -20,12 +20,10 @@ let FilterPeopleForm: React.SFC<IFormProps> | any = ({ filter, handleSubmit }: I
     .map(k => k.replace(prefix, ""));
 
   const doHandle = (values: object) => {
-    console.log("Form values", values)
     let selected = 
       Object.entries(values)
             .filter(([k, v]) => v)
             .map(a => a[0]);
-    console.log("filtered", selected)
     let req = { 
       classes: setOf(selected, "class_"), 
       campuses: setOf(selected, "campus_"),
@@ -36,7 +34,6 @@ let FilterPeopleForm: React.SFC<IFormProps> | any = ({ filter, handleSubmit }: I
 
   return (
     <form onSubmit={handleSubmit(doHandle)} >
-
       <Dropdown modifier="secondary" label="Role" margin={{ right: "md" }}>
         <FieldArray name="role" component={renderRoles} />
       </Dropdown>
