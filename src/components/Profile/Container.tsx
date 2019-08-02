@@ -6,7 +6,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { IApplicationState, IEntityRequest, IPerson } from "../types";
+import { IApplicationState, IEntityRequest, IPerson, JobClassList } from "../types";
 import { View } from "./Presentation";
 import { fetchRequest, IState, toggleUnit, savePerson } from "./store";
 import { change } from "redux-form";
@@ -55,25 +55,6 @@ const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
 });
 
 // TODO: retrieve from Database?
-export const JobClassList = ["None", "ItLeadership", "BizSysAnalysis", "DataAdminAnalysis", "DatabaseArchDesign", "InstructionalTech", "ItProjectMgt", "ItSecurityPrivacy", "ItUserSupport", "ItMultiDiscipline", "Networks", "SoftwareAdminAnalysis", "SoftwareDevEng", "SystemDevEng", "UserExperience", "WebAdminDevEng"]
-export const JobClassDisplayNames = {
-  "None": "",
-  "ItLeadership": "IT Leadership",
-  "BizSysAnalysis": "Business System Analysis",
-  "DataAdminAnalysis": "Data Administration and Analysis",
-  "DatabaseArchDesign": "Database Architecture and Design",
-  "InstructionalTech": "Instructional",
-  "ItProjectMgt": "IT Project Management",
-  "ItSecurityPrivacy": "IT Security and Privacy",
-  "ItUserSupport": "IT User Support",
-  "ItMultiDiscipline": "IT Multiple Discipline",
-  "Networks": "Networks",
-  "SoftwareAdminAnalysis": "SoftwareAdminAnalysis",
-  "SoftwareDevEng": "Software Developer/Engineer",
-  "SystemDevEng": "Systems Developer/Engineer",
-  "UserExperience": "User Experience",
-  "WebAdminDevEng": "Web Developer/Engineer",
-}
 
 export default connect(
   mapStateToProps,

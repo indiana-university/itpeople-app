@@ -5,7 +5,8 @@
 
 import * as Department from "../components/Department/store";
 import * as Departments from "../components/Departments/store";
-import * as People from "../components/Profile/store";
+import * as Profile from "../components/Profile/store";
+import * as People from "../components/People/store";
 import * as SearchSimple from "../components/Search/store";
 import * as Auth from "../components/SignIn/store";
 import * as Unit from "../components/Unit/store";
@@ -15,7 +16,8 @@ import * as Units from "../components/Units/store";
 export interface IApplicationState {
   auth: Auth.IState;
   lookup: ILookupState;
-  profile: People.IState;
+  profile: Profile.IState;
+  people: People.IState;
   searchSimple: SearchSimple.IState;
   unit: Unit.IState;
   units: Units.IState;
@@ -223,6 +225,80 @@ export interface IAuthUser {
 export interface ITool extends IEntity {
   enabled?: boolean;
 }
+
+export interface IPeopleRequest {
+  roles: string[],
+  classes: string[],
+  campuses: string[]
+}
+
+export const JobClassList = [
+  "BizSysAnalysis", 
+  "DataAdminAnalysis", 
+  "DatabaseArchDesign", 
+  "InstructionalTech", 
+  "ItLeadership", 
+  "ItMultiDiscipline", 
+  "ItProjectMgt", 
+  "ItSecurityPrivacy", 
+  "ItUserSupport", 
+  "Networks", 
+  "SoftwareAdminAnalysis", 
+  "SoftwareDevEng", 
+  "SystemDevEng", 
+  "UserExperience", 
+  "WebAdminDevEng"
+]
+
+export const JobClassDisplayNames = {
+  "None": "",
+  "ItLeadership": "IT Leadership",
+  "BizSysAnalysis": "Business System Analysis",
+  "DataAdminAnalysis": "Data Administration/Analysis",
+  "DatabaseArchDesign": "Database Architecture/Design",
+  "InstructionalTech": "Instructional Technology",
+  "ItProjectMgt": "IT Project Management",
+  "ItSecurityPrivacy": "IT Security/Privacy",
+  "ItUserSupport": "IT User Support",
+  "ItMultiDiscipline": "IT Multiple Discipline",
+  "Networks": "Networks",
+  "SoftwareAdminAnalysis": "Software Administration/Analysis",
+  "SoftwareDevEng": "Software Developer/Engineer",
+  "SystemDevEng": "Systems Developer/Engineer",
+  "UserExperience": "User Experience",
+  "WebAdminDevEng": "Web Developer/Engineer",
+}
+
+export const CampusList = [
+  "Bloomington",
+  "Indianapolis",
+  "Columbus",
+  "East",
+  "Fort Wayne",
+  "Kokomo",
+  "Northwest",
+  "South Bend",
+  "Southeast"
+]
+
+export const CampusDisplayNames = {
+  "Bloomington": "Bloomington",
+  "Indianapolis": "IUPUI (Indianapolis)",
+  "Columbus": "IUPUC (Columbus)",
+  "East": "East (Richmond)",
+  "Fort Wayne": "Fort Wayne",
+  "Kokomo": "Kokomo",
+  "Northwest": "Northwest (Gary)",
+  "South Bend": "South Bend",
+  "Southeast": "Southeast (New Albany)"
+}
+
+export const RoleList = [
+  "Leader",
+  "Sublead",
+  "Member",
+  "Related"
+]
 
 // Comparers
 

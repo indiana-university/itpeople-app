@@ -76,3 +76,10 @@ button svg {
 button.expanded svg {
   transform: rotate(180deg);
 }
+
+.people-filter-menu--class {
+  min-width:23rem;
+}
+.people-filter-menu--campus {
+  min-width:18rem;
+}

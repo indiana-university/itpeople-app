@@ -40,7 +40,7 @@ const apiEndpoints = {
   people: {
     root: (id?: number) => (id ? `/people/${id}` : "/people"),
     memberships: (id: number) => `/people/${id}/memberships`,
-    search: (term: string) => `/people?q=${term}`
+    search: (term: string) => `/people?${term}`
   },
   memberships: (id?: number) => (id ? `/memberships/${id}` : "/memberships"),
   memberTools: (id?: number) => (id ? `/memberTools/${id}` : "/memberTools"),
