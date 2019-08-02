@@ -10,6 +10,7 @@ import { EntityComparer } from "../types";
 import { Breadcrumbs, Content, PageTitle } from "../layout";
 import { IState } from "./store";
 import FilterPeopleForm from "./FilterPeopleForm";
+import { Download } from "../icons"
 
 const headers = [
   { label: "Name", key: "name" },
@@ -51,22 +52,23 @@ const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions }
                     data={people}
                     enclosingCharacter={`"`}
                     filename={"it-people.csv"}
-                    className="rvt-button rvt-button--success"
+                    className="rvt-button"
                     target="_blank">
-                    Export CSV
+                    <span style={{marginRight:".5rem"}}><Download  /></span> Export results to CSV
                   </CSVLink>
               </Row>
+
               {people
                 .sort(EntityComparer)
                 .map((r, i) => (
                   <Row key={"people:" + i} className="rvt-p-bottom-md">
                     <div>
-                      <a href={`/people/${r.id}`} className="rvt-link-bold">{r.name}</a><br />
+                      <a href={`/people/${r.id}`} className="rvt-link-bold">{r.name}</a> {r.campusEmail && <>(<a href={`mailto:${r.campusEmail}`}>{r.netId}</a></>} <br />
                       {r.position && <>{r.position}<br /></>}
-                      {r.campusEmail && <><a href={`mailto:${r.campusEmail}`}>{r.campusEmail}</a></>}
                     </div>
                   </Row>
                 ))}
+
             </>
           }
         </Col>

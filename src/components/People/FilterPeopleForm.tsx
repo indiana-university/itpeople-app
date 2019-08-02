@@ -51,7 +51,7 @@ let FilterPeopleForm: React.SFC<IFormProps> | any = ({ filter, handleSubmit }: I
       <FieldArray name="responsibilities" component={renderJobClasses} />
       <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Campus</h2>
       <FieldArray name="campuses" component={renderCampuses} />
-      <Button type="submit" style={submit}>Update</Button>
+      <Button type="submit" style={submit}>Apply Filters</Button>
     </form>
   );
 };
