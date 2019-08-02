@@ -1,7 +1,7 @@
 import * as React from "react";
 import { reduxForm, InjectedFormProps, WrappedFieldProps, Field, WrappedFieldArrayProps, FieldArray } from "redux-form";
 import * as people from "./store";
-import { Button, List, Dropdown } from "rivet-react";
+import { Button, List } from "rivet-react";
 import { RivetCheckboxField, RivetCheckbox } from "src/components/form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -32,18 +32,26 @@ let FilterPeopleForm: React.SFC<IFormProps> | any = ({ filter, handleSubmit }: I
     filter(req);
   };
 
+  const h2_first = {
+    marginBottom: '1rem'
+  }
+  const h2 = {
+    marginTop: '2rem',
+    marginBottom: '1rem'
+  }
+  const submit = {
+    marginTop: '2rem'
+  }
+
   return (
     <form onSubmit={handleSubmit(doHandle)} >
-      <Dropdown modifier="secondary" label="Role" margin={{ right: "md" }}>
-        <FieldArray name="role" component={renderRoles} />
-      </Dropdown>
-      <Dropdown modifier="secondary" menuClass="people-filter-menu--class" label="Job Class" margin={{ right: "md" }}>
-        <FieldArray name="responsibilities" component={renderJobClasses} />
-      </Dropdown>
-      <Dropdown modifier="secondary" menuClass="people-filter-menu--campus" label="Campus" margin={{ right: "md" }}>
-        <FieldArray name="campuses" component={renderCampuses} />
-      </Dropdown>
-      <Button type="submit">Update</Button>
+      <h2 className="rvt-ts-23 rvt-text-bold" style={h2_first}>Unit Role</h2>
+      <FieldArray name="role" component={renderRoles} />
+      <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Job Class</h2>
+      <FieldArray name="responsibilities" component={renderJobClasses} />
+      <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Campus</h2>
+      <FieldArray name="campuses" component={renderCampuses} />
+      <Button type="submit" style={submit}>Update</Button>
     </form>
   );
 };

@@ -36,48 +36,42 @@ const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions }
         </Col>
       </Row>
 
-      <Row>
-        <Col margin={{top:"md"}}>
+      <Row margin={{ top: "md" }}>
+        <Col md={5}>
           <FilterPeopleForm />
+        </Col>
+        <Col md={7}>
+          {people && people.length == 0 &&
+              <p>No people found matching those filters.</p>
+          }
+          {people && people.length > 0 && people[0].name !== "default" &&
+            <>
+              <Row key={"export_link"} className="rvt-p-bottom-lg">
+                  <CSVLink headers={headers}
+                    data={people}
+                    enclosingCharacter={`"`}
+                    filename={"it-people.csv"}
+                    className="rvt-button rvt-button--success"
+                    target="_blank">
+                    Export CSV
+                  </CSVLink>
+              </Row>
+              {people
+                .sort(EntityComparer)
+                .map((r, i) => (
+                  <Row key={"people:" + i} className="rvt-p-bottom-md">
+                    <div>
+                      <a href={`/people/${r.id}`} className="rvt-link-bold">{r.name}</a><br />
+                      {r.position && <>{r.position}<br /></>}
+                      {r.campusEmail && <><a href={`mailto:${r.campusEmail}`}>{r.campusEmail}</a></>}
+                    </div>
+                  </Row>
+                ))}
+            </>
+          }
         </Col>
       </Row>
     </Content>
-
-    { people && people.length == 0 &&
-      <Content className="rvt-bg-white rvt-p-tb-xxl rvt-m-tb-lg">
-        <p>No people found matching those filters.</p>
-      </Content>
-    }
-
-    { people && people.length > 0 && people[0].name !== "default" &&     
-      <Content className="rvt-bg-white rvt-p-tb-xxl rvt-m-tb-lg">
-      <Row>
-        <Col className="rvt-p-bottom-lg">
-          <CSVLink headers={headers}
-            data={people}
-            enclosingCharacter={`"`}
-            filename={"it-people.csv"}
-            className="rvt-button rvt-button--success"
-            target="_blank">
-            Export CSV
-          </CSVLink>
-        </Col>
-      </Row>
-      <Row style={{ justifyContent: "space-between" }}>
-        {people
-          .sort(EntityComparer)
-          .map((r, i) => (
-            <Col key={"people:" + i} md={5} className="rvt-p-bottom-sm">
-              <a href={`/people/${r.id}`} className="rvt-link-bold">
-                {r.name}
-              </a> {r.department && <>({r.department.name})</>}<br/>
-              {r.position && <><em>Position</em>: {r.position}<br/></>}             
-              {r.expertise && <><em>Interests</em>: {r.expertise.replace(/,/g, ", ")}</>}
-            </Col>
-          ))}
-      </Row>
-      </Content> 
-    }
   </>
 );
 
