@@ -16,10 +16,10 @@ import { Loader } from "../Loader";
 // tslint:disable-next-line:max-classes-per-file
 class Container extends React.Component<IProps> {
   public render() {
-    const { people } = this.props;
+    const { people, user } = this.props;
     return (
           <Loader {...people}>
-            {people.data && <People people={people} />}
+            {people.data && <People people={people} user={user} />}
           </Loader>
     );
   }

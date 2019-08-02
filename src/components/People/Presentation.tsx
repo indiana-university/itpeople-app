@@ -4,9 +4,9 @@
  */
 
 import * as React from "react";
-import { Col, Row } from "rivet-react";
+import { Col, Row, Panel } from "rivet-react";
 import { CSVLink } from "react-csv";
-import { EntityComparer } from "../types";
+import { EntityComparer, IAuthUser } from "../types";
 import { Breadcrumbs, Content, PageTitle } from "../layout";
 import { IState } from "./store";
 import FilterPeopleForm from "./FilterPeopleForm";
@@ -23,7 +23,7 @@ const headers = [
   { label: "Interests", key: "expertise" }
 ];
 
-const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions } }) => (
+const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions }, user }) => (
   <>
     <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, "People"]} />
     <Content className="rvt-bg-white rvt-p-tb-lg rvt-m-bottom-xxl">
@@ -43,7 +43,9 @@ const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions }
         </Col>
         <Col md={7}>
           {people && people.length == 0 &&
-              <p>No people found matching those filters.</p>
+            <Panel>
+            <p>No people found matching those filters. You can make yourself easier to find by <a href={`/people  /${user.user_name}`}>keeping your profile up to date.</a></p>
+            </Panel>
           }
           {people && people.length > 0 && people[0].name !== "default" &&
             <>
@@ -63,7 +65,7 @@ const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions }
                 .map((r, i) => (
                   <Row key={"people:" + i} className="rvt-p-bottom-md">
                     <div>
-                      <a href={`/people/${r.id}`} className="rvt-link-bold">{r.name}</a> {r.campusEmail && <>(<a href={`mailto:${r.campusEmail}`}>{r.netId}</a></>} <br />
+                      <a href={`/people/${r.id}`} className="rvt-link-bold">{r.name}</a> {r.campusEmail && <>(<a href={`mailto:${r.campusEmail}`}>{r.netId}</a>)</>} <br />
                       {r.position && <>{r.position}<br /></>}
                     </div>
                   </Row>
@@ -79,6 +81,7 @@ const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions }
 
 interface IProps {
   people: IState,
+  user: IAuthUser
 }
 
 export default Presentation;

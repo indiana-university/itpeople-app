@@ -47,7 +47,7 @@ let FilterPeopleForm: React.SFC<IFormProps> | any = ({ filter, handleSubmit }: I
     <form onSubmit={handleSubmit(doHandle)} >
       <h2 className="rvt-ts-23 rvt-text-bold" style={h2_first}>Unit Role</h2>
       <FieldArray name="role" component={renderRoles} />
-      <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Job Class</h2>
+      <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Responsibility</h2>
       <FieldArray name="responsibilities" component={renderJobClasses} />
       <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Campus</h2>
       <FieldArray name="campuses" component={renderCampuses} />

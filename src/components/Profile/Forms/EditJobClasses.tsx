@@ -13,7 +13,7 @@ interface IForm {
 const form: React.SFC<IFormProps> = ({ responsibilities, handleSubmit }) =>
   <form onSubmit={handleSubmit}>
     <FieldArray name="responsibilities" component={renderResponsibilities} />
-    <Button type="submit">Update</Button>
+    <Button type="submit" style={{marginLeft:"1.5rem", marginTop:"1.5rem"}}>Update</Button>
   </form>
 
 const renderResponsibilities: any = (props: WrappedFieldArrayProps<string>) =>
