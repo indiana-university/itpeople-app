@@ -1,12 +1,11 @@
 import * as React from "react";
 import { Panel } from "../../Panel";
-import { IPerson } from "../../types";
+import { IPerson, JobClassDisplayNames } from "../../types";
 import { Badge, List, ModalBody } from "rivet-react";
 import { Pencil } from "src/components/icons";
 import { Modal } from "src/components/layout/Modal";
 import EditInterests from "../Forms/EditInterests";
 import { EditJobClasses } from "../Forms/EditJobClasses";
-import { JobClassDisplayNames } from "../Container";
 
 export const PersonDetails: React.SFC<IProps> = (props) => {
   const { person, canEdit, editJobClasses, closeModal, save } = props;

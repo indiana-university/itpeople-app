@@ -164,7 +164,7 @@ function* handleUnitSearch(api: IApi, term: string) {
 }
 function* handlePeopleSearch(api: IApi, term: string) {
   const action = yield api
-    .get<IPerson[]>(apiEndpoints.people.search(term))
+    .get<IPerson[]>(apiEndpoints.people.search(`q=${term}`))
     .then(searchPeopleSuccess)
     .catch(signinIfUnauthorized)
     .catch(searchPeopleError);
