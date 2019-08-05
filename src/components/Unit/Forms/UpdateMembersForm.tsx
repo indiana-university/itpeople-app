@@ -191,7 +191,7 @@ const form: React.SFC<IFormProps> = props => {
         <p>
           Unit <em>Subleads</em> are team leads and co-admins. Click on the pencil icon to edit more detailed information about their role within this unit.
         </p>
-        {renderAddMemberForm(save, "Leader", UitsRole.Leader)}
+        {renderAddMemberForm(save, "Subleads", UitsRole.Sublead)}
         <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
           {subLeads.map(renderMember)}
         </List>
