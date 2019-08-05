@@ -21,7 +21,7 @@ export const MemberLists: React.SFC<IProps> = ({ members, title }) => {
           {leaders.length > 0 && <MemberList title={"Leadership (" + leaders.length + ")"} members={leaders} showImages={true} />}
           {subLeads.length > 0 && <MemberList title={"Subleadership (" + subLeads.length + ")"} members={subLeads} showImages={true} />}
           {team.length > 0 && <MemberList title={"Members (" + team.length + ")"} members={team} />}
-          {related.length > 0 && <MemberList title={"Related (" + related.length + ")"} members={related} />}
+          {related.length > 0 && <MemberList title={"Related People (" + related.length + ")"} members={related} />}
         </Col>
       </Row>
     </>;
