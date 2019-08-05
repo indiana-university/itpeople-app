@@ -6,17 +6,13 @@
 import * as React from "react";
 import { Row, Col } from "rivet-react";
 import { MemberList } from "./MemberList";
-import { IUnitMember, UitsRole } from "../../types";
+import { IUnitMember, UitsRole, membersInRole } from "../../types";
 
 export const MemberLists: React.SFC<IProps> = ({ members, title }) => {
-  // find all members with a matching role.
-  const inRole = (role: UitsRole) => 
-    (members || []).filter(m => m.role === role);
-    
-  const leaders = inRole(UitsRole.Leader);
-  const subLeads = inRole(UitsRole.Sublead);
-  const team = inRole(UitsRole.Member);
-  const related = inRole(UitsRole.Related);
+  const leaders = membersInRole(members, UitsRole.Leader);
+  const subLeads = membersInRole(members, UitsRole.Sublead);
+  const team = membersInRole(members, UitsRole.Member);
+  const related = membersInRole(members, UitsRole.Related);
 
   return <>
       {title && <h2 className="rvt-ts-32">{title}</h2>}

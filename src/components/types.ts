@@ -145,6 +145,7 @@ export enum UitsRole {
   Related = "Related"
 }
 
+
 export enum UnitPermissions {
   Owner = "Owner",
   Viewer = "Viewer",
@@ -179,6 +180,10 @@ export interface IUnitMember extends IUnitMemberRequest {
   person?: IPerson;
   memberTools: IUnitMemberTool[];
 }
+
+export const membersInRole = (members: IUnitMember[], role:UitsRole) =>
+  (members || []).filter(m => m.role === role);
+
 
 export interface IUnitMembership extends IUnitMemberRequest {
   unit?: IUnit;
