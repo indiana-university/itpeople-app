@@ -180,7 +180,7 @@ const form: React.SFC<IFormProps> = props => {
       <>
         <h2 className="rvt-ts-29 rvt-text-bold">Unit Leadership</h2>
         <p>
-          Unit <em>Leaders</em> are VPs, directors, managers. Click on the pencil icon to edit more detailed information about their role within this unit.
+          Unit <em>Leaders</em> are VPs, directors, managers.
         </p>
         {renderAddMemberForm(save, "Leader", UitsRole.Leader)}
         <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
@@ -189,7 +189,7 @@ const form: React.SFC<IFormProps> = props => {
 
         <h2 className="rvt-ts-29 rvt-text-bold">Unit Subleadership</h2>
         <p>
-          Unit <em>Subleads</em> are team leads and co-admins. Click on the pencil icon to edit more detailed information about their role within this unit.
+          Unit <em>Subleads</em> are team leads and co-admins.
         </p>
         {renderAddMemberForm(save, "Subleads", UitsRole.Sublead)}
         <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
@@ -198,7 +198,7 @@ const form: React.SFC<IFormProps> = props => {
 
         <h2 className="rvt-ts-29 rvt-text-bold">Unit Members</h2>
         <p>
-          Unit <em>Members</em> are individual contributers. Click on the pencil icon to edit more detailed information about their role within this unit.
+          Unit <em>Members</em> are individual contributers.
         </p>
         {renderAddMemberForm(save, "Members", UitsRole.Member)}
         <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
@@ -207,7 +207,7 @@ const form: React.SFC<IFormProps> = props => {
 
         <h2 className="rvt-ts-29 rvt-text-bold">Related People</h2>
         <p>
-          <em>Related</em> people are executive assistants and self-supported faculty/staff that do not solely report to this unit. Click on the pencil icon to edit more detailed information about their role within this unit.
+          <em>Related</em> people are executive assistants and self-supported faculty/staff that do not solely report to this unit.
         </p>
         {renderAddMemberForm(save, "Others", UitsRole.Related)}
         <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
