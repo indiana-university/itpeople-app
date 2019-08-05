@@ -3,7 +3,7 @@ import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, cha
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
 import { saveMemberRequest, deleteMemberRequest, saveMemberTools } from "../store";
-import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest, IApiState, Permissions, ITool, UnitMemberComparer, membersInRole } from "../../types";
+import { UitsRole, IUnitMember, IUnitMemberRequest, IApiState, Permissions, ITool, UnitMemberComparer, membersInRole } from "../../types";
 import { connect } from "react-redux";
 import { AddUser, Pencil, TrashCan, Eye, Gear } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
@@ -44,6 +44,7 @@ const form: React.SFC<IFormProps> = props => {
       return { ...member, index };
     }).sort(UnitMemberComparer) as IUnitMember[];
     let leaders = membersInRole(members, UitsRole.Leader);
+    let subLeads = membersInRole(members, UitsRole.Sublead);
     let team = membersInRole(members, UitsRole.Member);
     let related = membersInRole(members, UitsRole.Related)
     const renderAddMemberForm = (save: typeof saveMemberRequest, id: string, role?: UitsRole) => (
