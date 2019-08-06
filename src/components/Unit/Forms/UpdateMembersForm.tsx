@@ -3,7 +3,7 @@ import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, cha
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
 import { saveMemberRequest, deleteMemberRequest, saveMemberTools } from "../store";
-import { UitsRole, ItProRole, IUnitMember, IUnitMemberRequest, IApiState, Permissions, ITool, UnitMemberComparer } from "../../types";
+import { UitsRole, IUnitMember, IUnitMemberRequest, IApiState, Permissions, ITool, UnitMemberComparer, membersInRole } from "../../types";
 import { connect } from "react-redux";
 import { AddUser, Pencil, TrashCan, Eye, Gear } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
@@ -43,9 +43,10 @@ const form: React.SFC<IFormProps> = props => {
       let member = fields.get(index) as IUnitMember;
       return { ...member, index };
     }).sort(UnitMemberComparer) as IUnitMember[];
-    let leaders = members.filter(m => m.role == ItProRole.Admin || m.role == UitsRole.Leader);
-    let standardMember = members.filter(m => m.role == ItProRole.Pro || m.role == UitsRole.Member || m.role == UitsRole.Sublead);
-    let others = members.filter(m => m.role == ItProRole.Aux || m.role == UitsRole.Related);
+    let leaders = membersInRole(members, UitsRole.Leader);
+    let subLeads = membersInRole(members, UitsRole.Sublead);
+    let team = membersInRole(members, UitsRole.Member);
+    let related = membersInRole(members, UitsRole.Related)
     const renderAddMemberForm = (save: typeof saveMemberRequest, id: string, role?: UitsRole) => (
       <div>
         <Modal
@@ -177,34 +178,40 @@ const form: React.SFC<IFormProps> = props => {
 
     return (
       <>
-        <h2 className="rvt-ts-29 rvt-text-bold">Unit Leadership</h2>
+        <h2 className="rvt-ts-29 rvt-text-bold">Leaders</h2>
         <p>
-          Use Leadership for VPs directors and managers. Click on the pencil icon to edit more detailed information about their role within
-          this unit.
+          Unit <em>Leaders</em> are VPs, directors, managers.
         </p>
         {renderAddMemberForm(save, "Leader", UitsRole.Leader)}
         <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
           {leaders.map(renderMember)}
         </List>
 
-        <h2 className="rvt-ts-29 rvt-text-bold">Unit Members</h2>
+        <h2 className="rvt-ts-29 rvt-text-bold">Subleads</h2>
         <p>
-          Use Related People for admins and others who are do not solely report to this unit. Click on the pencil icon to edit more detailed
-          information about their role within this unit.
+          Unit <em>Subleads</em> are team leads and co-admins.
+        </p>
+        {renderAddMemberForm(save, "Subleads", UitsRole.Sublead)}
+        <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
+          {subLeads.map(renderMember)}
+        </List>
+
+        <h2 className="rvt-ts-29 rvt-text-bold">Members</h2>
+        <p>
+          Unit <em>Members</em> are individual contributers.
         </p>
         {renderAddMemberForm(save, "Members", UitsRole.Member)}
         <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
-          {standardMember.map(renderMember)}
+          {team.map(renderMember)}
         </List>
 
-        <h2 className="rvt-ts-29 rvt-text-bold">Related people</h2>
+        <h2 className="rvt-ts-29 rvt-text-bold">Related People</h2>
         <p>
-          Use Related People for admins and others who are do not solely report to this unit. Click on the pencil icon to edit more detailed
-          information about their role within this unit.
+          <em>Related</em> people are executive assistants and self-supported faculty/staff that do not solely report to this unit.
         </p>
         {renderAddMemberForm(save, "Others", UitsRole.Related)}
         <List variant="plain" className="list-dividers list-dividers--show-last rvt-m-top-lg">
-          {others.map(renderMember)}
+          {related.map(renderMember)}
         </List>
       </>
     );
