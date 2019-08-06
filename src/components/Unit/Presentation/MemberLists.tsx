@@ -18,8 +18,8 @@ export const MemberLists: React.SFC<IProps> = ({ members, title }) => {
       {title && <h2 className="rvt-ts-32">{title}</h2>}
       <Row>
         <Col>
-          {leaders.length > 0 && <MemberList title={"Leadership (" + leaders.length + ")"} members={leaders} showImages={true} />}
-          {subLeads.length > 0 && <MemberList title={"Subleadership (" + subLeads.length + ")"} members={subLeads} showImages={true} />}
+          {leaders.length > 0 && <MemberList title={"Leaders (" + leaders.length + ")"} members={leaders} showImages={true} />}
+          {subLeads.length > 0 && <MemberList title={"Subleads (" + subLeads.length + ")"} members={subLeads} showImages={true} />}
           {team.length > 0 && <MemberList title={"Members (" + team.length + ")"} members={team} />}
           {related.length > 0 && <MemberList title={"Related People (" + related.length + ")"} members={related} />}
         </Col>

@@ -178,7 +178,7 @@ const form: React.SFC<IFormProps> = props => {
 
     return (
       <>
-        <h2 className="rvt-ts-29 rvt-text-bold">Leadership</h2>
+        <h2 className="rvt-ts-29 rvt-text-bold">Leaders</h2>
         <p>
           Unit <em>Leaders</em> are VPs, directors, managers.
         </p>
@@ -187,7 +187,7 @@ const form: React.SFC<IFormProps> = props => {
           {leaders.map(renderMember)}
         </List>
 
-        <h2 className="rvt-ts-29 rvt-text-bold">Subleadership</h2>
+        <h2 className="rvt-ts-29 rvt-text-bold">Subleads</h2>
         <p>
           Unit <em>Subleads</em> are team leads and co-admins.
         </p>
