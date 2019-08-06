@@ -6,34 +6,22 @@
 import * as React from "react";
 import { Row, Col } from "rivet-react";
 import { MemberList } from "./MemberList";
-import { IUnitMember, UitsRole } from "../../types";
+import { IUnitMember, UitsRole, membersInRole } from "../../types";
 
 export const MemberLists: React.SFC<IProps> = ({ members, title }) => {
-  const leaders: IUnitMember[] = [];
-  const related: IUnitMember[] = [];
-  const team: IUnitMember[] = [];
-  members && members.forEach(m => {
-    switch (m.role) {
-      case UitsRole.Leader:
-        leaders.push(m);
-        break;
-      case UitsRole.Related:
-        related.push(m);
-        break;
-      default:
-        team.push(m);
-        break;
-    }
-  })
-
+  const leaders = membersInRole(members, UitsRole.Leader);
+  const subLeads = membersInRole(members, UitsRole.Sublead);
+  const team = membersInRole(members, UitsRole.Member);
+  const related = membersInRole(members, UitsRole.Related);
 
   return <>
       {title && <h2 className="rvt-ts-32">{title}</h2>}
       <Row>
         <Col>
-          {leaders.length > 0 && <MemberList title={"Leadership (" + leaders.length + ")"} members={leaders} showImages={true} />}
-          {related.length > 0 && <MemberList title={"Related (" + related.length + ")"} members={related} />}
+          {leaders.length > 0 && <MemberList title={"Leaders (" + leaders.length + ")"} members={leaders} showImages={true} />}
+          {subLeads.length > 0 && <MemberList title={"Subleads (" + subLeads.length + ")"} members={subLeads} showImages={true} />}
           {team.length > 0 && <MemberList title={"Members (" + team.length + ")"} members={team} />}
+          {related.length > 0 && <MemberList title={"Related People (" + related.length + ")"} members={related} />}
         </Col>
       </Row>
     </>;
