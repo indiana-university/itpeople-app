@@ -14,6 +14,7 @@ import Parent from "./Parent";
 import Children from "./Children";
 import { IEntity, IDefaultState, Permissions, IApiState } from "../../types";
 import Departments from "./Departments";
+import Buildings from "./Buildings";
 import { Pencil, TrashCan } from "src/components/icons";
 
 interface IProps {
@@ -26,7 +27,7 @@ const hasData = (result: IApiState<any, any>) => {
 };
 
 const Presentation: React.SFC<IState & IProps> = props => {
-  const { edit, deleteUnit, profile, members, parent, unitChildren, departments } = props;
+  const { edit, deleteUnit, profile, members, parent, unitChildren, departments, buildings } = props;
   const name = profile.data ? profile.data.name : "...";
   const handleDelete = () => {
     if (profile && profile.data && confirm(`Are you sure you want to delete ${profile.data.name}? This can't be undone.`)) {
@@ -67,8 +68,15 @@ const Presentation: React.SFC<IState & IProps> = props => {
                 </div>
               )}
               {hasData(departments) && (
-                <Panel title="Supported Departments">
-                  <Departments {...departments} />
+                <div className="rvt-m-bottom-lg">
+                  <Panel title="Supported Departments">
+                    <Departments {...departments} />
+                  </Panel>
+                </div>
+              )}
+              {hasData(buildings) && (
+                <Panel title="Supported Buildings">
+                  <Buildings {...buildings} />
                 </Panel>
               )}
             </div>

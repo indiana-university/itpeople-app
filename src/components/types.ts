@@ -129,7 +129,15 @@ export interface IUnit extends IEntity, IUrl {
   parentId?: number;
 }
 
-export interface IDepartment extends IEntity {}
+export interface IDepartment extends IEntity { }
+
+export interface IBuilding extends IEntity {
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  postCode: string
+}
 
 export enum ItProRole {
   Admin = "Admin",
@@ -198,6 +206,17 @@ export interface ISupportRelationshipRequest {
 export interface ISupportRelationship extends ISupportRelationshipRequest {
   unit: IUnit;
   department: IDepartment;
+}
+
+export interface IBuildingSupportRelationshipRequest {
+  id?: number;
+  unitId: number;
+  buildingId: number;
+}
+
+export interface IBuildingSupportRelationship extends IBuildingSupportRelationshipRequest {
+  unit: IUnit;
+  building: IBuilding;
 }
 
 export interface IPerson {
@@ -320,3 +339,4 @@ export const UnitMemberComparer = (a: IUnitMember, b: IUnitMember) => {
 };
 
 export const SupportRelationshipComparer = (a: ISupportRelationship, b: ISupportRelationship) => EntityComparer(a.department, b.department);
+export const BuildingSupportRelationshipComparer = (a: IBuildingSupportRelationship, b: IBuildingSupportRelationship) => EntityComparer(a.building, b.building);
