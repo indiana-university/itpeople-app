@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`renders the page title right 1`] = `
-<h1
-  className="rvt-ts-32 rvt-ts-41-lg-up rvt-text-bold"
->
-  Test
-</h1>
-`;
