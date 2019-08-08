@@ -16,7 +16,8 @@ import {
   defaultState,
   IUnitMemberTool,
   ITool,
-  IBuildingSupportRelationship
+  IBuildingSupportRelationship,
+  IBuildingSupportRelationshipRequest
 } from "../types";
 import { lookup } from "../lookup";
 
@@ -109,15 +110,18 @@ const deleteMemberRequest = (member: IUnitMember) => action(UnitActionTypes.UNIT
 const deleteUnit = (unit: IUnit) => action(UnitActionTypes.UNIT_DELETE_REQUEST, unit);
 const deleteUnitChild = (request: IEntityRequest) => action(UnitActionTypes.UNIT_DELETE_CHILD_REQUEST, request);
 const deleteUnitDepartment = (request: ISupportRelationshipRequest) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, request);
+const deleteUnitBuilding = (request: IBuildingSupportRelationshipRequest) => action(UnitActionTypes.UNIT_DELETE_BUILDING_REQUEST, request);
 const deleteUnitParent = (request: IEntityRequest) => action(UnitActionTypes.UNIT_DELETE_PARENT_REQUEST, request);
 const edit = () => action(UnitActionTypes.UNIT_EDIT, {});
 const fetchUnit = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request);
 const lookupDepartment = (q: string) => lookup(q ? `/departments?q=${q}&_limit=${lookupLimit}` : "");
+const lookupBuilding = (q: string) => lookup(q ? `/buildings?q=${q}&_limit=${lookupLimit}` : "");
 const lookupUnit = (q: string) => lookup(q ? `/units?q=${q}&_limit=${lookupLimit}` : "");
 const lookupUser = (q: string) => lookup(q ? `/people-lookup?q=${q}&_limit=${lookupLimit}` : "");
 const saveMemberRequest = (member: IUnitMemberRequest) => action(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, member);
 const saveUnitChild = (request: IEntityRequest) => action(UnitActionTypes.UNIT_SAVE_CHILD_REQUEST, request);
 const saveUnitDepartment = (request: ISupportRelationshipRequest) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, request);
+const saveUnitBuilding = (request: IBuildingSupportRelationshipRequest) => action(UnitActionTypes.UNIT_SAVE_BUILDING_REQUEST, request);
 const saveUnitParent = (request: IEntityRequest) => action(UnitActionTypes.UNIT_SAVE_PARENT_REQUEST, request);
 const saveUnitProfileRequest = (request: IUnit) => action(UnitActionTypes.UNIT_SAVE_PROFILE_REQUEST, request);
 const saveMemberTools = (member: IUnitMember, tools: number[]) => action(UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_REQUEST, { member, tools });
@@ -565,6 +569,7 @@ export {
   deleteUnit,
   deleteUnitChild,
   deleteUnitDepartment,
+  deleteUnitBuilding,
   deleteUnitParent,
   edit,
   fetchUnit,
@@ -577,6 +582,7 @@ export {
   handleSaveUnit,
   initialState,
   lookupDepartment,
+  lookupBuilding,
   lookupUnit,
   lookupUser,
   reducer,
@@ -585,6 +591,7 @@ export {
   saveMemberTools,
   saveUnitChild,
   saveUnitDepartment,
+  saveUnitBuilding,
   saveUnitParent,
   saveUnitProfileRequest
 };

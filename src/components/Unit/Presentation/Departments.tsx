@@ -20,7 +20,8 @@ const Departments: React.SFC<IDefaultState<ISupportRelationship[]>> = props => {
               .sort(SupportRelationshipComparer)
               .map(({ department }, i) => (
                 <li key={i}>
-                  <a href={`/departments/${department.id}`}>{department.name}</a> <br /> {department.description}
+                  <a href={`/departments/${department.id}`}>{department.name}</a> 
+                  {department.description && <br />}<span style={{ fontSize: "smaller" }}>{department.description}</span>
                 </li>
             ))}
           </List>

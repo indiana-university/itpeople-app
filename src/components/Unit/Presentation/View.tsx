@@ -5,7 +5,6 @@
 
 import * as React from "react";
 import { Col, Row, Button } from "rivet-react";
-import { Panel } from "../../Panel";
 import { Breadcrumbs, Content } from "../../layout";
 import { IState, deleteUnit } from "../store";
 import Profile from "./Profile";
@@ -16,6 +15,7 @@ import { IEntity, IDefaultState, Permissions, IApiState } from "../../types";
 import Departments from "./Departments";
 import Buildings from "./Buildings";
 import { Pencil, TrashCan } from "src/components/icons";
+import { Collapse } from 'rivet-react/addons';
 
 interface IProps {
   edit(): any;
@@ -58,28 +58,28 @@ const Presentation: React.SFC<IState & IProps> = props => {
             <Members {...members} />
           </Col>
           <Col lg={5} last={true}>
-            <div className="rvt-m-all-md">
+            {/* <div className="rvt-m-all-md"> */}
               {(hasData(parent) || hasData(unitChildren)) && (
                 <div className="rvt-m-bottom-lg">
-                  <Panel title="Parent and Children">
+                <Collapse title="Parent and Children" variant="panel" TitleComponent="h3" defaultClosed={false}>
                     <Parent {...parent} />
                     <Children {...unitChildren} />
-                  </Panel>
+                  </Collapse>
                 </div>
               )}
               {hasData(departments) && (
                 <div className="rvt-m-bottom-lg">
-                  <Panel title="Supported Departments">
+                <Collapse title="Supported Departments" variant="panel" TitleComponent="h3" defaultClosed={true}>
                     <Departments {...departments} />
-                  </Panel>
+                  </Collapse>
                 </div>
               )}
               {hasData(buildings) && (
-                <Panel title="Supported Buildings">
+                <Collapse title="Supported Buildings" variant="panel" TitleComponent="h3" defaultClosed={true}>
                   <Buildings {...buildings} />
-                </Panel>
+                </Collapse>
               )}
-            </div>
+            {/* </div> */}
           </Col>
         </Row>
       </Content>

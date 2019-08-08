@@ -5,7 +5,6 @@
 
 import * as React from "react";
 import { Col, Row, Section, Button } from "rivet-react";
-import { Panel } from "../../Panel";
 import PageTitle from "../../layout/PageTitle";
 import { Breadcrumbs, Content } from "../../layout";
 import * as unit from "../store";
@@ -17,6 +16,8 @@ import { Loader } from "../../Loader";
 import Parent from "./Parent";
 import { TrashCan, CloseX } from "src/components/icons";
 import { Permissions } from "src/components/types";
+import { Collapse } from 'rivet-react/addons';
+import UpdateBuildingsForm from "../Forms/UpdateBuildingsForm";
 
 export interface IProps extends unit.IState {
   cancel: typeof unit.cancel;
@@ -24,7 +25,7 @@ export interface IProps extends unit.IState {
   deleteUnit: typeof unit.deleteUnit
 }
 
-export const Edit: React.SFC<IProps> = ({ profile, members, parent, unitChildren, departments, cancel, deleteUnit, id }) => {
+export const Edit: React.SFC<IProps> = ({ profile, members, parent, unitChildren, departments, buildings, cancel, deleteUnit, id }) => {
   const pageName = profile && profile.data ? profile.data.name : "...";
   const handleDelete = () => { 
     if (profile && profile.data && confirm(`Are you sure you want to delete ${profile.data.name}? This can't be undone.`)) {
@@ -58,29 +59,37 @@ export const Edit: React.SFC<IProps> = ({ profile, members, parent, unitChildren
           <Col lg={5} last={true}>
             <div className="rvt-m-all-md">
               <div className="rvt-m-bottom-lg">
-                <Panel title="Parent and Children">
+                <Collapse title="Parent and Children" variant="panel" TitleComponent="h3" defaultClosed={false}>
                   {(parent.loading || parent.data) && (
                     <>
-                      <h2 className="rvt-text-bold">Parents</h2>
+                      <h4 className="rvt-text-bold">Parent</h4>
                       <p className="rvt-m-top-remove">A parent is a step higher on the org chart.</p>
                       <Parent {...parent} />
                     </>
                   )}
-                  <h2 className="rvt-text-bold">Children</h2>
+                  <h4 className="rvt-text-bold">Children</h4>
                   <p className="rvt-m-top-remove">
                     A child is a step lower on the org chart. If this unit has groups associated with it, add those groups here.
                   </p>
                   <Loader {...unitChildren}>
                     <UpdateChildrenForm initialValues={unitChildren.data} unitId={id} units={unitChildren.data} />
                   </Loader>
-                </Panel>
+                </Collapse>
               </div>
-              <Panel title="Supported Departments">
+              <div className="rvt-m-bottom-lg">
+              <Collapse title="Supported Departments" variant="panel" TitleComponent="h3" defaultClosed={true}>
                 <p>Some units provide support for departments. If this unit supports other departments, add them here.</p>
                 <Loader {...departments}>
                   <UpdateDepartmentsForm unitId={id} initialValues={{ ...departments.data, unitId: id }} departments={departments.data} />
                 </Loader>
-              </Panel>
+              </Collapse>
+              </div>
+              <Collapse title="Supported Buildings" variant="panel" TitleComponent="h3" defaultClosed={true}>
+                <p>Some units provide support for buildings. If this unit supports buildings, add them here.</p>
+                <Loader {...buildings}>
+                  <UpdateBuildingsForm unitId={id} initialValues={{ ...buildings.data, unitId: id }} buildings={buildings.data} />
+                </Loader>
+              </Collapse>
             </div>
           </Col>
         </Row>

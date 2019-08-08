@@ -19,7 +19,8 @@ const Buildings: React.SFC<IDefaultState<IBuildingSupportRelationship[]>> = prop
               .sort(BuildingSupportRelationshipComparer)
               .map(({ building }, i) => (
                 <li key={i}>
-                  {building.name}<br /> {building.address}{building.address && ","} {building.city} {building.state} {building.postCode}
+                  {building.name}
+                  {(building.address || building.city || building.state) && <br />}<span style={{ fontSize: "smaller" }}>{building.address}{building.address && ","} {building.city} {building.state}</span>
                 </li>
             ))}
           </List>
