@@ -59,7 +59,7 @@ const form: React.SFC<IFormProps> = props => {
                     lookupBuilding("");
                   }}
                 >
-                  {building.name} <span style={{ fontSize: "smaller", fontWeight:"normal" }}>{building.address}{building.address && ","} {building.city} {building.state}</span>
+                  {building.name} <span style={{ fontSize: "smaller", fontWeight: "normal" }}>{[building.address, building.city].join(", ")}</span>
                   
                 </Button>
               </div>
@@ -90,9 +90,9 @@ const form: React.SFC<IFormProps> = props => {
                   </Button>
                 </Col>
               </Row>
-              {(building.address || building.city || building.state) && (
+              {(building.address || building.city) && (
                 <Row>
-                  <Col><span style={{ fontSize: "smaller" }}>{building.address}{building.address && ","} {building.city} {building.state}</span></Col>
+                  <Col><span style={{ fontSize: "smaller" }}>{[building.address, building.city].join(", ")}</span></Col>
                 </Row>
               )}
             </li>

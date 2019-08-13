@@ -20,7 +20,7 @@ const Buildings: React.SFC<IDefaultState<IBuildingSupportRelationship[]>> = prop
               .map(({ building }, i) => (
                 <li key={i}>
                   {building.name}
-                  {(building.address || building.city || building.state) && <br />}<span style={{ fontSize: "smaller" }}>{building.address}{building.address && ","} {building.city} {building.state}</span>
+                  {(building.address || building.city || building.state) && <br />}<span style={{ fontSize: "smaller" }}>{[building.address, building.city].join(", ")}</span>
                 </li>
             ))}
           </List>
