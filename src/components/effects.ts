@@ -29,6 +29,10 @@ const apiEndpoints = {
     supportingUnits: (deptId: number) => `/departments/${deptId}/supportingUnits`,
     search: (term: string) => `/departments?q=${term}`
   },
+  buildings: {
+    root: (id?: number) => (id ? `/buildings/${id}` : "/buildings"),
+    search: (term: string) => `/buildings?q=${term}`
+  },
   units: {
     root: (id?: number) => (id ? `/units/${id}` : "/units"),
     members: (unitId: number) => `/units/${unitId}/members`,
