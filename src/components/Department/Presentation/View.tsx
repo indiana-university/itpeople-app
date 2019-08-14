@@ -3,7 +3,8 @@ import { Breadcrumbs, Content } from "src/components/layout";
 import { Row, Col } from "rivet-react";
 import { Loader } from "src/components/Loader";
 import { IState } from "../store";
-import { UnitList, Profile } from ".";
+import { UnitList } from "src/components/Units/UnitList";
+import { Profile } from ".";
 
 export const View: React.SFC<IState> = ({ profile, memberUnits, supportingUnits }) => (
   <>

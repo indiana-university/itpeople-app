@@ -10,6 +10,7 @@ import { lookupBuilding } from "..";
 import { Modal, closeModal } from "../../layout/Modal";
 import { TrashCan } from "../../icons";
 import { deleteUnitBuilding, saveUnitBuilding } from "../store";
+import { join } from "src/util";
 
 interface IFormProps extends InjectedFormProps<any>, IDispatchProps, IProps {}
 interface IDispatchProps {
@@ -92,7 +93,7 @@ const form: React.SFC<IFormProps> = props => {
               </Row>
               {(building.address || building.city) && (
                 <Row>
-                  <Col><span style={{ fontSize: "smaller" }}>{[building.address, building.city].join(", ")}</span></Col>
+                  <Col><span style={{ fontSize: "smaller" }}>{join([building.address, building.city], ", ")}</span></Col>
                 </Row>
               )}
             </li>
