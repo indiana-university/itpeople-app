@@ -15,7 +15,9 @@ import {
   ISupportRelationshipRequest,
   defaultState,
   IUnitMemberTool,
-  ITool
+  ITool,
+  IBuildingSupportRelationship,
+  IBuildingSupportRelationshipRequest
 } from "../types";
 import { lookup } from "../lookup";
 
@@ -40,6 +42,9 @@ export const enum UnitActionTypes {
   UNIT_FETCH_DEPARTMENTS_REQUEST = "@@unit/FETCH_DEPARTMENTS_REQUEST",
   UNIT_FETCH_DEPARTMENTS_SUCCESS = "@@unit/FETCH_DEPARTMENTS_SUCCESS",
   UNIT_FETCH_DEPARTMENTS_ERROR = "@@unit/FETCH_DEPARTMENTS_ERROR",
+  UNIT_FETCH_BUILDINGS_REQUEST = "@@unit/FETCH_BUILDINGS_REQUEST",
+  UNIT_FETCH_BUILDINGS_SUCCESS = "@@unit/FETCH_BUILDINGS_SUCCESS",
+  UNIT_FETCH_BUILDINGS_ERROR = "@@unit/FETCH_BUILDINGS_ERROR",
   UNIT_FETCH_TOOLS_REQUEST = "@@unit/FETCH_TOOLS_REQUEST",
   UNIT_FETCH_TOOLS_SUCCESS = "@@unit/FETCH_TOOLS_SUCCESS",
   UNIT_FETCH_TOOLS_ERROR = "@@unit/FETCH_TOOLS_ERROR",
@@ -73,6 +78,12 @@ export const enum UnitActionTypes {
   UNIT_DELETE_DEPARTMENT_REQUEST = "@@unit/DELETE_DEPARTMENT_REQUEST",
   UNIT_DELETE_DEPARTMENT_SUCCESS = "@@unit/DELETE_DEPARTMENT_SUCCESS",
   UNIT_DELETE_DEPARTMENT_ERROR = "@@unit/DELETE_DEPARTMENT_ERROR",
+  UNIT_SAVE_BUILDING_REQUEST = "@@unit/SAVE_BUILDING_REQUEST",
+  UNIT_SAVE_BUILDING_SUCCESS = "@@unit/SAVE_BUILDING_SUCCESS",
+  UNIT_SAVE_BUILDING_ERROR = "@@unit/SAVE_BUILDING_ERROR",
+  UNIT_DELETE_BUILDING_REQUEST = "@@unit/DELETE_BUILDING_REQUEST",
+  UNIT_DELETE_BUILDING_SUCCESS = "@@unit/DELETE_BUILDING_SUCCESS",
+  UNIT_DELETE_BUILDING_ERROR = "@@unit/DELETE_BUILDING_ERROR",
   UNIT_CANCEL = "@@unit/UNIT_CANCEL",
   UNIT_DELETE_REQUEST = "@@unit/DELETE_REQUEST",
   UNIT_DELETE_ERROR = "@@unit/DELETE_ERROR"
@@ -85,6 +96,7 @@ export interface IState {
   unitChildren: IApiState<IEntityRequest, IEntity[]>; // children conflicts with react props 😟
   parent: IApiState<IEntityRequest, IEntity>;
   departments: IApiState<IEntityRequest, ISupportRelationship[]>;
+  buildings: IApiState<IEntityRequest, IBuildingSupportRelationship[]>;
   view: ViewStateType;
 }
 //#endregion
@@ -98,15 +110,18 @@ const deleteMemberRequest = (member: IUnitMember) => action(UnitActionTypes.UNIT
 const deleteUnit = (unit: IUnit) => action(UnitActionTypes.UNIT_DELETE_REQUEST, unit);
 const deleteUnitChild = (request: IEntityRequest) => action(UnitActionTypes.UNIT_DELETE_CHILD_REQUEST, request);
 const deleteUnitDepartment = (request: ISupportRelationshipRequest) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, request);
+const deleteUnitBuilding = (request: IBuildingSupportRelationshipRequest) => action(UnitActionTypes.UNIT_DELETE_BUILDING_REQUEST, request);
 const deleteUnitParent = (request: IEntityRequest) => action(UnitActionTypes.UNIT_DELETE_PARENT_REQUEST, request);
 const edit = () => action(UnitActionTypes.UNIT_EDIT, {});
 const fetchUnit = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_REQUEST, request);
 const lookupDepartment = (q: string) => lookup(q ? `/departments?q=${q}&_limit=${lookupLimit}` : "");
+const lookupBuilding = (q: string) => lookup(q ? `/buildings?q=${q}&_limit=${lookupLimit}` : "");
 const lookupUnit = (q: string) => lookup(q ? `/units?q=${q}&_limit=${lookupLimit}` : "");
 const lookupUser = (q: string) => lookup(q ? `/people-lookup?q=${q}&_limit=${lookupLimit}` : "");
 const saveMemberRequest = (member: IUnitMemberRequest) => action(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, member);
 const saveUnitChild = (request: IEntityRequest) => action(UnitActionTypes.UNIT_SAVE_CHILD_REQUEST, request);
 const saveUnitDepartment = (request: ISupportRelationshipRequest) => action(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, request);
+const saveUnitBuilding = (request: IBuildingSupportRelationshipRequest) => action(UnitActionTypes.UNIT_SAVE_BUILDING_REQUEST, request);
 const saveUnitParent = (request: IEntityRequest) => action(UnitActionTypes.UNIT_SAVE_PARENT_REQUEST, request);
 const saveUnitProfileRequest = (request: IUnit) => action(UnitActionTypes.UNIT_SAVE_PROFILE_REQUEST, request);
 const saveMemberTools = (member: IUnitMember, tools: number[]) => action(UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_REQUEST, { member, tools });
@@ -124,6 +139,7 @@ const initialState: IState = {
   unitChildren: defaultState(),
   parent: defaultState(),
   departments: defaultState(),
+  buildings: defaultState(),
   view: ViewStateType.Viewing
 };
 
@@ -229,6 +245,23 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
       return { ...state, departments: TaskSuccessReducer(state.departments, act) };
     case UnitActionTypes.UNIT_DELETE_DEPARTMENT_ERROR:
       return { ...state, departments: TaskErrorReducer(state.departments, act) };
+    //
+    case UnitActionTypes.UNIT_FETCH_BUILDINGS_REQUEST:
+      return { ...state, buildings: TaskStartReducer(state.buildings, act) };
+    case UnitActionTypes.UNIT_FETCH_BUILDINGS_SUCCESS:
+      return { ...state, buildings: TaskSuccessReducer(state.buildings, act) };
+    case UnitActionTypes.UNIT_FETCH_BUILDINGS_ERROR:
+      return { ...state, buildings: TaskErrorReducer(state.buildings, act) };
+    case UnitActionTypes.UNIT_SAVE_BUILDING_REQUEST:
+      return { ...state, buildings: TaskStartReducer(state.buildings, act) };
+    case UnitActionTypes.UNIT_SAVE_BUILDING_SUCCESS:
+      return { ...state, buildings: TaskSuccessReducer(state.buildings, act) };
+    case UnitActionTypes.UNIT_SAVE_BUILDING_ERROR:
+      return { ...state, buildings: TaskErrorReducer(state.buildings, act) };
+    case UnitActionTypes.UNIT_DELETE_BUILDING_SUCCESS:
+      return { ...state, buildings: TaskSuccessReducer(state.buildings, act) };
+    case UnitActionTypes.UNIT_DELETE_BUILDING_ERROR:
+      return { ...state, buildings: TaskErrorReducer(state.buildings, act) };
 
     default:
       return state;
@@ -247,6 +280,7 @@ function* handleFetchUnit(api: IApi, request: IEntityRequest) {
   yield put(fetchUnitMembers(request));
   yield put(fetchUnitChildren(request));
   yield put(fetchUnitSupportedDepartments(request));
+  yield put(fetchUnitSupportedBuildings(request));
   yield put(fetchUnitTools(request));
 
   // TODO: fetch master tool list
@@ -302,6 +336,19 @@ function* handleFetchUnitDepartments(api: IApi, request: IEntityRequest) {
     .then(fetchUnitDepartmentsSuccess)
     .catch(signinIfUnauthorized)
     .catch(fetchUnitDepartmentsError);
+  yield put(action);
+}
+
+const fetchUnitSupportedBuildings = (request: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_BUILDINGS_REQUEST, request);
+const fetchUnitBuildingsSuccess = (response: IApiResponse<IBuildingSupportRelationship[]>) =>
+  action(UnitActionTypes.UNIT_FETCH_BUILDINGS_SUCCESS, response);
+const fetchUnitBuildingsError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_BUILDINGS_ERROR, error);
+function* handleFetchUnitBuildings(api: IApi, request: IEntityRequest) {
+  const action = yield api
+    .get<IBuildingSupportRelationship[]>(apiEndpoints.units.supportedBuildings(request.id))
+    .then(fetchUnitBuildingsSuccess)
+    .catch(signinIfUnauthorized)
+    .catch(fetchUnitBuildingsError);
   yield put(action);
 }
 
@@ -428,6 +475,26 @@ function* handleDeleteSupportRelationship(api: IApi, supportRelationship: ISuppo
   yield put(action);
 }
 
+const saveBuildingRelationshipError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_BUILDING_ERROR, error);
+function* handleSaveBuildingRelationship(api: IApi, supportRelationship: IBuildingSupportRelationship) {
+  const action = yield api
+    .post<IBuildingSupportRelationship>(apiEndpoints.buildingRelationships(), supportRelationship)
+    .then(() => fetchUnitSupportedBuildings({ id: supportRelationship.unitId }))
+    .catch(signinIfUnauthorized)
+    .catch(saveBuildingRelationshipError);
+  yield put(action);
+}
+
+const deleteBuildingRelationshipError = (error: Error) => action(UnitActionTypes.UNIT_DELETE_BUILDING_ERROR, error);
+function* handleDeleteBuildingRelationship(api: IApi, supportRelationship: IBuildingSupportRelationship) {
+  const action = yield api
+    .delete(apiEndpoints.buildingRelationships(supportRelationship.id))
+    .then(_ => fetchUnitSupportedBuildings({ id: supportRelationship.unitId }))
+    .catch(signinIfUnauthorized)
+    .catch(deleteBuildingRelationshipError);
+  yield put(action);
+}
+
 type SaveMemberToolsRequest = {member:IUnitMember, tools:number[]}
 const saveMemberToolsError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_ERROR, error);
 function* handleSaveMemberTools(api: IApi, {member, tools}: SaveMemberToolsRequest) {
@@ -461,6 +528,7 @@ function* watchUnitFetch() {
   yield takeEvery(UnitActionTypes.UNIT_FETCH_PROFILE_REQUEST, (a: AnyAction) => handleFetchUnitProfile(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST, (a: AnyAction) => handleFetchUnitMembers(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, (a: AnyAction) => handleFetchUnitDepartments(api, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_BUILDINGS_REQUEST, (a: AnyAction) => handleFetchUnitBuildings(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, (a: AnyAction) => handleFetchUnitChildren(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_TOOLS_REQUEST, (a: AnyAction) => handleFetchUnitTools(api, a.payload));
   // The unit parent is defined by a parentId on the unit record, so we must await the unit record fetch.
@@ -474,6 +542,7 @@ function* watchUnitSave() {
   yield takeEvery(UnitActionTypes.UNIT_SAVE_PROFILE_REQUEST, (a: AnyAction) => handleSaveUnit(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_SAVE_MEMBER_REQUEST, (a: AnyAction) => handleSaveMember(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_SAVE_DEPARTMENT_REQUEST, (a: AnyAction) => handleSaveSupportRelationship(api, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_SAVE_BUILDING_REQUEST, (a: AnyAction) => handleSaveBuildingRelationship(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_SAVE_CHILD_REQUEST, (a: AnyAction) => handleAddChild(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_REQUEST, (a: AnyAction) => handleSaveMemberTools(api, a.payload));
 }
@@ -482,6 +551,7 @@ function* watchUnitDelete() {
   yield takeEvery(UnitActionTypes.UNIT_DELETE_REQUEST, (a: AnyAction) => handleDeleteUnit(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, (a: AnyAction) => handleDeleteMember(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, (a: AnyAction) => handleDeleteSupportRelationship(api, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_DELETE_BUILDING_REQUEST, (a: AnyAction) => handleDeleteBuildingRelationship(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_DELETE_CHILD_REQUEST, (a: AnyAction) => handleRemoveChild(api, a.payload));
 }
 
@@ -499,16 +569,20 @@ export {
   deleteUnit,
   deleteUnitChild,
   deleteUnitDepartment,
+  deleteUnitBuilding,
   deleteUnitParent,
   edit,
   fetchUnit,
   handleDeleteMember,
   handleDeleteSupportRelationship as handleDeleteDepartment,
+  handleDeleteBuildingRelationship as handleDeleteBuilding,
   handleSaveMember,
   handleSaveSupportRelationship as handleSaveDepartment,
+  handleSaveBuildingRelationship as handleSaveBuilding,
   handleSaveUnit,
   initialState,
   lookupDepartment,
+  lookupBuilding,
   lookupUnit,
   lookupUser,
   reducer,
@@ -517,6 +591,7 @@ export {
   saveMemberTools,
   saveUnitChild,
   saveUnitDepartment,
+  saveUnitBuilding,
   saveUnitParent,
   saveUnitProfileRequest
 };

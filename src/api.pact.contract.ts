@@ -18,7 +18,10 @@ import {
     IPerson, 
     IUnitMembership, 
     ITool,
-    IUnitMemberTool} from './components/types'
+    IUnitMemberTool,
+    IBuilding,
+    IBuildingSupportRelationship,
+    IBuildingSupportRelationshipRequest} from './components/types'
 import * as examples from 'src/db.json'
 
 const deepMatchify = (obj: Object) => traverse(obj).map(
@@ -179,6 +182,7 @@ const delete_ = (name: string, path: string) =>
 
 const referenceUnit: IUnit = { ...examples.units[0], parentId:undefined }
 const referenceDepartment: IEntity = examples.departments[0]
+const referenceBuilding: IBuilding = examples.buildings[0]
 const referencePerson: IPerson = examples.people[0]
 const referenceTool: ITool = examples.tools[0];
 const referenceMemberTool: IUnitMemberTool = examples.memberTools[0]
@@ -221,6 +225,18 @@ const referenceSupportRelationshipRequest: ISupportRelationshipRequest = {
 const referenceSupportRelationship: ISupportRelationship = {
     ...referenceSupportRelationshipRequest,
     department: referenceDepartment,
+    unit: referenceUnit
+};
+
+const referenceBuildingRelationshipRequest: IBuildingSupportRelationshipRequest = {
+    id: 1,
+    unitId: referenceUnit.id,
+    buildingId: referenceBuilding.id
+};
+
+const referenceBuildingRelationship: IBuildingSupportRelationship = {
+    ...referenceBuildingRelationshipRequest,
+    building: referenceBuilding,
     unit: referenceUnit
 };
 
@@ -317,6 +333,25 @@ describe('Contracts', () => {
             await getAll(resource, itemPath, referenceDepartment, "q=parks"));
     });
 
+    describe('Buildings', () => {
+        const resource = 'building'
+        const setPath = apiEndpoints.buildings.root();
+        const itemPath = apiEndpoints.buildings.root(referenceBuilding.id);
+
+        it("gets all buildings", async () =>
+            await getAll(resource, setPath, referenceBuilding))
+        it('gets a single building', async () =>
+            await getOne(resource, itemPath, referenceBuilding))
+    })
+
+    describe("Building search", () => {
+        const resource = "building search";
+        const itemPath = apiEndpoints.buildings.root();
+
+        it("gets all matching buildings", async () =>
+            await getAll(resource, itemPath, referenceBuilding, "q=city"));
+    });
+
 
     describe('Units in a Department', () => {
         const resource = 'memberUnits'
@@ -369,6 +404,14 @@ describe('Contracts', () => {
             await getAll(resource, setPath, body))
     })
 
+    describe('Supported Buildings', () => {
+        const resource = "supported building"
+        const setPath = apiEndpoints.units.supportedBuildings(referenceSupportRelationship.unitId)
+        const body = { ...referenceBuildingRelationship, unit: undefined }
+        it('gets all supported buildings', async () =>
+            await getAll(resource, setPath, body))
+    })
+
     describe('Support Relationships', () => {
         const resource = "support relationship"
         const setPath = apiEndpoints.supportRelationships()
@@ -384,6 +427,24 @@ describe('Contracts', () => {
         it('updates an existing support relationships', async () =>
             await update(resource, itemPath, referenceSupportRelationshipRequest))
         it('deletes an existing support relationships', async () =>
+            await delete_(resource, itemPath))
+    })
+
+    describe('Building Relationships', () => {
+        const resource = "building relationship"
+        const setPath = apiEndpoints.buildingRelationships()
+        const itemPath = apiEndpoints.buildingRelationships(referenceBuildingRelationship.id)
+
+        it('gets all building relationships', async () =>
+            await getAll(resource, setPath, referenceBuildingRelationshipRequest))
+        it('gets a single building relationship', async () =>
+            await getOne(resource, itemPath, referenceBuildingRelationshipRequest))
+        // JFH: Set unitId:2 to prevent 409 conflict when creating new building relationship.
+        it('creates a new building relationships', async () =>
+            await create(resource, setPath, { ...referenceBuildingRelationshipRequest, unitId: 2 }))
+        it('updates an existing building relationships', async () =>
+            await update(resource, itemPath, referenceBuildingRelationshipRequest))
+        it('deletes an existing building relationships', async () =>
             await delete_(resource, itemPath))
     })
 
