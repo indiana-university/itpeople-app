@@ -10147,6 +10147,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
+rivet-collapsible@^0.2.10:
+  version "0.2.10"
+  resolved "https://registry.yarnpkg.com/rivet-collapsible/-/rivet-collapsible-0.2.10.tgz#6ef38eadc032021b57495c8e17337cd92fbb1a4f"
+  integrity sha512-JWtF3nmysDb8yhT3wbpaiOIBC7SxJAQvnhnI2dmZxXlDub06RLxXQwFiPSpV+LObmgrI8huVNPVtkAgXzR/3ow==
+
 rivet-react@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/rivet-react/-/rivet-react-0.7.1.tgz#6ecea47aea988e18cbe0239c2072e96ed3bb2fbc"
@@ -10156,6 +10161,11 @@ rivet-react@0.7.1:
     react "16.4.2"
     react-display-name "0.2.4"
     react-dom "16.4.2"
+
+rivet-switch@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/rivet-switch/-/rivet-switch-0.3.1.tgz#1a58086aad8f00760adbd4bcbdc26a0d0ae314b1"
+  integrity sha512-JWA/3/jN6qqb4+RadxHeukLNPf2EgRMMgzO9fypvY2kRw5W1HOaW2bJIwTC85j/SVvn+VciZjucYcmnQjYhlHQ==
 
 rivet-uits@^1.2.1:
   version "1.4.0"

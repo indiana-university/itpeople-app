@@ -31,10 +31,15 @@
             "campusPhone": "812-856-1234",
             "campusEmail": "rswanso@iu.edu",
             "campus": "Bloomington",
-            "expertise": "Wood-working",
-            "responsibilities": "IT Leadership",
+            "expertise": "Wood-working,javascript,c#,mysql,unit-testing",
+            "responsibilities": "BizSysAnalysis;DataAdminAnalysis;DatabaseArchDesign;InstructionalTech;ItProjectMgt;ItSecurityPrivacy",
             "photoUrl": "https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/p-parks-and-recreation-nick-offerman.jpg",
-            "departmentId": 1
+            "departmentId": 1,
+            "department": {
+              "id": 1,
+              "name": "Parks and Recreation Department",
+              "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+            }
           }
         ],
         "matchingRules": {
@@ -71,10 +76,15 @@
           "campusPhone": "812-856-1234",
           "campusEmail": "rswanso@iu.edu",
           "campus": "Bloomington",
-          "expertise": "Wood-working",
-          "responsibilities": "IT Leadership",
+          "expertise": "Wood-working,javascript,c#,mysql,unit-testing",
+          "responsibilities": "BizSysAnalysis;DataAdminAnalysis;DatabaseArchDesign;InstructionalTech;ItProjectMgt;ItSecurityPrivacy",
           "photoUrl": "https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/p-parks-and-recreation-nick-offerman.jpg",
-          "departmentId": 1
+          "departmentId": 1,
+          "department": {
+            "id": 1,
+            "name": "Parks and Recreation Department",
+            "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+          }
         },
         "matchingRules": {
           "$.body.id": {
@@ -111,6 +121,15 @@
             "match": "type"
           },
           "$.body.departmentId": {
+            "match": "type"
+          },
+          "$.body.department.id": {
+            "match": "type"
+          },
+          "$.body.department.name": {
+            "match": "type"
+          },
+          "$.body.department.description": {
             "match": "type"
           }
         }
@@ -464,6 +483,96 @@
       }
     },
     {
+      "description": "a GET request for all buildings",
+      "providerState": "at least one building exists",
+      "request": {
+        "method": "GET",
+        "path": "/buildings",
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJqb2huZG9lIiwiZXhwIjoyOTE2MjM5MDIyfQ.ELo8I2IImgRRT75cOcUcSllbkWVWAIQA2WQr27WSpWwF2c7Wh9hjqkPriZ4PxSD4OR9IgGWt5HWpPQFDOwlv1O7tl2gLcZ5LayuRzQX2AEn-UsEBECStEwABUtwhg92q9Ov-GRbYqmP_5UpntbCr8aZfMEuMfLTIWePcORq_FrJhjyRUoKhUo8007W6RO58n03erVlslSB1f-JTYtBdhYOlgmDTOCp_rc-gPvKFePMb4c05IOD-x4ce2QGkZlL_pE1_OLKdn5A07k7B8x53v38WvWuisFGIPXUcuP3j9hdJHIzYLSfL5t1OABT1-57C91yaMAgVsATMRgT9qtzYQgg"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "name": "City Hall",
+            "code": "PA123",
+            "address": "123 Main St",
+            "city": "Pawnee",
+            "state": "IN",
+            "country": "USA",
+            "postCode": "47501"
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for one building",
+      "providerState": "building exists",
+      "request": {
+        "method": "GET",
+        "path": "/buildings/1",
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJqb2huZG9lIiwiZXhwIjoyOTE2MjM5MDIyfQ.ELo8I2IImgRRT75cOcUcSllbkWVWAIQA2WQr27WSpWwF2c7Wh9hjqkPriZ4PxSD4OR9IgGWt5HWpPQFDOwlv1O7tl2gLcZ5LayuRzQX2AEn-UsEBECStEwABUtwhg92q9Ov-GRbYqmP_5UpntbCr8aZfMEuMfLTIWePcORq_FrJhjyRUoKhUo8007W6RO58n03erVlslSB1f-JTYtBdhYOlgmDTOCp_rc-gPvKFePMb4c05IOD-x4ce2QGkZlL_pE1_OLKdn5A07k7B8x53v38WvWuisFGIPXUcuP3j9hdJHIzYLSfL5t1OABT1-57C91yaMAgVsATMRgT9qtzYQgg"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "name": "City Hall",
+          "code": "PA123",
+          "address": "123 Main St",
+          "city": "Pawnee",
+          "state": "IN",
+          "country": "USA",
+          "postCode": "47501"
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.name": {
+            "match": "type"
+          },
+          "$.body.code": {
+            "match": "type"
+          },
+          "$.body.address": {
+            "match": "type"
+          },
+          "$.body.city": {
+            "match": "type"
+          },
+          "$.body.state": {
+            "match": "type"
+          },
+          "$.body.country": {
+            "match": "type"
+          },
+          "$.body.postCode": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
       "description": "a GET request for one memberUnits",
       "providerState": "memberUnits exists",
       "request": {
@@ -637,10 +746,15 @@
               "campusPhone": "812-856-1234",
               "campusEmail": "rswanso@iu.edu",
               "campus": "Bloomington",
-              "expertise": "Wood-working",
-              "responsibilities": "IT Leadership",
+              "expertise": "Wood-working,javascript,c#,mysql,unit-testing",
+              "responsibilities": "BizSysAnalysis;DataAdminAnalysis;DatabaseArchDesign;InstructionalTech;ItProjectMgt;ItSecurityPrivacy",
               "photoUrl": "https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/p-parks-and-recreation-nick-offerman.jpg",
-              "departmentId": 1
+              "departmentId": 1,
+              "department": {
+                "id": 1,
+                "name": "Parks and Recreation Department",
+                "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+              }
             },
             "memberTools": [
               {
@@ -685,6 +799,48 @@
               "id": 1,
               "name": "Parks and Recreation Department",
               "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
+            }
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for all supported buildings",
+      "providerState": "at least one supported building exists",
+      "request": {
+        "method": "GET",
+        "path": "/units/1/supportedBuildings",
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJqb2huZG9lIiwiZXhwIjoyOTE2MjM5MDIyfQ.ELo8I2IImgRRT75cOcUcSllbkWVWAIQA2WQr27WSpWwF2c7Wh9hjqkPriZ4PxSD4OR9IgGWt5HWpPQFDOwlv1O7tl2gLcZ5LayuRzQX2AEn-UsEBECStEwABUtwhg92q9Ov-GRbYqmP_5UpntbCr8aZfMEuMfLTIWePcORq_FrJhjyRUoKhUo8007W6RO58n03erVlslSB1f-JTYtBdhYOlgmDTOCp_rc-gPvKFePMb4c05IOD-x4ce2QGkZlL_pE1_OLKdn5A07k7B8x53v38WvWuisFGIPXUcuP3j9hdJHIzYLSfL5t1OABT1-57C91yaMAgVsATMRgT9qtzYQgg"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "unitId": 1,
+            "buildingId": 1,
+            "building": {
+              "id": 1,
+              "name": "City Hall",
+              "code": "PA123",
+              "address": "123 Main St",
+              "city": "Pawnee",
+              "state": "IN",
+              "country": "USA",
+              "postCode": "47501"
             }
           }
         ],
@@ -845,6 +1001,164 @@
       "request": {
         "method": "DELETE",
         "path": "/supportRelationships/1",
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJqb2huZG9lIiwiZXhwIjoyOTE2MjM5MDIyfQ.ELo8I2IImgRRT75cOcUcSllbkWVWAIQA2WQr27WSpWwF2c7Wh9hjqkPriZ4PxSD4OR9IgGWt5HWpPQFDOwlv1O7tl2gLcZ5LayuRzQX2AEn-UsEBECStEwABUtwhg92q9Ov-GRbYqmP_5UpntbCr8aZfMEuMfLTIWePcORq_FrJhjyRUoKhUo8007W6RO58n03erVlslSB1f-JTYtBdhYOlgmDTOCp_rc-gPvKFePMb4c05IOD-x4ce2QGkZlL_pE1_OLKdn5A07k7B8x53v38WvWuisFGIPXUcuP3j9hdJHIzYLSfL5t1OABT1-57C91yaMAgVsATMRgT9qtzYQgg",
+          "Content-Type": "application/json; charset=utf-8"
+        }
+      },
+      "response": {
+        "status": 204,
+        "headers": {
+        }
+      }
+    },
+    {
+      "description": "a GET request for all building relationships",
+      "providerState": "at least one building relationship exists",
+      "request": {
+        "method": "GET",
+        "path": "/buildingRelationships",
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJqb2huZG9lIiwiZXhwIjoyOTE2MjM5MDIyfQ.ELo8I2IImgRRT75cOcUcSllbkWVWAIQA2WQr27WSpWwF2c7Wh9hjqkPriZ4PxSD4OR9IgGWt5HWpPQFDOwlv1O7tl2gLcZ5LayuRzQX2AEn-UsEBECStEwABUtwhg92q9Ov-GRbYqmP_5UpntbCr8aZfMEuMfLTIWePcORq_FrJhjyRUoKhUo8007W6RO58n03erVlslSB1f-JTYtBdhYOlgmDTOCp_rc-gPvKFePMb4c05IOD-x4ce2QGkZlL_pE1_OLKdn5A07k7B8x53v38WvWuisFGIPXUcuP3j9hdJHIzYLSfL5t1OABT1-57C91yaMAgVsATMRgT9qtzYQgg"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "unitId": 1,
+            "buildingId": 1
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for one building relationship",
+      "providerState": "building relationship exists",
+      "request": {
+        "method": "GET",
+        "path": "/buildingRelationships/1",
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJqb2huZG9lIiwiZXhwIjoyOTE2MjM5MDIyfQ.ELo8I2IImgRRT75cOcUcSllbkWVWAIQA2WQr27WSpWwF2c7Wh9hjqkPriZ4PxSD4OR9IgGWt5HWpPQFDOwlv1O7tl2gLcZ5LayuRzQX2AEn-UsEBECStEwABUtwhg92q9Ov-GRbYqmP_5UpntbCr8aZfMEuMfLTIWePcORq_FrJhjyRUoKhUo8007W6RO58n03erVlslSB1f-JTYtBdhYOlgmDTOCp_rc-gPvKFePMb4c05IOD-x4ce2QGkZlL_pE1_OLKdn5A07k7B8x53v38WvWuisFGIPXUcuP3j9hdJHIzYLSfL5t1OABT1-57C91yaMAgVsATMRgT9qtzYQgg"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "unitId": 1,
+          "buildingId": 1
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.unitId": {
+            "match": "type"
+          },
+          "$.body.buildingId": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a POST request to create a building relationship",
+      "providerState": "building relationship may be created",
+      "request": {
+        "method": "POST",
+        "path": "/buildingRelationships",
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJqb2huZG9lIiwiZXhwIjoyOTE2MjM5MDIyfQ.ELo8I2IImgRRT75cOcUcSllbkWVWAIQA2WQr27WSpWwF2c7Wh9hjqkPriZ4PxSD4OR9IgGWt5HWpPQFDOwlv1O7tl2gLcZ5LayuRzQX2AEn-UsEBECStEwABUtwhg92q9Ov-GRbYqmP_5UpntbCr8aZfMEuMfLTIWePcORq_FrJhjyRUoKhUo8007W6RO58n03erVlslSB1f-JTYtBdhYOlgmDTOCp_rc-gPvKFePMb4c05IOD-x4ce2QGkZlL_pE1_OLKdn5A07k7B8x53v38WvWuisFGIPXUcuP3j9hdJHIzYLSfL5t1OABT1-57C91yaMAgVsATMRgT9qtzYQgg",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "unitId": 2,
+          "buildingId": 1
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+        },
+        "body": {
+          "id": 1,
+          "unitId": 2,
+          "buildingId": 1
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.unitId": {
+            "match": "type"
+          },
+          "$.body.buildingId": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a PUT request to update a building relationship",
+      "providerState": "building relationship exists",
+      "request": {
+        "method": "PUT",
+        "path": "/buildingRelationships/1",
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJqb2huZG9lIiwiZXhwIjoyOTE2MjM5MDIyfQ.ELo8I2IImgRRT75cOcUcSllbkWVWAIQA2WQr27WSpWwF2c7Wh9hjqkPriZ4PxSD4OR9IgGWt5HWpPQFDOwlv1O7tl2gLcZ5LayuRzQX2AEn-UsEBECStEwABUtwhg92q9Ov-GRbYqmP_5UpntbCr8aZfMEuMfLTIWePcORq_FrJhjyRUoKhUo8007W6RO58n03erVlslSB1f-JTYtBdhYOlgmDTOCp_rc-gPvKFePMb4c05IOD-x4ce2QGkZlL_pE1_OLKdn5A07k7B8x53v38WvWuisFGIPXUcuP3j9hdJHIzYLSfL5t1OABT1-57C91yaMAgVsATMRgT9qtzYQgg",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "id": 1,
+          "unitId": 1,
+          "buildingId": 1
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "id": 1,
+          "unitId": 1,
+          "buildingId": 1
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.unitId": {
+            "match": "type"
+          },
+          "$.body.buildingId": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a DELETE request to delete a building relationship",
+      "providerState": "building relationship exists",
+      "request": {
+        "method": "DELETE",
+        "path": "/buildingRelationships/1",
         "headers": {
           "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJqb2huZG9lIiwiZXhwIjoyOTE2MjM5MDIyfQ.ELo8I2IImgRRT75cOcUcSllbkWVWAIQA2WQr27WSpWwF2c7Wh9hjqkPriZ4PxSD4OR9IgGWt5HWpPQFDOwlv1O7tl2gLcZ5LayuRzQX2AEn-UsEBECStEwABUtwhg92q9Ov-GRbYqmP_5UpntbCr8aZfMEuMfLTIWePcORq_FrJhjyRUoKhUo8007W6RO58n03erVlslSB1f-JTYtBdhYOlgmDTOCp_rc-gPvKFePMb4c05IOD-x4ce2QGkZlL_pE1_OLKdn5A07k7B8x53v38WvWuisFGIPXUcuP3j9hdJHIzYLSfL5t1OABT1-57C91yaMAgVsATMRgT9qtzYQgg",
           "Content-Type": "application/json; charset=utf-8"

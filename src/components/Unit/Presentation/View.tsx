@@ -5,7 +5,6 @@
 
 import * as React from "react";
 import { Col, Row, Button } from "rivet-react";
-import { Panel } from "../../Panel";
 import { Breadcrumbs, Content } from "../../layout";
 import { IState, deleteUnit } from "../store";
 import Profile from "./Profile";
@@ -14,7 +13,9 @@ import Parent from "./Parent";
 import Children from "./Children";
 import { IEntity, IDefaultState, Permissions, IApiState } from "../../types";
 import Departments from "./Departments";
+import Buildings from "./Buildings";
 import { Pencil, TrashCan } from "src/components/icons";
+import { Collapse } from 'rivet-react/addons';
 
 interface IProps {
   edit(): any;
@@ -26,7 +27,7 @@ const hasData = (result: IApiState<any, any>) => {
 };
 
 const Presentation: React.SFC<IState & IProps> = props => {
-  const { edit, deleteUnit, profile, members, parent, unitChildren, departments } = props;
+  const { edit, deleteUnit, profile, members, parent, unitChildren, departments, buildings } = props;
   const name = profile.data ? profile.data.name : "...";
   const handleDelete = () => {
     if (profile && profile.data && confirm(`Are you sure you want to delete ${profile.data.name}? This can't be undone.`)) {
@@ -57,21 +58,28 @@ const Presentation: React.SFC<IState & IProps> = props => {
             <Members {...members} />
           </Col>
           <Col lg={5} last={true}>
-            <div className="rvt-m-all-md">
+            {/* <div className="rvt-m-all-md"> */}
               {(hasData(parent) || hasData(unitChildren)) && (
                 <div className="rvt-m-bottom-lg">
-                  <Panel title="Parent and Children">
+                <Collapse title="Parent and Children" variant="panel" TitleComponent="h3" defaultClosed={false}>
                     <Parent {...parent} />
                     <Children {...unitChildren} />
-                  </Panel>
+                  </Collapse>
                 </div>
               )}
               {hasData(departments) && (
-                <Panel title="Supported Departments">
-                  <Departments {...departments} />
-                </Panel>
+                <div className="rvt-m-bottom-lg">
+                <Collapse title="Supported Departments" variant="panel" TitleComponent="h3" defaultClosed={true}>
+                    <Departments {...departments} />
+                  </Collapse>
+                </div>
               )}
-            </div>
+              {hasData(buildings) && (
+                <Collapse title="Supported Buildings" variant="panel" TitleComponent="h3" defaultClosed={true}>
+                  <Buildings {...buildings} />
+                </Collapse>
+              )}
+            {/* </div> */}
           </Col>
         </Row>
       </Content>

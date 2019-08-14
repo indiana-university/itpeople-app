@@ -29,11 +29,16 @@ const apiEndpoints = {
     supportingUnits: (deptId: number) => `/departments/${deptId}/supportingUnits`,
     search: (term: string) => `/departments?q=${term}`
   },
+  buildings: {
+    root: (id?: number) => (id ? `/buildings/${id}` : "/buildings"),
+    search: (term: string) => `/buildings?q=${term}`
+  },
   units: {
     root: (id?: number) => (id ? `/units/${id}` : "/units"),
     members: (unitId: number) => `/units/${unitId}/members`,
     children: (unitId: number) => `/units/${unitId}/children`,
     supportedDepartments: (unitId: number) => `/units/${unitId}/supportedDepartments`,
+    supportedBuildings: (unitId: number) => `/units/${unitId}/supportedBuildings`,
     tools: (unitId:number) => `/units/${unitId}/tools`,
     search: (term: string) => `/units?q=${term}`
   },
@@ -44,7 +49,8 @@ const apiEndpoints = {
   },
   memberships: (id?: number) => (id ? `/memberships/${id}` : "/memberships"),
   memberTools: (id?: number) => (id ? `/memberTools/${id}` : "/memberTools"),
-  supportRelationships: (id?: number) => (id ? `/supportRelationships/${id}` : "/supportRelationships")
+  supportRelationships: (id?: number) => (id ? `/supportRelationships/${id}` : "/supportRelationships"),
+  buildingRelationships: (id?: number) => (id ? `/buildingRelationships/${id}` : "/buildingRelationships")
 };
 /**
  * Handle a request that results in an exception.
