@@ -171,7 +171,7 @@
     {
       "id": 2,
       "name": "Parks and Rec Building",
-      "description": "Lorem ipsum dolor sit amet, usu an elit euismod pertinax.",
+      "code": "PA001",
       "address": "123 Main St",
       "city": "Pawnee",
       "state": "IN",
@@ -181,7 +181,7 @@
     {
       "id": 3,
       "name": "Pawnee City Park",
-      "description": "Softball diamonds and concessions",
+      "code": "PA002",
       "address": "123 Main St",
       "city": "Pawnee",
       "state": "IN",
