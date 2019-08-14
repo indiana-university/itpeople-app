@@ -20,6 +20,7 @@ import { all, fork } from "redux-saga/effects";
 import { IApplicationState } from "src/components/types";
 
 import * as Auth from "./components/SignIn/store";
+import * as Building from "./components/Building/store";
 import * as Department from "./components/Department/store";
 import * as Departments from "./components/Departments/store";
 import * as Lookup from "./components/lookup";
@@ -32,6 +33,7 @@ import * as Units from "./components/Units/store";
 
 export const initialState: IApplicationState = {
   auth: Auth.initialState,
+  building: Building.initialState,
   department: Department.initialState,
   departments: Departments.initialState,
   form: {},
@@ -54,6 +56,7 @@ export interface IConnectedReduxProps<A extends Action = AnyAction> {
 // the reducer acts on the corresponding ApplicationState property type.
 export const appReducer = combineReducers<IApplicationState>({
   auth: Auth.reducer,
+  building: Building.reducer,
   department: Department.reducer,
   departments: Departments.reducer,
   form: formReducer,
@@ -81,6 +84,7 @@ const rootReducer = (state: IApplicationState, action: AnyAction) => {
 export function* rootSaga() {
   yield all([
     fork(Auth.saga),
+    fork(Building.saga),
     fork(Department.saga),
     fork(Departments.saga),
     fork(Lookup.saga),

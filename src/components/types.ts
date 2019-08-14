@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+import * as Building from "../components/Building/store";
 import * as Department from "../components/Department/store";
 import * as Departments from "../components/Departments/store";
 import * as Profile from "../components/Profile/store";
@@ -21,6 +22,7 @@ export interface IApplicationState {
   searchSimple: SearchSimple.IState;
   unit: Unit.IState;
   units: Units.IState;
+  building: Building.IState;
   department: Department.IState;
   departments: Departments.IState;
   form: any;
