@@ -361,10 +361,17 @@ describe('Contracts', () => {
     })
 
     describe('Units supporting a Department', () => {
-        const resource = 'supportingUnits'
+        const resource = 'department supportingUnits'
         const body = { ...referenceSupportRelationship, department: undefined }
         it('gets units supporting a department', async () =>
             await getOne(resource, apiEndpoints.departments.supportingUnits(referenceDepartment.id), [body]))
+    })
+
+    describe('Units supporting a Building', () => {
+        const resource = 'building supportingUnits'
+        const body = { ...referenceBuildingRelationship, building: undefined }
+        it('gets units supporting a building', async () =>
+            await getOne(resource, apiEndpoints.buildings.supportingUnits(referenceBuilding.id), [body]))
     })
 
     describe('Units', () => {
