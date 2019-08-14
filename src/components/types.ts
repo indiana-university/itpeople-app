@@ -131,7 +131,9 @@ export interface IUnit extends IEntity, IUrl {
 
 export interface IDepartment extends IEntity { }
 
-export interface IBuilding extends IEntity {
+export interface IBuilding extends IEntityRequest {
+  name: string;
+  code: string;
   address: string;
   city: string;
   state: string;

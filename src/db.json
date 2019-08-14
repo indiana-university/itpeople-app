@@ -161,7 +161,7 @@
     {
       "id": 1,
       "name": "City Hall",
-      "description": "Seat of the Pawnee municipal government",
+      "code": "PA123",
       "address": "123 Main St",
       "city": "Pawnee",
       "state": "IN",

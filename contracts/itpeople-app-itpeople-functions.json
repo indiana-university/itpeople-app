@@ -501,7 +501,7 @@
           {
             "id": 1,
             "name": "City Hall",
-            "description": "Seat of the Pawnee municipal government",
+            "code": "PA123",
             "address": "123 Main St",
             "city": "Pawnee",
             "state": "IN",
@@ -537,7 +537,7 @@
         "body": {
           "id": 1,
           "name": "City Hall",
-          "description": "Seat of the Pawnee municipal government",
+          "code": "PA123",
           "address": "123 Main St",
           "city": "Pawnee",
           "state": "IN",
@@ -551,7 +551,7 @@
           "$.body.name": {
             "match": "type"
           },
-          "$.body.description": {
+          "$.body.code": {
             "match": "type"
           },
           "$.body.address": {
@@ -835,7 +835,7 @@
             "building": {
               "id": 1,
               "name": "City Hall",
-              "description": "Seat of the Pawnee municipal government",
+              "code": "PA123",
               "address": "123 Main St",
               "city": "Pawnee",
               "state": "IN",
