@@ -13,7 +13,8 @@ import {
   IUnit,
   IPerson,
   TaskSuccessReducer,
-  IDefaultState
+  IDefaultState,
+  IBuilding
 } from "../types";
 import { SearchLists } from "./Results";
 
@@ -26,6 +27,9 @@ const enum SearchActionTypes {
   SEARCH_DEPARTMENTS_FETCH_REQUEST = "@@search/SEARCH_DEPARTMENTS_FETCH_REQUEST",
   SEARCH_DEPARTMENTS_FETCH_SUCCESS = "@@search/SEARCH_DEPARTMENTS_FETCH_SUCCESS",
   SEARCH_DEPARTMENTS_FETCH_ERROR = "@@search/SEARCH_DEPARTMENTS_FETCH_ERROR",
+  SEARCH_BUILDINGS_FETCH_REQUEST = "@@search/SEARCH_BUILDINGS_FETCH_REQUEST",
+  SEARCH_BUILDINGS_FETCH_SUCCESS = "@@search/SEARCH_BUILDINGS_FETCH_SUCCESS",
+  SEARCH_BUILDINGS_FETCH_ERROR = "@@search/SEARCH_BUILDINGS_FETCH_ERROR",
   SEARCH_PEOPLE_FETCH_REQUEST = "@@search/SEARCH_PEOPLE_FETCH_REQUEST",
   SEARCH_PEOPLE_FETCH_SUCCESS = "@@search/SEARCH_PEOPLE_FETCH_SUCCESS",
   SEARCH_PEOPLE_FETCH_ERROR = "@@search/SEARCH_PEOPLE_FETCH_ERROR",
@@ -37,6 +41,7 @@ export interface ISimpleSearchRequest {
 }
 
 export interface IState extends ISimpleSearchRequest {
+  buildings: IApiState<ISimpleSearchRequest, IBuilding[]>;
   departments: IApiState<ISimpleSearchRequest, IDepartment[]>;
   units: IApiState<ISimpleSearchRequest, IUnit[]>;
   people: IApiState<ISimpleSearchRequest, IPerson[]>;
@@ -53,6 +58,9 @@ export const searchUnitsError = (error: Error) => action(SearchActionTypes.SEARC
 export const searchDepartmentsRequest = (term: string) => action(SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_REQUEST, term);
 export const searchDepartmentsSuccess = (resp: IApiResponse<IDepartment[]>) => action(SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_SUCCESS, resp);
 export const searchDepartmentsError = (error: Error) => action(SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_ERROR, error);
+export const searchBuildingsRequest = (term: string) => action(SearchActionTypes.SEARCH_BUILDINGS_FETCH_REQUEST, term);
+export const searchBuildingsSuccess = (resp: IApiResponse<IBuilding[]>) => action(SearchActionTypes.SEARCH_BUILDINGS_FETCH_SUCCESS, resp);
+export const searchBuildingsError = (error: Error) => action(SearchActionTypes.SEARCH_BUILDINGS_FETCH_ERROR, error);
 export const searchPeopleRequest = (term: string) => action(SearchActionTypes.SEARCH_PEOPLE_FETCH_REQUEST, term);
 export const searchPeopleSuccess = (resp: IApiResponse<IPerson[]>) => action(SearchActionTypes.SEARCH_PEOPLE_FETCH_SUCCESS, resp);
 export const searchPeopleError = (error: Error) => action(SearchActionTypes.SEARCH_PEOPLE_FETCH_ERROR, error);
@@ -62,6 +70,7 @@ import { Reducer, AnyAction } from "redux";
 
 export const initialState: IState = {
   departments: defaultState(),
+  buildings: defaultState(),
   units: defaultState(),
   people: defaultState(),
   selectedList: undefined
@@ -70,37 +79,30 @@ export const initialState: IState = {
 export const reducer: Reducer<IState> = (state = initialState, act) => {
   switch (act.type) {
     // submit search
-    case SearchActionTypes.SEARCH_SIMPLE_SUBMIT:
-      return { ...state, term: act.payload };
+    case SearchActionTypes.SEARCH_SIMPLE_SUBMIT: return { ...state, term: act.payload };
 
     // department search
-    case SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_REQUEST:
-      return { ...state, departments: TaskStartReducer(state.departments, act) };
-    case SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_SUCCESS:
-      return setSelectedList({ ...state, departments: TaskSuccessReducer(state.departments, act) });
-    case SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_ERROR:
-      return { ...state, departments: TaskErrorReducer(state.departments, act) };
+    case SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_REQUEST: return { ...state, departments: TaskStartReducer(state.departments, act) };
+    case SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_SUCCESS: return setSelectedList({ ...state, departments: TaskSuccessReducer(state.departments, act) });
+    case SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_ERROR: return { ...state, departments: TaskErrorReducer(state.departments, act) };
+
+    // building search
+    case SearchActionTypes.SEARCH_BUILDINGS_FETCH_REQUEST: return { ...state, buildings: TaskStartReducer(state.buildings, act) };
+    case SearchActionTypes.SEARCH_BUILDINGS_FETCH_SUCCESS: return setSelectedList({ ...state, buildings: TaskSuccessReducer(state.buildings, act) });
+    case SearchActionTypes.SEARCH_BUILDINGS_FETCH_ERROR: return { ...state, buildings: TaskErrorReducer(state.buildings, act) };
 
     // unit search
-    case SearchActionTypes.SEARCH_UNITS_FETCH_REQUEST:
-      return { ...state, units: TaskStartReducer(state.units, act) };
-    case SearchActionTypes.SEARCH_UNITS_FETCH_SUCCESS:
-      return setSelectedList({ ...state, units: TaskSuccessReducer(state.units, act) });
-    case SearchActionTypes.SEARCH_UNITS_FETCH_ERROR:
-      return { ...state, units: TaskErrorReducer(state.units, act) };
+    case SearchActionTypes.SEARCH_UNITS_FETCH_REQUEST: return { ...state, units: TaskStartReducer(state.units, act) };
+    case SearchActionTypes.SEARCH_UNITS_FETCH_SUCCESS: return setSelectedList({ ...state, units: TaskSuccessReducer(state.units, act) });
+    case SearchActionTypes.SEARCH_UNITS_FETCH_ERROR: return { ...state, units: TaskErrorReducer(state.units, act) };
 
     // people search
-    case SearchActionTypes.SEARCH_PEOPLE_FETCH_REQUEST:
-      return { ...state, people: TaskStartReducer(state.people, act) };
-    case SearchActionTypes.SEARCH_PEOPLE_FETCH_SUCCESS:
-      return setSelectedList({ ...state, people: TaskSuccessReducer(state.people, act) });
-    case SearchActionTypes.SEARCH_PEOPLE_FETCH_ERROR:
-      return { ...state, people: TaskErrorReducer(state.people, act) };
+    case SearchActionTypes.SEARCH_PEOPLE_FETCH_REQUEST: return { ...state, people: TaskStartReducer(state.people, act) };
+    case SearchActionTypes.SEARCH_PEOPLE_FETCH_SUCCESS: return setSelectedList({ ...state, people: TaskSuccessReducer(state.people, act) });
+    case SearchActionTypes.SEARCH_PEOPLE_FETCH_ERROR: return { ...state, people: TaskErrorReducer(state.people, act) };
 
-    case SearchActionTypes.SEARCH_SET_CURRENT_LIST:
-      return { ...state, selectedList: act.payload.list };
-    default:
-      return state;
+    case SearchActionTypes.SEARCH_SET_CURRENT_LIST: return { ...state, selectedList: act.payload.list };
+    default: return state;
   }
 };
 const setSelectedList = (s: IState) => {
@@ -113,6 +115,8 @@ const setSelectedList = (s: IState) => {
     ? SearchLists.Departments
     : hasData(s.people)
     ? SearchLists.People
+    : hasData(s.buildings)
+    ? SearchLists.Buildings
     : undefined;
   return { ...s, selectedList };
 };
@@ -128,6 +132,8 @@ const hasSelectedData = (s: IState): boolean => {
       ? s.units.data
       : listType == SearchLists.People
       ? s.people.data
+      : listType == SearchLists.Buildings
+      ? s.buildings.data
       : []) || [];
   return !!data.length;
 };
@@ -140,6 +146,7 @@ const api = restApi();
 
 function* handleSearch(api: IApi, term: string) {
   yield put(searchDepartmentsRequest(term));
+  yield put(searchBuildingsRequest(term));
   yield put(searchUnitsRequest(term));
   yield put(searchPeopleRequest(term));
 }
@@ -150,6 +157,15 @@ function* handleDepartmentSearch(api: IApi, term: string) {
     .then(searchDepartmentsSuccess)
     .catch(signinIfUnauthorized)
     .catch(searchDepartmentsError);
+
+  yield put(action);
+}
+function* handleBuildingSearch(api: IApi, term: string) {
+  const action = yield api
+    .get<IBuilding[]>(apiEndpoints.buildings.search(term))
+    .then(searchBuildingsSuccess)
+    .catch(signinIfUnauthorized)
+    .catch(searchBuildingsError);
 
   yield put(action);
 }
@@ -175,6 +191,7 @@ function* handlePeopleSearch(api: IApi, term: string) {
 function* watchSimpleSearchFetch() {
   yield takeEvery(SearchActionTypes.SEARCH_SIMPLE_SUBMIT, (a: AnyAction) => handleSearch(api, a.payload));
   yield takeEvery(SearchActionTypes.SEARCH_DEPARTMENTS_FETCH_REQUEST, (a: AnyAction) => handleDepartmentSearch(api, a.payload));
+  yield takeEvery(SearchActionTypes.SEARCH_BUILDINGS_FETCH_REQUEST, (a: AnyAction) => handleBuildingSearch(api, a.payload));
   yield takeEvery(SearchActionTypes.SEARCH_UNITS_FETCH_REQUEST, (a: AnyAction) => handleUnitSearch(api, a.payload));
   yield takeEvery(SearchActionTypes.SEARCH_PEOPLE_FETCH_REQUEST, (a: AnyAction) => handlePeopleSearch(api, a.payload));
 }

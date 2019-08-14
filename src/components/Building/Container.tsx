@@ -33,7 +33,6 @@ export const mapStateToProps = (state: IApplicationState) => state.building;
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
   fetchRequest: (request: IEntityRequest) => {
-    console.log ("*** mapDispatchToProps.fetchRequest ***")
     return dispatch(fetchRequest(request));
   }
 });

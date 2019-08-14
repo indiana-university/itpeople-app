@@ -331,6 +331,7 @@ export const RoleList = [
 // Comparers
 
 export const EntityComparer = (a: IEntity, b: IEntity) => (a.name === b.name ? 0 : a.name < b.name ? -1 : 1);
+export const BuildingComparer = (a: IBuilding, b: IBuilding) => (a.name === b.name ? 0 : a.name < b.name ? -1 : 1);
 
 export const UnitMemberComparer = (a: IUnitMember, b: IUnitMember) => {
   if (!a.person) {
@@ -343,4 +344,4 @@ export const UnitMemberComparer = (a: IUnitMember, b: IUnitMember) => {
 };
 
 export const SupportRelationshipComparer = (a: ISupportRelationship, b: ISupportRelationship) => EntityComparer(a.department, b.department);
-export const BuildingSupportRelationshipComparer = (a: IBuildingSupportRelationship, b: IBuildingSupportRelationship) => EntityComparer(a.building, b.building);
+export const BuildingSupportRelationshipComparer = (a: IBuildingSupportRelationship, b: IBuildingSupportRelationship) => BuildingComparer(a.building, b.building);

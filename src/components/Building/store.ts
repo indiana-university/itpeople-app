@@ -64,7 +64,6 @@ const api = restApi();
 
 //#region SAGA
 function* handleFetch(req: IEntityRequest) {
-  console.log("*** handleFetch ***")
   yield put(fetchProfileRequest(req))
   yield put(fetchSupportingUnitsRequest(req))
 }
