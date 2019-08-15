@@ -29,11 +29,18 @@ const hasResults = (response: IDefaultState<any[]>) => {
   return response.data && response.data.length > 0;
 };
 export const Results: React.SFC<IProps> = ({ departments, setCurrentList, selectedList, units, people, buildings }) => {
-  const showDepartments = () => setCurrentList(SearchLists.Departments);
-  const showBuildings = () => setCurrentList(SearchLists.Buildings);
-  const showUnits = () => setCurrentList(SearchLists.Units);
-  const showPeople = () => setCurrentList(SearchLists.People);
   const hasNoResults = !hasResults(people) && !hasResults(units) && !hasResults(departments) && !hasResults(buildings);
+
+  const searchHeader = (name:string, selector:SearchLists, state:IDefaultState<any>) =>
+    <> 
+      { hasResults(state) &&
+        <li>
+          <button onClick={()=>setCurrentList(selector)} className={"rvt-button--plain" + (selectedList == selector ? " selected" : "")}>
+            {name} ({state.data.length})
+          </button>
+        </li> } 
+    </>
+
   return (
     <>
       <div style={{ position: "relative" }}>
@@ -47,34 +54,10 @@ export const Results: React.SFC<IProps> = ({ departments, setCurrentList, select
       <Row>
         <Col className="rvt-m-bottom-lg search-list-button">
           <ul className="rvt-list rvt-plain-list rvt-inline-list">
-            {hasResults(people) && people.data && (
-              <li>
-                <button onClick={showPeople} className={"rvt-button--plain" + (selectedList == SearchLists.People ? " selected" : "")}>
-                  People ({people.data.length})
-                </button>
-              </li>
-            )}
-            {hasResults(units) && units.data && (
-              <li>
-                <button onClick={showUnits} className={"rvt-button--plain" + (selectedList == SearchLists.Units ? " selected" : "")}>
-                  Units ({units.data.length})
-                </button>
-              </li>
-            )}
-            {hasResults(departments) && departments.data && (
-              <li>
-                <button onClick={showDepartments} className={"rvt-button--plain" + (selectedList == SearchLists.Departments ? " selected" : "")}>
-                  Departments ({departments.data.length})
-                </button>
-              </li>
-            )}
-            {hasResults(buildings) && buildings.data && (
-              <li>
-                <button onClick={showBuildings} className={"rvt-button--plain" + (selectedList == SearchLists.Buildings ? " selected" : "")}>
-                  Buildings ({buildings.data.length})
-                </button>
-              </li>
-            )}
+            {searchHeader("People", SearchLists.People, people)}
+            {searchHeader("Units", SearchLists.Units, units)}
+            {searchHeader("Departments", SearchLists.Departments, departments)}
+            {searchHeader("Buildings", SearchLists.Buildings, buildings)}
           </ul>
         </Col>
       </Row>
