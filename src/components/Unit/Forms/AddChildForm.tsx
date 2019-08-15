@@ -3,7 +3,7 @@ import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Button } from "rivet-react";
 import { RivetInputField, RivetInput, required } from "../../form";
-import { IApplicationState, IEntity, IUnit } from "../../types";
+import { IApplicationState, IUnit } from "../../types";
 import { lookupUnit } from "..";
 import { Dispatch } from "redux";
 import { saveUnitChild } from "../store";
@@ -17,9 +17,9 @@ interface IDispathProps {
 
 interface IProps {
   onSubmit(): any;
-  units: IEntity[];
+  units: IUnit[];
   unitId?: number;
-  filteredUnits: IEntity[];
+  filteredUnits: IUnit[];
 }
 
 const Component: React.SFC<IFormProps> = ({ filteredUnits, addChild, lookupUnit, unitId, onSubmit }) => (

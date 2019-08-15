@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 import * as React from 'react'
-import { IApiState, defaultState, IPerson, IUnit, IDepartment, IEntity, IEntityRequest, IBuilding } from 'src/components/types'
+import { IApiState, defaultState, IPerson, IUnit, IDepartment, IEntityRequest, IBuilding } from 'src/components/types'
 import * as examples from 'src/db.json'
 import { render } from "src/testUtils"
 
@@ -15,7 +15,7 @@ describe('Results by list', () => {
     const exampleBldg: IBuilding = { ...examples.buildings[0] }
     const exampleDept: IDepartment = {...examples.departments[0] }
     
-    const peopleResults: IApiState<IEntityRequest, IEntity[]> = { ...defaultState(), data: [examplePerson] }
+    const peopleResults: IApiState<IEntityRequest, IPerson[]> = { ...defaultState(), data: [examplePerson] }
     const deptsResults: IApiState<IEntityRequest, IDepartment[]> = { ...defaultState(), data: [exampleDept] }
     const buildingsResults: IApiState<IEntityRequest, IBuilding[]> = { ...defaultState(), data: [exampleBldg] }
     const unitsResults: IApiState<IEntityRequest, IUnit[]> = { ...defaultState(), data: [exampleUnit] }

@@ -3,7 +3,7 @@ import { reduxForm, InjectedFormProps } from "redux-form";
 import { connect } from "react-redux";
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { RivetInputField, RivetInput } from "../../form";
-import { IApplicationState, IEntity } from "../../types";
+import { IApplicationState, IDepartment, ISupportRelationship } from "../../types";
 import { clearCurrent } from "../../lookup";
 import { Dispatch } from "redux";
 import { lookupDepartment } from "..";
@@ -20,8 +20,8 @@ interface IDispatchProps {
   lookupDepartment: typeof lookupDepartment;
 }
 interface IProps {
-  filtered: IEntity[];
-  departments: IEntity[];
+  filtered: IDepartment[];
+  departments: ISupportRelationship[];
   unitId: number;
 }
 
@@ -45,7 +45,7 @@ const form: React.SFC<IFormProps> = props => {
 
       {filtered && filtered.length > 0 && (
         <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
-          {filtered.map((department: any, i: number) => {
+          {filtered.map((department, i) => {
             return (
               <div key={i}>
                 <Button
@@ -75,8 +75,8 @@ const form: React.SFC<IFormProps> = props => {
         <ModalBody>{addDepartmentForm}</ModalBody>
       </Modal>
       <List variant="plain">
-        {departments.map((relationship: any, index: number) => {
-          const department = relationship.department as IEntity;
+        {departments.map((relationship, index) => {
+          const department = relationship.department;
           return (
             <li key={index}>
               <Row>
