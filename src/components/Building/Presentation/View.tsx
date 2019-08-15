@@ -20,9 +20,8 @@ export const View: React.SFC<IState> = ({ profile, supportingUnits }) => (
       <Row>
         <Col md={6} className="rvt-p-lr-md">
           <Loader {...supportingUnits}>
-            {supportingUnits.data && supportingUnits.data.length > 0 && (
-              <UnitList units={supportingUnits.data.map(r => r.unit).filter(u => u)} title="Supporting Units" />
-            )}
+            { supportingUnits.data &&
+              <UnitList units={supportingUnits.data.map(r => r.unit).filter(u => u)} title="Supporting Units" /> }
           </Loader>
         </Col>
       </Row>
