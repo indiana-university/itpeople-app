@@ -335,6 +335,13 @@ export const EntityComparer : Comparer<IEntity | undefined> = (a, b) => {
   if (!b) { return 1; }
   return a.name === b.name ? 0 : a.name < b.name ? -1 : 1;
 }
-export const UnitMemberComparer : Comparer<IUnitMember> = (a, b) => EntityComparer(a.person, b.person);
+export const PeopleBySurnameComparer: Comparer<IPerson | undefined> = (a, b) => {
+  if (!a) { return -1; }
+  if (!b) { return 1; }
+  const aname = a.name.split(" ").reverse()[0]
+  const bname = b.name.split(" ").reverse()[0]
+  return aname === bname ? 0 : aname < bname ? -1 : 1;
+}
+export const UnitMemberComparer : Comparer<IUnitMember> = (a, b) => PeopleBySurnameComparer(a.person, b.person);
 export const SupportRelationshipComparer : Comparer<ISupportRelationship> = (a, b) => EntityComparer(a.department, b.department);
 export const BuildingSupportRelationshipComparer : Comparer<IBuildingSupportRelationship> = (a, b) => EntityComparer(a.building, b.building);

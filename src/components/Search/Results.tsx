@@ -6,7 +6,7 @@
 import * as React from "react";
 import { Row, Col } from "rivet-react";
 import { List } from "rivet-react/build/dist/components/List/List";
-import { IDefaultState, EntityComparer, IBuilding, IPerson, IDepartment, IUnit } from "../types";
+import { IDefaultState, EntityComparer, IBuilding, IPerson, IDepartment, IUnit, PeopleBySurnameComparer } from "../types";
 import { Loader } from "../Loader";
 import { join } from "src/util";
 
@@ -66,7 +66,7 @@ export const Results: React.SFC<IProps> = ({ departments, setCurrentList, select
           <Col>
             <h2 className="sr-only">People</h2>
             <List variant="plain" className="list-dividers">
-              {people.data.sort(EntityComparer).map((r, i) => (
+              {people.data.sort(PeopleBySurnameComparer).map((r, i) => (
                 <li key={"unit-results:" + i} className="rvt-p-tb-xs">
                     <a href={"/people/" + r.id}>{r.name}</a>
                     {r.position && <><br/>{r.position}</>}
