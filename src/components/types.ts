@@ -112,7 +112,6 @@ export interface IEntityStringRequest {
 }
 export interface IEntity extends IEntityRequest {
   name: string;
-  description?: string;
 }
 
 export interface IRole {
@@ -127,14 +126,17 @@ export interface IUrl {
   url: string;
 }
 
-export interface IUnit extends IEntity, IUrl {
+export interface IDescription {
+  description: string;
+}
+
+export interface IUnit extends IEntity, IUrl, IDescription {
   parentId?: number;
 }
 
-export interface IDepartment extends IEntity { }
+export interface IDepartment extends IEntity, IDescription { }
 
-export interface IBuilding extends IEntityRequest {
-  name: string;
+export interface IBuilding extends IEntity {
   code: string;
   address: string;
   city: string;
@@ -223,9 +225,7 @@ export interface IBuildingSupportRelationship extends IBuildingSupportRelationsh
   building: IBuilding;
 }
 
-export interface IPerson {
-  id: number;
-  name: string;
+export interface IPerson extends IEntity {
   netId: string;
   position: string;
   location: string;
@@ -329,19 +329,12 @@ export const RoleList = [
 ]
 
 // Comparers
-
-export const EntityComparer = (a: IEntity, b: IEntity) => (a.name === b.name ? 0 : a.name < b.name ? -1 : 1);
-export const BuildingComparer = (a: IBuilding, b: IBuilding) => (a.name === b.name ? 0 : a.name < b.name ? -1 : 1);
-
-export const UnitMemberComparer = (a: IUnitMember, b: IUnitMember) => {
-  if (!a.person) {
-    return -1;
-  }
-  if (!b.person) {
-    return 1;
-  }
-  return EntityComparer(a.person, b.person);
-};
-
-export const SupportRelationshipComparer = (a: ISupportRelationship, b: ISupportRelationship) => EntityComparer(a.department, b.department);
-export const BuildingSupportRelationshipComparer = (a: IBuildingSupportRelationship, b: IBuildingSupportRelationship) => BuildingComparer(a.building, b.building);
+export type Comparer<T> = (a:T, b:T) => 0 | 1 | -1;
+export const EntityComparer : Comparer<IEntity | undefined> = (a, b) => {
+  if (!a) { return -1; }
+  if (!b) { return 1; }
+  return a.name === b.name ? 0 : a.name < b.name ? -1 : 1;
+}
+export const UnitMemberComparer : Comparer<IUnitMember> = (a, b) => EntityComparer(a.person, b.person);
+export const SupportRelationshipComparer : Comparer<ISupportRelationship> = (a, b) => EntityComparer(a.department, b.department);
+export const BuildingSupportRelationshipComparer : Comparer<IBuildingSupportRelationship> = (a, b) => EntityComparer(a.building, b.building);
