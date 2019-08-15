@@ -6,16 +6,15 @@
 import * as React from "react";
 import { Row, Col } from "rivet-react";
 import { List } from "rivet-react/build/dist/components/List/List";
-import { IEntity, IDefaultState, EntityComparer, IBuilding } from "../types";
-import { ProfileList } from "../Profile/ProfileList";
+import { IDefaultState, EntityComparer, IBuilding, IPerson, IDepartment, IUnit } from "../types";
 import { Loader } from "../Loader";
 import { join } from "src/util";
 
 interface IProps {
-  people: IDefaultState<IEntity[]>;
-  departments: IDefaultState<IEntity[]>;
+  people: IDefaultState<IPerson[]>;
+  departments: IDefaultState<IDepartment[]>;
   buildings: IDefaultState<IBuilding[]>;
-  units: IDefaultState<IEntity[]>;
+  units: IDefaultState<IUnit[]>;
   selectedList: SearchLists;
   setCurrentList(list: SearchLists): void;
 }
@@ -28,6 +27,7 @@ export enum SearchLists {
 const hasResults = (response: IDefaultState<any[]>) => {
   return response.data && response.data.length > 0;
 };
+
 export const Results: React.SFC<IProps> = ({ departments, setCurrentList, selectedList, units, people, buildings }) => {
   const hasNoResults = !hasResults(people) && !hasResults(units) && !hasResults(departments) && !hasResults(buildings);
 
@@ -61,58 +61,59 @@ export const Results: React.SFC<IProps> = ({ departments, setCurrentList, select
           </ul>
         </Col>
       </Row>
-
       <Row>
         {people && people.data && people.data.length > 0 && selectedList === SearchLists.People && (
           <Col>
             <h2 className="sr-only">People</h2>
-            <ProfileList users={people.data.sort(EntityComparer)} />
+            <List variant="plain" className="list-dividers">
+              {people.data.sort(EntityComparer).map((r, i) => (
+                <li key={"unit-results:" + i} className="rvt-p-tb-xs">
+                    <a href={"/people/" + r.id}>{r.name}</a>
+                    {r.position && <><br/>{r.position}</>}
+                </li>
+              ))}
+            </List>
           </Col>
         )}
-
         {units && units.data && units.data.length > 0 && selectedList === SearchLists.Units && (
           <Col>
             <h2 className="sr-only">Units</h2>
             <List variant="plain" className="list-dividers">
               {units.data.sort(EntityComparer).map((r, i) => (
-                <li key={"unit-results:" + i} className="rvt-p-tb-lg">
+                <li key={"unit-results:" + i} className="rvt-p-tb-xs">
                   <a href={`/units/${r.id}`}>{r.name}</a>
-                  {r.description && <p>{r.description}</p>}
+                  {r.description && <><br />{r.description}</>}
                 </li>
               ))}
             </List>
           </Col>
         )}
-
         {departments && departments.data && departments.data.length > 0 && selectedList === SearchLists.Departments && (
           <Col>
             <h2 className="sr-only">Departments</h2>
             <List variant="plain" className="list-dividers">
               {departments.data.sort(EntityComparer).map((r, i) => (
-                <li className="rvt-p-tb-lg" key={"department-result:" + i}>
+                <li className="rvt-p-tb-xs" key={"department-result:" + i}>
                   <a href={`/departments/${r.id}`}>{r.name}</a>
-                  {r.description && <p>{r.description}</p>}
+                  {r.description && <><br />{r.description}</>}
                 </li>
               ))}
             </List>
           </Col>
         )}
-
         {buildings && buildings.data && buildings.data.length > 0 && selectedList === SearchLists.Buildings && (
           <Col>
             <h2 className="sr-only">Buildings</h2>
             <List variant="plain" className="list-dividers">
               {buildings.data.sort(EntityComparer).map((r, i) => (
-                <li className="rvt-p-tb-lg" key={"bldg-result:" + i}>
+                <li className="rvt-p-tb-xs" key={"bldg-result:" + i}>
                   <a href={`/buildings/${r.id}`}>{r.name}</a>
-                  {(r.address || r.city) && <p>{join([r.address, r.city], ", ")}</p>}
+                  {(r.address || r.city) && <><br/>{join([r.address, r.city], ", ")}</>}
                 </li>
               ))}
             </List>
           </Col>
         )}
-
-
         {hasNoResults && (
           <Col>
             <div>No results found</div>
