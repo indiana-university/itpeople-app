@@ -2,7 +2,7 @@ import * as React from "react";
 import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
-import { IApplicationState, IEntity, IUnit } from "../../types";
+import { IApplicationState, IUnit } from "../../types";
 import { clearCurrent } from "../../lookup";
 import { Dispatch } from "redux";
 import { closeModal, Modal } from "../../layout/Modal";
@@ -18,9 +18,9 @@ interface IDispathProps {
   removeChild: typeof deleteUnitChild;
 }
 interface IProps {
-  units: IEntity[];
+  units: IUnit[];
   unitId: number;
-  filteredUnits: IEntity[];
+  filteredUnits: IUnit[];
 }
 
 const form: React.SFC<IFormProps> = props => {
@@ -41,7 +41,7 @@ const form: React.SFC<IFormProps> = props => {
       </Modal>
       <List variant="plain">
         {units &&
-          units.map((unit: IEntity, index: number) => {
+          units.map((unit, index) => {
             return (
               <li key={index}>
                 <Row>

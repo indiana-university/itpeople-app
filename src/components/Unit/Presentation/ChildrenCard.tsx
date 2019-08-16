@@ -5,11 +5,11 @@
 
 import * as React from 'react'
 import { Col, Row } from 'rivet-react'
-import { IEntity, EntityComparer } from "../../types";
+import { EntityComparer, IUnit } from "../../types";
 import { ChildrenUnitsIcon } from '../../icons';
 
 interface IProps {
-    children?: IEntity[]
+    children?: IUnit[]
 }
 export const ChildrenCard: React.SFC<IProps> = (props) => {
     const children = props.children;

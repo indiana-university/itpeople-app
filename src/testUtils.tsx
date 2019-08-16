@@ -11,7 +11,8 @@ import {
     IUnitMember, 
     ITool, 
     IUnitMemberTool, 
-    ISupportRelationship } from 'src/components/types'
+    ISupportRelationship, 
+    IBuilding} from 'src/components/types'
 import * as examples from 'src/db.json'
 
 // expressive expectation methods for dom queries
@@ -40,6 +41,7 @@ export const Examples = {
     unit: { ...examples.units[0] } as IUnit,
     member: { ...examples.memberships[0] } as IUnitMember,
     department: { ...examples.departments[0] } as IDepartment,
+    building: { ...examples.buildings[0] } as IBuilding,
     tool: { ...examples.tools[0] } as ITool,
     tools: examples.tools as ITool[],
     memberTool: { ...examples.memberTools[0] } as IUnitMemberTool, 

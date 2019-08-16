@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+import * as Building from "../components/Building/store";
 import * as Department from "../components/Department/store";
 import * as Departments from "../components/Departments/store";
 import * as Profile from "../components/Profile/store";
@@ -21,6 +22,7 @@ export interface IApplicationState {
   searchSimple: SearchSimple.IState;
   unit: Unit.IState;
   units: Units.IState;
+  building: Building.IState;
   department: Department.IState;
   departments: Departments.IState;
   form: any;
@@ -110,7 +112,6 @@ export interface IEntityStringRequest {
 }
 export interface IEntity extends IEntityRequest {
   name: string;
-  description?: string;
 }
 
 export interface IRole {
@@ -125,14 +126,17 @@ export interface IUrl {
   url: string;
 }
 
-export interface IUnit extends IEntity, IUrl {
+export interface IDescription {
+  description: string;
+}
+
+export interface IUnit extends IEntity, IUrl, IDescription {
   parentId?: number;
 }
 
-export interface IDepartment extends IEntity { }
+export interface IDepartment extends IEntity, IDescription { }
 
-export interface IBuilding extends IEntityRequest {
-  name: string;
+export interface IBuilding extends IEntity {
   code: string;
   address: string;
   city: string;
@@ -221,9 +225,7 @@ export interface IBuildingSupportRelationship extends IBuildingSupportRelationsh
   building: IBuilding;
 }
 
-export interface IPerson {
-  id: number;
-  name: string;
+export interface IPerson extends IEntity {
   netId: string;
   position: string;
   location: string;
@@ -327,18 +329,19 @@ export const RoleList = [
 ]
 
 // Comparers
-
-export const EntityComparer = (a: IEntity, b: IEntity) => (a.name === b.name ? 0 : a.name < b.name ? -1 : 1);
-
-export const UnitMemberComparer = (a: IUnitMember, b: IUnitMember) => {
-  if (!a.person) {
-    return -1;
-  }
-  if (!b.person) {
-    return 1;
-  }
-  return EntityComparer(a.person, b.person);
-};
-
-export const SupportRelationshipComparer = (a: ISupportRelationship, b: ISupportRelationship) => EntityComparer(a.department, b.department);
-export const BuildingSupportRelationshipComparer = (a: IBuildingSupportRelationship, b: IBuildingSupportRelationship) => EntityComparer(a.building, b.building);
+export type Comparer<T> = (a:T, b:T) => 0 | 1 | -1;
+export const EntityComparer : Comparer<IEntity | undefined> = (a, b) => {
+  if (!a) { return -1; }
+  if (!b) { return 1; }
+  return a.name === b.name ? 0 : a.name < b.name ? -1 : 1;
+}
+export const PeopleBySurnameComparer: Comparer<IPerson | undefined> = (a, b) => {
+  if (!a) { return -1; }
+  if (!b) { return 1; }
+  const aname = a.name.split(" ").reverse()[0]
+  const bname = b.name.split(" ").reverse()[0]
+  return aname === bname ? 0 : aname < bname ? -1 : 1;
+}
+export const UnitMemberComparer : Comparer<IUnitMember> = (a, b) => PeopleBySurnameComparer(a.person, b.person);
+export const SupportRelationshipComparer : Comparer<ISupportRelationship> = (a, b) => EntityComparer(a.department, b.department);
+export const BuildingSupportRelationshipComparer : Comparer<IBuildingSupportRelationship> = (a, b) => EntityComparer(a.building, b.building);

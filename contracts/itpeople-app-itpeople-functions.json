@@ -606,8 +606,8 @@
       }
     },
     {
-      "description": "a GET request for one supportingUnits",
-      "providerState": "supportingUnits exists",
+      "description": "a GET request for one department supportingUnits",
+      "providerState": "department supportingUnits exists",
       "request": {
         "method": "GET",
         "path": "/departments/1/supportingUnits",
@@ -625,6 +625,44 @@
             "id": 1,
             "unitId": 1,
             "departmentId": 1,
+            "unit": {
+              "id": 1,
+              "name": "Parks and Recreation IT",
+              "description": "This page is under construction",
+              "url": "http://pawneeindiana.com/information-technology/"
+            }
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a GET request for one building supportingUnits",
+      "providerState": "building supportingUnits exists",
+      "request": {
+        "method": "GET",
+        "path": "/buildings/1/supportingUnits",
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJqb2huZG9lIiwiZXhwIjoyOTE2MjM5MDIyfQ.ELo8I2IImgRRT75cOcUcSllbkWVWAIQA2WQr27WSpWwF2c7Wh9hjqkPriZ4PxSD4OR9IgGWt5HWpPQFDOwlv1O7tl2gLcZ5LayuRzQX2AEn-UsEBECStEwABUtwhg92q9Ov-GRbYqmP_5UpntbCr8aZfMEuMfLTIWePcORq_FrJhjyRUoKhUo8007W6RO58n03erVlslSB1f-JTYtBdhYOlgmDTOCp_rc-gPvKFePMb4c05IOD-x4ce2QGkZlL_pE1_OLKdn5A07k7B8x53v38WvWuisFGIPXUcuP3j9hdJHIzYLSfL5t1OABT1-57C91yaMAgVsATMRgT9qtzYQgg"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": [
+          {
+            "id": 1,
+            "unitId": 1,
+            "buildingId": 1,
             "unit": {
               "id": 1,
               "name": "Parks and Recreation IT",

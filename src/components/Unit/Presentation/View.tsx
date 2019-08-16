@@ -11,7 +11,7 @@ import Profile from "./Profile";
 import Members from "./Members";
 import Parent from "./Parent";
 import Children from "./Children";
-import { IEntity, IDefaultState, Permissions, IApiState } from "../../types";
+import { IDefaultState, Permissions, IApiState, IUnit } from "../../types";
 import Departments from "./Departments";
 import Buildings from "./Buildings";
 import { Pencil, TrashCan } from "src/components/icons";
@@ -20,7 +20,7 @@ import { Collapse } from 'rivet-react/addons';
 interface IProps {
   edit(): any;
   deleteUnit: typeof deleteUnit;
-  unitChildren: IDefaultState<IEntity[]>;
+  unitChildren: IDefaultState<IUnit[]>;
 }
 const hasData = (result: IApiState<any, any>) => {
   return result.loading || result.error || (Array.isArray(result.data) ? !!result.data.length : !!result.data);

@@ -5,6 +5,7 @@
 
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import BuildingContainer from './components/Building/Container';
 import DepartmentContainer from './components/Department/Container';
 import DepartmentsContainer from './components/Departments/Container';
 import Home from './components/Home/Home';
@@ -26,6 +27,7 @@ const App: React.SFC = () => (
       <Route path="/people" component={PeopleContainer} />
       <Route path="/me" component={ProfileContainer} />
       <Route path="/search" component={SearchContainer} />
+      <Route path="/buildings/:id" component={BuildingContainer} />
       <Route path="/departments/:id" component={DepartmentContainer} />
       <Route path="/departments" component={DepartmentsContainer} />
       <Route path="/units/:id" component={UnitContainer} />

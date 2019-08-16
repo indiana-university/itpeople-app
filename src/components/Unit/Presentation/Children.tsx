@@ -4,11 +4,11 @@
  */
 
 import * as React from "react";
-import { IDefaultState, IEntity } from "src/components/types";
+import { IDefaultState, IUnit } from "src/components/types";
 import { Loader } from "src/components/Loader";
 import { ChildrenCard } from ".";
 
-const Children: React.SFC<IDefaultState<IEntity[]>> = props => {
+const Children: React.SFC<IDefaultState<IUnit[]>> = props => {
   const { data: units } = props;
   return (
     <>

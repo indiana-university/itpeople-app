@@ -8,10 +8,11 @@ import { IState } from "./store";
 import { Content } from "../layout";
 import { Results, SearchLists } from "./Results";
 
-const Presentation: React.SFC<IState & IProps> = ({ selectedList, departments, setCurrentList, units, people }) => (
+const Presentation: React.SFC<IState & IProps> = ({ selectedList, departments, setCurrentList, units, people, buildings }) => (
   <Content className="rvt-p-top-xl rvt-bg-white rvt-p-bottom-xl rvt-m-top-xxl rvt-m-bottom-xxl">
     <Results
       people={people}
+      buildings={buildings}
       departments={departments}
       units={units}
       selectedList={selectedList || SearchLists.People}
