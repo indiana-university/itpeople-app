@@ -9,7 +9,6 @@ import axios, { AxiosResponse } from 'axios'
 import * as traverse from 'traverse'
 import { apiEndpoints } from './components/effects';
 import { 
-    IEntity, 
     ISupportRelationship, 
     ISupportRelationshipRequest, 
     IUnitMember, 
@@ -21,7 +20,8 @@ import {
     IUnitMemberTool,
     IBuilding,
     IBuildingSupportRelationship,
-    IBuildingSupportRelationshipRequest} from './components/types'
+    IBuildingSupportRelationshipRequest,
+    IDepartment} from './components/types'
 import * as examples from 'src/db.json'
 
 const deepMatchify = (obj: Object) => traverse(obj).map(
@@ -181,7 +181,7 @@ const delete_ = (name: string, path: string) =>
  ************************/
 
 const referenceUnit: IUnit = { ...examples.units[0], parentId:undefined }
-const referenceDepartment: IEntity = examples.departments[0]
+const referenceDepartment: IDepartment = examples.departments[0]
 const referenceBuilding: IBuilding = examples.buildings[0]
 const referencePerson: IPerson = examples.people[0]
 const referenceTool: ITool = examples.tools[0];
@@ -361,10 +361,17 @@ describe('Contracts', () => {
     })
 
     describe('Units supporting a Department', () => {
-        const resource = 'supportingUnits'
+        const resource = 'department supportingUnits'
         const body = { ...referenceSupportRelationship, department: undefined }
         it('gets units supporting a department', async () =>
             await getOne(resource, apiEndpoints.departments.supportingUnits(referenceDepartment.id), [body]))
+    })
+
+    describe('Units supporting a Building', () => {
+        const resource = 'building supportingUnits'
+        const body = { ...referenceBuildingRelationship, building: undefined }
+        it('gets units supporting a building', async () =>
+            await getOne(resource, apiEndpoints.buildings.supportingUnits(referenceBuilding.id), [body]))
     })
 
     describe('Units', () => {

@@ -5,11 +5,11 @@
 
 import * as React from "react";
 import { Col, Row } from "rivet-react";
-import { IEntity } from "../types";
+import { IDepartment } from "../types";
 import { Content, PageTitle } from "../layout";
 
 interface IProps {
-  departments: IEntity[];
+  departments: IDepartment[];
 }
 
 const Presentation: React.SFC<IProps> = ({ departments }) => {

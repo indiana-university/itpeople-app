@@ -5,7 +5,6 @@
 
 import {
   IApiState,
-  IEntity,
   ViewStateType,
   IEntityRequest,
   IUnit,
@@ -93,8 +92,8 @@ export interface IState {
   profile: IApiState<IEntityRequest, IUnit>;
   members: IApiState<IEntityRequest, IUnitMember[]>;
   tools: IApiState<IEntityRequest, ITool[]>;
-  unitChildren: IApiState<IEntityRequest, IEntity[]>; // children conflicts with react props 😟
-  parent: IApiState<IEntityRequest, IEntity>;
+  unitChildren: IApiState<IEntityRequest, IUnit[]>; // children conflicts with react props 😟
+  parent: IApiState<IEntityRequest, IUnit>;
   departments: IApiState<IEntityRequest, ISupportRelationship[]>;
   buildings: IApiState<IEntityRequest, IBuildingSupportRelationship[]>;
   view: ViewStateType;
