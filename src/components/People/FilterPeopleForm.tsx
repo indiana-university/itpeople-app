@@ -49,33 +49,33 @@ let FilterPeopleForm: React.SFC<IFormProps> | any = ({ filter, handleSubmit }: I
   return (
     <form onSubmit={handleSubmit(doHandle)} >
       <h2 className="rvt-ts-23 rvt-text-bold" style={h2_first}>Unit Role</h2>
-      <FieldArray name="role" component={renderFieldList(RoleDisplayNames)} />
+      <FieldArray name="role" component={renderFieldList("role", RoleDisplayNames)} />
       <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Responsibility</h2>
-      <FieldArray name="responsibilities" component={renderFieldList(filteredJobClasses)} />
+      <FieldArray name="responsibilities" component={renderFieldList("class", filteredJobClasses)} />
       <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Campus</h2>
-      <FieldArray name="campuses" component={renderFieldList(CampusDisplayNames)} />
+      <FieldArray name="campuses" component={renderFieldList("campus", CampusDisplayNames)} />
       <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Area</h2>
-      <FieldArray name="areas" component={renderFieldList(AreaDisplayNames)} />
+      <FieldArray name="areas" component={renderFieldList("area", AreaDisplayNames)} />
       <Button type="submit" style={submit}>Apply Filters</Button>
     </form>
   );
 };
 
-const renderFieldList: any = (options:object) =>
+const renderFieldList: any = (field:string, options:object) =>
   (props: WrappedFieldArrayProps<string>) =>
     <List variant="plain" padding={{ left: "md", right: "md" }} >
       {Object
         .keys(options)
         .map((name, i: number) => (
           <li key={name + i}>
-            <Field name={name} component={renderField(options)} />
+            <Field name={name} component={renderField(field, options)} />
           </li>
         ))}
     </List>
 
-const renderField = (options:object) =>
+const renderField = (field:string, options:object) =>
   ({ input: { name, value: { name: jobClass } } }: WrappedFieldProps) =>
-    <RivetCheckboxField name={"campus_" + name} component={RivetCheckbox} value={name} label={options[name]} />
+    <RivetCheckboxField name={`${field}_${name}`} component={RivetCheckbox} value={name} label={options[name]} />
 
 FilterPeopleForm = reduxForm<IPeopleRequest, IDispatchActions>({
   form: "filterPeopleForm",
