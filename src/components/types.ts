@@ -261,24 +261,6 @@ export interface IPeopleRequest {
   areas: string[]
 }
 
-export const JobClassList = [
-  "BizSysAnalysis", 
-  "DataAdminAnalysis", 
-  "DatabaseArchDesign", 
-  "InstructionalTech", 
-  "ItLeadership", 
-  "ItMultiDiscipline", 
-  "ItProjectMgt", 
-  "ItSecurityPrivacy", 
-  "ItUserSupport", 
-  "Networks", 
-  "SoftwareAdminAnalysis", 
-  "SoftwareDevEng", 
-  "SystemDevEng", 
-  "UserExperience", 
-  "WebAdminDevEng"
-]
-
 export const JobClassDisplayNames = {
   "None": "",
   "ItLeadership": "IT Leadership",
@@ -298,18 +280,6 @@ export const JobClassDisplayNames = {
   "WebAdminDevEng": "Web Developer/Engineer",
 }
 
-export const CampusList = [
-  "Bloomington",
-  "Indianapolis",
-  "Columbus",
-  "East",
-  "Fort Wayne",
-  "Kokomo",
-  "Northwest",
-  "South Bend",
-  "Southeast"
-]
-
 export const CampusDisplayNames = {
   "Bloomington": "Bloomington",
   "Indianapolis": "IUPUI (Indianapolis)",
@@ -326,13 +296,6 @@ export const AreaDisplayNames = {
   "uits": "UITS Units",
   "edge": "Edge Units"
 }
-
-export const RoleList = [
-  "Leader",
-  "Sublead",
-  "Member",
-  "Related"
-]
 
 export const RoleDisplayNames = {
   "Leader": "Leader",

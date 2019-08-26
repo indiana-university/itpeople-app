@@ -6,7 +6,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { IApplicationState, IEntityRequest, IPerson, JobClassList } from "../types";
+import { IApplicationState, IEntityRequest, IPerson, JobClassDisplayNames } from "../types";
 import { View } from "./Presentation";
 import { fetchRequest, IState, toggleUnit, savePerson } from "./store";
 import { change } from "redux-form";
@@ -47,7 +47,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IPropsFromDispatch => ({
   profileFetchRequest: (request: IEntityRequest) => dispatch(fetchRequest(request)),
   toggleUnit: (id: number) => dispatch(toggleUnit(id)),
   editJobClasses: (responsibilities: string[]) => {
-    const jobClassFields = JobClassList.map((name) => ({ name, enabled: responsibilities.includes(name) }));
+    const jobClassFields = Object.keys(JobClassDisplayNames).map((name) => ({ name, enabled: responsibilities.includes(name) }));
     dispatch(change("updateResponsibilities", "responsibilities", jobClassFields));
   },
   closeModal: () => dispatch(closeModal()),
