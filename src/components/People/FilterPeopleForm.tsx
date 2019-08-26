@@ -5,7 +5,7 @@ import { Button, List } from "rivet-react";
 import { RivetCheckboxField, RivetCheckbox } from "src/components/form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { IPeopleRequest, JobClassDisplayNames, JobClassList, CampusList, CampusDisplayNames, RoleList } from "src/components/types";
+import { IPeopleRequest, JobClassDisplayNames, JobClassList, CampusList, CampusDisplayNames, RoleList, AreaDisplayNames } from "src/components/types";
 
 interface IDispatchActions {
   filter: typeof people.fetchPeople;
@@ -27,7 +27,8 @@ let FilterPeopleForm: React.SFC<IFormProps> | any = ({ filter, handleSubmit }: I
     let req = { 
       classes: setOf(selected, "class_"), 
       campuses: setOf(selected, "campus_"),
-      roles: setOf(selected, "role_")
+      roles: setOf(selected, "role_"),
+      areas: setOf(selected, "area_")
     };
     filter(req);
   };
@@ -51,6 +52,8 @@ let FilterPeopleForm: React.SFC<IFormProps> | any = ({ filter, handleSubmit }: I
       <FieldArray name="responsibilities" component={renderJobClasses} />
       <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Campus</h2>
       <FieldArray name="campuses" component={renderCampuses} />
+      <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Area</h2>
+      <FieldArray name="areas" component={renderAreas} />
       <Button type="submit" style={submit}>Apply Filters</Button>
     </form>
   );
@@ -88,6 +91,16 @@ const renderCampuses: any = (props: WrappedFieldArrayProps<string>) =>
       ))}
   </List>
 
+const renderAreas: any = (props: WrappedFieldArrayProps<string>) =>
+  <List variant="plain" padding={{ left: "md", right: "md" }} >
+    {Object
+      .keys(AreaDisplayNames)
+      .map((name, i: number) => (
+        <li key={name + i}>
+          <Field name={name} component={renderArea} />
+        </li>
+      ))}
+  </List>
 
 const renderRole = ({ input: { name, value: { name: jobClass } } }: WrappedFieldProps) =>
   <RivetCheckboxField name={"role_" + name} component={RivetCheckbox} value={name} label={name} />
@@ -97,6 +110,9 @@ const renderCampus = ({ input: { name, value: { name: jobClass } } }: WrappedFie
 
 const renderJobClass = ({ input: { name, value: { name: jobClass } } }: WrappedFieldProps) =>
   <RivetCheckboxField name={"class_"+name} component={RivetCheckbox} value={name} label={JobClassDisplayNames[name]} />
+
+const renderArea = ({ input: { name, value: { name: jobClass } } }: WrappedFieldProps) =>
+  <RivetCheckboxField name={"area_" + name} component={RivetCheckbox} value={name} label={AreaDisplayNames[name]} />
 
 FilterPeopleForm = reduxForm<IPeopleRequest, IDispatchActions>({
   form: "filterPeopleForm",

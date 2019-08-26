@@ -258,6 +258,7 @@ export interface IPeopleRequest {
   roles: string[],
   classes: string[],
   campuses: string[]
+  areas: string[]
 }
 
 export const JobClassList = [
@@ -319,6 +320,11 @@ export const CampusDisplayNames = {
   "Northwest": "Northwest (Gary)",
   "South Bend": "South Bend",
   "Southeast": "Southeast (New Albany)"
+}
+
+export const AreaDisplayNames = {
+  "uits": "UITS Units",
+  "edge": "Edge Units"
 }
 
 export const RoleList = [
