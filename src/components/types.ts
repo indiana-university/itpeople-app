@@ -334,6 +334,14 @@ export const RoleList = [
   "Related"
 ]
 
+export const RoleDisplayNames = {
+  "Leader": "Leader",
+  "Sublead": "Sublead",
+  "Member": "Member",
+  "Related": "Related"
+}
+
+
 // Comparers
 export type Comparer<T> = (a:T, b:T) => 0 | 1 | -1;
 export const EntityComparer : Comparer<IEntity | undefined> = (a, b) => {
