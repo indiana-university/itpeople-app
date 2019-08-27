@@ -316,9 +316,9 @@ const suffix = /( jr| sr| ii| iii| iv)$/i
 export const PeopleBySurnameComparer: Comparer<IPerson | undefined> = (a, b) => {
   if (!a) { return -1; }
   if (!b) { return 1; }
-  const aname = a.name.replace(suffix,"").split(" ").reverse()[0]
-  const bname = b.name.replace(suffix,"").split(" ").reverse()[0]
-  return aname === bname ? 0 : aname < bname ? -1 : 1;
+  const a_surname = a.name.replace(suffix,"").split(" ").pop() || ""
+  const b_surname = b.name.replace(suffix,"").split(" ").pop() || ""
+  return a_surname === b_surname ? 0 : a_surname < b_surname ? -1 : 1;
 }
 export const UnitMemberComparer : Comparer<IUnitMember> = (a, b) => PeopleBySurnameComparer(a.person, b.person);
 export const SupportRelationshipComparer : Comparer<ISupportRelationship> = (a, b) => EntityComparer(a.department, b.department);
