@@ -312,11 +312,12 @@ export const EntityComparer : Comparer<IEntity | undefined> = (a, b) => {
   if (!b) { return 1; }
   return a.name === b.name ? 0 : a.name < b.name ? -1 : 1;
 }
+const suffix = /( jr| sr| ii| iii| iv)$/i
 export const PeopleBySurnameComparer: Comparer<IPerson | undefined> = (a, b) => {
   if (!a) { return -1; }
   if (!b) { return 1; }
-  const aname = a.name.split(" ").reverse()[0]
-  const bname = b.name.split(" ").reverse()[0]
+  const aname = a.name.replace(suffix,"").split(" ").reverse()[0]
+  const bname = b.name.replace(suffix,"").split(" ").reverse()[0]
   return aname === bname ? 0 : aname < bname ? -1 : 1;
 }
 export const UnitMemberComparer : Comparer<IUnitMember> = (a, b) => PeopleBySurnameComparer(a.person, b.person);

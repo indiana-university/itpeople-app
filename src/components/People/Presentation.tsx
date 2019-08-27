@@ -6,7 +6,7 @@
 import * as React from "react";
 import { Col, Row, Panel } from "rivet-react";
 import { CSVLink } from "react-csv";
-import { EntityComparer, IAuthUser } from "../types";
+import { EntityComparer, IAuthUser, PeopleBySurnameComparer } from "../types";
 import { Breadcrumbs, Content, PageTitle } from "../layout";
 import { IState } from "./store";
 import FilterPeopleForm from "./FilterPeopleForm";
@@ -61,7 +61,7 @@ const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions }
               </Row>
 
               {people
-                .sort(EntityComparer)
+                .sort(PeopleBySurnameComparer)
                 .map((r, i) => (
                   <Row key={"people:" + i} className="rvt-p-bottom-md">
                     <div>
