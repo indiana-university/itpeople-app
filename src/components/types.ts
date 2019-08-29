@@ -258,25 +258,8 @@ export interface IPeopleRequest {
   roles: string[],
   classes: string[],
   campuses: string[]
+  areas: string[]
 }
-
-export const JobClassList = [
-  "BizSysAnalysis", 
-  "DataAdminAnalysis", 
-  "DatabaseArchDesign", 
-  "InstructionalTech", 
-  "ItLeadership", 
-  "ItMultiDiscipline", 
-  "ItProjectMgt", 
-  "ItSecurityPrivacy", 
-  "ItUserSupport", 
-  "Networks", 
-  "SoftwareAdminAnalysis", 
-  "SoftwareDevEng", 
-  "SystemDevEng", 
-  "UserExperience", 
-  "WebAdminDevEng"
-]
 
 export const JobClassDisplayNames = {
   "None": "",
@@ -297,18 +280,6 @@ export const JobClassDisplayNames = {
   "WebAdminDevEng": "Web Developer/Engineer",
 }
 
-export const CampusList = [
-  "Bloomington",
-  "Indianapolis",
-  "Columbus",
-  "East",
-  "Fort Wayne",
-  "Kokomo",
-  "Northwest",
-  "South Bend",
-  "Southeast"
-]
-
 export const CampusDisplayNames = {
   "Bloomington": "Bloomington",
   "Indianapolis": "IUPUI (Indianapolis)",
@@ -321,12 +292,18 @@ export const CampusDisplayNames = {
   "Southeast": "Southeast (New Albany)"
 }
 
-export const RoleList = [
-  "Leader",
-  "Sublead",
-  "Member",
-  "Related"
-]
+export const AreaDisplayNames = {
+  "uits": "UITS Units",
+  "edge": "Edge Units"
+}
+
+export const RoleDisplayNames = {
+  "Leader": "Leader",
+  "Sublead": "Sublead",
+  "Member": "Member",
+  "Related": "Related"
+}
+
 
 // Comparers
 export type Comparer<T> = (a:T, b:T) => 0 | 1 | -1;
@@ -335,12 +312,13 @@ export const EntityComparer : Comparer<IEntity | undefined> = (a, b) => {
   if (!b) { return 1; }
   return a.name === b.name ? 0 : a.name < b.name ? -1 : 1;
 }
+const suffix = /( jr| sr| ii| iii| iv)$/i
 export const PeopleBySurnameComparer: Comparer<IPerson | undefined> = (a, b) => {
   if (!a) { return -1; }
   if (!b) { return 1; }
-  const aname = a.name.split(" ").reverse()[0]
-  const bname = b.name.split(" ").reverse()[0]
-  return aname === bname ? 0 : aname < bname ? -1 : 1;
+  const a_surname = a.name.replace(suffix,"").split(" ").pop() || ""
+  const b_surname = b.name.replace(suffix,"").split(" ").pop() || ""
+  return a_surname === b_surname ? 0 : a_surname < b_surname ? -1 : 1;
 }
 export const UnitMemberComparer : Comparer<IUnitMember> = (a, b) => PeopleBySurnameComparer(a.person, b.person);
 export const SupportRelationshipComparer : Comparer<ISupportRelationship> = (a, b) => EntityComparer(a.department, b.department);

@@ -87,7 +87,7 @@
       "campusEmail": "johndoe@pawnee.in.us",
       "campus": "Bloomington",
       "expertise": "html,custom,javascript",
-      "responsibilities": "ItLeadership;BizSysAnalysis;DataAdminAnalysis;DatabaseArchDesign;InstructionalTech;ItProjectMgt;ItSecurityPrivacy;Networks",
+      "responsibilities": "ItLeadership,BizSysAnalysis,DataAdminAnalysis,DatabaseArchDesign,InstructionalTech,ItProjectMgt,ItSecurityPrivacy,Networks",
       "departmentId": 1,
       "department": {
         "id": 1,
