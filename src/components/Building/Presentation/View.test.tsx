@@ -22,6 +22,5 @@ test('displays the name of the building', () => {
     )
 
     expect(getByText(Examples.building.name)).toBeInTheDocument()
-    expect(getByText(Examples.building.code)).toBeInTheDocument()
 })
 
