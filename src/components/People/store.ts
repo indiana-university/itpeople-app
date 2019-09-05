@@ -65,7 +65,8 @@ function* handleFetchPeople(api: IApi, req: IPeopleRequest) {
   const roles = param("role", req.roles)
   const classes = param("class", req.classes)
   const campuses = param("campus", req.campuses)
-  const query = [roles, classes, campuses].filter (x => x != "").join("&")
+  const areas = param("area", req.areas)
+  const query = [roles, classes, campuses, areas].filter (x => x != "").join("&")
   const request = api.get<IPerson[]>(apiEndpoints.people.search(query))
   const action = yield request
     .then(fetchSuccess)

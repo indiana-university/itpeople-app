@@ -20,7 +20,7 @@ const Buildings: React.SFC<IDefaultState<IBuildingSupportRelationship[]>> = prop
               .sort(BuildingSupportRelationshipComparer)
               .map(({ building }, i) => (
                 <li key={i}>
-                  <a href={`/buildings/${building.id}`}>{building.name}</a>
+                  <a href={`/buildings/${building.id}`}>{building.name} ({building.code})</a>
                   {(building.address || building.city) && <br />}<span style={{ fontSize: "smaller" }}>{join([building.address, building.city], ", ")}</span>
                 </li>
             ))}

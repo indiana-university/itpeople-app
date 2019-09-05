@@ -60,7 +60,7 @@ const form: React.SFC<IFormProps> = props => {
                     lookupBuilding("");
                   }}
                 >
-                  {building.name} <span style={{ fontSize: "smaller", fontWeight: "normal" }}>{[building.address, building.city].join(", ")}</span>
+                  {building.name} <span style={{ fontSize: "smaller", fontWeight: "normal" }}>({building.code}) {[building.address, building.city].join(", ")}</span>
                   
                 </Button>
               </div>
@@ -83,7 +83,7 @@ const form: React.SFC<IFormProps> = props => {
             <li key={index}>
               <Row>
                 <Col>
-                  <h4 className="rvt-text-bold">{building.name}</h4>
+                  <h4 className="rvt-text-bold">{building.name} ({building.code})</h4>
                 </Col>
                 <Col style={{ flexGrow: 0, minWidth: 150, textAlign: "right" }}>
                   <Button variant="plain" type="button" title="Remove Building" onClick={() => confirm(`Are you sure you want to remove ${building.name} as a supported building?`) && removeBuilding(relationship)}>
