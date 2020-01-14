@@ -50,12 +50,12 @@ let FilterPeopleForm: React.SFC<IFormProps> | any = ({ filter, handleSubmit }: I
     <form onSubmit={handleSubmit(doHandle)} >
       <h2 className="rvt-ts-23 rvt-text-bold" style={h2_first}>Unit Role</h2>
       <FieldArray name="role" component={renderFieldList("role", RoleDisplayNames)} />
-      <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Responsibility</h2>
-      <FieldArray name="responsibilities" component={renderFieldList("class", filteredJobClasses)} />
       <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Campus</h2>
       <FieldArray name="campuses" component={renderFieldList("campus", CampusDisplayNames)} />
       <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Area</h2>
       <FieldArray name="areas" component={renderFieldList("area", AreaDisplayNames)} />
+      <h2 className="rvt-ts-23 rvt-text-bold" style={h2}>Responsibility</h2>
+      <FieldArray name="responsibilities" component={renderFieldList("class", filteredJobClasses)} />
       <Button type="submit" style={submit}>Apply Filters</Button>
     </form>
   );
