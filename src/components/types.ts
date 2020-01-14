@@ -281,15 +281,15 @@ export const JobClassDisplayNames = {
 }
 
 export const CampusDisplayNames = {
-  "Bloomington": "Bloomington",
-  "Indianapolis": "IUPUI (Indianapolis)",
-  "Columbus": "IUPUC (Columbus)",
-  "East": "East (Richmond)",
-  "Fort Wayne": "Fort Wayne",
-  "Kokomo": "Kokomo",
-  "Northwest": "Northwest (Gary)",
-  "South Bend": "South Bend",
-  "Southeast": "Southeast (New Albany)"
+  "BL": "Bloomington",
+  "IN": "IUPUI (Indianapolis)",
+  "CO": "IUPUC (Columbus)",
+  "EA": "East (Richmond)",
+  "FW": "Fort Wayne",
+  "KO": "Kokomo",
+  "NW": "Northwest (Gary)",
+  "SB": "South Bend",
+  "SE": "Southeast (New Albany)"
 }
 
 export const AreaDisplayNames = {
