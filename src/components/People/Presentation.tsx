@@ -44,7 +44,7 @@ const Presentation: React.SFC<IProps> = ({ people: { data: people, permissions }
         <Col md={7}>
           {people && people.length == 0 &&
             <Panel>
-            <p>No people found matching those filters. You can make yourself easier to find by <a href={`/people  /${user.user_name}`}>keeping your profile up to date.</a></p>
+            <p>No people found matching those filters. You can make yourself easier to find by <a href={`/people/${user.user_name}`}>keeping your profile up to date.</a></p>
             </Panel>
           }
           {people && people.length > 0 && people[0].name !== "default" &&
