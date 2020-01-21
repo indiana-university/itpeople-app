@@ -6,7 +6,10 @@ import { signInRequest } from "./SignIn/store";
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-const clearApplicationData = () => sessionStorage.clear();
+const clearApplicationData = () => {
+  localStorage.clear();
+  sessionStorage.clear();
+}
 
 const getAuthToken = () => sessionStorage.getItem("authToken");
 
