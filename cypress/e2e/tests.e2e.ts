@@ -1,7 +1,10 @@
+const clearSessionStorage = (win: any) =>
+    win.sessionStorage.clear(); 
+
 describe('admin user', () => {
 
     it('creates new unit and deletes it', () => {
-        cy.visit('/')
+        cy.visit('/', { onBeforeLoad: clearSessionStorage })
         cy.getAllByText(/log in/i).last().click()
         cy.getByText(/units/i).click()
         cy.getAllByText(/add new unit/i).first().click()
@@ -16,7 +19,7 @@ describe('admin user', () => {
     })
 
     it('adds unit member & tool -> removes them', () => {
-        cy.visit('/')
+        cy.visit('/', { onBeforeLoad: clearSessionStorage })
         cy.getAllByText(/log in/i).last().click()
         cy.visit('/units/2')
         cy.getByTitle(/edit/i).click()
@@ -45,7 +48,7 @@ describe('admin user', () => {
 describe('standard user', () => {
 
     it('cannot edit or delete a unit', () => {
-        cy.visit('/')
+        cy.visit('/', { onBeforeLoad: clearSessionStorage })
         cy.getAllByText(/log in/i).last().click()
         cy.visit('/units/1')
         cy.queryByTitle(/edit:/i).should("not.be.visible")
@@ -56,7 +59,7 @@ describe('standard user', () => {
 describe('unit leader', () => {
 
     it('can edit unit, members & tools', () => {
-        cy.visit('/')
+        cy.visit('/', { onBeforeLoad: clearSessionStorage })
         cy.getAllByText(/log in/i).last().click()
         cy.visit('/units/4')
         cy.queryByTitle(/delete:/i).should("not.be.visible")
