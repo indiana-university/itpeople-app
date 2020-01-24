@@ -159,13 +159,13 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_FETCH_PROFILE_REQUEST:
       return { ...state, profile: TaskStartReducer(state.profile, act), parent: defaultState() };
     case UnitActionTypes.UNIT_FETCH_PROFILE_SUCCESS:
-      return { ...state, profile: TaskSuccessReducer(state.profile, act) };
+      return { ...state, profile: TaskSuccessReducer(state.profile, act), view: ViewStateType.Viewing };
     case UnitActionTypes.UNIT_FETCH_PROFILE_ERROR:
       return { ...state, profile: TaskErrorReducer(state.profile, act) };
     case UnitActionTypes.UNIT_SAVE_PROFILE_REQUEST:
       return { ...state, profile: TaskStartReducer(state.profile, act) };
     case UnitActionTypes.UNIT_SAVE_PROFILE_SUCCESS:
-      return { ...state, profile: TaskSuccessReducer(state.profile, act) };
+      return { ...state, profile: TaskSuccessReducer(state.profile, act), view: ViewStateType.Viewing };
     case UnitActionTypes.UNIT_SAVE_PROFILE_ERROR:
       return { ...state, profile: TaskErrorReducer(state.profile, act) };
     case UnitActionTypes.UNIT_DELETE_REQUEST:
