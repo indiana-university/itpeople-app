@@ -100,7 +100,7 @@ export function* rootSaga() {
 // Otherwise, return the default initial state.
 const loadState = (): IApplicationState => {
   try {
-    const serializedState = localStorage.getItem("state");
+    const serializedState = sessionStorage.getItem("state");
     if (serializedState) {
     //   console.log("Initializing state from session storage");
       return JSON.parse(serializedState);
@@ -118,7 +118,7 @@ const loadState = (): IApplicationState => {
 const saveState = (state: IApplicationState) => {
   try {
     const serializedState = JSON.stringify(state);
-    localStorage.setItem("state", serializedState);
+    sessionStorage.setItem("state", serializedState);
   } catch (err) {
     // Ignore write errors
   }

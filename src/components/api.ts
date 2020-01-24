@@ -103,7 +103,7 @@ export interface IApiCall {
   <T>(method: string, url: string, path: string, data?: T, headers?: any): Promise<IApiResponse<T>>;
 }
 
-const getAuthToken = () => localStorage.getItem("authToken");
+const getAuthToken = () => sessionStorage.getItem("authToken");
 
 const getPermissions = (headers: Headers): Permission[] =>
   (headers.get("X-User-Permissions") + "")
