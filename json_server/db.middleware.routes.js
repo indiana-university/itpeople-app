@@ -1,5 +1,9 @@
 module.exports = (req, res, next) => {
-
+  if (req.method == "DELETE") {
+    next();
+    res.status(204);
+    return res.end();
+  }
   // GET /people/**
   if (req.method != "GET") {
     return next();
@@ -35,8 +39,8 @@ module.exports = (req, res, next) => {
 
 function getDb() {
   const fs = require("fs");
-  var path = require('path');
-  var jsonPath = path.join(__dirname, '..', 'src', 'db.json');
+  var path = require("path");
+  var jsonPath = path.join(__dirname, "..", "src", "db.json");
   let rawdata = fs.readFileSync(jsonPath);
   return JSON.parse(rawdata);
 }
