@@ -21,7 +21,7 @@ const Profile: React.SFC<IDefaultState<IUnit>> = props => {
           <PageTitle>{profile.name}</PageTitle>
           <Section>
             {profile.description && (
-              <div className="group-describer rvt-m-bottom-md">
+              <div className="group-describer rvt-m-top-sm">
                 <span>{profile.description}</span>
               </div>
             )}
@@ -29,8 +29,7 @@ const Profile: React.SFC<IDefaultState<IUnit>> = props => {
               {profile.email && (
                 <a
                   href={`mailto:${profile.email}`}
-                  className="rvt-button rvt-button--secondary rvt-m-left-sm"
-                  
+                  className="rvt-button rvt-button--secondary rvt-m-left-xs rvt-m-top-md"               
                 >
                   Send an Email
               </a>
@@ -38,7 +37,7 @@ const Profile: React.SFC<IDefaultState<IUnit>> = props => {
               {profile.url && (
                 <a
                   href={profile.url}
-                  className="rvt-button rvt-button--secondary rvt-m-left-sm"
+                  className="rvt-button rvt-button--secondary rvt-m-left-xs rvt-m-top-md"
                 >
                   Visit Website
               </a>
