@@ -116,8 +116,8 @@
       "id": 4,
       "name": "Fourth floor IT",
       "description": "It is creepy up here",
-      "url": "https://map.concept3d.com/?id=951#!m/9510954",
       "email": "user@example.com",      
+      "url": "https://map.concept3d.com/?id=951",
       "parentId": 1
     },
     {
