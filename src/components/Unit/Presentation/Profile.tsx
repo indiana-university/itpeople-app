@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import { Section } from "rivet-react";
+import { Section, Row } from "rivet-react";
 import PageTitle from "../../layout/PageTitle";
 // import { Pencil } from "src/components/icons";
 import { IUnit } from "../../types";
@@ -25,14 +25,25 @@ const Profile: React.SFC<IDefaultState<IUnit>> = props => {
                 <span>{profile.description}</span>
               </div>
             )}
-            {profile.url && (
-              <a
-                href={profile.url}
-                className="rvt-button rvt-button--secondary"
-              >
-                Unit Website
+            <Row>
+              {profile.email && (
+                <a
+                  href={`mailto:${profile.email}`}
+                  className="rvt-button rvt-button--secondary rvt-m-left-sm"
+                  
+                >
+                  Send an Email
               </a>
-            )}
+              )}
+              {profile.url && (
+                <a
+                  href={profile.url}
+                  className="rvt-button rvt-button--secondary rvt-m-left-sm"
+                >
+                  Visit Website
+              </a>
+              )}              
+            </Row>
           </Section>
         </>
       )}
