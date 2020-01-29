@@ -163,7 +163,8 @@
               "id": 1,
               "name": "Parks and Recreation IT",
               "description": "This page is under construction",
-              "url": "http://pawneeindiana.com/information-technology/"
+              "url": "http://pawneeindiana.com/information-technology/",
+              "email": "user@example.com"
             }
           }
         ],
@@ -592,7 +593,8 @@
             "id": 1,
             "name": "Parks and Recreation IT",
             "description": "This page is under construction",
-            "url": "http://pawneeindiana.com/information-technology/"
+            "url": "http://pawneeindiana.com/information-technology/",
+            "email": "user@example.com"
           }
         ],
         "matchingRules": {
@@ -629,7 +631,8 @@
               "id": 1,
               "name": "Parks and Recreation IT",
               "description": "This page is under construction",
-              "url": "http://pawneeindiana.com/information-technology/"
+              "url": "http://pawneeindiana.com/information-technology/",
+              "email": "user@example.com"
             }
           }
         ],
@@ -667,7 +670,8 @@
               "id": 1,
               "name": "Parks and Recreation IT",
               "description": "This page is under construction",
-              "url": "http://pawneeindiana.com/information-technology/"
+              "url": "http://pawneeindiana.com/information-technology/",
+              "email": "user@example.com"
             }
           }
         ],
@@ -701,7 +705,8 @@
             "id": 1,
             "name": "Parks and Recreation IT",
             "description": "This page is under construction",
-            "url": "http://pawneeindiana.com/information-technology/"
+            "url": "http://pawneeindiana.com/information-technology/",
+            "email": "user@example.com"
           }
         ],
         "matchingRules": {
@@ -733,7 +738,8 @@
           "id": 1,
           "name": "Parks and Recreation IT",
           "description": "This page is under construction",
-          "url": "http://pawneeindiana.com/information-technology/"
+          "url": "http://pawneeindiana.com/information-technology/",
+          "email": "user@example.com"
         },
         "matchingRules": {
           "$.body.id": {
@@ -746,6 +752,9 @@
             "match": "type"
           },
           "$.body.url": {
+            "match": "type"
+          },
+          "$.body.email": {
             "match": "type"
           }
         }
@@ -1386,7 +1395,8 @@
             "id": 1,
             "name": "Parks and Recreation IT",
             "description": "This page is under construction",
-            "url": "http://pawneeindiana.com/information-technology/"
+            "url": "http://pawneeindiana.com/information-technology/",
+            "email": "user@example.com"
           }
         ],
         "matchingRules": {
