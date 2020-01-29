@@ -126,6 +126,7 @@ describe('unit profile', () => {
         name: "unit",
         description: "description",
         url: "http://example.com",
+        email: "person@example.com",
         parentId: undefined,
     };
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import * as unit from "../store";
 import { Section, Button } from "rivet-react";
-import { RivetInputField, RivetInput, RivetTextarea, RivetTextareaField, required, url } from "src/components/form";
+import { RivetInputField, RivetInput, RivetTextarea, RivetTextareaField, required, url, email } from "src/components/form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { IUnit } from "src/components/types";
@@ -31,6 +31,9 @@ let UpdateUnitForm: React.SFC<IFormProps> | any = ({close,save,handleSubmit}: IF
         </div>
         <div>
           <RivetInputField name="url" component={RivetInput} label="URL" validate={[url]} />
+        </div>
+        <div>
+          <RivetInputField name="email" component={RivetInput} label="Contact Email" validate={[email]} />
         </div>
       </Section>
       <Button>Save</Button>

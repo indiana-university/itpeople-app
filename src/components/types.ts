@@ -126,11 +126,15 @@ export interface IUrl {
   url: string;
 }
 
+export interface IEmail {
+  email: string;
+}
+
 export interface IDescription {
   description: string;
 }
 
-export interface IUnit extends IEntity, IUrl, IDescription {
+export interface IUnit extends IEntity, IUrl, IEmail, IDescription {
   parentId?: number;
 }
 
