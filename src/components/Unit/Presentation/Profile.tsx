@@ -26,14 +26,6 @@ const Profile: React.SFC<IDefaultState<IUnit>> = props => {
               </div>
             )}
             <Row>
-              {profile.email && (
-                <a
-                  href={`mailto:${profile.email}`}
-                  className="rvt-button rvt-button--secondary rvt-m-left-xs rvt-m-top-md"               
-                >
-                  Send an Email
-              </a>
-              )}
               {profile.url && (
                 <a
                   href={profile.url}
