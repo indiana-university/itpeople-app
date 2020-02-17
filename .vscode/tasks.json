@@ -11,7 +11,7 @@
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "command": "yarn build",
+      "command": "npm run build",
       "isBackground": true,
       "presentation": {
         "reveal": "always"
@@ -28,7 +28,7 @@
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "command": "yarn dev:admin",
+      "command": "npm run dev:admin",
       "isBackground": true,
       "presentation": {
         "reveal": "always"
@@ -45,7 +45,7 @@
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "command": "yarn test",
+      "command": "npm run test",
       "isBackground": true,
       "presentation": {
         "reveal": "always"
@@ -62,7 +62,7 @@
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "command": "yarn json-server",
+      "command": "npm run json-server",
       "isBackground": true,
       "presentation": {
         "reveal": "always"

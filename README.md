@@ -4,7 +4,7 @@
 
 Install dependencies
 ```sh
-yarn
+npm install
 ```
 
 ## Run
@@ -12,25 +12,25 @@ yarn
 Run locally using mock [json-server](https://github.com/typicode/json-server) API endpoints.
 
 ```sh
-yarn dev
+npm run dev
 ```
 
 ### Other run options
 ```sh
-yarn dev:user # permission and authorization rules
-yarn dev:admin # admin permissions
-yarn dev:slow # slow and random API response times
-yarn dev:chaos # random errors (404,403,500, timeouts) to emulate unstable API server
+npm run dev:user # permission and authorization rules
+npm run dev:admin # admin permissions
+npm run dev:slow # slow and random API response times
+npm run dev:chaos # random errors (404,403,500, timeouts) to emulate unstable API server
 ```
 
 ## Test
 
 Run tests
 ```sh
-yarn test
+npm run test
 ```
 
 Run tests whenever changes are made
 ```sh
-yarn tdd
+npm run tdd
 ```
