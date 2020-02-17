@@ -25,7 +25,7 @@ commands:
             - v2-node-modules-{{ checksum "package.json" }}
       - run: 
           name: Install SPA packages
-          command: npm run install
+          command: npm install
       - save_cache:
           paths:
             - node_modules
