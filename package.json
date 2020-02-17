@@ -18,7 +18,7 @@
     "redux-form": "^8.1.0",
     "redux-saga": "^0.16.0",
     "rivet-collapsible": "^0.2.10",
-    "rivet-react": "0.7.1",
+    "rivet-react": "^1.4.0",
     "rivet-switch": "^0.3.1",
     "rivet-uits": "^1.2.1",
     "typesafe-actions": "^2.0.4"
