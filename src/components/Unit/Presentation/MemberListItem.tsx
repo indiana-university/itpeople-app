@@ -11,6 +11,7 @@ export const MemberListItem: React.SFC<IUnitMember & IProps> = ({
   person,
   personId,
   title,
+  percentage,
   showImage
 }) => {
   return (
@@ -39,7 +40,10 @@ export const MemberListItem: React.SFC<IUnitMember & IProps> = ({
           </a>
           {title && (
             <p className="rvt-ts-14 rvt-m-top-remove rvt-m-bottom-remove">
-              {title}
+              {title}                   
+              {percentage && percentage != 100 && 
+                  <span style={{paddingLeft:"0.25rem"}}>({percentage}%)</span>
+              }
             </p>
           )}
         </Col>

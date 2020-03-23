@@ -182,7 +182,6 @@ export interface IUnitMemberRequest {
   role: ItProRole | UitsRole | string;
   permissions: UnitPermissions | string;
   percentage: number;
-  showPercentage?: boolean;
   notes?: string;
 }
 
