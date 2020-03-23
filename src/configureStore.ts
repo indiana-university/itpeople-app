@@ -32,6 +32,7 @@ import * as Unit from "./components/Unit/store";
 import * as Units from "./components/Units/store";
 
 export const initialState: IApplicationState = {
+  router: undefined,
   auth: Auth.initialState,
   building: Building.initialState,
   department: Department.initialState,
@@ -54,7 +55,8 @@ export interface IConnectedReduxProps<A extends Action = AnyAction> {
 // Whenever an action is dispatched, Redux will update each top-level application state property
 // using the reducer with the matching name. It's important that the names match exactly, and that
 // the reducer acts on the corresponding ApplicationState property type.
-export const appReducer = combineReducers<IApplicationState>({
+export const createRootReducer = (history) => combineReducers<IApplicationState>({
+  router: connectRouter(history),
   auth: Auth.reducer,
   building: Building.reducer,
   department: Department.reducer,
@@ -68,15 +70,6 @@ export const appReducer = combineReducers<IApplicationState>({
   unit: Unit.reducer,
   units: Units.reducer
 });
-
-const rootReducer = (state: IApplicationState, action: AnyAction) => {
-  if (action.type === Auth.AuthActionTypes.SIGN_IN_REQUEST 
-    || action.type === Auth.AuthActionTypes.SIGN_OUT) {
-    state = initialState;
-  }
-
-  return appReducer(state, action);
-};
 
 // Here we use `redux-saga` to trigger actions asynchronously. `redux-saga` uses something called a
 // "generator function", which you can read about here:
@@ -133,9 +126,15 @@ export default function configureStore(history: History): Store<IApplicationStat
   // We'll create our store with the combined reducers/sagas, and the initial Redux state that
   // we'll be passing from our entry point.
   const store = createStore(
-    connectRouter(history)(rootReducer),
+    createRootReducer(history),
     loadState(),
-    composeEnhancers(applyMiddleware(routerMiddleware(history), sagaMiddleware, loggerMiddleware))
+    composeEnhancers(
+      applyMiddleware(
+        routerMiddleware(history),
+        sagaMiddleware,
+        loggerMiddleware
+      )
+    )
   );
 
   // Save the state on any changes

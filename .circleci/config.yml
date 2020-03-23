@@ -25,20 +25,20 @@ commands:
             - v2-node-modules-{{ checksum "package.json" }}
       - run: 
           name: Install SPA packages
-          command: yarn install
+          command: npm install
       - save_cache:
           paths:
             - node_modules
           key: v2-node-modules-{{ checksum "package.json" }}
       - run: 
          name: Test SPA app
-         command: yarn test -w 1 --coverage
+         command: npm run test -w 1 --coverage
       - run: 
           name: Configure build parameters
           command: cp .env.<<parameters.environment>> .env.production.local
       - run: 
           name: Build SPA app
-          command: yarn build
+          command: npm run build
       - run:
           name: Copy SPA assets to workspace
           command: cp -a build/. /tmp/workspace/<<parameters.environment>>
@@ -106,9 +106,8 @@ workflows:
             branches:
               ignore: gh-pages
       - cypress/run:
-          start: 'yarn dev:switch'
+          start: 'npm run dev:switch'
           wait-on: 'http://localhost:3000'
-          yarn: true
           store_artifacts: true
 #      - deploy_to_test:
 #          requires: 

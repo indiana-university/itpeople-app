@@ -11,12 +11,12 @@ WORKDIR /usr/src/app
 #   source files. This allows Docker to cache these steps so that subsequent 
 #   builds — one’s in which we only edit source files and don’t install any 
 #   new dependencies — will be faster.
-COPY package.json yarn.lock ./
-RUN yarn install 
+COPY package.json package-lock.json ./
+RUN npm install 
 
 # Copy all sources files to the working dir and compile the app
 COPY . ./
-RUN yarn build
+RUN npm run build
 
 # ************
 # SERVE STAGE
