@@ -68,8 +68,8 @@ const form: React.SFC<IFormProps> = props => {
               onSubmit={(values: IUnitMember) => {
                 const netId = values.person ? values.person.netId : undefined;
                 const personId = values.person ? values.person.id : undefined;
-                const { title, showTitle, role, permissions, percentage, showPercentage, notes } = values;
-                save({ unitId, netId, personId, title, showTitle, role, permissions, percentage, showPercentage, notes });
+                const { title, showTitle, role, permissions, percentage, notes } = values;
+                save({ unitId, netId, personId, title, showTitle, role, permissions, percentage, notes });
                 closeModal();
               }}
             />
@@ -98,7 +98,9 @@ const form: React.SFC<IFormProps> = props => {
               </Col>
             )}
             <Col>
-              <h3 className="rvt-ts-18 rvt-text-bold">{person && person.name}</h3>
+              <h3 className="rvt-ts-18 rvt-text-bold">
+                {person && person.name}
+              </h3>
               {member.title && (
                 <div>
                   {member.showTitle && (
@@ -107,40 +109,39 @@ const form: React.SFC<IFormProps> = props => {
                     </span>
                   )}
                   {member.title}
-                </div>
-              )}
-              {member.percentage && (
-                <div>
-                  {member.showPercentage && (
-                    <span title="Visible on orgchart">
-                      <Eye width={20} />{" "}
+                  {member.percentage && member.percentage != 100 &&
+                    <span style={{ paddingLeft: "0.25rem" }}>
+                      ({member.percentage}%)
                     </span>
-                  )}
-                  {member.percentage}%
+                  }
                 </div>
               )}
             </Col>
             <div style={{ textAlign: "right" }}>
               <Loader {...tools}>
                 {canEditMemberTools() && tools && tools.data && (
-
                   <span style={{ textAlign: "left" }}>
                     <Modal
                       id={`Edit tools permissions: ${member.id}`}
                       buttonText={<Gear />}
                       variant="plain"
-                      title={`Edit tools permissions: ${person ? person.name : "Vacancy"}`}
-                      onOpen={() => { editMemberTools(member, tools.data || []) }}
+                      title={`Edit tools permissions: ${
+                        person ? person.name : "Vacancy"
+                      }`}
+                      onOpen={() => {
+                        editMemberTools(member, tools.data || []);
+                      }}
                     >
                       <ModalBody>
-                        <UpdateMemberTools onSubmit={({ tools }: { tools: ITool[] }) => {
-                          const newToolIds =
-                            tools
+                        <UpdateMemberTools
+                          onSubmit={({ tools }: { tools: ITool[] }) => {
+                            const newToolIds = tools
                               .filter(tool => tool.enabled)
-                              .map(tool => tool.id)
-                          saveMemberTools(member, newToolIds);
-                          closeModal();
-                        }} />
+                              .map(tool => tool.id);
+                            saveMemberTools(member, newToolIds);
+                            closeModal();
+                          }}
+                        />
                       </ModalBody>
                     </Modal>
                   </span>
@@ -158,8 +159,28 @@ const form: React.SFC<IFormProps> = props => {
                   <ModalBody>
                     <UpdateMemberForm
                       onSubmit={(values: IUnitMember) => {
-                        const { id, unitId, personId, title, showTitle, role, permissions, percentage, showPercentage, notes } = values;
-                        save({ id, unitId, personId, title, showTitle, role, permissions, percentage, showPercentage, notes });
+                        const {
+                          id,
+                          unitId,
+                          personId,
+                          title,
+                          showTitle,
+                          role,
+                          permissions,
+                          percentage,
+                          notes
+                        } = values;
+                        save({
+                          id,
+                          unitId,
+                          personId,
+                          title,
+                          showTitle,
+                          role,
+                          permissions,
+                          percentage,
+                          notes
+                        });
                         closeModal();
                       }}
                     />
@@ -167,7 +188,12 @@ const form: React.SFC<IFormProps> = props => {
                 </Modal>
               </span>
 
-              <Button variant="plain" type="button" title="Remove member" onClick={remove}>
+              <Button
+                variant="plain"
+                type="button"
+                title="Remove member"
+                onClick={remove}
+              >
                 <TrashCan />
               </Button>
             </div>
