@@ -31,7 +31,7 @@ stages:
         versionSpec: '12.x'
 
     - script: |
-        npm install
+        npm install --only=prod
         npm run build
       displayName: Build Web App      
     
