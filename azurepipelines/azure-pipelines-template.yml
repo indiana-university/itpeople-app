@@ -1,0 +1,96 @@
+# .NET Core Function App to Windows on Azure
+# Build a .NET Core function app and deploy it to Azure as a Windows function App.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/dotnet-core
+
+parameters:
+- name: VariableGroup
+  type: string
+  default: itpeople-frontend-test
+
+variables:
+  - group: ${{ parameters.VariableGroup }}
+  # Agent VM image name
+  - name: vmImageName
+    value: 'ubuntu-20.04'
+
+stages:
+- stage: Build
+  displayName: Build stage
+
+  jobs:
+  - job: BuildWebApp
+    displayName: Build Web App
+    pool:
+      vmImage: $(vmImageName)
+
+    steps:
+    - task: NodeTool@0
+      displayName: 'Install Node'
+      inputs:
+        versionSpec: '12.x'
+
+    - script: |
+        npm install
+        npm run build
+      displayName: Build Web App      
+    
+    - publish: $(System.DefaultWorkingDirectory)/build
+      displayName: Publish Web App Artifacts
+      artifact: DeploymentPackage
+
+  # - job: TestFunctionApp
+  #   displayName: Test Function App
+  #   pool:
+  #     vmImage: $(vmImageName)
+  #   services:
+  #     integrationTestDb: 'print-integration-test'
+
+  #   steps:
+  #   - task: DotNetCoreCLI@2
+  #     displayName: Unit Test
+  #     inputs:
+  #       command: 'test'
+  #       projects: tests/unit/unit.csproj
+
+  #   - task: DotNetCoreCLI@2
+  #     displayName: Integration Tests
+  #     inputs:
+  #       command: 'test'
+  #       projects: tests/integration.api/integration.api.csproj
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  condition: succeeded()
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    environment: 'development'
+    pool:
+      vmImage: $(vmImageName)
+
+    strategy:
+      runOnce:
+        deploy:
+
+          steps:
+          - task: AzureCLI@2
+            displayName: Publish Web App
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                ##[command]az storage blob upload-batch -s $(Pipeline.Workspace)/DeploymentPackage -d '$web' --account-name $(webAppStorageAccountName) --auth-mode login
+                az storage blob upload-batch -s $(Pipeline.Workspace)/DeploymentPackage -d '$web' --account-name $(webAppStorageAccountName) --auth-mode login
+          - task: AzureCLI@2
+            displayName: Purge Web App CDN
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                ##[command]az cdn endpoint purge --resource-group itpeople-prod --profile-name itpeople-cdn --name $(webAppCdnEndpointName) --content-paths '/*'
+                az cdn endpoint purge --resource-group itpeople-prod --profile-name itpeople-cdn --name $(webAppCdnEndpointName) --content-paths '/*'
