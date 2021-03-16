@@ -34,7 +34,13 @@ stages:
       displayName: Fetch Dependencies     
 
     - script: npm run build
-      displayName: Build Web App      
+      displayName: Build Web App
+      env:        
+        REACT_APP_WEB_URL: $(REACT_APP_WEB_URL)
+        REACT_APP_API_URL: $(REACT_APP_API_URL)
+        REACT_APP_OAUTH2_AUTH_URL: $(REACT_APP_OAUTH2_AUTH_URL)
+        REACT_APP_OAUTH2_CLIENT_ID: $(REACT_APP_OAUTH2_CLIENT_ID)
+        
 
     - publish: $(System.DefaultWorkingDirectory)/build
       displayName: Publish Web App Artifacts
