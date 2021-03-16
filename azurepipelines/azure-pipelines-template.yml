@@ -99,5 +99,5 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
-                ##[command]az cdn endpoint purge --resource-group itpeople-prod --profile-name itpeople-cdn --name $(webAppCdnEndpointName) --content-paths '/*'
-                az cdn endpoint purge --resource-group itpeople-prod --profile-name itpeople-cdn --name $(webAppCdnEndpointName) --content-paths '/*'
+                ##[command]az cdn endpoint purge --resource-group itpeople-test --profile-name itpeople-akamai-cdn --name $(webAppCdnEndpointName) --content-paths '/*'
+                az cdn endpoint purge --resource-group itpeople-test --profile-name itpeople-akamai-cdn --name $(webAppCdnEndpointName) --content-paths '/*'
