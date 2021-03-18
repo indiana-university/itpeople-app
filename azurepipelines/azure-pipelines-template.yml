@@ -31,8 +31,11 @@ stages:
         versionSpec: '12.x'
 
     - script: npm install
-      displayName: Fetch Dependencies     
+      displayName: Fetch Dependencies
 
+    - script: npm run test
+      displayName: 'Run Tests'
+    
     - script: npm run build
       displayName: Build Web App
       env:        
@@ -45,26 +48,7 @@ stages:
     - publish: $(System.DefaultWorkingDirectory)/build
       displayName: Publish Web App Artifacts
       artifact: DeploymentPackage
-
-  # - job: TestFunctionApp
-  #   displayName: Test Function App
-  #   pool:
-  #     vmImage: $(vmImageName)
-  #   services:
-  #     integrationTestDb: 'print-integration-test'
-
-  #   steps:
-  #   - task: DotNetCoreCLI@2
-  #     displayName: Unit Test
-  #     inputs:
-  #       command: 'test'
-  #       projects: tests/unit/unit.csproj
-
-  #   - task: DotNetCoreCLI@2
-  #     displayName: Integration Tests
-  #     inputs:
-  #       command: 'test'
-  #       projects: tests/integration.api/integration.api.csproj
+  
 
 - stage: Deploy
   displayName: Deploy stage
