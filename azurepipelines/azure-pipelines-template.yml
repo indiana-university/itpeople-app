@@ -20,7 +20,7 @@ stages:
 
   jobs:
   - job: BuildWebApp
-    displayName: Build Web App
+    displayName: Web App
     pool:
       vmImage: $(vmImageName)
 
@@ -43,7 +43,6 @@ stages:
         REACT_APP_API_URL: $(reactAppApiUrl)
         REACT_APP_OAUTH2_AUTH_URL: $(reactAppOauth2AuthUrl)
         REACT_APP_OAUTH2_CLIENT_ID: $(reactAppOauth2ClientId)
-        
 
     - publish: $(System.DefaultWorkingDirectory)/build
       displayName: Publish Web App Artifacts
@@ -57,7 +56,7 @@ stages:
 
   jobs:
   - deployment: Deploy
-    displayName: Deploy
+    displayName: Web App
     environment: 'development'
     pool:
       vmImage: $(vmImageName)
@@ -68,7 +67,7 @@ stages:
 
           steps:
           - task: AzureCLI@2
-            displayName: Publish Web App
+            displayName: Publish to Azure Storage
             inputs:
               azureSubscription: '$(azureSubscription)'
               scriptType: bash
@@ -77,7 +76,7 @@ stages:
                 ##[command]az storage blob upload-batch -s $(Pipeline.Workspace)/DeploymentPackage -d '$web' --account-name $(webAppStorageAccountName) --auth-mode login
                 az storage blob upload-batch -s $(Pipeline.Workspace)/DeploymentPackage -d '$web' --account-name $(webAppStorageAccountName) --auth-mode login
           - task: AzureCLI@2
-            displayName: Purge Web App CDN
+            displayName: Purge Azure CDN
             inputs:
               azureSubscription: '$(azureSubscription)'
               scriptType: bash
