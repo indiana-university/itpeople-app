@@ -15,6 +15,7 @@ import * as Units from "../components/Units/store";
 
 // The top-level state object
 export interface IApplicationState {
+  router: any;
   auth: Auth.IState;
   lookup: ILookupState;
   profile: Profile.IState;
@@ -181,7 +182,6 @@ export interface IUnitMemberRequest {
   role: ItProRole | UitsRole | string;
   permissions: UnitPermissions | string;
   percentage: number;
-  showPercentage?: boolean;
   notes?: string;
 }
 

@@ -13,7 +13,8 @@ export const url = (str: string) =>
     (!str || urlregex.test(str.trim())) ? undefined : "Please enter a valid URL (ex: https://domain.iu.edu).";
 export const email = (str: string) =>
     (!str || emailregex.test(str.trim())) ? undefined : "Please enter a valid email address (ex: person@iu.edu).";
-
+export const percentage = (pct?: number) =>
+    (!pct || (pct >= 1 && pct <= 100)) ? undefined : "Percentage is optional and defaults to 100%. If specified, values must be 1-100."
 
 // Helpers
 
