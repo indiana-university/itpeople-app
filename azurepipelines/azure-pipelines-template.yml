@@ -82,5 +82,5 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
-                ##[command]az cdn endpoint purge --resource-group itpeople-test --profile-name itpeople-ms-cdn --name $(webAppCdnEndpointName) --content-paths '/*' --no-wait
-                az cdn endpoint purge --resource-group itpeople-test --profile-name itpeople-ms-cdn --name $(webAppCdnEndpointName) --content-paths '/*' --no-wait
+                ##[command]az cdn endpoint purge --resource-group itpeople-prod --profile-name itpeople-ms-cdn --name $(webAppCdnEndpointName) --content-paths '/*' --no-wait
+                az cdn endpoint purge --resource-group itpeople-prod --profile-name itpeople-ms-cdn --name $(webAppCdnEndpointName) --content-paths '/*' --no-wait
