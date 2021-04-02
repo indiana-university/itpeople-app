@@ -1,0 +1,10 @@
+trigger:
+- develop
+- feature/*
+- release/*
+- hotfix/*
+
+extends:
+  template: azure-pipelines-template.yml
+  parameters:
+    VariableGroup: itpeople-frontend-test
