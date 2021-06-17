@@ -16,20 +16,19 @@ const getAuthToken = () => sessionStorage.getItem("authToken");
 const setAuthToken = (token: string) =>
   sessionStorage.setItem("authToken", token);
 
-const setPostAuthDestination = () => sessionStorage.setItem("postAuthDestination", window.location.href);
+const setPostAuthDestination = () => sessionStorage.setItem("postAuthDestination", window.location.pathname + window.location.search);
 
 const getPostAuthDestination = () => sessionStorage.getItem("postAuthDestination");
 
-const redirectToAuthDestination = () => {
-  
-  console.log("Getting postAuthDestination");
+const redirectToAuthDestination = () => {  
   var storageValue = sessionStorage.getItem("postAuthDestination");
-  if(storageValue != null){
-    console.log("Got: " + storageValue);
-    window.location.assign(storageValue);
+  // If there is no custom storageValue default to the /units page.
+  if(storageValue == null || storageValue == "/"){
+    window.location.assign("/units");
     return;
   }
-  window.location.assign("/units");
+  
+  window.location.assign(storageValue);
 }
 
 const redirectToLogin = () =>
