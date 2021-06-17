@@ -16,6 +16,21 @@ const getAuthToken = () => sessionStorage.getItem("authToken");
 const setAuthToken = (token: string) =>
   sessionStorage.setItem("authToken", token);
 
+const setPostAuthDestination = () => sessionStorage.setItem("postAuthDestination", window.location.href);
+
+const getPostAuthDestination = () => sessionStorage.getItem("postAuthDestination");
+
+const redirectToAuthDestination = () => {
+  
+  console.log("Getting postAuthDestination");
+  var storageValue = sessionStorage.getItem("postAuthDestination");
+  if(storageValue != null){
+    console.log("Got: " + storageValue);
+    window.location.assign(storageValue);
+    return;
+  }
+  window.location.assign("/units");
+}
 
 const redirectToLogin = () =>
   window.location.assign(
@@ -74,6 +89,9 @@ export {
   clearApplicationData,
   getAuthToken,
   setAuthToken,
+  setPostAuthDestination,
+  getPostAuthDestination,
+  redirectToAuthDestination,
   redirectToLogin,
   signinIfUnauthorized
 };
