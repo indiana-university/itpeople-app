@@ -20,7 +20,7 @@ const setPostAuthDestination = () => sessionStorage.setItem("postAuthDestination
 
 const getPostAuthDestination = () => sessionStorage.getItem("postAuthDestination");
 
-const redirectToAuthDestination = () => {  
+const redirectToPostAuthDestination = () => {  
   var storageValue = sessionStorage.getItem("postAuthDestination");
   // If there is no custom storageValue default to the /units page.
   if(storageValue == null || storageValue == "/"){
@@ -90,7 +90,7 @@ export {
   setAuthToken,
   setPostAuthDestination,
   getPostAuthDestination,
-  redirectToAuthDestination,
+  redirectToPostAuthDestination,
   redirectToLogin,
   signinIfUnauthorized
 };
