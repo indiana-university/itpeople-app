@@ -16,6 +16,20 @@ const getAuthToken = () => sessionStorage.getItem("authToken");
 const setAuthToken = (token: string) =>
   sessionStorage.setItem("authToken", token);
 
+const setPostAuthDestination = () => sessionStorage.setItem("postAuthDestination", window.location.pathname + window.location.search);
+
+const getPostAuthDestination = () => sessionStorage.getItem("postAuthDestination");
+
+const redirectToPostAuthDestination = () => {  
+  var storageValue = sessionStorage.getItem("postAuthDestination");
+  // If there is no custom storageValue default to the /units page.
+  if(storageValue == null || storageValue == "/"){
+    window.location.assign("/units");
+    return;
+  }
+  
+  window.location.assign(storageValue);
+}
 
 const redirectToLogin = () =>
   window.location.assign(
@@ -74,6 +88,9 @@ export {
   clearApplicationData,
   getAuthToken,
   setAuthToken,
+  setPostAuthDestination,
+  getPostAuthDestination,
+  redirectToPostAuthDestination,
   redirectToLogin,
   signinIfUnauthorized
 };
