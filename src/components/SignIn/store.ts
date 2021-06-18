@@ -32,7 +32,7 @@ const signOutRequest = () => action(AuthActionTypes.SIGN_OUT);
 import * as JWT from "jwt-decode";
 import { push } from "react-router-redux";
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
-import { redirectToLogin, setAuthToken, clearApplicationData } from "../effects";
+import { redirectToLogin, setAuthToken, setPostAuthDestination, redirectToPostAuthDestination, clearApplicationData } from "../effects";
 
 //#region REDUCERS
 import { Reducer, AnyAction } from 'redux'
@@ -71,6 +71,7 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
 
 function* handleSignIn(){
   yield call(clearApplicationData)
+  yield call(setPostAuthDestination)
   yield call(redirectToLogin)
 }
 
@@ -82,7 +83,7 @@ const handlePostSignInResponse = (resp: IApiResponse<IAuthResult>) => {
     return [
       call(setAuthToken, authUser.access_token),
       put(postSignInSuccess(JWT<IAuthUser>(authUser.access_token))),
-      put(push(`/units`))
+      call(redirectToPostAuthDestination)
     ];
   }
 }

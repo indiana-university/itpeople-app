@@ -1,12 +1,11 @@
 const clearSessionStorage = (win: any) =>
-    win.sessionStorage.clear(); 
-
-describe('admin user', () => {
-
+    win.sessionStorage.clear();
+    
+    describe('admin user', () => {
     it('creates new unit and deletes it', () => {
         cy.visit('/', { onBeforeLoad: clearSessionStorage })
         cy.getAllByText(/log in/i).last().click()
-        cy.getByText(/units/i).click()
+        cy.get('header.rvt-header a[href="/units"]').first().click()
         cy.getAllByText(/add new unit/i).first().click()
         cy.getByLabelText(/name/i).type('Test unit')
         cy.getByLabelText(/description/i).type('Test desc')
@@ -17,7 +16,7 @@ describe('admin user', () => {
         cy.getByText(/parks and recreation it/i).should("exist") // units page reloaded
         cy.get('@testUnit').should('not.be.visible')
     })
-
+    
     it('adds unit member & tool -> removes them', () => {
         cy.visit('/', { onBeforeLoad: clearSessionStorage })
         cy.getAllByText(/log in/i).last().click()
@@ -45,8 +44,9 @@ describe('admin user', () => {
         cy.queryByText(/sebastian/i).should("not.exist")
     })
 })
-describe('standard user', () => {
 
+describe('standard user', () => {
+    
     it('cannot edit or delete a unit', () => {
         cy.visit('/', { onBeforeLoad: clearSessionStorage })
         cy.getAllByText(/log in/i).last().click()
