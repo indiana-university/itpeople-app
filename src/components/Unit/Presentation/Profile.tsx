@@ -33,7 +33,15 @@ const Profile: React.SFC<IDefaultState<IUnit>> = props => {
                 >
                   Visit Website
               </a>
-              )}              
+            )}   
+            {profile.email && (
+                <a
+                    href={"mailto:" + profile.email}
+                    className="rvt-button rvt-button--secondary rvt-m-left-xs rvt-m-top-md"
+                >
+                    Contact
+                </a>
+            )}
             </Row>
           </Section>
         </>
