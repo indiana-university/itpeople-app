@@ -2,7 +2,8 @@ const clearSessionStorage = (win: any) =>
     win.sessionStorage.clear();
     
     describe('admin user', () => {
-    it('creates new unit and deletes it', () => {
+        it('creates new unit and deletes it', () => {
+        cy.viewport(1280, 800)
         cy.visit('/', { onBeforeLoad: clearSessionStorage })
         cy.getAllByText(/log in/i).last().click()
         cy.get('header.rvt-header a[href="/units"]').first().click()
