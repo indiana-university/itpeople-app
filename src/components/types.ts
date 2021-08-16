@@ -211,11 +211,15 @@ export interface ISupportRelationshipRequest {
   id?: number;
   unitId: number;
   departmentId: number;
+  supportTypeId?: number;
 }
+
+export interface ISupportType extends IEntity {}
 
 export interface ISupportRelationship extends ISupportRelationshipRequest {
   unit: IUnit;
   department: IDepartment;
+  supportType?: ISupportType;
 }
 
 export interface IBuildingSupportRelationshipRequest {
