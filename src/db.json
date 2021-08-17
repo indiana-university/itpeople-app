@@ -152,6 +152,20 @@
       "description": "Short description of Department 2 or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
     }
   ],
+  "supportTypes": [
+    {
+      "id": 1,
+      "name": "Full Service"
+    },
+    {
+      "id": 2,
+      "name": "Desktop/Endpoint"
+    },
+    {
+      "id": 3,
+      "name": "Web/app Infrastructure"
+    }
+  ],
   "buildings": [
     {
       "id": 1,
@@ -249,17 +263,20 @@
     {
       "id": 1,
       "unitId": 1,
-      "departmentId": 1
+      "departmentId": 1,
+      "supportTypeId": 1
     },
     {
       "id": 2,
       "unitId": 1,
-      "departmentId": 2
+      "departmentId": 2,
+      "supportTypeId": 2
     },
     {
       "departmentId": 3,
       "unitId": 1,
-      "id": 3
+      "id": 3,
+      "supportTypeId": 3
     }
   ],
   "buildingRelationships": [
