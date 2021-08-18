@@ -3,7 +3,7 @@ import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, cha
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
 import { saveMemberRequest, deleteMemberRequest, saveMemberTools } from "../store";
-import { UitsRole, IUnitMember, IUnitMemberRequest, IApiState, Permissions, ITool, UnitMemberComparer, membersInRole } from "../../types";
+import { UitsRole, IUnitMember, IUnitMemberRequest, IApiState, Permissions, ITool, UnitMemberComparer, membersInRole, UnitPermissions } from "../../types";
 import { connect } from "react-redux";
 import { AddUser, Pencil, TrashCan, Eye, Gear } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
@@ -37,7 +37,7 @@ interface IDispatchProps {
 
 const form: React.SFC<IFormProps> = props => {
   const { closeModal, clearCurrent, editMember, addMember, removeMember, save, editMemberTools, saveMemberTools, unitId, tools } = props;
-  let canEditMemberTools = () => Permissions.canPut(tools.permissions);
+  let canEditMemberTools = () => Permissions.canPut(tools.permissions) || UnitPermissions.ManageTools;
   const renderMembers = ({ fields, input }: any) => {
     let members = fields.map(function (field: any, index: number) {
       let member = fields.get(index) as IUnitMember;

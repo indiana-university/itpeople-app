@@ -11,7 +11,7 @@ import Profile from "./Profile";
 import Members from "./Members";
 import Parent from "./Parent";
 import Children from "./Children";
-import { IDefaultState, Permissions, IApiState, IUnit } from "../../types";
+import { IDefaultState, Permissions, IApiState, IUnit, UnitPermissions } from "../../types";
 import Departments from "./Departments";
 import Buildings from "./Buildings";
 import { Pencil, TrashCan } from "src/components/icons";
@@ -44,7 +44,7 @@ const Presentation: React.SFC<IState & IProps> = props => {
               <TrashCan />
             </Button>
           )}
-          {profile && Permissions.canPut(profile.permissions) && (
+          {profile && (Permissions.canPut(profile.permissions) || UnitPermissions.ManageTools) && (
             <Button onClick={edit} title={`Edit: ${name}`}>
               <Pencil />
             </Button>
