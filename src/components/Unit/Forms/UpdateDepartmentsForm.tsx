@@ -28,9 +28,17 @@ interface IProps {
 
 const form: React.SFC<IFormProps> = props => {
   const { addDepartment, clearCurrent, removeDepartment, departments, supportTypes, closeModal, filtered, reset, lookupDepartment, unitId } = props;
+  let selectedDepartmentId = 0;
+  let selectedSupportTypeId = 0;
   const handleChange = (e: any) => {
     const q = e.target.value;
     lookupDepartment(q);
+  };
+  const updateSupportType= (e: any) => {
+    selectedSupportTypeId = e.target.value;
+  };
+  const updateDepartmentType= (department) => {
+    selectedDepartmentId = department.id;
   };
   const addDepartmentForm = (
     <form>
@@ -54,10 +62,7 @@ const form: React.SFC<IFormProps> = props => {
                   onClick={e => {
                     e.preventDefault();
                     e.stopPropagation();
-                    addDepartment({ departmentId: department.id, unitId: unitId });
-                    closeModal();
-                    reset();
-                    lookupDepartment("");
+                    updateDepartmentType(department);
                   }}
                 >
                   {department && department.name}
@@ -68,7 +73,7 @@ const form: React.SFC<IFormProps> = props => {
         </div>
       )}
       <div>
-        <RivetSelectField name="supportType" component={RivetSelect} label="Support Type">
+        <RivetSelectField name="supportType" component={RivetSelect} label="Support Type" onChange={updateSupportType}>
           <option value="">None</option>
           {supportTypes.map((supportType, i) =>{
               return (
@@ -82,7 +87,7 @@ const form: React.SFC<IFormProps> = props => {
           onClick={e => {
             e.preventDefault();
             e.stopPropagation();
-            // TODO submit form
+            addDepartment({departmentId: selectedDepartmentId, supportTypeId: selectedSupportTypeId, unitId: unitId})
             closeModal();
             reset();
             lookupDepartment("");
