@@ -2,8 +2,8 @@ import * as React from "react";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import { connect } from "react-redux";
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
-import { RivetInputField, RivetInput } from "../../form";
-import { IApplicationState, IDepartment, ISupportRelationship } from "../../types";
+import { RivetInputField, RivetInput, RivetSelectField, RivetSelect } from "../../form";
+import { IApplicationState, IDepartment, ISupportRelationship, ISupportType } from "../../types";
 import { clearCurrent } from "../../lookup";
 import { Dispatch } from "redux";
 import { lookupDepartment } from "..";
@@ -22,11 +22,12 @@ interface IDispatchProps {
 interface IProps {
   filtered: IDepartment[];
   departments: ISupportRelationship[];
+  supportTypes: ISupportType[];
   unitId: number;
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const { addDepartment, clearCurrent, removeDepartment, departments, closeModal, filtered, reset, lookupDepartment, unitId } = props;
+  const { addDepartment, clearCurrent, removeDepartment, departments, supportTypes, closeModal, filtered, reset, lookupDepartment, unitId } = props;
   const handleChange = (e: any) => {
     const q = e.target.value;
     lookupDepartment(q);
@@ -66,6 +67,29 @@ const form: React.SFC<IFormProps> = props => {
           })}
         </div>
       )}
+      <div>
+        <RivetSelectField name="supportType" component={RivetSelect} label="Support Type">
+          <option value="">None</option>
+          {supportTypes.map((supportType, i) =>{
+              return (
+              <option key={i} value={supportType.id}>{supportType.name}</option>
+            );
+          })}
+        </RivetSelectField>
+        <br/>
+        <Button
+          type="button"
+          onClick={e => {
+            e.preventDefault();
+            e.stopPropagation();
+            // TODO submit form
+            closeModal();
+            reset();
+            lookupDepartment("");
+          }}
+        >Add Support Relationship
+        </Button>
+      </div>
     </form>
   );
 
@@ -89,6 +113,13 @@ const form: React.SFC<IFormProps> = props => {
                   </Button>
                 </Col>
               </Row>
+              {relationship.supportType && (
+                <Row>
+                  <Col>
+                    <div style={{ fontSize: "smaller" }}>({relationship.supportType?.name})</div>
+                  </Col>
+                </Row>
+              )}
               {department.description && (
                 <Row>
                   <Col>{department.description}</Col>

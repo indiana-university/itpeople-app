@@ -25,7 +25,7 @@ export interface IProps extends unit.IState {
   deleteUnit: typeof unit.deleteUnit
 }
 
-export const Edit: React.SFC<IProps> = ({ profile, members, parent, unitChildren, departments, buildings, cancel, deleteUnit, id }) => {
+export const Edit: React.SFC<IProps> = ({ profile, members, parent, unitChildren, departments, supportTypes, buildings, cancel, deleteUnit, id }) => {
   const pageName = profile && profile.data ? profile.data.name : "...";
   const handleDelete = () => { 
     if (profile && profile.data && confirm(`Are you sure you want to delete ${profile.data.name}? This can't be undone.`)) {
@@ -80,7 +80,9 @@ export const Edit: React.SFC<IProps> = ({ profile, members, parent, unitChildren
               <Collapse title="Supported Departments" variant="panel" TitleComponent="h3" defaultClosed={true}>
                 <p>Some units provide support for departments. If this unit supports other departments, add them here.</p>
                 <Loader {...departments}>
-                  <UpdateDepartmentsForm unitId={id} initialValues={{ ...departments.data, unitId: id }} departments={departments.data} />
+                  <Loader {...supportTypes}>
+                    <UpdateDepartmentsForm unitId={id} initialValues={{ ...departments.data, unitId: id }} departments={departments.data} supportTypes={supportTypes.data} /> 
+                </Loader>
                 </Loader>
               </Collapse>
               </div>
