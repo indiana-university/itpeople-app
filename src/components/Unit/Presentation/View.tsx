@@ -29,7 +29,7 @@ const hasData = (result: IApiState<any, any>) => {
 const Presentation: React.SFC<IState & IProps> = props => {
   const { edit, deleteUnit, profile, members, parent, unitChildren, departments, buildings } = props;
   const name = profile.data ? profile.data.name : "...";
-  let memberPermissions = members.data?.map(m => m.permissions);
+  let memberPermissions = members.data?.map(m => m.permissions === "ManageTools");
   const handleDelete = () => {
     if (profile && profile.data && confirm(`Are you sure you want to delete ${profile.data.name}? This can't be undone.`)) {
       deleteUnit(profile.data);
@@ -45,7 +45,7 @@ const Presentation: React.SFC<IState & IProps> = props => {
               <TrashCan />
             </Button>
           )}
-          {profile && (Permissions.canPut(profile.permissions) || memberPermissions?.includes("ManageTools")) && (
+          {profile && (Permissions.canPut(profile.permissions) || memberPermissions) && (
             <Button onClick={edit} title={`Edit: ${name}`}>
               <Pencil />
             </Button>
