@@ -11,7 +11,7 @@ import { Modal, closeModal } from "../../layout/Modal";
 import { TrashCan } from "../../icons";
 import { deleteUnitDepartment, saveUnitDepartment } from "../store";
 
-interface IFormProps extends InjectedFormProps<any>, IDispatchProps, IProps {}
+interface IFormProps extends InjectedFormProps<any>, IDispatchProps, IProps, ISupportRelationship {}
 interface IDispatchProps {
   clearCurrent: typeof clearCurrent;
   closeModal: typeof closeModal;
@@ -30,75 +30,91 @@ interface IProps {
 }
 
 const form: React.SFC<IFormProps> = props => {
-  const { addSupportRelationship, clearCurrent, removeDepartment, departments, supportTypes, closeModal, filtered, reset, lookupDepartment, unitId, setDepartment, supportRelationshipRequest } = props;
+  const { addSupportRelationship, clearCurrent, removeDepartment, departments, supportTypes, closeModal, filtered, reset, lookupDepartment, unitId, setDepartment, supportRelationshipRequest, department} = props;
   const handleChange = (e: any) => {
     const q = e.target.value;
     lookupDepartment(q);
   };
-  const addDepartmentForm = (
-    <form>
-      {console.log("drawing")}
-      <div>
-        <RivetInputField
-          name="departmentName"
-          component={RivetInput}
-          label="Department"
-          onChange={handleChange}
-          onLoad={handleChange}
-        />
-      </div>
-      <Field name="unitId" component="input" type="hidden" value={unitId}/>
-      <Field name="departmentId" component="input" type="hidden" />
-      {filtered && filtered.length > 0 && (
-        <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
-          {filtered.map((department, i) => {
-            return (
-              <div key={i}>
+  const hasDepartment = !!department.id;
+  return (
+    <>
+      <Modal id="add department to unit" title="+ add department" buttonText="+ add department" variant="plain" onOpen={clearCurrent}>
+        <ModalBody>
+          {!hasDepartment && (
+            <div>
+              <div>
+                <RivetInputField
+                  name="searchDepartment"
+                  component={RivetInput}
+                  label="Search departments"
+                  onChange={handleChange}
+                  onLoad={handleChange}
+                />
+              </div>
+              <Field name="unitId" component="input" type="hidden" value={unitId}/>
+              <Field name="departmentId" component="input" type="hidden" />
+              {filtered && filtered.length > 0 && (
+                <div className="rvt-dropdown__menu" style={{ position: "relative", padding: 0 }}>
+                  {filtered.map((department, i) => {
+                    return (
+                      <div key={i}>
+                        <Button
+                          type="button"
+                          onClick={e => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            lookupDepartment("");
+                            setDepartment(department);
+                          }}
+                        >
+                          {department && department.name}
+                        </Button>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+          {hasDepartment && (
+            <form>
+              <div>
+                <RivetInputField
+                  name="departmentName"
+                  component={RivetInput}
+                  label="Department"
+                  value={department.name}
+                  disabled={true}
+                />
+              </div>
+              <div>
+                <RivetSelectField name="supportTypeId" component={RivetSelect} label="Support Type">
+                  <option value="">None</option>
+                  {supportTypes.map((supportType, i) =>{
+                      return (
+                      <option key={i} value={supportType.id}>{supportType.name}</option>
+                    );
+                  })}
+                </RivetSelectField>
+                <br/>
                 <Button
                   type="button"
                   onClick={e => {
                     e.preventDefault();
                     e.stopPropagation();
-                    setDepartment(department);
+                    addSupportRelationship(supportRelationshipRequest)
+                    closeModal();
+                    reset();
                   }}
-                >
-                  {department && department.name}
+                >Add Support Relationship
+                </Button>
+                <Button type="button" variant="plain" onClick={reset}>
+                  Reset
                 </Button>
               </div>
-            );
-          })}
-        </div>
-      )}
-      <div>
-        <RivetSelectField name="supportTypeId" component={RivetSelect} label="Support Type">
-          <option value="">None</option>
-          {supportTypes.map((supportType, i) =>{
-              return (
-              <option key={i} value={supportType.id}>{supportType.name}</option>
-            );
-          })}
-        </RivetSelectField>
-        <br/>
-        <Button
-          type="button"
-          onClick={e => {
-            e.preventDefault();
-            e.stopPropagation();
-            addSupportRelationship(supportRelationshipRequest)
-            closeModal();
-            reset();
-            lookupDepartment("");
-          }}
-        >Add Support Relationship
-        </Button>
-      </div>
-    </form>
-  );
-
-  return (
-    <>
-      <Modal id="add department to unit" title="+ add department" buttonText="+ add department" variant="plain" onOpen={clearCurrent}>
-        <ModalBody>{addDepartmentForm}</ModalBody>
+            </form>
+          )}
+        </ModalBody>
       </Modal>
       <List variant="plain">
         {departments.map((relationship, index) => {
@@ -143,23 +159,25 @@ const selector = formValueSelector("updateUnitDepartments"); // <-- same as form
 UpdateDepartmentsForm = connect(
   (state: IApplicationState) => {
     const filtered = state.lookup.current;
+    const department = {
+      id: selector(state, "departmentId"),
+      name:selector(state, "departmentName"),
+    }
     const supportRelationshipRequest = {
       unitId: selector(state, "unitId"),
       departmentId: selector(state, "departmentId"),
       supportTypeId: selector(state, "supportTypeId")
     }
-    return { filtered, supportRelationshipRequest };
+    return { filtered, supportRelationshipRequest, department};
   },
   (dispatch: Dispatch): IDispatchProps => {
     return {
       lookupDepartment: (q: string) => {
-        dispatch(change("updateUnitDepartments", "departmentId", 0));
         return dispatch(lookupDepartment(q));
       },
       setDepartment: (department: IDepartment) => {
         dispatch(change("updateUnitDepartments", "departmentId", department.id));
         dispatch(change("updateUnitDepartments", "departmentName", department.name));
-        dispatch(lookupDepartment(""));
       },
       clearCurrent: () => dispatch(clearCurrent()),
       closeModal: () => dispatch(closeModal()),
