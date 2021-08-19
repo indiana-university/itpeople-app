@@ -33,8 +33,8 @@ stages:
     - script: npm install
       displayName: Fetch Dependencies
 
-    # - script: npm run ci
-    #   displayName: 'Run Tests'
+    - script: npm run ci
+      displayName: 'Run Tests'
     
     - script: npm run build
       displayName: Build Web App
