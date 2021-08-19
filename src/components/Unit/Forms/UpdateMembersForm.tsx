@@ -3,7 +3,7 @@ import { reduxForm, InjectedFormProps, Field, formValueSelector, FieldArray, cha
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
 import { Modal, closeModal } from "../../layout/Modal";
 import { saveMemberRequest, deleteMemberRequest, saveMemberTools } from "../store";
-import { UitsRole, IUnitMember, IUnitMemberRequest, IApiState, Permissions, ITool, UnitMemberComparer, membersInRole, UnitPermissions } from "../../types";
+import { UitsRole, IUnitMember, IUnitMemberRequest, IApiState, Permissions, ITool, UnitMemberComparer, membersInRole } from "../../types";
 import { connect } from "react-redux";
 import { AddUser, Pencil, TrashCan, Eye, Gear } from "src/components/icons";
 import { IApplicationState } from "src/components/types";
@@ -37,12 +37,13 @@ interface IDispatchProps {
 
 const form: React.SFC<IFormProps> = props => {
   const { closeModal, clearCurrent, editMember, addMember, removeMember, save, editMemberTools, saveMemberTools, unitId, tools } = props;
-  let canEditMemberTools = () => Permissions.canPut(tools.permissions) || UnitPermissions.ManageTools;
+  let canEditMemberTools = () => Permissions.canPut(tools.permissions);
   const renderMembers = ({ fields, input }: any) => {
     let members = fields.map(function (field: any, index: number) {
       let member = fields.get(index) as IUnitMember;
       return { ...member, index };
-    }).sort(UnitMemberComparer) as IUnitMember[];
+    }).sort(UnitMemberComparer) as IUnitMember[];    
+    let memberPermissions = members.map(p => p.permissions);    
     let leaders = membersInRole(members, UitsRole.Leader);
     let subLeads = membersInRole(members, UitsRole.Sublead);
     let team = membersInRole(members, UitsRole.Member);
@@ -119,7 +120,7 @@ const form: React.SFC<IFormProps> = props => {
             </Col>
             <div style={{ textAlign: "right" }}>
               <Loader {...tools}>
-                {canEditMemberTools() && tools && tools.data && (
+                {canEditMemberTools() || memberPermissions?.includes("ManageTools") && tools && tools.data && (
                   <span style={{ textAlign: "left" }}>
                     <Modal
                       id={`Edit tools permissions: ${member.id}`}
