@@ -43,7 +43,7 @@ const form: React.SFC<IFormProps> = props => {
       let member = fields.get(index) as IUnitMember;
       return { ...member, index };
     }).sort(UnitMemberComparer) as IUnitMember[];    
-    let memberPermissions = members.map(m => m.permissions === "ManageTools");    
+    let memberPermissions = members.map(p => p.permissions);    
     let leaders = membersInRole(members, UitsRole.Leader);
     let subLeads = membersInRole(members, UitsRole.Sublead);
     let team = membersInRole(members, UitsRole.Member);
@@ -120,7 +120,7 @@ const form: React.SFC<IFormProps> = props => {
             </Col>
             <div style={{ textAlign: "right" }}>
               <Loader {...tools}>
-                {(canEditMemberTools() || memberPermissions) && tools && tools.data && (
+                {canEditMemberTools() || memberPermissions?.includes("ManageTools") && tools && tools.data && (
                   <span style={{ textAlign: "left" }}>
                     <Modal
                       id={`Edit tools permissions: ${member.id}`}
