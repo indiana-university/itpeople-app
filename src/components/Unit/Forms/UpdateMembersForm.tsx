@@ -120,7 +120,7 @@ const form: React.SFC<IFormProps> = props => {
             </Col>
             <div style={{ textAlign: "right" }}>
               <Loader {...tools}>
-                {canEditMemberTools() || memberPermissions?.includes("ManageTools") && tools && tools.data && (
+                {(canEditMemberTools() || memberPermissions?.includes("ManageTools")) && tools && tools.data && (
                   <span style={{ textAlign: "left" }}>
                     <Modal
                       id={`Edit tools permissions: ${member.id}`}
