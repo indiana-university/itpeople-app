@@ -148,7 +148,8 @@ const form: React.SFC<IFormProps> = props => {
                   </span>
                 )}
               </Loader>
-
+              <Loader {...tools}>
+                {!memberPermissions?.includes("ManageTools") && (
               <span style={{ textAlign: "left" }}>
                 <Modal
                   id={`Edit member: ${member.id}`}
@@ -188,7 +189,10 @@ const form: React.SFC<IFormProps> = props => {
                   </ModalBody>
                 </Modal>
               </span>
-
+            )}
+            </Loader>
+            <Loader {...tools}>
+                { !memberPermissions?.includes("ManageTools") && (
               <Button
                 variant="plain"
                 type="button"
@@ -197,6 +201,8 @@ const form: React.SFC<IFormProps> = props => {
               >
                 <TrashCan />
               </Button>
+            )}
+            </Loader>
             </div>
           </Row>
         </li>
