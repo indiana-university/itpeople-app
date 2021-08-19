@@ -38,7 +38,6 @@ interface IDispatchProps {
 
 const form: React.SFC<IFormProps> = props => {
   const { closeModal, clearCurrent, editMember, addMember, removeMember, save, editMemberTools, saveMemberTools, unitId, tools, membersForPermissions } = props;
-  console.log("the members:", membersForPermissions.permissions);
   let canEditMemberTools = () => Permissions.canPut(tools.permissions);  
   let canEditMembers = () => Permissions.canPut(membersForPermissions.permissions);  
   const renderMembers = ({ fields, input }: any) => {
