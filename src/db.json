@@ -233,16 +233,18 @@
     {
       "permissions": "Owner",
       "id": 7
-    },
+    },    
     {
-      "id": 8,
-      "unitId": 1,
+      "unitId": "4",
+      "netId": "johndoe",
       "personId": 7,
-      "title": "Developer",
+      "title": "Employee",
       "role": "Leader",
-      "permissions": "Viewer",
-      "percentage": 100
+      "permissions": "Owner",
+      "percentage": 100,
+      "id": 8
     }
+
   ],
   "supportRelationships": [
     {
