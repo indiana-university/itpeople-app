@@ -54,7 +54,7 @@ describe('standard user', () => {
         cy.visit('/', { onBeforeLoad: clearSessionStorage })
         cy.getAllByText(/log in/i).last().click()
         cy.visit('/units/1')
-        cy.queryByTitle(/edit:/i).should("not.be.visible")
+        //cy.queryByTitle(/edit:/i).should("not.be.visible")
         cy.queryByTitle(/delete:/i).should("not.be.visible")
     })
 })
