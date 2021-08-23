@@ -116,7 +116,7 @@
       "id": 4,
       "name": "Fourth floor IT",
       "description": "It is creepy up here",
-      "email": "user@example.com",      
+      "email": "user@example.com",
       "url": "https://map.concept3d.com/?id=951",
       "parentId": 1
     },
@@ -233,9 +233,9 @@
     {
       "permissions": "Owner",
       "id": 7
-    },
+    },    
     {
-      "unitId": "4",
+      "unitId": 1,
       "netId": "johndoe",
       "personId": 7,
       "title": "Employee",
@@ -244,6 +244,7 @@
       "percentage": 100,
       "id": 8
     }
+
   ],
   "supportRelationships": [
     {
