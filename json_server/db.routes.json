@@ -3,7 +3,7 @@
   "/units/:id/members": "/memberships?unitId=:id&_expand=person&_embed=memberTools",
   "/units/:id/tools": "/tools",
   "/units/:id/children": "/units?parentId=:id",
-  "/units/:id/supportedDepartments": "/supportRelationships?unitId=:id&_expand=department",
+  "/units/:id/supportedDepartments": "/supportRelationships?unitId=:id&_expand=department&_expand=supportType",
   "/units/:id/supportedBuildings": "/buildingRelationships?unitId=:id&_expand=building",
   "/people-lookup?q=:term": "/people?q=:term",
   "/departments/:id/members": "/people?departmentId=:id",

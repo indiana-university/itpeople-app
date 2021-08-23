@@ -16,7 +16,8 @@ import {
   IUnitMemberTool,
   ITool,
   IBuildingSupportRelationship,
-  IBuildingSupportRelationshipRequest
+  IBuildingSupportRelationshipRequest,
+  ISupportType
 } from "../types";
 import { lookup } from "../lookup";
 
@@ -38,6 +39,9 @@ export const enum UnitActionTypes {
   UNIT_FETCH_PARENT_REQUEST = "@@unit/FETCH_PARENT_REQUEST",
   UNIT_FETCH_PARENT_SUCCESS = "@@unit/FETCH_PARENT_SUCCESS",
   UNIT_FETCH_PARENT_ERROR = "@@unit/FETCH_PARENT_ERROR",
+  UNIT_FETCH_SUPPORT_TYPES_REQUEST = "@@unit/FETCH_SUPPORT_TYPES_REQUEST",
+  UNIT_FETCH_SUPPORT_TYPES_SUCCESS = "@@unit/FETCH_SUPPORT_TYPES_SUCCESS",
+  UNIT_FETCH_SUPPORT_TYPES_ERROR = "@@unit/FETCH_SUPPORT_TYPES_ERROR",
   UNIT_FETCH_DEPARTMENTS_REQUEST = "@@unit/FETCH_DEPARTMENTS_REQUEST",
   UNIT_FETCH_DEPARTMENTS_SUCCESS = "@@unit/FETCH_DEPARTMENTS_SUCCESS",
   UNIT_FETCH_DEPARTMENTS_ERROR = "@@unit/FETCH_DEPARTMENTS_ERROR",
@@ -95,6 +99,7 @@ export interface IState {
   unitChildren: IApiState<IEntityRequest, IUnit[]>; // children conflicts with react props 😟
   parent: IApiState<IEntityRequest, IUnit>;
   departments: IApiState<IEntityRequest, ISupportRelationship[]>;
+  supportTypes: IApiState<IEntityRequest, ISupportType[]>;
   buildings: IApiState<IEntityRequest, IBuildingSupportRelationship[]>;
   view: ViewStateType;
 }
@@ -138,6 +143,7 @@ const initialState: IState = {
   unitChildren: defaultState(),
   parent: defaultState(),
   departments: defaultState(),
+  supportTypes: defaultState(),
   buildings: defaultState(),
   view: ViewStateType.Viewing
 };
@@ -228,6 +234,13 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_SAVE_PARENT_ERROR:
       return { ...state, parent: TaskErrorReducer(state.parent, act) };
     //
+    case UnitActionTypes.UNIT_FETCH_SUPPORT_TYPES_REQUEST:
+      return { ...state, supportTypes: TaskStartReducer(state.supportTypes, act) };
+    case UnitActionTypes.UNIT_FETCH_SUPPORT_TYPES_SUCCESS:
+      return { ...state, supportTypes: TaskSuccessReducer(state.supportTypes, act) };
+    case UnitActionTypes.UNIT_FETCH_SUPPORT_TYPES_ERROR:
+      return { ...state, supportTypes: TaskErrorReducer(state.supportTypes, act) };
+    //
     case UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST:
       return { ...state, departments: TaskStartReducer(state.departments, act) };
     case UnitActionTypes.UNIT_FETCH_DEPARTMENTS_SUCCESS:
@@ -280,6 +293,7 @@ function* handleFetchUnit(api: IApi, request: IEntityRequest) {
   yield put(fetchUnitChildren(request));
   yield put(fetchUnitSupportedDepartments(request));
   yield put(fetchUnitSupportedBuildings(request));
+  yield put(fetchSupportTypes(request));
   yield put(fetchUnitTools(request));
 
   // TODO: fetch master tool list
@@ -378,7 +392,17 @@ function* handleFetchUnitTools(api: IApi, request: IEntityRequest) {
     .catch(fetchUnitToolsError);
   yield put(action);
 }
-
+const fetchSupportTypes = (response: IEntityRequest) => action(UnitActionTypes.UNIT_FETCH_SUPPORT_TYPES_REQUEST, response);
+const fetchSupportTypesSuccess = (response: IApiResponse<ISupportType[]>) => action(UnitActionTypes.UNIT_FETCH_SUPPORT_TYPES_SUCCESS, response);
+const fetchSupportTypesError = (error: Error) => action(UnitActionTypes.UNIT_FETCH_SUPPORT_TYPES_ERROR, error);
+function* handleFetchSupportTypes(api: IApi, request: IEntityRequest) {
+  const action = yield api
+    .get<ISupportType[]>(apiEndpoints.supportTypes.root())
+    .then(fetchSupportTypesSuccess)
+    .catch(signinIfUnauthorized)
+    .catch(fetchSupportTypesError);
+  yield put(action);
+}
 /* 
 GET/POST/PUT/DELETE /units/{unit_id}
 GET/POST/PUT/DELETE /units/{unit_id}/members/{membership_id} = {personId:null, title:"...", role:"..."}
@@ -529,6 +553,7 @@ function* watchUnitFetch() {
   yield takeEvery(UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST, (a: AnyAction) => handleFetchUnitDepartments(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_BUILDINGS_REQUEST, (a: AnyAction) => handleFetchUnitBuildings(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_CHILDREN_REQUEST, (a: AnyAction) => handleFetchUnitChildren(api, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_FETCH_SUPPORT_TYPES_REQUEST, (a: AnyAction) =>handleFetchSupportTypes(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_FETCH_TOOLS_REQUEST, (a: AnyAction) => handleFetchUnitTools(api, a.payload));
   // The unit parent is defined by a parentId on the unit record, so we must await the unit record fetch.
   yield takeEvery(UnitActionTypes.UNIT_FETCH_PARENT_REQUEST, (a: AnyAction) => handleFetchUnitParent(api, a.payload));
@@ -581,6 +606,7 @@ export {
   handleSaveUnit,
   initialState,
   lookupDepartment,
+  fetchSupportTypes,
   lookupBuilding,
   lookupUnit,
   lookupUser,
