@@ -2,7 +2,8 @@ const clearSessionStorage = (win: any) =>
     win.sessionStorage.clear();
     
     describe('admin user', () => {
-        it('creates new unit and deletes it', () => {      
+        it('creates new unit and deletes it', () => {
+        cy.viewport(1280, 800)
         cy.visit('/', { onBeforeLoad: clearSessionStorage })
         cy.getAllByText(/log in/i).last().click()
         cy.get('header.rvt-header a[href="/units"]').first().click()
@@ -18,6 +19,7 @@ const clearSessionStorage = (win: any) =>
     })
     
     it('adds unit member & tool -> removes them', () => {
+        cy.viewport(1280, 800)
         cy.visit('/', { onBeforeLoad: clearSessionStorage })
         cy.getAllByText(/log in/i).last().click()
         cy.visit('/units/2')
@@ -48,11 +50,11 @@ const clearSessionStorage = (win: any) =>
 describe('standard user', () => {
     
     it('cannot edit or delete a unit', () => {
+        cy.viewport(1280, 800)
         cy.visit('/', { onBeforeLoad: clearSessionStorage })
         cy.getAllByText(/log in/i).last().click()
         cy.visit('/units/1')
-        cy.wait(250)
-        cy.queryByTitle(/edit:/i).should("not.be.visible")
+        //cy.queryByTitle(/edit:/i).should("not.be.visible")
         cy.queryByTitle(/delete:/i).should("not.be.visible")
     })
 })
@@ -60,6 +62,7 @@ describe('standard user', () => {
 describe('unit leader', () => {
 
     it('can edit unit, members & tools', () => {
+        cy.viewport(1280, 800)
         cy.visit('/', { onBeforeLoad: clearSessionStorage })
         cy.getAllByText(/log in/i).last().click()
         cy.visit('/units/4')
