@@ -25,11 +25,6 @@ export const View: React.SFC<IState> = ({ profile, memberUnits, supportingUnits 
             { supportingUnits.data && <UnitList units={supportingUnits.data.map(r => r.unit).filter(u => u)} title="Supporting Units" /> }
           </Loader>
         </Col>
-        <Col md={6} last={true} className="rvt-p-lr-md">
-          <Loader {...memberUnits}>
-            { memberUnits.data && <UnitList units={memberUnits.data} title="Member Units" /> }
-          </Loader>
-        </Col>
       </Row>
     </Content>
   </>
