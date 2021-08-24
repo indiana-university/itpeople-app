@@ -8,6 +8,6 @@
   "/people-lookup?q=:term": "/people?q=:term",
   "/departments/:id/members": "/people?departmentId=:id",
   "/departments/:id/memberUnits": "/units?id=1&id=2&id=4",
-  "/departments/:id/supportingUnits": "/supportRelationships?departmentId=:id&_expand=unit",
+  "/departments/:id/supportingUnits": "/supportRelationships?departmentId=:id&_expand=unit&_expand=supportType&_expand=department",
   "/buildings/:id/supportingUnits": "/buildingRelationships?buildingId=:id&_expand=unit"
 }
