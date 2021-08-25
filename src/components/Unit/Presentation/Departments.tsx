@@ -21,16 +21,14 @@ const Departments: React.SFC<IDefaultState<ISupportRelationship[]>> = props => {
               .map((supportRelationship, i) => (
                 <li key={i}>
                   <a href={`/departments/${supportRelationship.department.id}`}>{supportRelationship.department.name}</a> 
+                  {supportRelationship.supportType && (
+                    <div>
+                      <span style={{ fontSize: "smaller" }}>({supportRelationship.supportType?.name})</span>
+                    </div>
+                  )}
                   {supportRelationship.department.description && (
                     <div>
-                      {supportRelationship.supportType && (
-                      <div>
-                        <span style={{ fontSize: "smaller" }}>({supportRelationship.supportType?.name})</span>
-                      </div>
-                      )}
-                      <div>
-                        <span style={{ fontSize: "smaller" }}>{supportRelationship.department.description}</span>
-                      </div>
+                      <span style={{ fontSize: "smaller" }}>{supportRelationship.department.description}</span>
                     </div>
                   )}
                 </li>
