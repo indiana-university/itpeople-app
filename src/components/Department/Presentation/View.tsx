@@ -32,9 +32,9 @@ export const View: React.SFC<IState> = ({ profile, memberUnits, supportingUnits 
                               <span style={{ fontSize: "smaller" }}>({r.supportType?.name})</span>
                             </div>
                             )}
-                            {r.department.description && (   
+                            {r.unit.description && (   
                               <div>
-                                <span>{r.department.description}</span>
+                                <span>{r.unit.description}</span>
                               </div>
                             )}
                         </li>)}
