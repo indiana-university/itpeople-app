@@ -50,6 +50,7 @@ const form: React.SFC<IFormProps> = props => {
                   </Col>
                   <Col>
                     <h4>{unit.name}</h4>
+                    {unit.active == false && (<span className="rvt-inline-alert rvt-inline-alert--standalone rvt-inline-alert--info rvt-ts-xs">Archived</span>)}
                     {unit.description && <p className="rvt-ts-14 rvt-m-top-remove">{unit.description}</p>}
                   </Col>
                   <Col style={{ minWidth: "auto", flexGrow: 0, padding: 0, textAlign: "right" }}>
