@@ -136,6 +136,7 @@ export interface IDescription {
 }
 
 export interface IUnit extends IEntity, IUrl, IEmail, IDescription {
+  active: boolean;
   parentId?: number;
 }
 

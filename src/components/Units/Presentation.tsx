@@ -52,6 +52,7 @@ const Presentation: React.SFC<IProps> = ({ units: { data: units, permissions }, 
                 <a href={`/units/${m.unitId}`} className="rvt-link-bold">
                   {m.unit ? m.unit.name : "Unit"}
                 </a>
+                {m.unit?.active == false && (<span className="rvt-inline-alert--standalone rvt-inline-alert--info rvt-m-left-xs rvt-ts-xs">Archived</span>)}
                 <p className="rvt-m-top-remove">{m.unit && m.unit.description}</p>
               </Col>
             </Row>
@@ -68,6 +69,7 @@ const Presentation: React.SFC<IProps> = ({ units: { data: units, permissions }, 
               <a href={`/units/${r.id}`} className="rvt-link-bold">
                 {r.name}
               </a>
+              {r.active == false && (<span className="rvt-inline-alert--standalone rvt-inline-alert--info rvt-m-left-xs rvt-ts-xs">Archived</span>)}
               <p className="rvt-m-top-remove">{r.description}</p>
             </Col>
           ))}

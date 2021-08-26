@@ -124,6 +124,7 @@ describe('unit profile', () => {
 
     const model: IUnit = {
         id: 1,
+        active: true,
         name: "unit",
         description: "description",
         url: "http://example.com",
