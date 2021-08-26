@@ -262,8 +262,15 @@
       "permissions": "Owner",
       "percentage": 100,
       "id": 8
+    },
+    {
+      "unitId": "7",
+      "personId": 5,
+      "title": "Person",
+      "role": "Member",
+      "percentage": 100,
+      "id": 9
     }
-
   ],
   "supportRelationships": [
     {
