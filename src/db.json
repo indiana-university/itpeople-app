@@ -291,6 +291,12 @@
       "unitId": 1,
       "id": 3,
       "supportTypeId": 3
+    },
+    {
+      "id": 4,
+      "unitId": 7,
+      "departmentId": 2,
+      "supportTypeId": 2
     }
   ],
   "buildingRelationships": [
@@ -308,6 +314,11 @@
       "buildingId": 3,
       "unitId": "1",
       "id": 3
+    },
+    {
+      "id": 4,
+      "unitId": 7,
+      "buildingId": 3
     }
   ],
   "tools": [
