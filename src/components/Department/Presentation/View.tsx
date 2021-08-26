@@ -27,6 +27,7 @@ export const View: React.SFC<IState> = ({ profile, memberUnits, supportingUnits 
                       {supportingUnits.data.map((r, i) => 
                         <li key={"unit:" + i}>
                           <a href={`/units/${r.unit.id}`}>{r.unit.name}</a>
+                          {r.unit?.active == false && (<span className="rvt-inline-alert--standalone rvt-inline-alert--info rvt-m-left-xs rvt-ts-xs">Archived</span>)}
                             {r.supportType && (
                             <div>
                               <span style={{ fontSize: "smaller" }}>({r.supportType?.name})</span>
