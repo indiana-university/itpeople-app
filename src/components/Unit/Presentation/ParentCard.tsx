@@ -22,6 +22,7 @@ export const ParentCard: React.SFC<IProps> = (props) => {
                         <Col sm={2}> <ParentUnitIcon width="100%" /> </Col>
                         <Col>
                         <a href={`/units/${parent.id}`} className="rvt-m-bottom-remove related-group-item-name rvt-text-bold">{parent.name}</a>
+                        {parent.active == false && (<span className="rvt-inline-alert--standalone rvt-inline-alert--info rvt-m-left-xs rvt-ts-xs">Archived</span>)}
                         {parent.description &&
                             <p className="rvt-ts-14 rvt-m-top-remove rvt-m-bottom-remove">{parent.description}</p>
                         }
