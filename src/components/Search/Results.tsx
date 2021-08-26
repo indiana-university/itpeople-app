@@ -82,6 +82,7 @@ export const Results: React.SFC<IProps> = ({ departments, setCurrentList, select
               {units.data.sort(EntityComparer).map((r, i) => (
                 <li key={"unit-results:" + i} className="rvt-p-tb-xs">
                   <a href={`/units/${r.id}`}>{r.name}</a>
+                  {r.active == false && (<span className="rvt-inline-alert--standalone rvt-inline-alert--info rvt-m-left-xs rvt-ts-xs">Archived</span>)}
                   {r.description && <><br />{r.description}</>}
                 </li>
               ))}
