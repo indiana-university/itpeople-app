@@ -11,6 +11,7 @@ export const UnitList: React.SFC<IProps> = ({units, title}) =>
                 {units.map((r, i) => 
                     <li key={"unit:" + i}>
                         <a href={`/units/${r.id}`}>{r.name}</a>
+                        {r.active == false && (<span className="rvt-inline-alert--standalone rvt-inline-alert--info rvt-m-left-xs rvt-ts-xs">Archived</span>)}
                         {r.description && <p>{r.description}</p>}
                     </li>)}
                 </List>}
