@@ -14,7 +14,7 @@ import Children from "./Children";
 import { IDefaultState, Permissions, IApiState, IUnit } from "../../types";
 import Departments from "./Departments";
 import Buildings from "./Buildings";
-import { Pencil, TrashCan } from "src/components/icons";
+import { ClosedLock, OpenLock, Pencil, TrashCan } from "src/components/icons";
 import { Collapse } from 'rivet-react/addons';
 
 interface IProps {
@@ -35,6 +35,13 @@ const Presentation: React.SFC<IState & IProps> = props => {
       deleteUnit(profile.data);
     }
   }
+  const handleArchive = () => {
+    let question = `Are you sure you want to ${profile.data?.active ? "archive" : "unarchive"} ${profile?.data?.name}?`;
+    let followUp = profile.data?.active
+      ? " All members will lose their assigned tools, and the unit will be listed as Achrived."
+      : " All members' assigned tools and relationships will be reactivated."
+    confirm(question + followUp);
+  }
   return (
     <>
       <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, { text: "Units", href: "/units" }, name]} />
@@ -43,6 +50,12 @@ const Presentation: React.SFC<IState & IProps> = props => {
           {profile && profile.data && Permissions.canDelete(profile.permissions) && (
             <Button onClick={handleDelete} className="rvt-m-right-xs" title={`Delete: ${name}`} variant="danger">
               <TrashCan />
+            </Button>
+          )}
+          {profile && profile.data && Permissions.canDelete(profile.permissions) && (
+            <Button onClick={handleArchive} className="rvt-m-right-xs" title={`${profile.data.active ? 'Archive' : 'Unarchive'}: ${name}`}>
+              {profile.data.active && <ClosedLock />}
+              {profile.data.active == false && <OpenLock />}
             </Button>
           )}
           {profile && (Permissions.canPut(profile.permissions) || memberPermissions?.includes("ManageTools")) && (
