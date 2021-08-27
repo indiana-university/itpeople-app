@@ -6,7 +6,7 @@
 import * as React from "react";
 import { Col, Row, Button } from "rivet-react";
 import { Breadcrumbs, Content } from "../../layout";
-import { IState, deleteUnit } from "../store";
+import { IState, deleteUnit, archiveUnit } from "../store";
 import Profile from "./Profile";
 import Members from "./Members";
 import Parent from "./Parent";
@@ -20,6 +20,7 @@ import { Collapse } from 'rivet-react/addons';
 interface IProps {
   edit(): any;
   deleteUnit: typeof deleteUnit;
+  archiveUnit: typeof archiveUnit;
   unitChildren: IDefaultState<IUnit[]>;
 }
 const hasData = (result: IApiState<any, any>) => {
@@ -27,7 +28,7 @@ const hasData = (result: IApiState<any, any>) => {
 };
 
 const Presentation: React.SFC<IState & IProps> = props => {
-  const { edit, deleteUnit, profile, members, parent, unitChildren, departments, buildings } = props;
+  const { edit, deleteUnit, archiveUnit, profile, members, parent, unitChildren, departments, buildings } = props;
   const name = profile.data ? profile.data.name : "...";
   let memberPermissions = members.data?.map(m => m.permissions);
   const handleDelete = () => {
@@ -40,7 +41,9 @@ const Presentation: React.SFC<IState & IProps> = props => {
     let followUp = profile.data?.active
       ? " All members will lose their assigned tools, and the unit will be listed as Achrived."
       : " All members' assigned tools and relationships will be reactivated."
-    confirm(question + followUp);
+    if (profile && profile.data && confirm(question + followUp)) {
+      archiveUnit(profile.data);
+    }
   }
   return (
     <>

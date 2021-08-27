@@ -89,7 +89,9 @@ export const enum UnitActionTypes {
   UNIT_DELETE_BUILDING_ERROR = "@@unit/DELETE_BUILDING_ERROR",
   UNIT_CANCEL = "@@unit/UNIT_CANCEL",
   UNIT_DELETE_REQUEST = "@@unit/DELETE_REQUEST",
-  UNIT_DELETE_ERROR = "@@unit/DELETE_ERROR"
+  UNIT_DELETE_ERROR = "@@unit/DELETE_ERROR",
+  UNIT_ARCHIVE_REQUEST = "@@unit/ARCHIVE_REQUEST",
+  UNIT_ARCHIVE_ERROR = "@@unit/ARCHIVE_ERROR"
 }
 
 export interface IState {
@@ -112,6 +114,7 @@ const lookupLimit = 15;
 const cancel = () => action(UnitActionTypes.UNIT_CANCEL, {});
 const deleteMemberRequest = (member: IUnitMember) => action(UnitActionTypes.UNIT_DELETE_MEMBER_REQUEST, member);
 const deleteUnit = (unit: IUnit) => action(UnitActionTypes.UNIT_DELETE_REQUEST, unit);
+const archiveUnit = (unit: IUnit) => action(UnitActionTypes.UNIT_ARCHIVE_REQUEST, unit);
 const deleteUnitChild = (request: IEntityRequest) => action(UnitActionTypes.UNIT_DELETE_CHILD_REQUEST, request);
 const deleteUnitDepartment = (request: ISupportRelationshipRequest) => action(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, request);
 const deleteUnitBuilding = (request: IBuildingSupportRelationshipRequest) => action(UnitActionTypes.UNIT_DELETE_BUILDING_REQUEST, request);
@@ -177,6 +180,10 @@ const reducer: Reducer<IState> = (state = initialState, act) => {
     case UnitActionTypes.UNIT_DELETE_REQUEST:
       return { ...state, profile: TaskStartReducer(state.profile, act) };
     case UnitActionTypes.UNIT_DELETE_ERROR:
+      return { ...state, profile: TaskErrorReducer(state.profile, act) };
+    case UnitActionTypes.UNIT_ARCHIVE_REQUEST:
+      return { ...state, profile: TaskStartReducer(state.profile, act) };
+    case UnitActionTypes.UNIT_ARCHIVE_ERROR:
       return { ...state, profile: TaskErrorReducer(state.profile, act) };
     //
     case UnitActionTypes.UNIT_FETCH_MEMBERS_REQUEST:
@@ -431,6 +438,16 @@ function* handleDeleteUnit(api: IApi, unit: IUnit) {
   yield put(action);
 }
 
+const archiveUnitError = (error: Error) => action(UnitActionTypes.UNIT_ARCHIVE_ERROR, error);
+function* handleArchiveUnit(api: IApi, unit: IUnit) {
+  const request = api.delete(apiEndpoints.units.root(unit.id) + "/archive");
+  const action = yield request
+    .then(_ => fetchUnit({ id: unit.id }))
+    .catch(signinIfUnauthorized)
+    .catch(archiveUnitError);
+  yield put(action);
+}
+
 const saveMemberError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_MEMBER_ERROR, error);
 function* handleSaveMember(api: IApi, member: IUnitMemberRequest) {
   const request = member.id
@@ -577,6 +594,7 @@ function* watchUnitDelete() {
   yield takeEvery(UnitActionTypes.UNIT_DELETE_DEPARTMENT_REQUEST, (a: AnyAction) => handleDeleteSupportRelationship(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_DELETE_BUILDING_REQUEST, (a: AnyAction) => handleDeleteBuildingRelationship(api, a.payload));
   yield takeEvery(UnitActionTypes.UNIT_DELETE_CHILD_REQUEST, (a: AnyAction) => handleRemoveChild(api, a.payload));
+  yield takeEvery(UnitActionTypes.UNIT_ARCHIVE_REQUEST, (a: AnyAction) => handleArchiveUnit(api, a.payload));
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.
@@ -591,6 +609,7 @@ export {
   cancel,
   deleteMemberRequest,
   deleteUnit,
+  archiveUnit,
   deleteUnitChild,
   deleteUnitDepartment,
   deleteUnitBuilding,
