@@ -4,8 +4,7 @@ module.exports = (req, res, next) => {
   const db = getDb();
 
   if (req.method == "DELETE") {
-    // Just say all deletes succed, except for unit archiving requests, which are special.
-    var skip = false;
+    // Just say all deletes succeed, except for unit archiving requests, which are special.
     if(req.path.startsWith("/units/") && req.path.endsWith("/archive")) {
       const pathParts = req.path.split("/");
       const unitId = pathParts[2];
@@ -26,12 +25,10 @@ module.exports = (req, res, next) => {
       // Return the unit with a 200 OK
       return res.send(unit);
     }
-    if(skip == false)
-    {
-      next();
-      res.status(204);
-      return res.end();
-    }
+    
+    next();
+    res.status(204);
+    return res.end();
   }
   // GET /people/**
   if (req.method != "GET") {
