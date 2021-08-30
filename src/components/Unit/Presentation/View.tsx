@@ -39,7 +39,7 @@ const Presentation: React.SFC<IState & IProps> = props => {
   const handleArchive = () => {
     let question = `Are you sure you want to ${profile.data?.active ? "archive" : "unarchive"} ${profile?.data?.name}?`;
     let followUp = profile.data?.active
-      ? " All members will lose their assigned tools, and the unit will be listed as Achrived."
+      ? " All members will lose their assigned tools, and the unit will be listed as Archived."
       : " All members' assigned tools and relationships will be reactivated."
     if (profile && profile.data && confirm(question + followUp)) {
       archiveUnit(profile.data);
