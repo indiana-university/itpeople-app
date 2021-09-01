@@ -846,7 +846,12 @@
               "id": 1,
               "name": "Parks and Recreation Department",
               "description": "The management, supervision, coordination, and implementation of an array of leisure service opportunities, including such organized activities as athletics, sports, arts, crafts, drama, physical fitness, music, and aquatics, utilizing recreation centers, athletic fields, swimming pools, open space, schools, and special facilities."
-            }
+            },
+            "supportType": {
+              "id": 1,
+              "name": "Full Service"
+            },
+            "supportTypeId": 1
           }
         ],
         "matchingRules": {
@@ -920,7 +925,8 @@
           {
             "id": 1,
             "unitId": 1,
-            "departmentId": 1
+            "departmentId": 1,
+            "supportTypeId": 1
           }
         ],
         "matchingRules": {
@@ -951,7 +957,8 @@
         "body": {
           "id": 1,
           "unitId": 1,
-          "departmentId": 1
+          "departmentId": 1,
+          "supportTypeId": 1
         },
         "matchingRules": {
           "$.body.id": {
@@ -979,7 +986,8 @@
         "body": {
           "id": 1,
           "unitId": 2,
-          "departmentId": 1
+          "departmentId": 1,
+          "supportTypeId": 1
         }
       },
       "response": {
@@ -1017,7 +1025,8 @@
         "body": {
           "id": 1,
           "unitId": 1,
-          "departmentId": 1
+          "departmentId": 1,
+          "supportTypeId": 1
         }
       },
       "response": {

@@ -18,10 +18,19 @@ const Departments: React.SFC<IDefaultState<ISupportRelationship[]>> = props => {
           <List variant="plain">
             {departments
               .sort(SupportRelationshipComparer)
-              .map(({ department }, i) => (
+              .map((supportRelationship, i) => (
                 <li key={i}>
-                  <a href={`/departments/${department.id}`}>{department.name}</a> 
-                  {department.description && <br />}<span style={{ fontSize: "smaller" }}>{department.description}</span>
+                  <a href={`/departments/${supportRelationship.department.id}`}>{supportRelationship.department.name}</a> 
+                  {supportRelationship.supportType && (
+                    <div>
+                      <span style={{ fontSize: "smaller" }}>({supportRelationship.supportType?.name})</span>
+                    </div>
+                  )}
+                  {supportRelationship.department.description && (
+                    <div>
+                      <span style={{ fontSize: "smaller" }}>{supportRelationship.department.description}</span>
+                    </div>
+                  )}
                 </li>
             ))}
           </List>

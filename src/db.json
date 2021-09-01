@@ -116,7 +116,7 @@
       "id": 4,
       "name": "Fourth floor IT",
       "description": "It is creepy up here",
-      "email": "user@example.com",      
+      "email": "user@example.com",
       "url": "https://map.concept3d.com/?id=951",
       "parentId": 1
     },
@@ -150,6 +150,20 @@
       "id": 3,
       "name": "Department 3",
       "description": "Short description of Department 2 or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax."
+    }
+  ],
+  "supportTypes": [
+    {
+      "id": 1,
+      "name": "Full Service"
+    },
+    {
+      "id": 2,
+      "name": "Desktop/Endpoint"
+    },
+    {
+      "id": 3,
+      "name": "Web/app Infrastructure"
     }
   ],
   "buildings": [
@@ -233,9 +247,9 @@
     {
       "permissions": "Owner",
       "id": 7
-    },
+    },    
     {
-      "unitId": "4",
+      "unitId": 1,
       "netId": "johndoe",
       "personId": 7,
       "title": "Employee",
@@ -244,22 +258,26 @@
       "percentage": 100,
       "id": 8
     }
+
   ],
   "supportRelationships": [
     {
       "id": 1,
       "unitId": 1,
-      "departmentId": 1
+      "departmentId": 1,
+      "supportTypeId": 1
     },
     {
       "id": 2,
       "unitId": 1,
-      "departmentId": 2
+      "departmentId": 2,
+      "supportTypeId": 2
     },
     {
       "departmentId": 3,
       "unitId": 1,
-      "id": 3
+      "id": 3,
+      "supportTypeId": 3
     }
   ],
   "buildingRelationships": [

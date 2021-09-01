@@ -10,6 +10,7 @@ import * as traverse from 'traverse'
 import { apiEndpoints } from './components/effects';
 import { 
     ISupportRelationship, 
+    ISupportType, 
     ISupportRelationshipRequest, 
     IUnitMember, 
     IUnitMemberRequest, 
@@ -182,6 +183,7 @@ const delete_ = (name: string, path: string) =>
 
 const referenceUnit: IUnit = { ...examples.units[0], parentId:undefined }
 const referenceDepartment: IDepartment = examples.departments[0]
+const referenceSupportType: ISupportType = examples.supportTypes[0]
 const referenceBuilding: IBuilding = examples.buildings[0]
 const referencePerson: IPerson = examples.people[0]
 const referenceTool: ITool = examples.tools[0];
@@ -219,13 +221,16 @@ const referenceUnitMembership: IUnitMembership = {
 const referenceSupportRelationshipRequest: ISupportRelationshipRequest = {
     id: 1,
     unitId: referenceUnit.id,
-    departmentId: referenceDepartment.id
+    departmentId: referenceDepartment.id,
+    supportTypeId: referenceSupportType.id
 };
 
 const referenceSupportRelationship: ISupportRelationship = {
     ...referenceSupportRelationshipRequest,
     department: referenceDepartment,
-    unit: referenceUnit
+    unit: referenceUnit,
+    supportType: referenceSupportType
+
 };
 
 const referenceBuildingRelationshipRequest: IBuildingSupportRelationshipRequest = {
@@ -332,6 +337,13 @@ describe('Contracts', () => {
         it("gets all matching departments", async () =>
             await getAll(resource, itemPath, referenceDepartment, "q=parks"));
     });
+    describe('Support Types', () => {
+        const resource = 'supportType'
+        const setPath = apiEndpoints.supportTypes.root();
+
+        it("gets all support types", async () =>
+            await getAll(resource, setPath, referenceDepartment))
+    })
 
     describe('Buildings', () => {
         const resource = 'building'

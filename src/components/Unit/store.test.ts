@@ -89,7 +89,8 @@ describe('supported departments', () => {
 
     const model: ISupportRelationshipRequest = {
         unitId: 1,
-        departmentId: 2
+        departmentId: 2,
+        supportTypeId: 0
     };
 
     const expectedSuccessDispatch = unit.UnitActionTypes.UNIT_FETCH_DEPARTMENTS_REQUEST;
