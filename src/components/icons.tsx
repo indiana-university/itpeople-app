@@ -154,6 +154,18 @@ export const Download: React.SFC<IIconProps> = props => (
   </svg>
 );
 
+export const ClosedLock: React.SFC<IIconProps> = props => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M12.75,6H12V4A4,4,0,0,0,4,4V6H3.25A1.25,1.25,0,0,0,2,7.25v7.5A1.25,1.25,0,0,0,3.25,16h9.5A1.25,1.25,0,0,0,14,14.75V7.25A1.25,1.25,0,0,0,12.75,6ZM6,4a2,2,0,0,1,4,0V6H6Zm6,10H4V8h8Z"/>
+  </svg>
+);
+
+export const OpenLock: React.SFC<IIconProps> = props => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M12,0A4,4,0,0,0,8,4V6H1.25A1.25,1.25,0,0,0,0,7.25v7.5A1.25,1.25,0,0,0,1.25,16h9.5A1.25,1.25,0,0,0,12,14.75V7.25A1.25,1.25,0,0,0,10.75,6H10V4a2,2,0,0,1,4,0V7a1,1,0,0,0,2,0V4A4,4,0,0,0,12,0ZM10,14H2V8h8Z"/>
+  </svg>
+);
+
 interface IIconProps {
   width?: number | string;
   height?: number | string;

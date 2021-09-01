@@ -1,4 +1,4 @@
-import { IUnit } from "src/components/types";
+import { IUnit, UnitComparer } from "src/components/types";
 import * as React from "react";
     import { List } from "rivet-react";
 import { Panel } from "src/components/Panel";
@@ -8,9 +8,12 @@ export const UnitList: React.SFC<IProps> = ({units, title}) =>
         <Panel title={title}>
             { units && units.length !== 0 &&
                 <List variant="plain">
-                {units.map((r, i) => 
+                {units
+                    .sort(UnitComparer)
+                    .map((r, i) => 
                     <li key={"unit:" + i}>
                         <a href={`/units/${r.id}`}>{r.name}</a>
+                        {r.active == false && (<span className="rvt-inline-alert--standalone rvt-inline-alert--info rvt-m-left-xs rvt-ts-xs">Archived</span>)}
                         {r.description && <p>{r.description}</p>}
                     </li>)}
                 </List>}

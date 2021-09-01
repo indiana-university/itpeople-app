@@ -6,7 +6,7 @@
 import * as React from "react";
 import { Col, Row, Button } from "rivet-react";
 import { Breadcrumbs, Content } from "../../layout";
-import { IState, deleteUnit } from "../store";
+import { IState, deleteUnit, archiveUnit } from "../store";
 import Profile from "./Profile";
 import Members from "./Members";
 import Parent from "./Parent";
@@ -14,12 +14,13 @@ import Children from "./Children";
 import { IDefaultState, Permissions, IApiState, IUnit } from "../../types";
 import Departments from "./Departments";
 import Buildings from "./Buildings";
-import { Pencil, TrashCan } from "src/components/icons";
+import { ClosedLock, OpenLock, Pencil, TrashCan } from "src/components/icons";
 import { Collapse } from 'rivet-react/addons';
 
 interface IProps {
   edit(): any;
   deleteUnit: typeof deleteUnit;
+  archiveUnit: typeof archiveUnit;
   unitChildren: IDefaultState<IUnit[]>;
 }
 const hasData = (result: IApiState<any, any>) => {
@@ -27,12 +28,21 @@ const hasData = (result: IApiState<any, any>) => {
 };
 
 const Presentation: React.SFC<IState & IProps> = props => {
-  const { edit, deleteUnit, profile, members, parent, unitChildren, departments, buildings } = props;
+  const { edit, deleteUnit, archiveUnit, profile, members, parent, unitChildren, departments, buildings } = props;
   const name = profile.data ? profile.data.name : "...";
   let memberPermissions = members.data?.map(m => m.permissions);
   const handleDelete = () => {
     if (profile && profile.data && confirm(`Are you sure you want to delete ${profile.data.name}? This can't be undone.`)) {
       deleteUnit(profile.data);
+    }
+  }
+  const handleArchive = () => {
+    let question = `Are you sure you want to ${profile.data?.active ? "archive" : "unarchive"} ${profile?.data?.name}?`;
+    let followUp = profile.data?.active
+      ? " All members will lose their assigned tools, and the unit will be listed as Archived."
+      : " All members' assigned tools and relationships will be reactivated."
+    if (profile && profile.data && confirm(question + followUp)) {
+      archiveUnit(profile.data);
     }
   }
   return (
@@ -43,6 +53,12 @@ const Presentation: React.SFC<IState & IProps> = props => {
           {profile && profile.data && Permissions.canDelete(profile.permissions) && (
             <Button onClick={handleDelete} className="rvt-m-right-xs" title={`Delete: ${name}`} variant="danger">
               <TrashCan />
+            </Button>
+          )}
+          {profile && profile.data && Permissions.canDelete(profile.permissions) && (
+            <Button onClick={handleArchive} className="rvt-m-right-xs" title={`${profile.data.active ? 'Archive' : 'Unarchive'}: ${name}`}>
+              {profile.data.active && <ClosedLock />}
+              {profile.data.active == false && <OpenLock />}
             </Button>
           )}
           {profile && (Permissions.canPut(profile.permissions) || memberPermissions?.includes("ManageTools")) && (

@@ -49,11 +49,12 @@ const Component: React.SFC<IFormProps> = ({ filteredUnits, addChild, lookupUnit,
                   lookupUnit("");
                   onSubmit();
                 }}
-                disabled={!!unit.parentId} // disable if unit has parent
+                disabled={!!unit.parentId || !unit.active} // disable if unit has parent
               >
                 {/* if no parent, just the unit name. If parent, unit name + "unit name (assigned to parent name)" */}
                 {unit && unit.name}
                 {unit.parentId && <> (assigned to {unit.parent ? unit.parent.name : "another unit"})</>}
+                {!unit.active && <> (Archived)</>}
               </Button>
             </div>
           );

@@ -2,7 +2,7 @@ import * as React from "react";
 import { reduxForm, InjectedFormProps, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { Button, ModalBody, List, Row, Col } from "rivet-react";
-import { IApplicationState, IUnit } from "../../types";
+import { IApplicationState, IUnit, UnitComparer } from "../../types";
 import { clearCurrent } from "../../lookup";
 import { Dispatch } from "redux";
 import { closeModal, Modal } from "../../layout/Modal";
@@ -41,7 +41,9 @@ const form: React.SFC<IFormProps> = props => {
       </Modal>
       <List variant="plain">
         {units &&
-          units.map((unit, index) => {
+          units
+            .sort(UnitComparer)
+            .map((unit, index) => {
             return (
               <li key={index}>
                 <Row>
@@ -50,6 +52,7 @@ const form: React.SFC<IFormProps> = props => {
                   </Col>
                   <Col>
                     <h4>{unit.name}</h4>
+                    {unit.active == false && (<span className="rvt-inline-alert rvt-inline-alert--standalone rvt-inline-alert--info rvt-ts-xs">Archived</span>)}
                     {unit.description && <p className="rvt-ts-14 rvt-m-top-remove">{unit.description}</p>}
                   </Col>
                   <Col style={{ minWidth: "auto", flexGrow: 0, padding: 0, textAlign: "right" }}>

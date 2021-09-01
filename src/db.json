@@ -99,6 +99,7 @@
   "units": [
     {
       "id": 1,
+      "active": true,
       "name": "Parks and Recreation IT",
       "description": "This page is under construction",
       "url": "http://pawneeindiana.com/information-technology/",
@@ -107,6 +108,7 @@
     },
     {
       "id": 2,
+      "active": true,
       "name": "City of Pawnee",
       "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax.",
       "url": "",
@@ -114,6 +116,7 @@
     },
     {
       "id": 4,
+      "active": true,
       "name": "Fourth floor IT",
       "description": "It is creepy up here",
       "email": "user@example.com",
@@ -122,6 +125,7 @@
     },
     {
       "id": 6,
+      "active": true,
       "name": "Unit name",
       "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax.",
       "url": "",
@@ -129,10 +133,12 @@
     },
     {
       "id": 7,
+      "active": false,
       "name": "Unit name",
       "description": "Short description of department or affiliation with unit will be listed here. Lorem ipsum dolor sit amet, usu an elit euismod pertinax.",
       "url": "",
-      "email": ""
+      "email": "",
+      "parentId": 1
     }
   ],
   "departments": [
@@ -247,7 +253,7 @@
     {
       "permissions": "Owner",
       "id": 7
-    },    
+    },
     {
       "unitId": 1,
       "netId": "johndoe",
@@ -257,8 +263,15 @@
       "permissions": "Owner",
       "percentage": 100,
       "id": 8
+    },
+    {
+      "unitId": "7",
+      "personId": 5,
+      "title": "Person",
+      "role": "Member",
+      "percentage": 100,
+      "id": 9
     }
-
   ],
   "supportRelationships": [
     {
@@ -278,6 +291,12 @@
       "unitId": 1,
       "id": 3,
       "supportTypeId": 3
+    },
+    {
+      "id": 4,
+      "unitId": 7,
+      "departmentId": 2,
+      "supportTypeId": 2
     }
   ],
   "buildingRelationships": [
@@ -295,6 +314,11 @@
       "buildingId": 3,
       "unitId": "1",
       "id": 3
+    },
+    {
+      "id": 4,
+      "unitId": 7,
+      "buildingId": 3
     }
   ],
   "tools": [

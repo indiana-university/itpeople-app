@@ -19,6 +19,7 @@ const Profile: React.SFC<IDefaultState<IUnit>> = props => {
       {profile && (
         <>
           <PageTitle>{profile.name}</PageTitle>
+          {profile.active == false && (<span className="rvt-inline-alert rvt-inline-alert--standalone rvt-inline-alert--info rvt-ts-xs">Archived</span>)}
           <Section>
             {profile.description && (
               <div className="group-describer rvt-m-top-sm">

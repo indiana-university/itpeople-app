@@ -19,7 +19,7 @@ export const Memberships: React.SFC<IProps> = ({ memberships, visuallyExpandedUn
           if (!unit) {
             return;
           }
-          const { id, name, description } = unit;
+          const { id, active, name, description } = unit;
           const isExpanded = visuallyExpandedUnits.indexOf(id) > -1;
           const toggle = () => {
             toggleUnit(id);
@@ -31,6 +31,7 @@ export const Memberships: React.SFC<IProps> = ({ memberships, visuallyExpandedUn
                   <a href={`/units/${id}`}>
                     <h2 className="rvt-ts-23 rvt-text-bold">{name}</h2>
                   </a>
+                  {active == false && (<span className="rvt-inline-alert rvt-inline-alert--standalone rvt-inline-alert--info rvt-ts-xs">Archived</span>)}
                   {description && <div className="rvt-m-bottom-sm">{description}</div>}
                 </Col>
                 <Col sm={1}>
