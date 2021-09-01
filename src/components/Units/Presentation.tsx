@@ -76,21 +76,25 @@ const Presentation: React.SFC<IProps> = ({ units: { data: units, permissions }, 
           ))}
       </Row>
 
-      <h2 className="rvt-ts-md rvt-p-bottom-md">Archived Units</h2>
-      <Row style={{ justifyContent: "space-between" }}>
-        {units && units
-          .filter(u => u.active == false)
-          .sort(EntityComparer)
-          .map((r, i) => (
-            <Col key={"unit:" + i} md={5} className="rvt-p-bottom-lg">
-              <a href={`/units/${r.id}`} className="rvt-link-bold">
-                {r.name}
-              </a>
-              {r.active == false && (<span className="rvt-inline-alert--standalone rvt-inline-alert--info rvt-m-left-xs rvt-ts-xs">Archived</span>)}
-              <p className="rvt-m-top-remove">{r.description}</p>
-            </Col>
-          ))}
-      </Row>
+      {units && units.filter(u => u.active == false).length > 0 &&
+        <>
+          <h2 className="rvt-ts-md rvt-p-bottom-md">Archived Units</h2>
+          <Row style={{ justifyContent: "space-between" }}>
+            {units && units
+              .filter(u => u.active == false)
+              .sort(EntityComparer)
+              .map((r, i) => (
+                <Col key={"unit:" + i} md={5} className="rvt-p-bottom-lg">
+                  <a href={`/units/${r.id}`} className="rvt-link-bold">
+                    {r.name}
+                  </a>
+                  {r.active == false && (<span className="rvt-inline-alert--standalone rvt-inline-alert--info rvt-m-left-xs rvt-ts-xs">Archived</span>)}
+                  <p className="rvt-m-top-remove">{r.description}</p>
+                </Col>
+              ))}
+          </Row>
+        </>
+      }
     </Content>
   </>
 );
