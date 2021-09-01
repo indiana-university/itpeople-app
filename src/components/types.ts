@@ -321,6 +321,24 @@ export const EntityComparer : Comparer<IEntity | undefined> = (a, b) => {
   if (!b) { return 1; }
   return a.name === b.name ? 0 : a.name < b.name ? -1 : 1;
 }
+export const UnitComparer : Comparer<IUnit | undefined> = (a, b) => {
+  // Handle nulls
+  if(!a || !b) { return EntityComparer(a, b); }
+  
+  // Sort by active first
+  let activeResult = a?.active === b?.active ? 0 : a.active < b.active ? 1 : -1 as (0 | 1 | -1); 
+  
+  // Then sort by name, like any other entity
+  if(activeResult != 0) { return activeResult; }
+  return EntityComparer(a, b);
+}
+export const SupportRelationshipComparer : Comparer<ISupportRelationship | undefined> = (a, b) => {
+  // First sort by Unit.Active
+  let unitCompare = UnitComparer(a?.unit, b?.unit);
+  if(unitCompare != 0) { return unitCompare; }
+  // Then by Department
+  return EntityComparer(a?.department, b?.department);
+}
 const suffix = /( jr| sr| ii| iii| iv)$/i
 export const PeopleBySurnameComparer: Comparer<IPerson | undefined> = (a, b) => {
   if (!a) { return -1; }
@@ -330,5 +348,4 @@ export const PeopleBySurnameComparer: Comparer<IPerson | undefined> = (a, b) => 
   return a_surname === b_surname ? 0 : a_surname < b_surname ? -1 : 1;
 }
 export const UnitMemberComparer : Comparer<IUnitMember> = (a, b) => PeopleBySurnameComparer(a.person, b.person);
-export const SupportRelationshipComparer : Comparer<ISupportRelationship> = (a, b) => EntityComparer(a.department, b.department);
 export const BuildingSupportRelationshipComparer : Comparer<IBuildingSupportRelationship> = (a, b) => EntityComparer(a.building, b.building);
