@@ -21,6 +21,7 @@ export interface IDispatchProps {
   fetchUnit: typeof unit.fetchUnit;
   save: typeof unit.saveUnitProfileRequest;
   deleteUnit: typeof unit.deleteUnit; //TODO
+  archiveUnit: typeof unit.archiveUnit;
   edit: typeof unit.edit;
   cancel: typeof unit.cancel;
 }
@@ -78,7 +79,8 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
   edit: () => dispatch(unit.edit()),
   save: (u: IUnit) => dispatch(unit.saveUnitProfileRequest(u)),
   cancel: () => dispatch(unit.cancel()),
-  deleteUnit: (u: IUnit) => dispatch(unit.deleteUnit(u))
+  deleteUnit: (u: IUnit) => dispatch(unit.deleteUnit(u)),
+  archiveUnit: (u: IUnit) => dispatch(unit.archiveUnit(u))
 });
 
 // Now let's connect our component!
