@@ -536,7 +536,10 @@ function* handleDeleteBuildingRelationship(api: IApi, supportRelationship: IBuil
 }
 
 type SaveMemberToolsRequest = {member:IUnitMember, tools:number[]}
-const saveMemberToolsError = (error: Error) => action(UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_ERROR, error);
+const saveMemberToolsError = (error: Error) => {
+  alert(error.message)
+  return action(UnitActionTypes.UNIT_SAVE_MEMBER_TOOLS_ERROR, error);
+}
 function* handleSaveMemberTools(api: IApi, {member, tools}: SaveMemberToolsRequest) {
   // Find all the tools to add
   const oldToolIds = new Set(member.memberTools.map(mt => mt.toolId));
