@@ -30,6 +30,36 @@ module.exports = (req, res, next) => {
     res.status(204);
     return res.end();
   }
+
+  if(req.method == "POST" && req.path.startsWith("/memberTools") && req.path.endsWith("/memberTools"))
+  {
+    // If someone assigns a tool to Li’l Sebastian throw a 400 error to handle.
+    console.log(req.body);
+    // let body = JSON.parse(req.body);
+    let membership = db.memberships.find(m => m.id == req.body.membershipId);
+    if(membership == null){
+      res.status(404);
+      return next();
+    }
+
+    let person = db.people.find(p => p.id == membership.personId);
+    if(person == null){
+      res.status(404);
+      return next();
+    }
+    
+    if(person.netId == "lsebastian") {
+      res.status(400);
+      // console.log(res);
+      let error = {
+        "statusCode": 400,
+        "errors": [ "Li’l Sebastian is a horse, and cannot use tools." ],
+        "details": "Enough horsing around."
+      };
+      return res.send(error);
+    }
+  }
+
   // GET /people/**
   if (req.method != "GET") {
     return next();
