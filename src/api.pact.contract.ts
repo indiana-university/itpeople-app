@@ -5,7 +5,7 @@
 
 import * as path from 'path'
 import { Pact, Matchers, Query } from '@pact-foundation/pact'
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse, Method } from 'axios'
 import * as traverse from 'traverse'
 import { apiEndpoints } from './components/effects';
 import { 
@@ -60,7 +60,7 @@ const contentTypeHeader = {
 const axiosRequest =
     (method: string, server: string, path: string, data = {}, headers = { ...authHeader, ...contentTypeHeader }) =>
         axios.request({
-            method: method,
+            method: method as Method,
             url: `${server}${path}`,
             headers: headers,
             data: data
