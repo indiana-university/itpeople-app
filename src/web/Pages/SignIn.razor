@@ -11,9 +11,12 @@
 	<p>
 		This page will do something at some point.
 	</p>
-	<p>
-		<button @onclick=@(() => ReallySignIn())>Really Sign In</button>
-	</p>
+	@if(string.IsNullOrWhiteSpace(Code))
+	{
+		<p>
+			<button @onclick=@(() => ReallySignIn())>Really Sign In</button>
+		</p>
+	}
 	<pre>Code: @Code</pre>
 </div>
 @code{
@@ -31,6 +34,10 @@
 			// Do the work to go fetch the JWT from UAA
 
 			// Stash the JWT in storage so we can use it with all our API requests.
+		}
+		else
+		{
+			ReallySignIn();
 		}
 	}
 
