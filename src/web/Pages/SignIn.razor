@@ -1,0 +1,36 @@
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@inject NavigationManager Navigation
+@page "/SignIn"
+
+<div class="rvt-container rvt-container--senior rvt-container--center rvt-p-bottom-xl rvt-p-top-lg">
+	<h1>Sign In</h1>
+	<p>
+		This page will do something at some point.
+	</p>
+	<p>
+		<button @onclick=@(() => ReallySignIn())>Really Sign In</button>
+	</p>
+</div>
+@code{
+	private string Code;
+	private string GetFromConfigOrThrowError(string configProperty)
+	{
+		var result = Configuration["configProperty"];
+		if(string.IsNullOrWhiteSpace(result))
+		{
+			throw new Exception($"Missing required environment setting: {configProperty}");
+		}
+		return result;
+	}
+
+	private void ReallySignIn()
+	{
+		var localUrl = GetFromConfigOrThrowError("APP_WEB_URL");
+		var oauthUrl = GetFromConfigOrThrowError("UAA_OAUTH2_AUTH_URL");
+		var clientId = GetFromConfigOrThrowError("UAA_OAUTH2_CLIENT_ID");
+		var signInUri = $"{oauthUrl}?response_type=code&client_id={Uri.EscapeDataString(clientId)}?redirect_uri={Uri.EscapeDataString(localUrl)}";
+		Navigation.NavigateTo(signInUri);
+	}
+
+}
