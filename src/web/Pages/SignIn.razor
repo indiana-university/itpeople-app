@@ -1,6 +1,9 @@
 @using Microsoft.Extensions.Configuration
+@using System.Web
+@using System.Linq
 @inject IConfiguration Configuration
 @inject NavigationManager Navigation
+@implements IDisposable
 @page "/SignIn"
 
 <div class="rvt-container rvt-container--senior rvt-container--center rvt-p-bottom-xl rvt-p-top-lg">
@@ -11,9 +14,26 @@
 	<p>
 		<button @onclick=@(() => ReallySignIn())>Really Sign In</button>
 	</p>
+	<pre>Code: @Code</pre>
 </div>
 @code{
 	private string Code;
+
+	protected override void OnInitialized()
+	{
+		// Read the queryString from the Uri, if it has the value for Code set it and use it.
+		var query = new Uri(Navigation.Uri).Query;
+		var queryDict = HttpUtility.ParseQueryString(query);
+		Code = queryDict.Get("code");
+
+		if(string.IsNullOrWhiteSpace(Code) == false)
+		{
+			// Do the work to go fetch the JWT from UAA
+
+			// Stash the JWT in storage so we can use it with all our API requests.
+		}
+	}
+
 	private string GetFromConfigOrThrowError(string configProperty)
 	{
 		var result = Configuration[configProperty];
@@ -33,4 +53,7 @@
 		Navigation.NavigateTo(signInUri);
 	}
 
+	public void Dispose()
+	{
+	}
 }
