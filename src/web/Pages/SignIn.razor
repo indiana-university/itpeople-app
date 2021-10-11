@@ -16,7 +16,7 @@
 	private string Code;
 	private string GetFromConfigOrThrowError(string configProperty)
 	{
-		var result = Configuration["configProperty"];
+		var result = Configuration[configProperty];
 		if(string.IsNullOrWhiteSpace(result))
 		{
 			throw new Exception($"Missing required environment setting: {configProperty}");
@@ -26,10 +26,10 @@
 
 	private void ReallySignIn()
 	{
-		var localUrl = GetFromConfigOrThrowError("APP_WEB_URL");
+		var localUrl = GetFromConfigOrThrowError("APP_WEB_URL") + "/SignIn";
 		var oauthUrl = GetFromConfigOrThrowError("UAA_OAUTH2_AUTH_URL");
 		var clientId = GetFromConfigOrThrowError("UAA_OAUTH2_CLIENT_ID");
-		var signInUri = $"{oauthUrl}?response_type=code&client_id={Uri.EscapeDataString(clientId)}?redirect_uri={Uri.EscapeDataString(localUrl)}";
+		var signInUri = $"{oauthUrl}?response_type=code&client_id={Uri.EscapeDataString(clientId)}&redirect_uri={Uri.EscapeDataString(localUrl)}";
 		Navigation.NavigateTo(signInUri);
 	}
 
