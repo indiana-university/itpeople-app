@@ -1,10 +1,35 @@
-﻿<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-    </Found>
-    <NotFound>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p>Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
+﻿@using RivetBlazor.Classes
+@using RivetBlazor.Components
+<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+	<Found Context="routeData">
+		<CascadingValue Value="@HeaderTitle">
+			<CascadingValue Value="@NavLinks">
+				<RouteView RouteData="@routeData" DefaultLayout="@typeof(RivetMainLayout)" />
+			</CascadingValue>
+		</CascadingValue>
+	</Found>
+	<NotFound>
+		<CascadingValue Value="@HeaderTitle">
+			<CascadingValue Value="@NavLinks">
+				<LayoutView Layout="@typeof(RivetMainLayout)">
+					<p>Sorry, there's nothing at this address.</p>
+				</LayoutView>
+			</CascadingValue>
+		</CascadingValue>
+	</NotFound>
 </Router>
+@code{
+	public string HeaderTitle = "IT People";
+	public List<IHeaderItem> NavLinks = new List<IHeaderItem>();
+	private List<HeaderLink> ProfileLinks = new List<HeaderLink> { new HeaderLink("/AccountSettings", "Account Settings", "Manage your site preferences"), new HeaderLink("/AdminTool", "Admin Tool", "Manage other peoples' site preferences")};
+	
+	public App()
+	{
+		NavLinks = new List<IHeaderItem> {
+			new HeaderLink("/People", "People"),
+			new HeaderLink("/Units", "Units"),
+			new HeaderProfile("rswanson", "/SignIn", "/SignOut", ProfileLinks, null, false),
+			//new HeaderProfile("bbatson", "/SignIn", "/SignOut", ProfileLinks, "Totally not Captain Marvel", true, avatar),
+		};
+	}
+}
