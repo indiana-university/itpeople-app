@@ -1,8 +1,10 @@
 @using Microsoft.Extensions.Configuration
 @using System.Web
+@using System.Net
 @using System.Linq
 @inject IConfiguration Configuration
 @inject NavigationManager Navigation
+@inject IHttpClientFactory ClientFactory
 @implements IDisposable
 @page "/SignIn"
 
@@ -21,18 +23,30 @@
 </div>
 @code{
 	private string Code;
+	private HttpClient Api() => ClientFactory.CreateClient("Api");
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
 		// Read the queryString from the Uri, if it has the value for Code set it and use it.
 		var query = new Uri(Navigation.Uri).Query;
 		var queryDict = HttpUtility.ParseQueryString(query);
 		Code = queryDict.Get("code");
 
+		/* 	Work in Progress
+			For now this only works with json-server which can be invoked in the projects root folder with the following command
+			json-server --watch src/db.json --routes json_server/db.routes.json --port 3001 --middlewares ./json_server/db.middleware.auth.js ./json_server/db.middleware.admin.js ./json_server/db.middleware.routes.js
+		*/
 		if(string.IsNullOrWhiteSpace(Code) == false)
 		{
 			// Do the work to go fetch the JWT from UAA
-
+			Console.WriteLine("Fetching token...");
+			var jwtResp = await Api().GetAsync($"/auth?oauth_code={Uri.EscapeDataString(Code)}");
+			if(jwtResp.StatusCode != HttpStatusCode.OK)
+			{
+				throw new Exception($"Was unable to redeem the code for an oauth token got status code {jwtResp.StatusCode}.");
+			}
+			var jwt = await jwtResp.Content.ReadAsStringAsync();
+			Console.WriteLine($"Got: {jwt}");
 			// Stash the JWT in storage so we can use it with all our API requests.
 		}
 		else
@@ -41,21 +55,11 @@
 		}
 	}
 
-	private string GetFromConfigOrThrowError(string configProperty)
-	{
-		var result = Configuration[configProperty];
-		if(string.IsNullOrWhiteSpace(result))
-		{
-			throw new Exception($"Missing required environment setting: {configProperty}");
-		}
-		return result;
-	}
-
 	private void ReallySignIn()
 	{
-		var localUrl = GetFromConfigOrThrowError("APP_WEB_URL") + "/SignIn";
-		var oauthUrl = GetFromConfigOrThrowError("UAA_OAUTH2_AUTH_URL");
-		var clientId = GetFromConfigOrThrowError("UAA_OAUTH2_CLIENT_ID");
+		var localUrl = Utils.Env(Configuration, "APP_WEB_URL", true) + "/SignIn";
+		var oauthUrl = Utils.Env(Configuration, "UAA_OAUTH2_AUTH_URL", true);
+		var clientId = Utils.Env(Configuration, "UAA_OAUTH2_CLIENT_ID", true);
 		var signInUri = $"{oauthUrl}?response_type=code&client_id={Uri.EscapeDataString(clientId)}&redirect_uri={Uri.EscapeDataString(localUrl)}";
 		Navigation.NavigateTo(signInUri);
 	}

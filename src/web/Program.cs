@@ -19,6 +19,8 @@ namespace web
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+            builder.Services.AddHttpClient("Api", client => client.BaseAddress = new Uri(Utils.Env(builder.Configuration, "API_URL", true)));
+
             await builder.Build().RunAsync();
         }
     }
