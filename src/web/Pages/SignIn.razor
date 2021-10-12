@@ -1,7 +1,9 @@
 @using Microsoft.Extensions.Configuration
 @using System.Web
 @using System.Net
+@using System.IdentityModel.Tokens.Jwt;
 @using System.Linq
+@using System.Text.Json.Serialization
 @inject IConfiguration Configuration
 @inject NavigationManager Navigation
 @inject IHttpClientFactory ClientFactory
@@ -45,8 +47,15 @@
 			{
 				throw new Exception($"Was unable to redeem the code for an oauth token got status code {jwtResp.StatusCode}.");
 			}
-			var jwt = await jwtResp.Content.ReadAsStringAsync();
-			Console.WriteLine($"Got: {jwt}");
+			var jwt = await jwtResp.Content.ReadFromJsonAsync<JwtResponse>();
+			var handler = new JwtSecurityTokenHandler();
+			var decodedValue = handler.ReadJwtToken(jwt.AccessToken);
+			var username = decodedValue.Claims.FirstOrDefault(x => x.Type == "user_name");
+			if(username == null) {
+				throw new Exception($"Was unable to validate your identity.");
+			}
+			Console.WriteLine(decodedValue.Claims.FirstOrDefault(x => x.Type == "user_name").Value);
+
 			// Stash the JWT in storage so we can use it with all our API requests.
 		}
 		else
@@ -54,7 +63,12 @@
 			ReallySignIn();
 		}
 	}
+	public class JwtResponse
+	{
 
+		[JsonPropertyName("access_token")]
+		public string AccessToken {get;set;}
+	}
 	private void ReallySignIn()
 	{
 		var localUrl = Utils.Env(Configuration, "APP_WEB_URL", true) + "/SignIn";
