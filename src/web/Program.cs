@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Blazored.SessionStorage;
 
 namespace web
 {
@@ -18,7 +19,7 @@ namespace web
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
+            builder.Services.AddBlazoredSessionStorage();
             builder.Services.AddHttpClient("Api", client => {
                 client.BaseAddress = new Uri(Utils.Env(builder.Configuration, "API_URL", true));
                 // Here we'll attempt to fetch the JWT from storage
