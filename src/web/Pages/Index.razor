@@ -1,6 +1,7 @@
 ﻿@using Microsoft.Extensions.Configuration;
 @inject Blazored.SessionStorage.ISyncSessionStorageService sessionStorage
 @inject IConfiguration Configuration
+@inject IHttpClientFactory ClientFactory
 @implements IDisposable
 @page "/"
 
@@ -11,25 +12,18 @@
 	</p>
 
 	<p>
-		This button is for testing if our API client is using the bearer token once you're signed in.
+		This button is for testing if injected "Api" HttpClient is using the bearer token once you're signed in.
 		<button class="rvt-button" @onclick=@(() => FetchMe())>Fetch /me</button>
 	</p>
 </div>
 @code{
-	private ApiClient Api;
-
-	protected override async Task OnInitializedAsync()
-	{
-		Api = new ApiClient(sessionStorage, Configuration);
-	}
+	private HttpClient Api() => ClientFactory.CreateClient("Api");
 
 	private async Task FetchMe()
 	{
-		Console.WriteLine($"index API:\n\tBaseAddress: {Api.BaseAddress}\n\tDefaultRequestHeaders: {Api.DefaultRequestHeaders}");
-		
-		var resp = await Api.GetAsync("/me");
+		var resp = await Api().GetAsync("/me");
 		var body = await resp.Content.ReadAsStringAsync();
-		Console.WriteLine($"/me returned:\n{body}");
+		Console.WriteLine($"Injected /me returned: {body}");
 	}
 
 	public void Dispose()
