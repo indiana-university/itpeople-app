@@ -18,7 +18,7 @@
 	@if(string.IsNullOrWhiteSpace(Code))
 	{
 		<p>
-			<button @onclick=@(() => ReallySignIn())>Really Sign In</button>
+			<button class="rvt-button" @onclick=@(() => ReallySignIn())>Really Sign In</button>
 		</p>
 	}
 	<pre>Code: @Code</pre>

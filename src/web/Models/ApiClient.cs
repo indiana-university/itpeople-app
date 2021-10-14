@@ -19,7 +19,6 @@ namespace web
 			// Set the BaseAddress
 			this.BaseAddress = new Uri(Utils.Env(configuration, "API_URL", true));
 			var userDetails = storageService.GetItem<AuthenticatedUser>("user");
-			Console.WriteLine($"ApiClient userDetails: {userDetails}\n\tAccessToken: {userDetails?.AccessToken}\n\tUsenaem: {userDetails?.Username}");
 
 			// If we have a JWT in Session Storage use it to add an Authorization header for API requestes.
 			if(userDetails != null && string.IsNullOrWhiteSpace(userDetails.AccessToken) == false)
