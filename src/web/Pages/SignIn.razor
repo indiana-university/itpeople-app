@@ -7,6 +7,7 @@
 @inject IConfiguration Configuration
 @inject NavigationManager Navigation
 @inject IHttpClientFactory ClientFactory
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @implements IDisposable
 @page "/SignIn"
 
@@ -49,14 +50,15 @@
 			}
 			var jwt = await jwtResp.Content.ReadFromJsonAsync<JwtResponse>();
 			var handler = new JwtSecurityTokenHandler();
-			var decodedValue = handler.ReadJwtToken(jwt.AccessToken);
-			var username = decodedValue.Claims.FirstOrDefault(x => x.Type == "user_name");
-			if(username == null) {
+			var usernameClaim = handler.ReadJwtToken(jwt.AccessToken).Claims.FirstOrDefault(x => x.Type == "user_name");
+			if(usernameClaim == null) {
 				throw new Exception($"Was unable to validate your identity.");
 			}
-			Console.WriteLine(decodedValue.Claims.FirstOrDefault(x => x.Type == "user_name").Value);
-
-			// Stash the JWT in storage so we can use it with all our API requests.
+			await sessionStorage.SetItemAsync("user", new AuthenticatedUser {
+				AccessToken = jwt.AccessToken,
+				Username = usernameClaim.Value
+			});
+ 			//var name = await sessionStorage.GetItemAsync<AuthenticatedUser>("user");
 		}
 		else
 		{
