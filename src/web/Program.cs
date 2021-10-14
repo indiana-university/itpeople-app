@@ -19,7 +19,16 @@ namespace web
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            builder.Services.AddHttpClient("Api", client => client.BaseAddress = new Uri(Utils.Env(builder.Configuration, "API_URL", true)));
+            builder.Services.AddHttpClient("Api", client => {
+                client.BaseAddress = new Uri(Utils.Env(builder.Configuration, "API_URL", true));
+                // Here we'll attempt to fetch the JWT from storage
+                var jwtString = "";
+                // If we got a JWT use it to add an Authorization header for API requestes.
+                if(string.IsNullOrWhiteSpace(jwtString) == false)
+                {
+                    client.DefaultRequestHeaders.Add("Authorization", $"bearer {jwtString}");
+                }
+            });
 
             await builder.Build().RunAsync();
         }
