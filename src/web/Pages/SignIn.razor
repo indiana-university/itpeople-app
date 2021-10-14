@@ -6,7 +6,6 @@
 @using System.Text.Json.Serialization
 @inject IConfiguration Configuration
 @inject NavigationManager Navigation
-@inject IHttpClientFactory ClientFactory
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @implements IDisposable
 @page "/SignIn"
@@ -26,7 +25,7 @@
 </div>
 @code{
 	private string Code;
-	private HttpClient Api() => ClientFactory.CreateClient("Api");
+	private HttpClient client= new HttpClient();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -43,7 +42,8 @@
 		{
 			// Do the work to go fetch the JWT from UAA
 			Console.WriteLine("Fetching token...");
-			var jwtResp = await Api().GetAsync($"/auth?oauth_code={Uri.EscapeDataString(Code)}");
+			var baseUri = Utils.Env(Configuration, "API_URL", true);
+			var jwtResp = await client.GetAsync($"{baseUri}/auth?oauth_code={Uri.EscapeDataString(Code)}");
 			if(jwtResp.StatusCode != HttpStatusCode.OK)
 			{
 				throw new Exception($"Was unable to redeem the code for an oauth token got status code {jwtResp.StatusCode}.");
@@ -58,7 +58,12 @@
 				AccessToken = jwt.AccessToken,
 				Username = usernameClaim.Value
 			});
- 			//var name = await sessionStorage.GetItemAsync<AuthenticatedUser>("user");
+ 			
+			// Send the user back to whence they came.
+			// Use forceReload to make sure the header redraws.
+			Navigation.NavigateTo("/", true);
+			
+			
 		}
 		else
 		{
