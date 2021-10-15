@@ -12,19 +12,38 @@
 
 <div class="rvt-container rvt-container--senior rvt-container--center rvt-p-bottom-xl rvt-p-top-lg">
 	<h1>Sign In</h1>
-	<p>
-		This page will do something at some point.
-	</p>
+	
 	@if(string.IsNullOrWhiteSpace(Code))
 	{
 		<p>
-			<button class="rvt-button" @onclick=@(() => ReallySignIn())>Really Sign In</button>
+			Sending you to UAA service to authenticate.
 		</p>
 	}
-	<pre>Code: @Code</pre>
+	else
+	{
+		<p>Sending you back to @Destination</p>
+	}
 </div>
 @code{
 	private string Code;
+	
+	// Use a custom setter to prevent redirect loops and invalid targets.
+	private string _Destination = "/";
+	private string Destination
+	{
+		get => _Destination;
+		set
+		{
+			if(string.IsNullOrWhiteSpace(value) || value.StartsWith("/SignIn", StringComparison.OrdinalIgnoreCase))
+			{
+				_Destination = "/";
+			}
+			else
+			{
+				_Destination = value;
+			}
+		}
+	}
 	private HttpClient client= new HttpClient();
 
 	protected override async Task OnInitializedAsync()
@@ -33,6 +52,9 @@
 		var query = new Uri(Navigation.Uri).Query;
 		var queryDict = HttpUtility.ParseQueryString(query);
 		Code = queryDict.Get("code");
+
+		// Do the same for Destination.
+		Destination = queryDict.Get("destination");
 
 		/* 	Work in Progress
 			For now this only works with json-server which can be invoked in the projects root folder with the following command
@@ -60,14 +82,13 @@
 			});
  			
 			// Send the user back to whence they came.
+			Destination = await sessionStorage.GetItemAsync<string>("AuthDestination");
 			// Use forceReload to make sure the header redraws.
-			Navigation.NavigateTo("/", true);
-			
-			
+			Navigation.NavigateTo(Destination, true);
 		}
 		else
 		{
-			ReallySignIn();
+			await ReallySignIn();
 		}
 	}
 	public class JwtResponse
@@ -76,8 +97,12 @@
 		[JsonPropertyName("access_token")]
 		public string AccessToken {get;set;}
 	}
-	private void ReallySignIn()
+	private async Task ReallySignIn()
 	{
+		// Store destination in session storage for use when we get back.
+		await sessionStorage.SetItemAsync("AuthDestination", Destination);
+
+		// Send them to UAA to get authenticated.
 		var localUrl = Utils.Env(Configuration, "APP_WEB_URL", true) + "/SignIn";
 		var oauthUrl = Utils.Env(Configuration, "UAA_OAUTH2_AUTH_URL", true);
 		var clientId = Utils.Env(Configuration, "UAA_OAUTH2_CLIENT_ID", true);
