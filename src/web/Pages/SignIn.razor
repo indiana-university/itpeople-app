@@ -34,7 +34,7 @@
 		get => _Destination;
 		set
 		{
-			if(string.IsNullOrWhiteSpace(value) || value.StartsWith("/SignIn", StringComparison.OrdinalIgnoreCase))
+			if(string.IsNullOrWhiteSpace(value) || value.StartsWith("/SignIn", StringComparison.OrdinalIgnoreCase) || value.StartsWith('/') == false)
 			{
 				_Destination = "/";
 			}
