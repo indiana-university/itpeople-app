@@ -34,7 +34,11 @@
 		get => _Destination;
 		set
 		{
-			if(string.IsNullOrWhiteSpace(value) || value.StartsWith("/SignIn", StringComparison.OrdinalIgnoreCase) || value.StartsWith('/') == false)
+			if(
+				string.IsNullOrWhiteSpace(value)
+				|| value.StartsWith("/SignIn", StringComparison.OrdinalIgnoreCase)
+				|| value.StartsWith("/SignOut", StringComparison.OrdinalIgnoreCase)
+				|| value.StartsWith('/') == false)
 			{
 				_Destination = "/";
 			}
@@ -93,7 +97,6 @@
 	}
 	public class JwtResponse
 	{
-
 		[JsonPropertyName("access_token")]
 		public string AccessToken {get;set;}
 	}

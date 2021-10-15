@@ -1,0 +1,41 @@
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject NavigationManager Navigation
+@implements IDisposable
+@page "/SignOut"
+
+<div class="rvt-container rvt-container--senior rvt-container--center rvt-p-bottom-xl rvt-p-top-lg">
+	<h1>Sign Out</h1>
+	@if(User != null)
+	{
+		<p>
+			Logging you out...
+		</p>
+	}
+	else
+	{
+		<p>
+			Your session has ended.  If you wish to end your IU Login session please <a href="https://idp.login.iu.edu/idp/profile/cas/logout">click here</a>.
+		</p>
+	}
+</div>
+
+@code
+{
+	private AuthenticatedUser User;
+
+	protected override async Task OnInitializedAsync()
+	{
+		User = await sessionStorage.GetItemAsync<AuthenticatedUser>("user");
+		if(User != null)
+		{
+			await sessionStorage.ClearAsync();
+			// Force redraw of the page to redraw the header
+			Navigation.NavigateTo("/SignOut", true);
+		}
+		
+	}
+
+	public void Dispose()
+	{
+	}
+}
