@@ -1,8 +1,32 @@
-﻿@page "/"
+﻿@using Microsoft.Extensions.Configuration;
+@inject Blazored.SessionStorage.ISyncSessionStorageService sessionStorage
+@inject IConfiguration Configuration
+@inject IHttpClientFactory ClientFactory
+@implements IDisposable
+@page "/"
 
 <div class="rvt-container rvt-container--senior rvt-container--center rvt-p-bottom-xl rvt-p-top-lg">
 	<h1>IT People</h1>
 	<p>
 		IT People is a directory of people doing or supporting information technology (IT) work at Indiana University. You can search for <a href="/units">units</a> and people by name, or browse all units and their membership.
 	</p>
+
+	<p>
+		This button is for testing if injected "Api" HttpClient is using the bearer token once you're signed in.
+		<button class="rvt-button" @onclick=@(() => FetchMe())>Fetch /me</button>
+	</p>
 </div>
+@code{
+	private HttpClient Api() => ClientFactory.CreateClient("Api");
+
+	private async Task FetchMe()
+	{
+		var resp = await Api().GetAsync("/me");
+		var body = await resp.Content.ReadAsStringAsync();
+		Console.WriteLine($"Injected /me returned: {body}");
+	}
+
+	public void Dispose()
+	{
+	}
+}
