@@ -1,6 +1,8 @@
 ﻿@using RivetBlazor.Classes
 @using RivetBlazor.Components
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject NavigationManager Navigation
+
 <Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
 	<Found Context="routeData">
 		<CascadingValue Value="@HeaderTitle">
@@ -24,16 +26,21 @@
 	public List<IHeaderItem> NavLinks = new List<IHeaderItem>();
 	private List<HeaderLink> ProfileLinks = new List<HeaderLink> { new HeaderLink("/AccountSettings", "Account Settings", "Manage your site preferences"), new HeaderLink("/AdminTool", "Admin Tool", "Manage other peoples' site preferences")};
 	private AuthenticatedUser User = null;
+	private string AuthenticationDestination;
 
 	protected override async Task OnInitializedAsync()
 	{
 		User = await sessionStorage.GetItemAsync<AuthenticatedUser>("user");
 		var loggedInUser = User?.Username ?? "";
 		var isLoggedIn = User != null;
+		
+		AuthenticationDestination = new Uri(Navigation.Uri).PathAndQuery;
+		var signInUrl = $"/SignIn?Destination={System.Net.WebUtility.UrlEncode(AuthenticationDestination)}";
+		
 		NavLinks = new List<IHeaderItem> {
 			new HeaderLink("/People", "People"),
 			new HeaderLink("/Units", "Units"),
-			new HeaderProfile(loggedInUser, "/SignIn", "/SignOut", ProfileLinks, null, isLoggedIn),
+			new HeaderProfile(loggedInUser, signInUrl, "/SignOut", ProfileLinks, null, isLoggedIn),
 			//new HeaderProfile("bbatson", "/SignIn", "/SignOut", ProfileLinks, "Totally not Captain Marvel", true, avatar),
 		};
 	}
